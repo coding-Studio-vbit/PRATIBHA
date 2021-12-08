@@ -1,14 +1,15 @@
 import React from "react";
 import "./card.css";
 
-const CardforInputs = ({
+const Card = ({
   text,  
+  onclick
 }) => {
   return (
-    <div className={`card-container`}>
+    <div className={`card-container`} onClick={onclick}>
       {text && <p>{text}</p>}
     </div>
   );
 };
 
-export default CardforInputs;
+export default Card;
