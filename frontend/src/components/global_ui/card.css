@@ -1,33 +1,10 @@
-.card-container-four {
-    display : grid;
-    align-items: center;
-    justify-content: center;
-    grid-template-columns: 26% 40% 17% 17% ;
-    height: auto;
-}
-
-.card-container-six {
-    display : grid;
-    align-items: center;
-    justify-content: center;
-    grid-template-columns: 15% 25% 20% 20% 10% 10% ;
-    height: auto;
-}
-
-.card-container-one {
+.card-container{
     height: 100px;
     width: 220px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-}
-
-.grid-item {
-    justify-self: center;
-}
-
-.iscolor {
     padding: 15px;
     background:rgba(176, 196, 222, 0.43);
     border-radius: 7px;
