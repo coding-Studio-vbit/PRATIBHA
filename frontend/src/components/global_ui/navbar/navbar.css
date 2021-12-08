@@ -1,7 +1,7 @@
 .nav{
     display:flex;
     justify-content: center;
-    height: 74px;
+    height: 64px;
     background-color:rgba(14, 114, 171, 1);
     align-items: center;
     color:white;
@@ -14,8 +14,8 @@
     margin-right:7px;
     right: 0;
     background-color:rgba(245, 245, 245, 0.81);
-    width: 279px;
-    height:75px;
+    width: 260px;
+    height:64px;
     border-radius:20px;
     font-size:24px;
 }
