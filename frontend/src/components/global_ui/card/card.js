@@ -13,3 +13,5 @@ const Card = ({
 };
 
 export default Card;
+
+// Pass parameters like this : <Card text="3_CSE_D_PPS" onclick={console.log('clicked')}/>
