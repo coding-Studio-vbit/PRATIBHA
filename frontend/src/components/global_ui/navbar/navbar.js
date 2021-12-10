@@ -15,7 +15,7 @@ const Navbar = ({title,logout=true}) => {
         {title}
         {(logout!==false?<button className="btn">
         <i2 class="fas fa-power-off"></i2>
-        Logout</button>:false)}
+        </button>:false)}
         </nav>
         </div>
     );

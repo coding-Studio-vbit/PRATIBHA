@@ -2,33 +2,34 @@
     display:flex;
     justify-content: center;
     height: 64px;
-    background-color:rgba(14, 114, 171, 1);
+    background-color:#0E72AB;
     align-items: center;
     color:white;
     font-size:24px;
     font-weight:200;
+    width:100%;
 }
 .btn{
     position:absolute;
-    color:white;
-    margin-right:7px;
-    right: 0;
-    background-color:rgba(245, 245, 245, 0.81);
-    width: 260px;
-    height:64px;
-    border-radius:20px;
-    font-size:24px;
-}
-.bck{
-    position:absolute;
-    left:0;
-    margin-left:30px;
+    right:0;
+    margin-right:12px;
     font-size:25px;
     width:max-content;
     color:white;
     border-style: none;
-    background-color:rgba(14, 114, 171, 1);
+    background-color:#0E72AB;
+}
+.bck{
+    position:absolute;
+    left:0;
+    margin-left:12px;
+    font-size:25px;
+    width:max-content;
+    color:white;
+    border-style: none;
+    background-color:#0E72AB;
 }
 i2{
-    margin-right: 20px;
+    justify-self: center;
+    align-self: center;
 }
