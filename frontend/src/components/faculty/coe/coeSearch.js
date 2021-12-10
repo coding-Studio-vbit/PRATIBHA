@@ -115,12 +115,7 @@ class CoESearch extends Component {
               isDisabled={filteredOptions1.length === 0}
             />
           </div>
-          <Button
-            className="done-button"
-            width="100"
-            height="50"
-            children="View"
-          />
+          <Button className="done-button" icon ={<i class="fas fa-search"></i>} children ='View' />
 
       
       </div>
