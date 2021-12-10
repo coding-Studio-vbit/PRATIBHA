@@ -5,7 +5,7 @@
     background-color:#0E72AB;
     align-items: center;
     color:white;
-    font-size:24px;
+    font-size:25px;
     font-weight:200;
     width:100%;
 }
@@ -18,18 +18,22 @@
     color:white;
     border-style: none;
     background-color:#0E72AB;
+    margin-top: 3px;
 }
 .bck{
     position:absolute;
     left:0;
+    margin-top: 3px;
     margin-left:12px;
     font-size:25px;
     width:max-content;
     color:white;
     border-style: none;
     background-color:#0E72AB;
+    justify-self: center;
+    align-self: center;
 }
-i2{
+.fas{
     justify-self: center;
     align-self: center;
 }

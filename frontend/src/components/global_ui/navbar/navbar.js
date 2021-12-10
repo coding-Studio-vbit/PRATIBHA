@@ -10,11 +10,11 @@ const Navbar = ({title,logout=true}) => {
         <div>
         <nav className="nav">
         <button className="bck">
-        <i1 class="fas fa-arrow-left">
-        </i1></button>
+        <i className="fas fa-arrow-left">
+        </i></button>
         {title}
         {(logout!==false?<button className="btn">
-        <i2 class="fas fa-power-off"></i2>
+        <i className="fas fa-power-off"></i>
         </button>:false)}
         </nav>
         </div>

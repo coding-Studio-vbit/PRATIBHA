@@ -11,4 +11,4 @@ import React from 'react';
 
 export default Button;
 
-{/* <Button width='100' height='100' children='Pranchal'/> */}
+//<Button width='100' height='100' children='Pranchal'/> 

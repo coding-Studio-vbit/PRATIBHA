@@ -6,7 +6,7 @@
   border-radius: 30px;
   border:none;
   box-shadow: 0 2px 2px 2px rgb(85, 85, 85);
-
+  font-size: large;
 }
 
 .root:hover {
