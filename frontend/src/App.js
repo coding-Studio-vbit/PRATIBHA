@@ -1,12 +1,10 @@
 import React from 'react';
 import './App.css';
-import LockList from './components/faculty/common/lockList';
-
-
+import StudentEnroll from './components/student/enroll';
 const App = ()=> {
   return (
     <div className="App">
-<LockList/>
+<StudentEnroll/>
       
     </div>
   );

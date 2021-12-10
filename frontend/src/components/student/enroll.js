@@ -74,7 +74,7 @@ class StudentEnroll extends Component {
     );
     return (
       <div className="enroll-container">
-        <Navbar title="Enrollment Screen" />
+        <Navbar title="Enrollment Screen" logout={false} />
 
         <div className="dropdown">
           <p>YEAR</p>
@@ -105,7 +105,7 @@ class StudentEnroll extends Component {
           />
         </div>
 
-        <Button className="button" width="150" height="50" children="Enroll" />
+        <Button className="button" width="150" height="50" children="Enroll" icon={<i class="fas fa-mouse-pointer"></i>}/>
       </div>
     );
   }
