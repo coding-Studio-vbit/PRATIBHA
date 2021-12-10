@@ -62,9 +62,27 @@ class LockList extends Component {
       { value: "A", label: "A", link: "IT" },
       { value: "B", label: "B", link: "IT" },
     ];
-    const filteredOptions = Sections.filter(
+    const Subjects = [
+      { value: "PPS", label: "PPS", link: "CSE" },
+      {
+        value: "Software Engineering",
+        label: "Software Engineering",
+        link: "CSE",
+      },
+      { value: "Compiler Design", label: "Compiler Design", link: "CSE" },
+      {
+        value: "Engineering Mechanics",
+        label: "Engineering Mechanics",
+        link: "CE",
+      },
+    ];
+    const filteredOptions0 = Sections.filter(
       (o) => o.link === this.state.selectedOption1.value
     );
+    const filteredOptions1 = Subjects.filter(
+      (o) => o.link === this.state.selectedOption1.value
+    );
+
 
     return (
       <div className="lockList-container">
@@ -88,15 +106,15 @@ class LockList extends Component {
             <Select
               value={this.state.selectedOption2}
               onChange={this.handleChange2}
-              options={filteredOptions}
-              isDisabled={filteredOptions.length === 0}
+              options={filteredOptions0}
+              isDisabled={filteredOptions0.length === 0}
             />
-            <p>SUBJECT</p>
+          <p>SUBJECT</p>
             <Select
-              value={this.state.selectedOption2}
-              onChange={this.handleChange2}
-              options={filteredOptions}
-              isDisabled={filteredOptions.length === 0}
+              value={this.state.selectedOption3}
+              onChange={this.handleChange3}
+              options={filteredOptions1}
+              isDisabled={filteredOptions1.length === 0}
             />
             <Button
               className="add-button"
@@ -126,3 +144,4 @@ class LockList extends Component {
   }
 }
 export default LockList;
+
