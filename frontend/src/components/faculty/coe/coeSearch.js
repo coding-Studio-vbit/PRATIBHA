@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
+import './coeSearch.css';
 
 class CoESearch extends Component {
   constructor() {
@@ -84,7 +85,7 @@ class CoESearch extends Component {
     return (
       <div className="CoESearch-container">
         <Navbar title="View Grades and Submission" />
-        <div className="flex-container">
+        
           <div className="dropdown">
             <p>YEAR</p>
             <Select
@@ -114,14 +115,14 @@ class CoESearch extends Component {
               isDisabled={filteredOptions1.length === 0}
             />
           </div>
-
           <Button
             className="done-button"
             width="100"
             height="50"
             children="View"
           />
-        </div>
+
+      
       </div>
     );
   }

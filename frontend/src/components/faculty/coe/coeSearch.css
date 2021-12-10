@@ -1,0 +1,15 @@
+.CoESearch-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+Button{
+    margin: 20px;
+    align-self: center;
+    
+}
+.dropdown{
+    width:350px;
+    align-self: center;
+}
