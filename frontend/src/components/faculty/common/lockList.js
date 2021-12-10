@@ -86,7 +86,7 @@ class LockList extends Component {
 
     return (
       <div className="lockList-container">
-        <Navbar title="Class List" />
+        <Navbar title="Class List" logout={false}/>
         <div className="flex-container">
           <div className="dropdown">
             <p>YEAR</p>
@@ -121,6 +121,7 @@ class LockList extends Component {
               width="100"
               height="50"
               children="Add"
+              icon={<i class="fas fa-plus"></i>}
             />
           </div>
           <div className="list-and-done">
