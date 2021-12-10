@@ -22,3 +22,5 @@ const Navbar = ({title,logout=true}) => {
 }
  
 export default Navbar;
+
+//example :  <Navbar title='Pranchal' logout={false} />
