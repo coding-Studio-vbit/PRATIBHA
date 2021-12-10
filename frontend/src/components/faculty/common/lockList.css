@@ -1,0 +1,21 @@
+Button {
+  margin: 10px;
+}
+.list-container {
+  background-color: rgb(176, 196, 222, 0.25);
+  height: 339px;
+  width: 300px;
+}
+
+.flex-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.dropdown {
+  width: 300px;
+}
+.add-button {
+  background-color: white;
+}
