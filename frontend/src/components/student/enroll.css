@@ -1,0 +1,13 @@
+.enroll-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.dropdown{
+    align-self: center;
+    width: 350px;
+}
+Button{
+    margin-top: 20px;
+    align-self: center;
+}

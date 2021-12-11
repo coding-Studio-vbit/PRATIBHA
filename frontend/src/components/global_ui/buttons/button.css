@@ -1,17 +1,18 @@
-.root
-{
-background-color: #0E72AB;
-
+.root {
+  background-color: #0e72ab;
   color: white;
   text-align: center;
   border-radius: 30px;
-  border:none;
+  border: none;
   box-shadow: 0 2px 2px 2px rgb(85, 85, 85);
-
+  font-size: large;
+  width: 100px;
+  height: 50px;
+}
+i{
+  margin:5px;
 }
 
 .root:hover {
-    box-shadow: none;
-
-  }
-
+  box-shadow: none;
+}

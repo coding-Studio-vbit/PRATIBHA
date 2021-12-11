@@ -6,12 +6,23 @@ import { auth } from "../../firebase";
 import "./loginPage.css";
 
 export default function LoginPage() {
+
+  const validateMail = (mail) => {
+ 
+    if (/@vbithyd.ac.in\s*$/.test(mail)) {
+      console.log("it ends in @vbithyd.ac.in")
+  
+    } else if (/@gmail.com\s*$/.test(mail)) {
+      console.log("it ends in @gmail");
+    }
+  };
+
   const SignInWithFirebase = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result.user.email);
-        console.log(result.user);
+        validateMail(result.user.email);
       })
       .catch((error) => {
         console.log(error);

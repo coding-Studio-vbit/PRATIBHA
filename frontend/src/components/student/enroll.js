@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Select from "react-select";
-import Navbar from "../../global_ui/navbar/navbar";
-import Button from "../../global_ui/buttons/button";
-import './coeSearch.css';
+import Navbar from "../global_ui/navbar/navbar";
+import Button from "../global_ui/buttons/button";
+import "./enroll.css";
 
-class CoESearch extends Component {
+class StudentEnroll extends Component {
   constructor() {
     super();
     this.state = {
@@ -14,6 +14,7 @@ class CoESearch extends Component {
       selectedOption3: {},
     };
   }
+
   handleChange0 = (selectedOption0) => {
     this.setState({ selectedOption0 });
   };
@@ -50,6 +51,12 @@ class CoESearch extends Component {
       { value: "ME", label: "Mechanical Engineering" },
       { value: "IT", label: "Information Technology" },
     ];
+
+    const Semester = [
+      { value: "1", label: "1" },
+      { value: "2", label: "2" },
+    ];
+
     const Sections = [
       { value: "A", label: "A", link: "CSE" },
       { value: "B", label: "B", link: "CSE" },
@@ -61,65 +68,47 @@ class CoESearch extends Component {
       { value: "A", label: "A", link: "IT" },
       { value: "B", label: "B", link: "IT" },
     ];
-    const Subjects = [
-      { value: "PPS", label: "PPS", link: "CSE" },
-      {
-        value: "Software Engineering",
-        label: "Software Engineering",
-        link: "CSE",
-      },
-      { value: "Compiler Design", label: "Compiler Design", link: "CSE" },
-      {
-        value: "Engineering Mechanics",
-        label: "Engineering Mechanics",
-        link: "CE",
-      },
-    ];
-    const filteredOptions0 = Sections.filter(
-      (o) => o.link === this.state.selectedOption1.value
-    );
-    const filteredOptions1 = Subjects.filter(
-      (o) => o.link === this.state.selectedOption1.value
-    );
 
+    const filteredOptions = Sections.filter(
+      (o) => o.link === this.state.selectedOption1.value
+    );
     return (
-      <div className="CoESearch-container">
-        <Navbar title="View Grades and Submission" />
-        
-          <div className="dropdown">
-            <p>YEAR</p>
-            <Select
-              className="year"
-              value={this.state.selectedOption0}
-              onChange={this.handleChange0}
-              options={Year}
-            />
-            <p> DEPARTMENT</p>
-            <Select
-              value={this.state.selectedOption1}
-              onChange={this.handleChange1}
-              options={Department}
-            />
-            <p>SECTION</p>
-            <Select
-              value={this.state.selectedOption2}
-              onChange={this.handleChange2}
-              options={filteredOptions0}
-              isDisabled={filteredOptions0.length === 0}
-            />
-            <p>SUBJECT</p>
-            <Select
-              value={this.state.selectedOption3}
-              onChange={this.handleChange3}
-              options={filteredOptions1}
-              isDisabled={filteredOptions1.length === 0}
-            />
-          </div>
-          <Button className="done-button" icon ={<i class="fas fa-search"></i>} children ='View' />
+      <div className="enroll-container">
+        <Navbar title="Enrollment Screen" logout={false} />
 
-      
+        <div className="dropdown">
+          <p>YEAR</p>
+          <Select
+            className="year"
+            value={this.state.selectedOption0}
+            onChange={this.handleChange0}
+            options={Year}
+          />
+          <p> DEPARTMENT</p>
+          <Select
+            value={this.state.selectedOption1}
+            onChange={this.handleChange1}
+            options={Department}
+          />
+          <p>SECTION</p>
+          <Select
+            value={this.state.selectedOption2}
+            onChange={this.handleChange2}
+            options={filteredOptions}
+            isDisabled={filteredOptions.length === 0}
+          />
+          <p>SEMESTER</p>
+          <Select
+            value={this.state.selectedOption3}
+            onChange={this.handleChange3}
+            options={Semester}
+          />
+        </div>
+
+        <Button className="button" width="150" height="50" children="Enroll" icon={<i class="fas fa-mouse-pointer"></i>}/>
       </div>
     );
   }
 }
-export default CoESearch;
+
+export default StudentEnroll;
