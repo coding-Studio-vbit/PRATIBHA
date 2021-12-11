@@ -19,7 +19,7 @@ Button {
 .add-button {
   background-color: white;
 }
-p{
+.instruction{
   color: #0E72AB;
   font-weight: bold;
   letter-spacing: 0.4px;
