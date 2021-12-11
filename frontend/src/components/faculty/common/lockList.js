@@ -87,6 +87,7 @@ class LockList extends Component {
     return (
       <div className="lockList-container">
         <Navbar title="Class List" logout={false}/>
+        <p>*Add your classes for this semester</p>
         <div className="flex-container">
           <div className="dropdown">
             <p>YEAR</p>
