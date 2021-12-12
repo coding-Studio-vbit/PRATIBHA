@@ -9,16 +9,16 @@ th {
 
 td, th{
   padding: 15px;
-  /* background-color: rgba(176, 196, 222, 0.43); */
 }
 
 .LOF_buttons {
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .export_ {
     margin-top: 10px;
     float: right;
+    margin-right: 100px;
 }
 
 tr {
@@ -39,5 +39,10 @@ tr:nth-child(odd):not(:first-child) {
         width: screen;
         display:block;
         overflow-x: scroll;
+    }
+
+    .export_{
+      margin-top:20px;
+      margin-right: 0px;
     }
 }
