@@ -25,3 +25,11 @@ i {
 .root:hover {
   box-shadow: none;
 }
+
+@media screen and (max-width: 500px){
+  .root{
+    width: 70px;
+    height: 30px;
+    font-size:14px;
+  }
+}

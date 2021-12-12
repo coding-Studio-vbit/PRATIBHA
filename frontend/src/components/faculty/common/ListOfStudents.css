@@ -1,12 +1,13 @@
 table {
   border-collapse: collapse;
+  width: 100%;
 }
 th {
   border-bottom: 1px solid black;
   border-collapse: collapse;
 }
 
-td {
+td, th{
   padding: 15px;
   /* background-color: rgba(176, 196, 222, 0.43); */
 }
@@ -16,7 +17,7 @@ td {
 }
 
 .export_ {
-    /* margin-top: 3px; */
+    margin-top: 10px;
     float: right;
 }
 
@@ -30,4 +31,13 @@ tr:nth-child(even) {
 
 tr:nth-child(odd):not(:first-child) {
   background-color: rgba(176, 196, 222, 0.63);
+}
+
+@media screen and (max-width: 500px)
+{
+    table{
+        width: screen;
+        display:block;
+        overflow-x: scroll;
+    }
 }

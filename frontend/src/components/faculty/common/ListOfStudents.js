@@ -29,7 +29,7 @@ const ListofStudents = () => {
       <Navbar title="3_CSE_D_DA" />
       <p>SUBJECT : Data Analytics</p>
       <p>No of students : 68</p>
-      <table style={{ width: "100%", marginTop: "4.5rem" }}>
+      <table style={{  marginTop: "4.5rem" }}>
         <tr>
           <th>ROLL NO:</th>
           <th>NAME</th>
@@ -56,7 +56,7 @@ const ListofStudents = () => {
           icon={<i class="fas fa-file-export"></i>}
           children="EXPORT"
           className="normal"
-          width="200"
+          width="150"
         />
       </div>
     </div>
