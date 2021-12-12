@@ -1,0 +1,33 @@
+table {
+  border-collapse: collapse;
+}
+th {
+  border-bottom: 1px solid black;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 15px;
+  /* background-color: rgba(176, 196, 222, 0.43); */
+}
+
+.LOF_buttons {
+  margin-top: 20px;
+}
+
+.export_ {
+    /* margin-top: 3px; */
+    float: right;
+}
+
+tr {
+    margin:10px;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(176, 196, 222, 0.43);
+}
+
+tr:nth-child(odd):not(:first-child) {
+  background-color: rgba(176, 196, 222, 0.63);
+}

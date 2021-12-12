@@ -1,6 +1,6 @@
 .root {
-  background-color: #0e72ab;
-  color: white;
+  /* background-color: #0e72ab; */
+  /* color: white; */
   text-align: center;
   border-radius: 30px;
   border: none;
@@ -9,8 +9,17 @@
   width: 100px;
   height: 50px;
 }
-i{
-  margin:5px;
+.normal {
+  background-color: #0e72ab;
+  color: white;
+  /* box-shadow: 0 2px 2px 2px rgb(85, 85, 85); */
+}
+.rare {
+  background-color: rgba(176, 196, 222, 0.43);
+  color: rgba(11, 91, 138, 1);
+}
+i {
+  margin: 5px;
 }
 
 .root:hover {
