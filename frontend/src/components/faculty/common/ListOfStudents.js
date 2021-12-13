@@ -31,7 +31,7 @@ const ListofStudents = () => {
       <p>No of students : 68</p>
       <table style={{  marginTop: "4.5rem" }}>
         <tr>
-          <th>ROLL NO:</th>
+          <th>ROLL NO</th>
           <th>NAME</th>
           <th>MID-1 GRADING</th>
           <th>MID-2 GRADING</th>
