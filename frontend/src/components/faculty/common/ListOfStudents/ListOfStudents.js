@@ -20,48 +20,49 @@ const ListofStudents = () => {
       MID_2: "9",
     },
     {
-        ROLL_NO: "19P6XXXXX3",
-        NAME: "QRSTUVWX",
-        TOPIC_NAME: "qrstuvwx",
-        MID_1: "9",
-        MID_2: "9",
-      },
+      ROLL_NO: "19P6XXXXX3",
+      NAME: "QRSTUVWX",
+      TOPIC_NAME: "qrstuvwx",
+      MID_1: "9",
+      MID_2: "9",
+    },
   ];
   return (
     <div>
       <Navbar title="3_CSE_D_DA" />
-      <p>SUBJECT : Data Analytics</p>
-      <p>No of students : 68</p>
-      <table style={{  marginTop: "4.5rem" }}>
-        <tr>
-          <th>ROLL NO</th>
-          <th>NAME</th>
-          <th>TOPIC NAME</th>
-          <th>MID-1 GRADING</th>
-          <th>MID-2 GRADING</th>
-        </tr>
-        {data &&
-          data.map((dataitem) => (
-            <tr>
-              <td>{dataitem.ROLL_NO}</td>
-              <td>{dataitem.NAME}</td>
-              <td>{dataitem.TOPIC_NAME}</td>
-              <td>{dataitem.MID_1}</td>
-              <td>{dataitem.MID_2}</td>
-            </tr>
-          ))}
-      </table>
-      <div className="LOF_buttons">
-        <Button children="GRADE" width="200" className="rare" />
-        
-      </div>
-      <div className="export_">
-      <Button
-          icon={<i class="fas fa-file-export"></i>}
-          children="EXPORT"
-          className="normal"
-          width="150"
-        />
+      <div className="sub_body">
+        <p>SUBJECT : Data Analytics</p>
+        <p>No of students : 68</p>
+        <table style={{ marginTop: "4.5rem" }}>
+          <tr>
+            <th>ROLL NO</th>
+            <th>NAME</th>
+            <th>TOPIC NAME</th>
+            <th>MID-1 GRADING</th>
+            <th>MID-2 GRADING</th>
+          </tr>
+          {data &&
+            data.map((dataitem) => (
+              <tr>
+                <td>{dataitem.ROLL_NO}</td>
+                <td>{dataitem.NAME}</td>
+                <td>{dataitem.TOPIC_NAME}</td>
+                <td>{dataitem.MID_1}</td>
+                <td>{dataitem.MID_2}</td>
+              </tr>
+            ))}
+        </table>
+        <div className="LOF_buttons">
+          <Button children="GRADE" width="200" className="rare" />
+        </div>
+        <div className="export_">
+          <Button
+            icon={<i class="fas fa-file-export"></i>}
+            children="EXPORT"
+            className="normal"
+            width="150"
+          />
+        </div>
       </div>
     </div>
   );

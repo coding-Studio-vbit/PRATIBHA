@@ -1,3 +1,7 @@
+.sub_body {
+  margin: 8px;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -7,7 +11,8 @@ th {
   border-collapse: collapse;
 }
 
-td, th{
+td,
+th {
   padding: 15px;
 }
 
@@ -16,13 +21,13 @@ td, th{
 }
 
 .export_ {
-    margin-top: 10px;
-    float: right;
-    margin-right: 100px;
+  margin-top: 10px;
+  float: right;
+  margin-right: 100px;
 }
 
 tr {
-    margin:10px;
+  margin: 10px;
 }
 
 tr:nth-child(even) {
@@ -33,16 +38,15 @@ tr:nth-child(odd):not(:first-child) {
   background-color: rgba(176, 196, 222, 0.63);
 }
 
-@media screen and (max-width: 500px)
-{
-    table{
-        width: screen;
-        display:block;
-        overflow-x: scroll;
-    }
+@media screen and (max-width: 500px) {
+  table {
+    width: screen;
+    display: block;
+    overflow-x: scroll;
+  }
 
-    .export_{
-      margin-top:20px;
-      margin-right: 0px;
-    }
+  .export_ {
+    margin-top: 20px;
+    margin-right: 0px;
+  }
 }
