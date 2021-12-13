@@ -1,25 +1,28 @@
 import React from "react";
-import Navbar from "../../global_ui/navbar/navbar";
+import Navbar from "../../../global_ui/navbar/navbar";
 import "./ListOfStudents.css";
-import Button from "../../global_ui/buttons/button";
+import Button from "../../../global_ui/buttons/button";
 
 const ListofStudents = () => {
   const data = [
     {
       ROLL_NO: "19P6XXXXX1",
       NAME: "ABCDEFGH",
+      TOPIC_NAME: "abcdefgh",
       MID_1: "9",
       MID_2: "10",
     },
     {
       ROLL_NO: "19P6XXXXX2",
       NAME: "IJKLMNOP",
+      TOPIC_NAME: "ijklmnop",
       MID_1: "10",
       MID_2: "9",
     },
     {
         ROLL_NO: "19P6XXXXX3",
         NAME: "QRSTUVWX",
+        TOPIC_NAME: "qrstuvwx",
         MID_1: "9",
         MID_2: "9",
       },
@@ -33,6 +36,7 @@ const ListofStudents = () => {
         <tr>
           <th>ROLL NO</th>
           <th>NAME</th>
+          <th>TOPIC NAME</th>
           <th>MID-1 GRADING</th>
           <th>MID-2 GRADING</th>
         </tr>
@@ -41,6 +45,7 @@ const ListofStudents = () => {
             <tr>
               <td>{dataitem.ROLL_NO}</td>
               <td>{dataitem.NAME}</td>
+              <td>{dataitem.TOPIC_NAME}</td>
               <td>{dataitem.MID_1}</td>
               <td>{dataitem.MID_2}</td>
             </tr>

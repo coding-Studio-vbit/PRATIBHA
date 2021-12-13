@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from "../../global_ui/navbar/navbar";
-import "../../faculty/common/ListOfStudents.css";
-import Button from "../../global_ui/buttons/button";
+import "../../faculty/common/ListOfStudents/ListOfStudents.css";
 import EditIcon from '@mui/icons-material/Edit'; 
 
 
