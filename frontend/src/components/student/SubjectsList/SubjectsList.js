@@ -28,7 +28,7 @@ const StudentsList = () => {
   ];
   return (
     <div>
-      <Navbar title="SUBMISSIONS" />
+      <Navbar title="3_CSE_D" />
       <table style={{ marginTop: "4.5rem" }}>
         <tr>
           <th>SUBJECT</th>
@@ -36,7 +36,7 @@ const StudentsList = () => {
           <th>STATUS</th>
           <th>SUBMIT BEFORE</th>
           <th>EDIT</th>
-          <th>DELETE</th>
+          
         </tr>
         {data &&
           data.map((dataitem) => (
@@ -46,7 +46,7 @@ const StudentsList = () => {
               <td>{dataitem.STATUS}</td>
               <td>{dataitem.SUBMIT_BEFORE}</td>
               <td><EditIcon style={{color: 'rgba(11, 91, 138, 1)'}}/></td>
-              <td><i class="fas fa-trash-alt" style={{color: 'rgba(11, 91, 138, 1)'}}></i></td>
+    
             </tr>
           ))}
       </table>
