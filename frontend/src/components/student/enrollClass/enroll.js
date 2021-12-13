@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Select from "react-select";
-import Navbar from "../global_ui/navbar/navbar";
-import Button from "../global_ui/buttons/button";
+import Navbar from "../../global_ui/navbar/navbar";
+import Button from "../../global_ui/buttons/button";
 import "./enroll.css";
 
 class StudentEnroll extends Component {
