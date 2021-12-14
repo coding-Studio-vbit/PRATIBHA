@@ -148,3 +148,4 @@ class LockList extends Component {
 }
 export default LockList;
 
+//this screen is common for HOD and general faculty roles
