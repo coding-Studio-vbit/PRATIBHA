@@ -12,6 +12,7 @@ class LockList extends Component {
       selectedOption1: {},
       selectedOption2: {},
       selectedOption3: {},
+      selectedOption4:{}
     };
   }
 
@@ -134,7 +135,7 @@ class LockList extends Component {
               </ul>
             </div>
             <Button
-              className="done-button"
+              className="done-button normal"
               width="100"
               height="50"
               children="Done"
