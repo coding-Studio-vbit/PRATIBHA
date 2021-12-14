@@ -8,14 +8,14 @@
     color:white;
     font-size:25px;
     font-weight:200;
-    width:100%;
+    
 }
 .btn{
     position:absolute;
     right:0;
     z-index: 1;
     margin-right:12px;
-    font-size:25px;
+    font-size:x-large;
     width:max-content;
     color:white;
     border-style: none;

@@ -2,8 +2,8 @@ import React from 'react';
 import './navbar.css'
 
 
-const Navbar = ({title,logout=true}) => {
-    /*logout is enabled by default, give logout={false} to hide it
+const Navbar = ({title,logout=false,pra = false}) => {
+    /*logout, pra is disabled by default, give logout={true}/pra={true} to use it
     give title='' to rename title in the navbar*/
 
     return (
@@ -13,9 +13,9 @@ const Navbar = ({title,logout=true}) => {
         <i className="fas fa-arrow-left">
         </i></button>
         {title}
-        {(logout!==false?<button className="btn">
+        {(logout===true?<button className="btn">
         <i className="fas fa-power-off"></i>
-        </button>:false)}
+        </button>:pra === true?<button className='btn'><i class="fas fa-plus"></i> NEW PRA</button>:false)}
         </nav>
         </div>
     );
