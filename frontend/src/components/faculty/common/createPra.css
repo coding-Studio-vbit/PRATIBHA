@@ -1,0 +1,36 @@
+.div-container{
+    display: grid;
+    justify-content: center;
+    margin-top:80px;
+    justify-items: center;
+}
+.span-style{
+    width: 90vw;
+    height: 308px;
+    background-color: rgba(176, 196, 222, 0.43);
+    margin-bottom: 50px;
+    
+}
+.text-style{
+    font-size:20px;
+    text-align: start;
+}
+.text-style2{
+    display:flex;
+    font-size:20px;
+    justify-content: center;
+    text-align: start;
+    margin-right: 80px;
+    align-items: center;
+}
+
+.btn-style{
+    z-index: 1;
+    margin-top: 20px;
+}
+.select-dd{
+    margin-left: 5px;
+    width:30vw;
+    height:5vh;
+    background-color: rgba(176, 196, 222, 0.43);
+}
