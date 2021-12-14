@@ -37,6 +37,9 @@ tr:nth-child(even) {
 tr:nth-child(odd):not(:first-child) {
   background-color: rgba(176, 196, 222, 0.63);
 }
+p{
+  font-weight: bold;
+}
 
 @media screen and (max-width: 500px) {
   table {

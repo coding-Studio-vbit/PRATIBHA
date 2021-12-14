@@ -1,27 +1,27 @@
 import React from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
-import "../../common/ListOfStudents/ListOfStudents";
+import "../../generalFaculty/ListOfStudents/ListOfStudents";
 import Button from "../../../global_ui/buttons/button";
 
 const ViewSubmissions = () => {
   const data = [
     {
       ROLL_NO: "19P6XXXXX1",
-      NAME: "abcdefgh",
+      STUDENT_NAME: "abcdefgh",
       TOPIC_NAME: "ABCDEFGH",
       MID_1: "9",
       MID_2: "10",
     },
     {
       ROLL_NO: "19P6XXXXX2",
-      NAME: "ijklmnop",
+      STUDENT_NAME: "ijklmnop",
       TOPIC_NAME: "IJKLMNOP",
       MID_1: "10",
       MID_2: "9",
     },
     {
       ROLL_NO: "19P6XXXXX3",
-      NAME: "qrstuvwx",
+      STUDENT_NAME: "qrstuvwx",
       TOPIC_NAME: "QRSTUVWX",
       MID_1: "9",
       MID_2: "9",
@@ -34,7 +34,7 @@ const ViewSubmissions = () => {
         <table style={{ marginTop: "4.5rem" }}>
           <tr>
             <th>ROLL NO:</th>
-            <th>NAME</th>
+            <th>STUDENT NAME</th>
             <th>TOPIC NAME</th>
             <th>MID-1 GRADING</th>
             <th>MID-2 GRADING</th>
@@ -44,7 +44,7 @@ const ViewSubmissions = () => {
             data.map((dataitem) => (
               <tr className="tablerow">
                 <td>{dataitem.ROLL_NO}</td>
-                <td>{dataitem.NAME}</td>
+                <td>{dataitem.STUDENT_NAME}</td>
                 <td>{dataitem.TOPIC_NAME}</td>
                 <td>{dataitem.MID_1}</td>
                 <td>{dataitem.MID_2}</td>
@@ -72,3 +72,5 @@ const ViewSubmissions = () => {
 };
 
 export default ViewSubmissions;
+
+//this screen is common for HOD and CoE roles

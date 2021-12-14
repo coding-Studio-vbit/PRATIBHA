@@ -7,21 +7,21 @@ const ListofStudents = () => {
   const data = [
     {
       ROLL_NO: "19P6XXXXX1",
-      NAME: "ABCDEFGH",
+      STUDENT_NAME: "ABCDEFGH",
       TOPIC_NAME: "abcdefgh",
       MID_1: "9",
       MID_2: "10",
     },
     {
       ROLL_NO: "19P6XXXXX2",
-      NAME: "IJKLMNOP",
+      STUDENT_NAME: "IJKLMNOP",
       TOPIC_NAME: "ijklmnop",
       MID_1: "10",
-      MID_2: "9",
+      MID_2: "-",
     },
     {
       ROLL_NO: "19P6XXXXX3",
-      NAME: "QRSTUVWX",
+      STUDENT_NAME: "QRSTUVWX",
       TOPIC_NAME: "qrstuvwx",
       MID_1: "9",
       MID_2: "9",
@@ -32,11 +32,11 @@ const ListofStudents = () => {
       <Navbar title="3_CSE_D_DA" />
       <div className="sub_body">
         <p>SUBJECT : Data Analytics</p>
-        <p>No of students : 68</p>
+        <p>No. of students enrolled: 68</p>
         <table style={{ marginTop: "4.5rem" }}>
           <tr>
             <th>ROLL NO</th>
-            <th>NAME</th>
+            <th>STUDENT NAME</th>
             <th>TOPIC NAME</th>
             <th>MID-1 GRADING</th>
             <th>MID-2 GRADING</th>
@@ -45,7 +45,7 @@ const ListofStudents = () => {
             data.map((dataitem) => (
               <tr>
                 <td>{dataitem.ROLL_NO}</td>
-                <td>{dataitem.NAME}</td>
+                <td>{dataitem.STUDENT_NAME}</td>
                 <td>{dataitem.TOPIC_NAME}</td>
                 <td>{dataitem.MID_1}</td>
                 <td>{dataitem.MID_2}</td>
