@@ -3,7 +3,7 @@ Button {
 }
 .list-container {
   background-color: rgb(176, 196, 222, 0.25);
-  height: 339px;
+  height: 440px;
   width: 300px;
 }
 
@@ -19,8 +19,8 @@ Button {
 .add-button {
   background-color: white;
 }
-.instruction{
-  color: #0E72AB;
+.instruction {
+  color: #0e72ab;
   font-weight: bold;
   letter-spacing: 0.4px;
 }
