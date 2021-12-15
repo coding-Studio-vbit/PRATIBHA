@@ -1,9 +1,9 @@
 import React from "react";
 import Navbar from "../../global_ui/navbar/navbar";
-import "../../faculty/common/ListOfStudents/ListOfStudents.css";
+import '../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css';
 import EditIcon from "@mui/icons-material/Edit";
 
-const StudentsList = () => {
+const SubjectsList = () => {
   const data = [
     {
       SUBJECT: "WT",
@@ -54,4 +54,4 @@ const StudentsList = () => {
   );
 };
 
-export default StudentsList;
+export default SubjectsList;
