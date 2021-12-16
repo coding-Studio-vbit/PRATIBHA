@@ -1,12 +1,12 @@
 import React from "react";
 import "./button.css";
 
-const Button = ({ children, onClick, width, height, icon, className }) => {
+const Button = ({ children, disabled, onClick, width, height, icon, className }) => {
   return (
     <button
       className={`root ${className}`}
       style={{ width: `${width}px`, height: `${height}px` }}
-      onClick={onClick}
+      onClick={onClick} disabled={disabled}
     >
       {" "}
       {icon ? <span>{icon}</span> : null} {children ? children : null}
