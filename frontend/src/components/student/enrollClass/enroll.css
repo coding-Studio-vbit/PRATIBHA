@@ -2,10 +2,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
 }
+.dropdown-title {
+    font-weight:500;
+  }
 .dropdown{
     align-self: center;
-    width: 350px;
+    min-width: 350px;
+    margin-top: 50px;
 }
 Button{
     margin-top: 20px;

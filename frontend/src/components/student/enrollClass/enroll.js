@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, {  useState } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
@@ -10,7 +10,7 @@ export default function StudentEnroll() {
   const [Year, setYear] = useState("");
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
-  const[Semester,setSemester]=useState("");
+  const[button,setButton]=useState(true);
 
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
@@ -26,12 +26,12 @@ export default function StudentEnroll() {
   const Departments = [
     { value: "CSE", label: "Computer Science & Engineering" },
     {
-      value: "CSEAIML",
+      value: "CSM",
       label: "CSE(Artificial Intelligence & Machine Learning)",
     },
-    { value: "CSEDS", label: "CSE(Data Science)" },
-    { value: "CSECS", label: "CSE(Cyber Security)" },
-    { value: "CSBS", label: "Computer Science & Business System" },
+    { value: "CSD", label: "CSE(Data Science)" },
+    { value: "CS", label: "CSE(Cyber Security)" },
+    { value: "CSB", label: "Computer Science & Business System" },
     { value: "ECE", label: "Electronics & Communications Engineering" },
     { value: "EEE", label: "Electrical & Electronics Engineering" },
     { value: "CE", label: "Civil Engineering" },
@@ -43,18 +43,10 @@ export default function StudentEnroll() {
     { value: "B", label: "B", link: "CSE" },
     { value: "C", label: "C", link: "CSE" },
     { value: "D", label: "D", link: "CSE" },
-    { value: "A", label: "A", link: "ECE" },
-    { value: "B", label: "B", link: "ECE" },
-    { value: "A", label: "A", link: "EEE" },
-    { value: "A", label: "A", link: "IT" },
-    { value: "B", label: "B", link: "IT" },
+  
   ];
 
-  const Semesters=[
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-
-  ]
+ 
   
 
 
@@ -64,19 +56,54 @@ export default function StudentEnroll() {
         <Navbar title="Enrollment Screen" logout={false} />
 
         <div className="dropdown">
-        <p>COURSE</p>
-            <Select className="year" options={Courses} />
-            <p>YEAR</p>
-            <Select className="year" options={Years} />
-            <p> DEPARTMENT</p>
-            <Select options={Departments} />
-            <p>SECTION</p>
-            <Select options={Sections} />
-            <p>SEMESTER</p>
-            <Select options={Semesters} />
-        </div>
+            <p className="dropdown-title">Course</p>
+            <Select
+              placeholder=""
+              className="course"
+              options={Courses}
+              onChange={(selectedCourse) => {
+                setCourse(selectedCourse);
+              }}
+            />
+            <p className="dropdown-title">Year</p>
+            <Select
+              placeholder=""
+              className="year"
+              options={Years}
+              isDisabled={!Course}
+              onChange={(selectedYear) => {
+                setYear(selectedYear);
+              }}
+            />
+            <p className="dropdown-title">Department</p>
+            <Select
+              placeholder=""
+              options={Departments}
+              isDisabled={!Year}
+              onChange={(selectedDepartment) => {
+                setDepartment(selectedDepartment);
+              }}
+            />
+            <p className="dropdown-title">Section</p>
+            <Select
+              placeholder=""
+              options={Sections}
+              isDisabled={!Department}
+              onChange={(selectedSection) => {
+                setSection(selectedSection);
+                setButton(false);
+              }}
+            />
+           
+           
+          </div>
 
-        <Button className="button normal" width="150" height="50" children="Enroll"/>
+        <Button onClick={()=>{console.log(Course.value+'_'+ Year.value +
+        "_" +
+        Department.value +
+        "_" +
+        Section.value 
+        )}}  className="button normal" disabled={button} width="150" height="50" children="Enroll"/>
       </div>
     );
   }
