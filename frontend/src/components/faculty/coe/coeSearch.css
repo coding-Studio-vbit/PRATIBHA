@@ -1,7 +1,6 @@
 .CoESearch-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+   
+    text-align: center;
 
 }
 Button{
@@ -9,7 +8,14 @@ Button{
     align-self: center;
     
 }
+
+.dropdown-title {
+    font-weight:500;
+  }
 .dropdown{
     width:350px;
-    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  
 }

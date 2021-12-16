@@ -10,6 +10,7 @@ export default function CoeSearch() {
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
+  const[button,setButton]=useState(true);
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
     { value: "M.Tech", label: "M.Tech" },
@@ -65,24 +66,60 @@ export default function CoeSearch() {
   return (
     <div className="CoESearch-container">
       <Navbar title="View Grades and Submission" />
-
       <div className="dropdown">
-        <p>COURSE</p>
-        <Select className="year" options={Courses} />
-        <p>YEAR</p>
-        <Select className="year" options={Years} />
-        <p> DEPARTMENT</p>
-        <Select options={Departments} />
-        <p>SECTION</p>
-        <Select options={Sections} />
-        <p>SUBJECT</p>
-        <Select options={Subjects} />
-      </div>
+            <p className="dropdown-title">Course</p>
+            <Select
+              placeholder=""
+              className="course"
+              options={Courses}
+              onChange={(selectedCourse) => {
+                setCourse(selectedCourse);
+              }}
+            />
+            <p className="dropdown-title">Year</p>
+            <Select
+              placeholder=""
+              className="year"
+              options={Years}
+              isDisabled={!Course}
+              onChange={(selectedYear) => {
+                setYear(selectedYear);
+              }}
+            />
+            <p className="dropdown-title">Department</p>
+            <Select
+              placeholder=""
+              options={Departments}
+              isDisabled={!Year}
+              onChange={(selectedDepartment) => {
+                setDepartment(selectedDepartment);
+              }}
+            />
+            <p className="dropdown-title">Section</p>
+            <Select
+              placeholder=""
+              options={Sections}
+              isDisabled={!Department}
+              onChange={(selectedSection) => {
+                setSection(selectedSection);
+              }}
+            />
+            <p className="dropdown-title">Subject</p>
+            <Select
+              placeholder=""
+              options={Subjects}
+              isDisabled={!Section}
+              onChange={(selectedSubject) => {
+                setSubject(selectedSubject);
+                setButton(false);
+              }}
+            />
       <Button
-        className="done-button normal"
+        className="done-button normal" disabled={button}
         icon={<i class="fas fa-search"></i>}
         children="View"
       />
+      </div>
     </div>
   );
 }
