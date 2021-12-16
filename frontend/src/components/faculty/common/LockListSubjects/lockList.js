@@ -93,13 +93,13 @@ const LockList = () => {
   ];
 
   return (
-    <div>
+
       <div className="lockList-container">
         <Navbar title="Class List" logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
         <div className="flex-container">
           <div className="dropdown">
-            <p>COURSE</p>
+            <p className="dropdown-title">Course</p>
             <Select
               placeholder=""
               className="course"
@@ -108,7 +108,7 @@ const LockList = () => {
                 setCourse(selectedCourse);
               }}
             />
-            <p>YEAR</p>
+            <p className="dropdown-title">Year</p>
             <Select
               placeholder=""
               className="year"
@@ -118,7 +118,7 @@ const LockList = () => {
                 setYear(selectedYear);
               }}
             />
-            <p>DEPARTMENT</p>
+            <p className="dropdown-title">Department</p>
             <Select
               placeholder=""
               options={Departments}
@@ -127,7 +127,7 @@ const LockList = () => {
                 setDepartment(selectedDepartment);
               }}
             />
-            <p>SECTION</p>
+            <p className="dropdown-title">Section</p>
             <Select
               placeholder=""
               options={Sections}
@@ -136,7 +136,7 @@ const LockList = () => {
                 setSection(selectedSection);
               }}
             />
-            <p>SUBJECT</p>
+            <p className="dropdown-title">Subject</p>
             <Select
               placeholder=""
               options={Subjects}
@@ -197,7 +197,7 @@ const LockList = () => {
           children="Done"
         />
       </div>
-    </div>
+ 
   );
 };
 
