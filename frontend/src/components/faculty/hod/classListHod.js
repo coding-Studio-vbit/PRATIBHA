@@ -11,6 +11,8 @@ import '../common/classList.css'
 const hodClassList = () => {
     const dept = 'CSE';
 
+    
+
     const classes = [{class:'3_CSE_D_PPS',id:0},{class:'2_IT_A_CN',id:1},{class:'2_IT_A_CN',id:2},{class:'2_IT_A_CN',id:3},{class:'2_IT_A_CN',id:4},{class:'2_IT_A_CN',id:5}]
     return (  
         <div>
@@ -19,23 +21,31 @@ const hodClassList = () => {
         <div className='div-container' >
         <div className='cards-container'>
         {classes.map(c=>
-            c.id<3?<span className='card-container'>
-            <Card onClick={()=>{}} text={c.class} /></span>:false
+            c.id<3?
+            <Card onClick={()=>{}} text={c.class} />:false
         )}
         </div>
         <div className='cards-container'>
         {classes.map(c=>
-            c.id<3?<span className='card-container'>
-            <Card onClick={()=>{}} text={c.class} /></span>:false
+            c.id<3?
+            <Card onClick={()=>{}} text={c.class} />:false
         )}
         </div>
         </div>
         <h2>{dept} Department</h2>
-        <div className='hod-dd'><span><span className='dd-text'>Year</span><Select className='select-dd' />
+        <div className="hod-dd">
+        <span>
+        <span className='dd-text'>Year</span>
+        <Select className='select-dd' />
         </span>
-        <span><span className='dd-text'>Section</span><Select className='select-dd' />
+        <span>
+        <span className='dd-text'>Section</span>
+        <Select className='select-dd' />
         </span>
-        <span><span className='dd-text'>Subject</span><Select className='select-dd' /></span></div>
+        <span>
+        <span className='dd-text'>Subject</span>
+        <Select className='select-dd' /></span>
+        </div>
         <Button icon={<i class="fas fa-search"></i>}className='normal' children='View' />
 
         </div>

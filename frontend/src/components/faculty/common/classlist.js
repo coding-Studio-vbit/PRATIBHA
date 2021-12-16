@@ -12,16 +12,14 @@ const classList = () => {
         <div className='div-container'>
         <div className='cards-container'>
         {classes.map(c=>
-            c.id<3?<span className='card-container'>
-            <Card onClick={()=>{}} text={c.class} /></span>:false
+            c.id<3?
+            <span style={{marginTop:100}}><Card onClick={()=>{}} text={c.class} /></span>:false
         )}
-        
-        
         </div>
         <div className='cards-container'>
         {classes.map(c=>
-            c.id>=3?<span className='card-container'>
-            <Card onClick={()=>{}} text={c.class} /></span>:false
+            c.id>=3?
+            <Card style={{marginTop:100}} onClick={()=>{}} text={c.class} />:false
         )}
         
         </div>
