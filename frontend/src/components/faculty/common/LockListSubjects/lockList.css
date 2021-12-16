@@ -5,6 +5,7 @@ Button {
   background-color: rgb(176, 196, 222, 0.25);
   height: 440px;
   width: 300px;
+  border-radius: 10px;
 }
 
 .flex-container {
@@ -16,11 +17,17 @@ Button {
 .dropdown {
   width: 300px;
 }
-.add-button {
-  background-color: white;
-}
+
 .instruction {
   color: #0e72ab;
   font-weight: bold;
   letter-spacing: 0.4px;
+}
+li{
+  margin : 10px;
+  text-align: left;
+}
+button{
+  border: none;
+  background-color: white;
 }

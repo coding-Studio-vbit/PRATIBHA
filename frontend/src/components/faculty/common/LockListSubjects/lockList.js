@@ -10,6 +10,45 @@ const LockList = () => {
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
+  const [BTechList, setBTechList] = useState([]);
+  const [MTechList, setMTechList] = useState([]);
+  const [MBAList, setMBAList] = useState([]);
+  const handleAddButton = () => {
+    if (Course.value === "B.Tech") {
+      const newBTech =
+        Year.value +
+        "_" +
+        Department.value +
+        "_" +
+        Section.value +
+        "_" +
+        Subject.value;
+      setBTechList([...BTechList, newBTech]);
+      console.log(BTechList);
+    } else if (Course.value === "M.Tech") {
+      const newMTech =
+        Year.value +
+        "_" +
+        Department.value +
+        "_" +
+        Section.value +
+        "_" +
+        Subject.value;
+      setMTechList([...MTechList, newMTech]);
+      console.log(MTechList);
+    } else if (Course.value === "MBA") {
+      const newMBA =
+        Year.value +
+        "_" +
+        Department.value +
+        "_" +
+        Section.value +
+        "_" +
+        Subject.value;
+      setMBAList([...MBAList, newMBA]);
+      console.log(MBAList);
+    }
+  };
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
     { value: "M.Tech", label: "M.Tech" },
@@ -24,12 +63,12 @@ const LockList = () => {
   const Departments = [
     { value: "CSE", label: "Computer Science & Engineering" },
     {
-      value: "CSEAIML",
+      value: "CSM",
       label: "CSE(Artificial Intelligence & Machine Learning)",
     },
-    { value: "CSEDS", label: "CSE(Data Science)" },
-    { value: "CSECS", label: "CSE(Cyber Security)" },
-    { value: "CSBS", label: "Computer Science & Business System" },
+    { value: "CSD", label: "CSE(Data Science)" },
+    { value: "CS", label: "CSE(Cyber Security)" },
+    { value: "CSB", label: "Computer Science & Business System" },
     { value: "ECE", label: "Electronics & Communications Engineering" },
     { value: "EEE", label: "Electrical & Electronics Engineering" },
     { value: "CE", label: "Civil Engineering" },
@@ -37,15 +76,10 @@ const LockList = () => {
     { value: "IT", label: "Information Technology" },
   ];
   const Sections = [
-    { value: "A", label: "A", link: "CSE" },
-    { value: "B", label: "B", link: "CSE" },
-    { value: "C", label: "C", link: "CSE" },
-    { value: "D", label: "D", link: "CSE" },
-    { value: "A", label: "A", link: "ECE" },
-    { value: "B", label: "B", link: "ECE" },
-    { value: "A", label: "A", link: "EEE" },
-    { value: "A", label: "A", link: "IT" },
-    { value: "B", label: "B", link: "IT" },
+    { value: "A", label: "A" },
+    { value: "B", label: "B" },
+    { value: "C", label: "C" },
+    { value: "D", label: "D" },
   ];
   const Subjects = [
     { value: "PPS", label: "PPS", link: "CSE" },
@@ -54,11 +88,10 @@ const LockList = () => {
       label: "Software Engineering",
       link: "CSE",
     },
-    { value: "Compiler Design", label: "Compiler Design", link: "CSE" },
+    { value: "Compiler Design", label: "Compiler Design" },
     {
       value: "Engineering Mechanics",
       label: "Engineering Mechanics",
-      link: "CE",
     },
   ];
 
@@ -70,33 +103,105 @@ const LockList = () => {
         <div className="flex-container">
           <div className="dropdown">
             <p>COURSE</p>
-            <Select className="year" options={Courses} />
+            <Select
+              placeholder=""
+              className="course"
+              options={Courses}
+              onChange={(selectedCourse) => {
+                setCourse(selectedCourse);
+              }}
+            />
             <p>YEAR</p>
-            <Select className="year" options={Years} />
-            <p> DEPARTMENT</p>
-            <Select options={Departments} />
+            <Select
+              placeholder=""
+              className="year"
+              options={Years}
+              isDisabled={!Course}
+              onChange={(selectedYear) => {
+                setYear(selectedYear);
+              }}
+            />
+            <p>DEPARTMENT</p>
+            <Select
+              placeholder=""
+              options={Departments}
+              isDisabled={!Year}
+              onChange={(selectedDepartment) => {
+                setDepartment(selectedDepartment);
+              }}
+            />
             <p>SECTION</p>
-            <Select options={Sections} />
+            <Select
+              placeholder=""
+              options={Sections}
+              isDisabled={!Department}
+              onChange={(selectedSection) => {
+                setSection(selectedSection);
+              }}
+            />
             <p>SUBJECT</p>
-            <Select options={Subjects} />
-            <Button
+            <Select
+              placeholder=""
+              options={Subjects}
+              isDisabled={!Section}
+              onChange={(selectedSubject) => {
+                setSubject(selectedSubject);
+              }}
+            />
+            <button
               className="add-button"
               width="100"
               height="50"
-              children="Add"
-              icon={<i class="fas fa-plus"></i>}
-            />
+              disabled={!Subject}
+              onClick={handleAddButton}
+            >
+              {" "}
+              <i className="fas fa-plus"></i>ADD
+            </button>
           </div>
-          <div className="list-and-done">
-            <div className="list-container"></div>
-            <Button
-              className="done-button normal"
-              width="100"
-              height="50"
-              children="Done"
-            />
+
+          <div className="list-container">
+            {BTechList.length !== 0 && (
+              <div>
+                <h4> B.Tech </h4>
+                <ul>
+                  {console.log(BTechList)}
+                  {BTechList.map((item) => {
+                    return <li>{item}</li>;
+                  })}
+                </ul>
+              </div>
+            )}
+            {MTechList.length !== 0 && (
+              <div>
+                <h4> M.Tech </h4>
+                <ul>
+                  {console.log(MTechList)}
+                  {MTechList.map((item) => {
+                    return <li>{item}</li>;
+                  })}
+                </ul>
+              </div>
+            )}
+            {MBAList.length !== 0 && (
+              <div>
+                <h4> MBA </h4>
+                <ul>
+                  {console.log(MBAList)}
+                  {MBAList.map((item) => {
+                    return <li>{item}</li>;
+                  })}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
+        <Button
+          className="done-button normal"
+          width="100"
+          height="50"
+          children="Done"
+        />
       </div>
     </div>
   );
