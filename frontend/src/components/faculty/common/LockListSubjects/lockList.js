@@ -23,8 +23,7 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      setBTechList([...BTechList, newBTech]);
-      console.log(BTechList);
+      if (!BTechList.includes(newBTech)) setBTechList([...BTechList, newBTech]);
     } else if (Course.value === "M.Tech") {
       const newMTech =
         Year.value +
@@ -34,8 +33,7 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      setMTechList([...MTechList, newMTech]);
-      console.log(MTechList);
+      if (!MTechList.includes(newMTech)) setMTechList([...MTechList, newMTech]);
     } else if (Course.value === "MBA") {
       const newMBA =
         Year.value +
@@ -45,8 +43,7 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      setMBAList([...MBAList, newMBA]);
-      console.log(MBAList);
+      if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
     }
   };
   const Courses = [
@@ -165,8 +162,7 @@ const LockList = () => {
               <div>
                 <h4> B.Tech </h4>
                 <ul>
-                  {console.log(BTechList)}
-                  {BTechList.map((item) => {
+                  {BTechList.map((item, index) => {
                     return <li>{item}</li>;
                   })}
                 </ul>
@@ -176,8 +172,7 @@ const LockList = () => {
               <div>
                 <h4> M.Tech </h4>
                 <ul>
-                  {console.log(MTechList)}
-                  {MTechList.map((item) => {
+                  {MTechList.map((item, index) => {
                     return <li>{item}</li>;
                   })}
                 </ul>
@@ -187,8 +182,7 @@ const LockList = () => {
               <div>
                 <h4> MBA </h4>
                 <ul>
-                  {console.log(MBAList)}
-                  {MBAList.map((item) => {
+                  {MBAList.map((item, index) => {
                     return <li>{item}</li>;
                   })}
                 </ul>
