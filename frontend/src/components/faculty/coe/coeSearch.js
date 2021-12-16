@@ -61,7 +61,7 @@ export default function CoeSearch() {
       link: "CE",
     },
   ];
-
+  
   return (
     <div className="CoESearch-container">
       <Navbar title="View Grades and Submission" />
