@@ -61,11 +61,12 @@ export default function LoginPage() {
   return (
     <div className="loginPage">
       <div className="logos">
+      {/* put 3 logos here  */}
         <img alt="loading" className="image" src="/Abhyas.jpeg" />
       </div>
 
       <div className="row">
-        <div className="student">
+        <div className="button-and-icon">
           <i className="fas fa-user-circle icons"></i>
           <Button
             className="studentButton normal"
@@ -76,7 +77,7 @@ export default function LoginPage() {
             Login as Student
           </Button>
         </div>
-        <div className="faculty">
+        <div className="button-and-icon">
           <i className="fas fa-graduation-cap icons "></i>
 
           <Button
