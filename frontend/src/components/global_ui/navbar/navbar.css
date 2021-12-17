@@ -10,6 +10,9 @@
     font-weight:400;
     width:100%;
 }
+.title{
+    font-size: 20px;
+}
 .btn{
     position:absolute;
     right:0;
@@ -25,10 +28,11 @@
 .bck{
     position:absolute;
     z-index: 1;
-    left:0;
-    margin-top: 3px;
-    margin-left:12px;
-    font-size:25px;
+    left:8px;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    font-size:20px;
     width:max-content;
     color:white;
     border-style: none;
