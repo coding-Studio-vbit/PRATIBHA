@@ -1,0 +1,48 @@
+.div-container{
+    display: grid;
+    justify-items: center;
+    margin-top:80px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 1rem;
+    width: 100vw;
+}
+.span-style{
+    background-color: rgba(176, 196, 222, 0.43);
+    margin-bottom: 50px;
+    border-radius: 12px;
+    width: min(700px,90%);
+}
+
+.text-style{
+    font-size:20px;
+    justify-self: center;
+}
+
+
+.text-style2{
+    display:flex;
+    font-size:20px;
+    justify-content: center;
+    text-align: start;
+    align-items: center;
+}
+
+.btn-style{
+    z-index: 1;
+    margin-top: 20px;
+}
+.select-dd{
+    margin-left: 5px;
+    width:100px  ;
+    border:none;
+    text-align: center;
+    padding: 4px;
+    border-radius: 16px;
+    background-color: rgba(176, 196, 222, 0.43);
+}
+.normal{
+    width: auto !important;
+    padding: 5px 16px !important;
+    height: auto !important;
+}
