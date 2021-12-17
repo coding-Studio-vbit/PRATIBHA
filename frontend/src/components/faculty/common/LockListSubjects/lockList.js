@@ -13,6 +13,13 @@ const LockList = () => {
   const [BTechList, setBTechList] = useState([]);
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
+
+
+function handleDone(){
+  //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
+  console.log(BTechList,MTechList,MBAList);
+}
+
   const handleAddButton = () => {
     if (Course.value === "B.Tech") {
       const newBTech =
@@ -46,19 +53,21 @@ const LockList = () => {
       if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
     }
   };
+  //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
     { value: "M.Tech", label: "M.Tech" },
     { value: "MBA", label: "MBA" },
   ];
-  const Years={
-    BTech:[1,2,3,4],
-    MTech:[1,2],
-    MBA:[1,2]
-  }
-
-
+  const Years = [
+    //fetch from db for the selected course
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+  ];
   const Departments = [
+    //fetch from db for the selected course
     { value: "CSE", label: "Computer Science & Engineering" },
     {
       value: "CSM",
@@ -74,12 +83,14 @@ const LockList = () => {
     { value: "IT", label: "Information Technology" },
   ];
   const Sections = [
+    //fetch from db for the selected department
     { value: "A", label: "A" },
     { value: "B", label: "B" },
     { value: "C", label: "C" },
     { value: "D", label: "D" },
   ];
   const Subjects = [
+    //fetch from db for the combination of the above 4 dropdowns
     { value: "PPS", label: "PPS", link: "CSE" },
     {
       value: "Software Engineering",
@@ -94,54 +105,56 @@ const LockList = () => {
   ];
 
   return (
-
+    <div>
       <div className="lockList-container">
-        <Navbar title="Class List" logout={false} />
+        <Navbar title="Classes List" logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
         <div className="flex-container">
           <div className="dropdown">
-            <p className="dropdown-title">Course</p>
+            <p>COURSE</p>
             <Select
               placeholder=""
-              className="course"
+              className="select"
               options={Courses}
               onChange={(selectedCourse) => {
-                setCourse(selectedCourse.value);
+                setCourse(selectedCourse);
               }}
             />
-          
-            <p className="dropdown-title">Year</p>
+            <p>YEAR</p>
             <Select
               placeholder=""
-              className="year"
-              options={Years.Course}
+              className="select"
+              options={Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
                 setYear(selectedYear);
               }}
             />
-            <p className="dropdown-title">Department</p>
+            <p>DEPARTMENT</p>
             <Select
               placeholder=""
               options={Departments}
+              className="select"
               isDisabled={!Year}
               onChange={(selectedDepartment) => {
                 setDepartment(selectedDepartment);
               }}
             />
-            <p className="dropdown-title">Section</p>
+            <p>SECTION</p>
             <Select
               placeholder=""
               options={Sections}
+              className="select"
               isDisabled={!Department}
               onChange={(selectedSection) => {
                 setSection(selectedSection);
               }}
             />
-            <p className="dropdown-title">Subject</p>
+            <p>SUBJECT</p>
             <Select
               placeholder=""
               options={Subjects}
+              className="select"
               isDisabled={!Section}
               onChange={(selectedSubject) => {
                 setSubject(selectedSubject);
@@ -158,48 +171,53 @@ const LockList = () => {
               <i className="fas fa-plus"></i>ADD
             </button>
           </div>
-
-          <div className="list-container">
-            {BTechList.length !== 0 && (
-              <div>
-                <h4> B.Tech </h4>
-                <ul>
-                  {BTechList.map((item, index) => {
-                    return <li>{item}</li>;
-                  })}
-                </ul>
-              </div>
-            )}
-            {MTechList.length !== 0 && (
-              <div>
-                <h4> M.Tech </h4>
-                <ul>
-                  {MTechList.map((item, index) => {
-                    return <li>{item}</li>;
-                  })}
-                </ul>
-              </div>
-            )}
-            {MBAList.length !== 0 && (
-              <div>
-                <h4> MBA </h4>
-                <ul>
-                  {MBAList.map((item, index) => {
-                    return <li>{item}</li>;
-                  })}
-                </ul>
-              </div>
-            )}
+          <div>
+            <div className="list-container">
+              {BTechList.length !== 0 && (
+                <div>
+                  <h4> B.Tech </h4>
+                  <ul>
+                    {console.log(BTechList)}
+                    {BTechList.map((item) => {
+                      return <li>{item}</li>;
+                    })}
+                  </ul>
+                </div>
+              )}
+              {MTechList.length !== 0 && (
+                <div>
+                  <h4> M.Tech </h4>
+                  <ul>
+                    {console.log(MTechList)}
+                    {MTechList.map((item) => {
+                      return <li>{item}</li>;
+                    })}
+                  </ul>
+                </div>
+              )}
+              {MBAList.length !== 0 && (
+                <div>
+                  <h4> MBA </h4>
+                  <ul>
+                    {console.log(MBAList)}
+                    {MBAList.map((item) => {
+                      return <li>{item}</li>;
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <Button
+              className="done-button normal"
+              width="90"
+              height="40"
+              children="Done"
+              onClick={handleDone}
+            />
           </div>
         </div>
-        <Button
-          className="done-button normal"
-          width="100"
-          height="50"
-          children="Done"
-        />
       </div>
- 
+    </div>
   );
 };
 
