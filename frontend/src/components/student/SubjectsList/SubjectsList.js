@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Navbar from "../../global_ui/navbar/navbar";
 import '../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css';
 import EditIcon from "@mui/icons-material/Edit";
