@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 // import 'firebaseui/dist/firebaseui.css'
 import { getAuth } from '@firebase/auth';
-import {getFirestore} from 'firebase/firestore';
+// import {getFirestore} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey:process.env.REACT_APP_FIREBASE_API_KEY,

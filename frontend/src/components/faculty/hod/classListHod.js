@@ -13,6 +13,7 @@ const HODClassList = () => {
     
     const [Section, setSection] = useState("");
     const [Subject, setSubject] = useState("");
+    const[button,setButton]=useState(true);
     const dept = 'CSE';
     const Years = [
         { value: "1", label: "1" },
@@ -39,7 +40,9 @@ const HODClassList = () => {
           label: "Engineering Mechanics",
         },
       ];
-    
+    function handleClick(){
+      console.log(Year.value+'_'+Section.value+'_'+Subject.value);
+    }
 
     const classes = [{class:'3_CSE_D_PPS',id:0},{class:'2_IT_A_CN',id:1},{class:'2_IT_A_CN',id:2},{class:'2_IT_A_CN',id:3},{class:'2_IT_A_CN',id:4},{class:'2_IT_A_CN',id:5}]
     return (  
@@ -91,9 +94,10 @@ const HODClassList = () => {
             isDisabled={!Section}
               onChange={(selectedSubject) => {
                 setSubject(selectedSubject);
+                setButton(false)
               }}/></div>
         </div>
-        <Button icon={<i class="fas fa-search"></i>}className='normal' children='View' />
+        <Button icon={<i class="fas fa-search"></i>}className='normal' disabled={button}  onClick={handleClick} children='View' />
 
         </div>
     );
