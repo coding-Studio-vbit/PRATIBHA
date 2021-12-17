@@ -12,8 +12,14 @@ Button{
 .dropdown-title {
     font-weight:500;
   }
+.course{
+    width:250px;
+    justify-self: center;
+    align-self: center;
+}
 .dropdown{
-    width:350px;
+    /* width: min(200px,70%); */
+    /* width:280px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
