@@ -34,7 +34,7 @@ export default function LoginPage() {
   return (
     <div className="loginPage">
       <div className="logos">
-        <img className="image" src="/Abhyas.jpeg" />
+        <img alt="loading" className="image" src="/Abhyas.jpeg" />
       </div>
       <div className="row">
 

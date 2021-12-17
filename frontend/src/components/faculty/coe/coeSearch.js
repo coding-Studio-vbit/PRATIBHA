@@ -42,11 +42,7 @@ export default function CoeSearch() {
     { value: "B", label: "B", link: "CSE" },
     { value: "C", label: "C", link: "CSE" },
     { value: "D", label: "D", link: "CSE" },
-    { value: "A", label: "A", link: "ECE" },
-    { value: "B", label: "B", link: "ECE" },
-    { value: "A", label: "A", link: "EEE" },
-    { value: "A", label: "A", link: "IT" },
-    { value: "B", label: "B", link: "IT" },
+   
   ];
   const Subjects = [
     { value: "PPS", label: "PPS", link: "CSE" },
@@ -70,7 +66,7 @@ export default function CoeSearch() {
             <p className="dropdown-title">Course</p>
             <Select
               placeholder=""
-              className="course"
+              className="select"
               options={Courses}
               onChange={(selectedCourse) => {
                 setCourse(selectedCourse);
@@ -78,8 +74,9 @@ export default function CoeSearch() {
             />
             <p className="dropdown-title">Year</p>
             <Select
+              className="select"
               placeholder=""
-              className="year"
+              className="select"
               options={Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
@@ -88,6 +85,7 @@ export default function CoeSearch() {
             />
             <p className="dropdown-title">Department</p>
             <Select
+              className="select"
               placeholder=""
               options={Departments}
               isDisabled={!Year}
@@ -97,6 +95,7 @@ export default function CoeSearch() {
             />
             <p className="dropdown-title">Section</p>
             <Select
+              className="select"
               placeholder=""
               options={Sections}
               isDisabled={!Department}
@@ -118,6 +117,7 @@ export default function CoeSearch() {
         className="done-button normal" disabled={button}
         icon={<i class="fas fa-search"></i>}
         children="View"
+        onClick={(console.log(Course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value+'_'+Subject.value))}
       />
       </div>
     </div>
