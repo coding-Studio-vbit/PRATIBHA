@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import Button from "../global_ui/buttons/button";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
@@ -8,17 +8,30 @@ import { AuthContext } from "../context/AuthContext";
 import "./loginPage.css";
 
 export default function LoginPage() {
+  const { user, dispatch } = useContext(AuthContext);
 
-  const {dispatch}  = useContext(AuthContext);
-  const [isStudent, setIsStudent] = useState(false);
+  let User = {};
 
-  const validateMail = (mail) => {
-    if (/@vbithyd.ac.in\s*$/.test(mail)) {
+  const validateMail = (result) => {
+    if (/@vbithyd.ac.in\s*$/.test(result.user.email)) {
       console.log("it ends in @vbithyd.ac.in");
-      if (/^[0-9]/.test(mail)) {
-        setIsStudent(true);
+
+      if (/^[1-9]/.test(result.user.email)) {
+        User = {
+          email: result.user.email,
+          name: result.user.displayName,
+          role: ["student"],
+          rollno: result.user.email.substr(0, 10),
+        };
+        console.log("it starts with num");
+      } else {
+        User = {
+          email: result.user.email,
+          name: result.user.displayName,
+          role: ["faculty"],
+        };
       }
-    } else if (/@gmail.com\s*$/.test(mail)) {
+    } else if (/@gmail.com\s*$/.test(result.user.email)) {
       console.log("it ends in @gmail");
     }
   };
@@ -31,37 +44,26 @@ export default function LoginPage() {
         console.log(result.user.displayName);
         const credential = GoogleAuthProvider.credentialFromResult(result);
         console.log(credential, 9);
-        validateMail(result.user.email);
-        let user={};
-        if (isStudent) {
-           user = {
-            email: result.user.email,
-            name: result.user.displayName,
-            role: ["student"],
-            rollno: result.user.email.substr(0, 9),
-          };
-        } else {
-           user = {
-            email: result.user.email,
-            name: result.user.displayName,
-            role: ["faculty"],
-          };
-        }
+        validateMail(result);
+
         dispatch({
           type: "LOGIN",
-          payload: user,
+          payload: User,
         });
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
+
+  console.log(user);
+
   return (
     <div className="loginPage">
       <div className="logos">
         <img alt="loading" className="image" src="/Abhyas.jpeg" />
       </div>
+
       <div className="row">
         <div className="student">
           <i className="fas fa-user-circle icons"></i>
@@ -71,7 +73,6 @@ export default function LoginPage() {
             width="250"
             height="60"
           >
-           
             Login as Student
           </Button>
         </div>
@@ -86,9 +87,8 @@ export default function LoginPage() {
           >
             Login as Faculty
           </Button>
-          
         </div>
       </div>
     </div>
-  )
+  );
 }
