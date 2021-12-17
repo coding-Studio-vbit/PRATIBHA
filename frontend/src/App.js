@@ -3,11 +3,11 @@ import "./App.css";
 import LoginPage from "./components/login/loginPage"
 
 const App = () => {
-  return <div className="App">
-    <LoginPage />
-    
-    
-  </div>;
+  return(
+    <div className="App">
+      <LoginPage />    
+    </div>
+  );
 
   };
 
