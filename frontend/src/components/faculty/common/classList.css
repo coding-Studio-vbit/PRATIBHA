@@ -1,8 +1,13 @@
-.div-container{
-    display:grid;
+.div-container-classes{
     justify-content: center;
     margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
     place-items: center;
+    width: min(500px,90%);
+    margin-left: auto;
+    gap: 16px;
+    margin-right: auto;
 }
 .cards-container{
     display: flex;
@@ -10,12 +15,18 @@
     justify-content: center;
     margin-bottom: 50px;
 }
+@media screen and (max-width:500px) {
+    .div-container-classes{
+        zoom: 0.7;
+
+    }
+    
+}
+
 .card-container{
     height:80px;
     width:180px;
     margin-bottom:10px;
-    margin-right: 20px;
-    margin-left: 20px;
 }
 .select-dd{
     margin-left: 5px;
@@ -23,7 +34,7 @@
     margin-right: 20px;
     width:30vw;
     height:5vh;
-    background-color: rgba(176, 196, 222, 0.43);
+    /* background-color: rgba(176, 196, 222, 0.43); */
 }
 .hod-dd{
     justify-content: space-evenly;
@@ -52,10 +63,13 @@ h2{
 .dd-text{
     font-size:large;
 }
-button{
+Button{
     margin-top: 20px;
 }
 .Card{
-    size:80%;
+    width:200px;
+}
+.xyz{
+    width:200px;
 }
 

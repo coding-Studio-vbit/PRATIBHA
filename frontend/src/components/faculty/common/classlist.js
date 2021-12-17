@@ -4,25 +4,23 @@ import Card from '../../global_ui/card/card.js'
 import './classList.css'
 
 
-const classList = () => {
+const ClassList = () => {
 
     const classes = [{class:'3_CSE_D_PPS',id:0},{class:'2_IT_A_CN',id:1},{class:'2_IT_A_CN',id:2},{class:'2_IT_A_CN',id:3},{class:'2_IT_A_CN',id:4},{class:'2_IT_A_CN',id:5}]
-    return (<div>
+    return (<div style={{
+        width:'100vw'
+    }} >
         <Navbar title='Your Classes' logout={true}/>
-        <div className='div-container'>
-        <div className='cards-container'>
+        <div className='div-container-classes'>
         {classes.map(c=>
             c.id<3?
-            <span style={{marginTop:100}}><Card onClick={()=>{}} text={c.class} /></span>:false
+            <span ><Card onClick={()=>{}} text={c.class} /></span>:false
         )}
-        </div>
-        <div className='cards-container'>
         {classes.map(c=>
             c.id>=3?
-            <Card style={{marginTop:100}} onClick={()=>{}} text={c.class} />:false
+            <Card  onClick={()=>{}} text={c.class} />:false
         )}
         
-        </div>
         
         
 
@@ -32,4 +30,4 @@ const classList = () => {
         </div>);
 }
  
-export default classList;
+export default ClassList;
