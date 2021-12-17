@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 // import 'firebaseui/dist/firebaseui.css'
 import { getAuth } from '@firebase/auth';
+import { getStorage,ref,uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey:process.env.REACT_APP_FIREBASE_API_KEY,
@@ -15,5 +16,23 @@ const firebaseConfig = {
 
 const app = firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
+const storage = getStorage(app);
+async function uploadFile(file,name){
+    let error=null;
+    const pra_ref = ref(storage, 'pra_ref/'+name);
 
-export {auth,app};
+    await uploadBytes(pra_ref, file)
+    .then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        console.log(snapshot);
+    })
+    .catch((err)=>{
+      console.log("Mahita");
+        error=err;
+    })
+    return {
+        error:error,
+    }
+}
+
+export {auth,app,uploadFile};

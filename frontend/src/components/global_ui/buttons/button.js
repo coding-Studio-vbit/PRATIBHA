@@ -5,7 +5,7 @@ import React from 'react';
 
  const Button = ({children,icon,type,onClick,buttonStyle,buttonSize}) => {
     return (
-        <button className = "root" onClick = {onClick} type = {type}> {icon}{children}</button>
+        <button className = "root" style={buttonStyle} onClick = {onClick} type = {type}> {icon}{children}</button>
     )
 }
 
