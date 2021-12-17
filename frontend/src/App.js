@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import {AuthProvider} from "./"
 import LoginPage from "./components/login/loginPage"
 
 const App = () => {
