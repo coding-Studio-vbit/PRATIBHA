@@ -22,6 +22,9 @@ export default function LoginPage() {
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result.user.email);
+        console.log(result.user.displayName)
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        console.log(credential,9);
         validateMail(result.user.email);
       })
       .catch((error) => {
@@ -38,7 +41,8 @@ export default function LoginPage() {
       <div className="student">
 
       <i className="fas fa-user-circle icons"></i>
-      <Button className="studentButton" onClick={SignInWithFirebase}>
+      <Button className="studentButton normal" onClick={SignInWithFirebase} width='250'
+  height= '60'>
         Login as Student
       </Button>
       </div>
@@ -47,7 +51,8 @@ export default function LoginPage() {
       <i className="fas fa-graduation-cap icons "></i>
 
     
-      <Button className="facultyButton" onClick={SignInWithFirebase}>
+      <Button className="facultyButton normal" width='250'
+  height= '60' onClick={SignInWithFirebase}>
         Login as Faculty
       </Button>
       </div>

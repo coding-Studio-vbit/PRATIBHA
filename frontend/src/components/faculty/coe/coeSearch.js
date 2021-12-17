@@ -65,7 +65,7 @@ export default function CoeSearch() {
   
   return (
     <div className="CoESearch-container">
-      <Navbar title="View Grades and Submission" />
+      <Navbar title="Search" />
       <div className="dropdown">
             <p className="dropdown-title">Course</p>
             <Select

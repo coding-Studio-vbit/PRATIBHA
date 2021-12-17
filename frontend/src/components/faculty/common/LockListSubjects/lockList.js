@@ -51,12 +51,13 @@ const LockList = () => {
     { value: "M.Tech", label: "M.Tech" },
     { value: "MBA", label: "MBA" },
   ];
-  const Years = [
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-    { value: "3", label: "3" },
-    { value: "4", label: "4" },
-  ];
+  const Years={
+    BTech:[1,2,3,4],
+    MTech:[1,2],
+    MBA:[1,2]
+  }
+
+
   const Departments = [
     { value: "CSE", label: "Computer Science & Engineering" },
     {
@@ -105,14 +106,15 @@ const LockList = () => {
               className="course"
               options={Courses}
               onChange={(selectedCourse) => {
-                setCourse(selectedCourse);
+                setCourse(selectedCourse.value);
               }}
             />
+          
             <p className="dropdown-title">Year</p>
             <Select
               placeholder=""
               className="year"
-              options={Years}
+              options={Years.Course}
               isDisabled={!Course}
               onChange={(selectedYear) => {
                 setYear(selectedYear);
