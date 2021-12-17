@@ -7,8 +7,8 @@
     align-items: center;
     color:white;
     font-size:25px;
-    font-weight:200;
-    
+    font-weight:400;
+    width:100%;
 }
 .btn{
     position:absolute;

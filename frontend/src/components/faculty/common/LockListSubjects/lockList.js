@@ -23,8 +23,7 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      setBTechList([...BTechList, newBTech]);
-      console.log(BTechList);
+      if (!BTechList.includes(newBTech)) setBTechList([...BTechList, newBTech]);
     } else if (Course.value === "M.Tech") {
       const newMTech =
         Year.value +
@@ -34,8 +33,7 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      setMTechList([...MTechList, newMTech]);
-      console.log(MTechList);
+      if (!MTechList.includes(newMTech)) setMTechList([...MTechList, newMTech]);
     } else if (Course.value === "MBA") {
       const newMBA =
         Year.value +
@@ -45,8 +43,7 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      setMBAList([...MBAList, newMBA]);
-      console.log(MBAList);
+      if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
     }
   };
   const Courses = [
@@ -96,13 +93,13 @@ const LockList = () => {
   ];
 
   return (
-    <div>
+
       <div className="lockList-container">
         <Navbar title="Class List" logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
         <div className="flex-container">
           <div className="dropdown">
-            <p>COURSE</p>
+            <p className="dropdown-title">Course</p>
             <Select
               placeholder=""
               className="course"
@@ -111,7 +108,7 @@ const LockList = () => {
                 setCourse(selectedCourse);
               }}
             />
-            <p>YEAR</p>
+            <p className="dropdown-title">Year</p>
             <Select
               placeholder=""
               className="year"
@@ -121,7 +118,7 @@ const LockList = () => {
                 setYear(selectedYear);
               }}
             />
-            <p>DEPARTMENT</p>
+            <p className="dropdown-title">Department</p>
             <Select
               placeholder=""
               options={Departments}
@@ -130,7 +127,7 @@ const LockList = () => {
                 setDepartment(selectedDepartment);
               }}
             />
-            <p>SECTION</p>
+            <p className="dropdown-title">Section</p>
             <Select
               placeholder=""
               options={Sections}
@@ -139,7 +136,7 @@ const LockList = () => {
                 setSection(selectedSection);
               }}
             />
-            <p>SUBJECT</p>
+            <p className="dropdown-title">Subject</p>
             <Select
               placeholder=""
               options={Subjects}
@@ -165,8 +162,7 @@ const LockList = () => {
               <div>
                 <h4> B.Tech </h4>
                 <ul>
-                  {console.log(BTechList)}
-                  {BTechList.map((item) => {
+                  {BTechList.map((item, index) => {
                     return <li>{item}</li>;
                   })}
                 </ul>
@@ -176,8 +172,7 @@ const LockList = () => {
               <div>
                 <h4> M.Tech </h4>
                 <ul>
-                  {console.log(MTechList)}
-                  {MTechList.map((item) => {
+                  {MTechList.map((item, index) => {
                     return <li>{item}</li>;
                   })}
                 </ul>
@@ -187,8 +182,7 @@ const LockList = () => {
               <div>
                 <h4> MBA </h4>
                 <ul>
-                  {console.log(MBAList)}
-                  {MBAList.map((item) => {
+                  {MBAList.map((item, index) => {
                     return <li>{item}</li>;
                   })}
                 </ul>
@@ -203,7 +197,7 @@ const LockList = () => {
           children="Done"
         />
       </div>
-    </div>
+ 
   );
 };
 
