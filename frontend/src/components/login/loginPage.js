@@ -4,10 +4,12 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { AuthContext } from "../context/AuthContext";
+
 import "./loginPage.css";
 
 export default function LoginPage() {
-  const dispatch  = useContext(AuthContext);
+
+  const {dispatch}  = useContext(AuthContext);
   const [isStudent, setIsStudent] = useState(false);
 
   const validateMail = (mail) => {
@@ -54,6 +56,7 @@ export default function LoginPage() {
         console.log(error);
       });
   };
+  
   return (
     <div className="loginPage">
       <div className="logos">
@@ -68,6 +71,7 @@ export default function LoginPage() {
             width="250"
             height="60"
           >
+           
             Login as Student
           </Button>
         </div>
@@ -82,8 +86,9 @@ export default function LoginPage() {
           >
             Login as Faculty
           </Button>
+          
         </div>
       </div>
     </div>
-  );
+  )
 }

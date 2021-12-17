@@ -12,7 +12,7 @@ export const AuthReducer = (state, action) => {
     case "LOGIN":
       return {
         ...state,
-        user: [...state.user, action.payload],
+        user: action.payload,
       };
   }
 };
@@ -28,7 +28,7 @@ export const AuthProvider = (props) => {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser: state.user, dispatch }}
+      value={{ user: state.user, dispatch }}
     >
         {props.children}
     </AuthContext.Provider>
