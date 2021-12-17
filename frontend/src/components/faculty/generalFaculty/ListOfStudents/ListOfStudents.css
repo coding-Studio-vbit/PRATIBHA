@@ -1,0 +1,55 @@
+.sub_body {
+  margin: 8px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  border-bottom: 1px solid black;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 15px;
+}
+
+.LOF_buttons {
+  margin-top: 50px;
+}
+
+.export_ {
+  margin-top: 10px;
+  float: right;
+  margin-right: 100px;
+}
+
+tr {
+  margin: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(176, 196, 222, 0.43);
+}
+
+tr:nth-child(odd):not(:first-child) {
+  background-color: rgba(176, 196, 222, 0.63);
+}
+p{
+  font-weight: bold;
+}
+
+@media screen and (max-width: 500px) {
+  table {
+    width: screen;
+    display: block;
+    overflow-x: scroll;
+  }
+
+  .export_ {
+    margin-top: 20px;
+    margin-right: 0px;
+  }
+}

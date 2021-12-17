@@ -1,0 +1,42 @@
+.lockList-container {
+  text-align: center;
+}
+
+Button {
+  margin: 10px;
+}
+.list-container {
+  background-color: rgb(176, 196, 222, 0.25);
+  height: 440px;
+  width: 300px;
+  border-radius: 10px;
+}
+
+.flex-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.dropdown-title {
+  font-weight:500;
+}
+.dropdown {
+  width: 300px;
+}
+
+.instruction {
+  color: #0e72ab;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+li {
+  margin: 10px;
+  text-align: left;
+  margin-right: 7px;
+}
+button {
+  border: none;
+  background-color: white;
+}

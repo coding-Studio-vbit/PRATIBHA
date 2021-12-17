@@ -1,0 +1,21 @@
+.CoESearch-container{
+   
+    text-align: center;
+
+}
+Button{
+    margin: 20px;
+    align-self: center;
+    
+}
+
+.dropdown-title {
+    font-weight:500;
+  }
+.dropdown{
+    width:350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  
+}

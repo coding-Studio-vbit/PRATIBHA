@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.2.1",
     "@mui/material": "^5.2.3",
     "@react-pdf-viewer/core": "^2.11.0",
@@ -16,6 +18,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropdown": "^1.9.2",
+<<<<<<< HEAD
     "react-file-viewer": "^0.5.0",
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^6.0.2",
@@ -23,6 +26,12 @@
     "react-select": "^5.2.1",
     "web-vitals": "^1.1.2",
     "webpack": "4.44.2"
+=======
+    "react-router-dom": "^6.0.2",
+    "react-scripts": "4.0.3",
+    "react-select": "^5.2.1",
+    "web-vitals": "^1.1.2"
+>>>>>>> ec4b59876422dd3ef0e3075bc499eb6b3e9feaca
   },
   "scripts": {
     "start": "react-scripts start",

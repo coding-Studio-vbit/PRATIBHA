@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import './App.css';
 import Navbar from '../src/components/global_ui/navbar/navbar'
@@ -15,5 +16,16 @@ const App = ()=> {
     </div>
   );
 }
+=======
+import React from "react";
+import "./App.css";
+
+
+const App = () => {
+  return <div className="App">
+    
+  </div>;
+};
+>>>>>>> ec4b59876422dd3ef0e3075bc499eb6b3e9feaca
 
 export default App;
