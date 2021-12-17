@@ -1,0 +1,127 @@
+
+.grading{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction:row;
+        
+}
+.left p{
+    margin-left: 8px;
+    margin-right: 8px;
+    
+}
+.mid1{
+    display: flex;
+    
+    flex-direction: column;
+    
+}
+.mid1 > div {
+    display: flex;
+    margin-left: 8px;
+    margin-right: 8px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.left{
+    width:25%;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    background-color: rgba(14, 114, 171, 1);
+    position: sticky;
+
+}
+
+.fas fa-arrow-left{
+    position: fixed;
+  top: 8px;
+  left: 2px;
+}
+.right{
+    width: 75%;
+    background-color: #ffffff;
+    padding-top: 20px;
+    
+}
+.leftnav{
+    padding: 24px;
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+select {
+    background-position: calc(100% - 0.75rem) center !important;
+    -moz-appearance:none !important;
+    -webkit-appearance: none !important; 
+    appearance: none !important;
+    
+    padding-right: 2rem !important;
+}
+.dropdown{
+    position: relative;
+    grid-area: dd;
+}
+
+.dropdown i{
+    position: absolute;
+    right: 40px;
+    top: 40%;
+
+}
+.display{
+    grid-area: pr;
+    background-color: #BBE8FF;
+    opacity: 0.7;
+    height: 500px;
+ 
+}
+.remarks{
+    grid-area: re;
+}
+.remarks-title{
+    grid-area: rt;
+    justify-self: start;
+}
+.preview{
+    width: 100%;
+    display: grid;
+    gap: 16px;
+    justify-content: center;
+    grid-template-areas: 
+    ". title dd "
+    "pr pr pr "
+    "rt rt rt"
+    "re re re";
+}
+.menubar{
+    background-color: cornflowerblue;
+}
+@media screen and (max-width: 770px) {
+    .grading{
+        flex-direction: column-reverse;
+        width: auto;
+        height: auto;
+        position: relative;
+    }
+    .left{
+        width: 100%;
+    }
+    .right{
+        width: 100%;
+        
+    }
+    .remarksCon{
+        position:absolute;
+        bottom: 0;
+        left:16px;
+        right:16px;
+        width:100vw;
+        flex-Direction:column;
+        transform:translateY(100px);
+        display:flex;
+    }
+  }
