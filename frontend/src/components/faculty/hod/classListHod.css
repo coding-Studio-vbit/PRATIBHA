@@ -1,0 +1,39 @@
+.div-container-classes{
+    justify-content: center;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    place-items: center;
+    width: min(500px,90%);
+    margin-left: auto;
+    gap: 16px;
+    margin-right: auto;
+}
+@media screen and (max-width:500px) {
+    .div-container-classes{
+        zoom: 0.7;
+
+    }
+    
+}
+.card-container{
+    height:80px;
+    width:180px;
+    margin-bottom:10px;
+}
+Button{
+    margin-top: 10px;
+}
+.hod-dd{
+    justify-content: space-evenly;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-right: 20px;
+    align-items: center;
+}
+
+.xyz{
+    width:200px;
+}
