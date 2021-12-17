@@ -1,14 +1,21 @@
 import React from "react";
 import "./App.css";
-import LoginPage from "./components/login/loginPage"
+import { AuthProvider } from "./components/context/AuthContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./components/login/loginPage";
 
 const App = () => {
-  return(
+  return (
     <div className="App">
-      <LoginPage />    
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
     </div>
   );
-
-  };
+};
 
 export default App;

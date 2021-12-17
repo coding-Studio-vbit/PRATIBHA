@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "./ListOfStudents.css";
 import Button from "../../../global_ui/buttons/button";
+// import { AuthContext } from "../../../context/AuthContext";
 
 // import {collection, getDocs} from "firebase/firebase-firestore";
 
 const ListofStudents = () => {
   const [info, setInfo] = useState([]);
+  // const {user} = useContext(AuthContext);
   // const marksCollectionRef = collection(app, "/faculty/cse@vbithyd.ac.in/3_CSED_DM");
   // const usersCollectionRef = collection(app, "users");
 
