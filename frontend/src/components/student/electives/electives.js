@@ -23,7 +23,7 @@ export default function Electives() {
 
   return (
     <div>
-      <Navbar logout={true} title={"Electives"} />
+      <Navbar title={"Electives"}  logout={true} />
       <div className="electives-dropdown">
       
         <p>Professional Elective</p>
