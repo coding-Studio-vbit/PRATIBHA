@@ -23,8 +23,9 @@ export default function Electives() {
 
   return (
     <div>
-      <Navbar title={"Electives"} />
+      <Navbar logout={true} title={"Electives"} />
       <div className="electives-dropdown">
+      
         <p>Professional Elective</p>
         <Select className="select" placeholder="" options={pes} onChange={(selectedpe)=>{setpElective(selectedpe)}}/>
 

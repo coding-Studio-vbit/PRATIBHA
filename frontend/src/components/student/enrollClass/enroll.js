@@ -49,7 +49,7 @@ export default function StudentEnroll() {
 
   return (
     <div className="enroll-container">
-      <Navbar title="Enrollment" logout={false} />
+      <Navbar back={false} title="Enrollment" logout={false} />
 
       <div className="dropdown">
         <p className="dropdown-title">Course</p>

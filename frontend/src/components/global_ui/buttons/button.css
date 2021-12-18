@@ -12,6 +12,9 @@
 .normal {
   background-color: #0e72ab;
   color: white;
+  width: auto !important;
+    padding: 5px 16px !important;
+    height: auto !important;
   /* box-shadow: 0 2px 2px 2px rgb(85, 85, 85); */
 }
 .rare {
