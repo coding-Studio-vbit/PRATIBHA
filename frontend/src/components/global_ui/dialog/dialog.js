@@ -13,3 +13,4 @@ function Dialog({message,setviewDialog}) {
 }
 
 export default Dialog;
+//use dialog like this <Dialog message={'This is wrong'}/>
