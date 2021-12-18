@@ -1,14 +1,12 @@
-.div-container-classes{
+.div-container-classes {
     justify-content: center;
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    place-items: center;
-    width: min(500px,90%);
-    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    width: min(500px, 90%);
+    padding-left: 20px;
+    flex-wrap: wrap;
     gap: 16px;
-    margin-right: auto;
-}
+  }
 @media screen and (max-width:500px) {
     .div-container-classes{
         zoom: 0.7;

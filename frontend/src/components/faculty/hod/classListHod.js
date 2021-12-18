@@ -13,6 +13,17 @@ const HODClassList = () => {
     
     const [Section, setSection] = useState("");
     const [Subject, setSubject] = useState("");
+    const BTechClasses = [
+      "2_CSM_B_Software Engineering",
+      "3_CSB_A_Compiler Design",
+      "2_CE_A_Engineering Mechanics",
+    ];
+    const MBAClasses = ["2_Engineering Mechanics"];
+    const MTechClasses = [
+      "2_CE_A_Engineering Mechanics",
+      "1_CSE_A_Engineering Mechanics",
+    ];
+  
     const[button,setButton]=useState(true);
     const dept = 'CSE';
     const Years = [
@@ -44,25 +55,63 @@ const HODClassList = () => {
       console.log(Year.value+'_'+Section.value+'_'+Subject.value);
     }
 
-    const classes = [{class:'3_CSE_D_PPS',id:0},{class:'2_IT_A_CN',id:1},{class:'2_IT_A_CN',id:2},{class:'2_IT_A_CN',id:3},{class:'2_IT_A_CN',id:4},{class:'2_IT_A_CN',id:5}]
+  function handleCard(){
+    
+  }
     return (  
         <div>
         <Navbar style={{marginBottom:'30px'}} title={dept+" HOD"} logout={true} />
-        <h1>Your Classes</h1>
-        <div className='div-container-classes' >
-  
-        {classes.map(c=>
-            c.id<3?
-            <Card onClick={()=>{}} text={c.class} />:false
+        <div className="div-container-classes">
+        {BTechClasses.length !== 0 && (
+          <div>
+            <h4> B.Tech</h4>
+            <div className="card-flex">
+              {BTechClasses.map((item) => {
+                return (
+                  <Card
+                    classname="card-container"
+                    onclick={handleCard}
+                    text={item}
+                  />
+                );
+              })}
+            </div>
+          </div>
         )}
-       
-        {classes.map(c=>
-            c.id<3?
-            <Card onClick={()=>{}} text={c.class} />:false
+        {MTechClasses.length !== 0 && (
+          <div>
+            <h4> M.Tech</h4>
+            <div className="card-flex">
+              {MTechClasses.map((item) => {
+                return (
+                  <Card
+                    classname="card-container"
+                    onclick={handleCard}
+                    text={item}
+                  />
+                );
+              })}
+            </div>
+          </div>
         )}
-       
-        </div>
-        <h2>{dept} Department</h2>
+        {MBAClasses.length !== 0 && (
+          <div>
+            <h4>MBA</h4>
+            <div className="card-flex">
+              {MBAClasses.map((item) => {
+                return (
+                  <Card
+                    classname="card-container"
+                    onclick={handleCard}
+                    text={item}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+        <p>{dept} Department</p>
         <div className="hod-dd">
         <div className='xyz'>
         <span className='dd-text'>Year</span>
