@@ -8,11 +8,18 @@
     font-weight:500;
   }
 .dropdown{
-    align-self: center;
-    min-width: 350px;
+ 
+  align-self: center;
+   max-width: 300px;
     margin-top: 50px;
 }
 Button{
-    margin-top: 20px;
+    margin-top: 30px;
+    align-self: center;
+}
+.select{
+    max-width: 300px;
+    min-width: 270px;
+    justify-self: center;
     align-self: center;
 }

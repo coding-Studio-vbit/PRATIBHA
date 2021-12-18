@@ -15,7 +15,7 @@ const Navbar = ({title,logout=false,pra = false}) => {
         <span className='title' >{title}</span>
         {(logout===true?<button className="btn">
         <i className="fas fa-power-off"></i>
-        </button>:pra === true?<button className='btn'><i class="fas fa-plus"></i> NEW PRA</button>:false)}
+        </button>:pra === true?<button className='btn'><i class="fas fa-plus"></i> <span id="hide">NEW PRA</span></button>:false)}
         </nav>
         </div>
     );

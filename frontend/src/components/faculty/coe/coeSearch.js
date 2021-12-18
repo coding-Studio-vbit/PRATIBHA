@@ -11,6 +11,12 @@ export default function CoeSearch() {
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
   const[button,setButton]=useState(true);
+
+function handleView(){
+  //fetch the selected class from db and show ViewSubmissions screen of that class
+  console.log(Course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value+'_'+Subject.value);
+}
+
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
     { value: "M.Tech", label: "M.Tech" },
@@ -42,11 +48,7 @@ export default function CoeSearch() {
     { value: "B", label: "B", link: "CSE" },
     { value: "C", label: "C", link: "CSE" },
     { value: "D", label: "D", link: "CSE" },
-    { value: "A", label: "A", link: "ECE" },
-    { value: "B", label: "B", link: "ECE" },
-    { value: "A", label: "A", link: "EEE" },
-    { value: "A", label: "A", link: "IT" },
-    { value: "B", label: "B", link: "IT" },
+   
   ];
   const Subjects = [
     { value: "PPS", label: "PPS", link: "CSE" },
@@ -65,12 +67,12 @@ export default function CoeSearch() {
   
   return (
     <div className="CoESearch-container">
-      <Navbar title="View Grades and Submission" />
+      <Navbar title="COE" />
       <div className="dropdown">
             <p className="dropdown-title">Course</p>
             <Select
               placeholder=""
-              className="course"
+              className="select"
               options={Courses}
               onChange={(selectedCourse) => {
                 setCourse(selectedCourse);
@@ -78,8 +80,8 @@ export default function CoeSearch() {
             />
             <p className="dropdown-title">Year</p>
             <Select
+              className="select"
               placeholder=""
-              className="year"
               options={Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
@@ -88,6 +90,7 @@ export default function CoeSearch() {
             />
             <p className="dropdown-title">Department</p>
             <Select
+              className="select"
               placeholder=""
               options={Departments}
               isDisabled={!Year}
@@ -97,6 +100,7 @@ export default function CoeSearch() {
             />
             <p className="dropdown-title">Section</p>
             <Select
+              className="select"
               placeholder=""
               options={Sections}
               isDisabled={!Department}
@@ -108,6 +112,7 @@ export default function CoeSearch() {
             <Select
               placeholder=""
               options={Subjects}
+              className="select"
               isDisabled={!Section}
               onChange={(selectedSubject) => {
                 setSubject(selectedSubject);
@@ -116,8 +121,11 @@ export default function CoeSearch() {
             />
       <Button
         className="done-button normal" disabled={button}
-        icon={<i class="fas fa-search"></i>}
+        icon={<i className="fas fa-search"></i>}
         children="View"
+        width="90"
+        height="40"
+        onClick={handleView}
       />
       </div>
     </div>

@@ -12,10 +12,18 @@ Button{
 .dropdown-title {
     font-weight:500;
   }
-.dropdown{
-    width:350px;
+.select{
+    max-width: 300px;
+    min-width: 270px;
+    justify-self: center;
+    align-self: center;
+}
+.coe-dropdown{
+    margin-top: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
+   margin-right: auto;
+   margin-left: auto;
   
 }

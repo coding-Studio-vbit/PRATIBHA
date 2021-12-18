@@ -1,4 +1,4 @@
-.lockList-container {
+.lockList-container{
   text-align: center;
 }
 
@@ -10,33 +10,37 @@ Button {
   height: 440px;
   width: 300px;
   border-radius: 10px;
+  padding: 5px;
 }
 
 .flex-container {
   display: flex;
-  gap: 20px;
+  gap: 30px;
+ 
   flex-wrap: wrap;
   justify-content: center;
 }
-
-.dropdown-title {
-  font-weight:500;
-}
-.dropdown {
-  width: 300px;
+.select{
+  max-width: 300px;
+  min-width: 270px;
+  justify-self: center;
+  align-self: center;
 }
 
 .instruction {
   color: #0e72ab;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-weight: bold;
+  letter-spacing: 0.4px;
 }
-li {
-  margin: 10px;
+h4{
+  text-align: center;
+}
+li{
+  margin : 10px;
   text-align: left;
-  margin-right: 7px;
 }
-button {
+button{
   border: none;
   background-color: white;
 }
+

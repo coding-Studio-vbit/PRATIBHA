@@ -9,10 +9,11 @@
     font-size:25px;
     align-items: center;
     font-weight:200;
-    
+    width:100%
 }
 .title{
     font-size: 20px;
+    font-weight: 400;
 }
 .btn{
     position:absolute;
@@ -42,3 +43,9 @@
     align-self: center;
 }
 
+@media screen and (max-width: 500px)
+{
+    #hide{
+        display:none;
+    }
+}
