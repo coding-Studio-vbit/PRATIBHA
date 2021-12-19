@@ -13,6 +13,7 @@ const Upload =() => {
     const [praTitle, setPraTitle] = React.useState('');
     const [fileError, setFileError] = React.useState('');   
     const [titleError, setTitleError] = React.useState('');    
+    const [isMid1, setIsMid1]= React.useState(false)
  
 
     const onChange = (e) => {
@@ -36,7 +37,7 @@ const Upload =() => {
     const handleTitle=(e)=> {
         let value=e.target.value
          if(value.length<8){
-            setTitleError("title must have atleast 8 characters");
+            setTitleError("Title must have atleast 8 characters");
         }
         else{
             setTitleError("")
@@ -53,13 +54,19 @@ const Upload =() => {
         <>
             <Navbar title="UPLOAD PRA"></Navbar>
             <div className={styles.main}>
+                {
+                    (!isMid1)&&(<div>
+                        Mid
+                    </div>
+                        )
+                }
                 <div>
                     <span>PRA : </span>
                     <input style={{padding:'5px', borderRadius:'24px', width:'400px', fontSize:'18px', alignSelf:'center'}} 
                     type="text"  placeholder="TITLE OF THE ACTIVITY" 
                     value={praTitle} onChange={handleTitle} maxLength={50} />
 
-                    <p style={{marginTop:'2%', color:'red'}}>{titleError}</p>         
+                    <p style={{marginTop:'1%', color:'red',  fontSize:'12px',textAlign:'center'}}>{titleError}</p>         
                 </div> 
 
                 <p style={{marginTop:'2%', color:'red'}}>*Upload an abstract for your activity in not more than 150 words.</p>              
@@ -74,38 +81,10 @@ const Upload =() => {
                         </label>
                     {
                         fileError.length>0?
-                        <p style={{marginTop:'2%', color:'red'}}>{fileError}</p> 
+                        <p style={{marginTop:'2%', color:'red', fontSize:'16px',textAlign:'center'}}>{fileError}</p> 
                         :<p>{fileName}</p>          
                     }
                     
-
-
-                        {/* <div style={{ height: '750px' }}>
-                        {url ? (
-                        <div
-                            style={{
-                                border: '1px solid rgba(0, 0, 0, 0.3)',
-                                height: '100%',
-                        }}
-                        >
-                            <Viewer fileUrl={url} /> 
-                        </div>
-                        ) : (
-                            <div
-                                style={{
-                                    alignItems: 'center',
-                                    border: '2px dashed rgba(0, 0, 0, .3)',
-                                    display: 'flex',
-                                    fontSize: '2rem',
-                                    height: '100%',
-                                    justifyContent: 'center',
-                                    width: '100%',
-                                }}
-                            >
-                                Preview area
-                            </div>
-                        )}
-                    </div> */}
                 </div>               
 
                 <Button buttonStyle={{

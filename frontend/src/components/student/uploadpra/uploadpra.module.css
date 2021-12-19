@@ -12,6 +12,7 @@
 }
 
 .buttton{
+   color: rgba(14, 114, 171, 1);
    width: 100px;
    justify-self: bottom;
    margin-top: 100px;
@@ -22,7 +23,7 @@ input[type="file"] {
  }
 
  .customFileUpload {
-   background-color: teal;
+   background-color: rgba(14, 114, 171, 1);
    color: white;
    outline: none;
    padding: 5px 10px;

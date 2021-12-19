@@ -24,12 +24,13 @@ const ViewVideo=({object})=>{
 const ViewPdf=({object})=>{
     return(
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-            <div className="mt4" style={{ height: '480px' }}>
+            <div className="mt4" style={{ height: '520px', padding:'0px',width:'100%', margin:'0px' }}>
                 {object ? (
                     <div
                         style={{
                             border: '1px solid rgba(0, 0, 0, 0.3)',
                             height: '100%',
+                            
                         }}
                     >
 

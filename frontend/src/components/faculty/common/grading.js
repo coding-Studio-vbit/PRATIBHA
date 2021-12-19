@@ -258,7 +258,7 @@ const Grading = () => {
             </div>
             </Worker>  */}
            
-            <Docviewer extension="pdf"/>
+            <Docviewer extension="pdf" object={'https://www.usciences.edu/student-life/student-handbook.pdf'}/>
 
             
           </div>
