@@ -2,9 +2,9 @@
   /* background-color: #0e72ab; */
   /* color: white; */
   text-align: center;
-  border-radius: 30px;
+  border-radius: 13px;
   border: none;
-  box-shadow: 0 2px 2px 2px rgb(85, 85, 85);
+  box-shadow: 0 1px 1px 1px rgb(133, 131, 131);
   font-size: large;
   width: 100px;
   height: 50px;
@@ -12,6 +12,9 @@
 .normal {
   background-color: #0e72ab;
   color: white;
+  width: auto !important;
+    padding: 5px 16px !important;
+    height: auto !important;
   /* box-shadow: 0 2px 2px 2px rgb(85, 85, 85); */
 }
 .rare {

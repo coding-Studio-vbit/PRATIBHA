@@ -12,14 +12,14 @@ Button{
 .dropdown-title {
     font-weight:500;
   }
-.course{
-    width:250px;
+.select{
+    max-width: 300px;
+    min-width: 270px;
     justify-self: center;
     align-self: center;
 }
-.dropdown{
-    /* width: min(200px,70%); */
-    /* width:280px; */
+.coe-dropdown{
+    margin-top: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;

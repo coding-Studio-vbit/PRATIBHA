@@ -6,20 +6,54 @@ import './classList.css'
 
 const ClassList = () => {
 
-    const classes = [{class:'3_CSE_D_PPS',id:0},{class:'2_IT_A_CN',id:1},{class:'2_IT_A_CN',id:2},{class:'2_IT_A_CN',id:3},{class:'2_IT_A_CN',id:4},{class:'2_IT_A_CN',id:5}]
+    
+    const BTechClasses = ['2_CSM_B_Software Engineering', '3_CSB_A_Compiler Design', '2_CE_A_Engineering Mechanics']
+    const MBAClasses=['2_Engineering Mechanics']
+    const MTechClasses=[,'2_CE_A_Engineering Mechanics','1_CSE_A_Engineering Mechanics']
+    
+    
+    function handleCard(){
+        //take them to the ListOfStudents screen of the clicked class
+    }
+    
     return (<div style={{
         width:'100vw'
     }} >
         <Navbar title='Your Classes' logout={true}/>
         <div className='div-container-classes'>
-        {classes.map(c=>
-            c.id<3?
-            <span ><Card onClick={()=>{}} text={c.class} /></span>:false
-        )}
-        {classes.map(c=>
-            c.id>=3?
-            <Card  onClick={()=>{}} text={c.class} />:false
-        )}
+        {BTechClasses.length !== 0 && (
+            <span >
+
+                  <h4> B.Tech</h4>
+                    {BTechClasses.map((item) => {
+                      return <Card classname='card-container' text={item}/>;
+                    })}
+            
+            </span>
+
+                
+              )}
+              {MTechClasses.length !== 0 && (
+              <span >
+                  <h4> M.Tech</h4>
+                    {MTechClasses.map((item) => {
+                      return <Card classname='card-container' text={item}/>;
+                    })}
+                  
+              </span>
+              
+              
+              )}
+              {MBAClasses.length !== 0 && (
+         <span >
+
+                  <h4>MBA</h4>
+                    {MBAClasses.map((item) => {
+                      return <Card classname='card-container' text={item}/>;
+                    })}
+         </span>
+            
+              )}
         
         
         

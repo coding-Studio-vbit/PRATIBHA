@@ -8,22 +8,27 @@ import "react-datepicker/dist/react-datepicker.css";
 const CreatePra = () => {
   const [date, setDate] = useState(new Date());
 
+function handleCreate(){
+   //store deadline and instructions in subjects collection
+  console.log(date);
+}
+
   return (
     <div style={{
         width:'100vw',
     }} >
-      <Navbar title="CREATE NEW PRA" />
+      <Navbar title="Create PRA" />
       <div className="div-container">
        <span className="text-style">Enter instructions (if any):</span>
         <textarea rows={8} className="span-style" onChange={() => {}}></textarea>
         <span className="text-style2">
           Set PRA Deadline:
-          {console.log(date)}
           <span>
             <DatePicker
               dateFormat="dd/MM/yyyy"
               selected={date}
               value={date}
+              minDate={new Date()}
               onChange={(newVal) => {
                 setDate(newVal);
               }}
@@ -32,10 +37,10 @@ const CreatePra = () => {
           </span>
         </span>
           <Button
-            className="normal"
+            className="create-button normal"
             
             icon={<i class="fas fa-plus"></i>}
-            onClick={() => {}}
+            onClick={handleCreate}
             children={"Create"}
           />
       </div>

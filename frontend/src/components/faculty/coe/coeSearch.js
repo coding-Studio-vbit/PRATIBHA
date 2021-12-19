@@ -11,6 +11,12 @@ export default function CoeSearch() {
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
   const[button,setButton]=useState(true);
+
+function handleView(){
+  //fetch the selected class from db and show ViewSubmissions screen of that class
+  console.log(Course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value+'_'+Subject.value);
+}
+
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
     { value: "M.Tech", label: "M.Tech" },
@@ -61,7 +67,7 @@ export default function CoeSearch() {
   
   return (
     <div className="CoESearch-container">
-      <Navbar title="Search" />
+      <Navbar title="COE" />
       <div className="dropdown">
             <p className="dropdown-title">Course</p>
             <Select
@@ -76,7 +82,6 @@ export default function CoeSearch() {
             <Select
               className="select"
               placeholder=""
-              className="select"
               options={Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
@@ -107,6 +112,7 @@ export default function CoeSearch() {
             <Select
               placeholder=""
               options={Subjects}
+              className="select"
               isDisabled={!Section}
               onChange={(selectedSubject) => {
                 setSubject(selectedSubject);
@@ -115,9 +121,11 @@ export default function CoeSearch() {
             />
       <Button
         className="done-button normal" disabled={button}
-        icon={<i class="fas fa-search"></i>}
+        icon={<i className="fas fa-search"></i>}
         children="View"
-        onClick={(console.log(Course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value+'_'+Subject.value))}
+        width="90"
+        height="40"
+        onClick={handleView}
       />
       </div>
     </div>

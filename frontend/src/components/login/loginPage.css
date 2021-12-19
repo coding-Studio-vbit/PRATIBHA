@@ -12,28 +12,24 @@ Button {
   width: 250px;
   height: 60px;
   font-size: x-large;
+  border-radius: 30px !important
 }
 .icons {
   color: #0e72ab;
   font-size: 50px;
 }
-.student {
+.button-and-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-}
-.faculty {
- display: flex;
- flex-direction: column;
- align-items: center;
- gap:10px;
+  gap: 7px;
+
 }
 .row{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 125px;
+    gap: 80px;
     align-items: center;
     justify-content: center;
 }
