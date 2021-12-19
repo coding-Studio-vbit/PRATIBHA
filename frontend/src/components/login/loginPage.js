@@ -2,15 +2,15 @@ import React from "react";
 import Button from "../global_ui/buttons/button";
 import "./loginPage.css";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import  useAuth  from "../context/AuthContext";
 
 export default function LoginPage() {
-  const { signInWithGoogle,currentUser }=useAuth();
+  const { signInWithGoogle, currentUser } = useAuth();
 
-  return currentUser===null?(
+  return currentUser === null ? (
     <div className="loginPage">
       <div className="logos">
-      {/* put 3 logos here  */}
+        {/* put 3 logos here  */}
         <img alt="loading" className="image" src="/Abhyas.jpeg" />
       </div>
 
@@ -42,9 +42,10 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  ):<Navigate to="/home" />;
+  ) : (
+    <Navigate to="/home" />
+  );
 }
-
 
 // const validateMail = (result) => {
 //   if (/@vbithyd.ac.in\s*$/.test(result.user.email)) {
