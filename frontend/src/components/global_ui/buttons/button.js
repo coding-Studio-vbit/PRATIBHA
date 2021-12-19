@@ -14,6 +14,11 @@ const Button = ({ children, disabled, onClick, width, height, icon, className })
   );
 };
 
+//  const Button = ({children,icon,type,onClick,buttonStyle,buttonSize}) => {
+//     return (
+//         <button className = "root" style={buttonStyle} onClick = {onClick} type = {type}> {icon}{children}</button>
+//     )
+// }
 export default Button;
 
 //without any icon do this : <Button children='Pranchal'/>
