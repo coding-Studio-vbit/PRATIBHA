@@ -185,9 +185,8 @@ const LockList = () => {
                       return (
                         <li>
                           {item}
-                        <button onClick={handleRemove(BTechList.indexOf(item))} className="small">
-                        <i className="far fa-times-circle"></i>
-                        </button>
+                        <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
+                        
                         </li>
                       );
                     })}
@@ -202,6 +201,7 @@ const LockList = () => {
                       return (
                         <li>
                           {item} 
+                          <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
                         </li>
                       );
                     })}
@@ -215,7 +215,7 @@ const LockList = () => {
                     {MBAList.map((item) => {
                       return (
                         <li>
-                          {item} <i className="far fa-times-circle"></i>
+                          {item}   <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
                         </li>
                       );
                     })}

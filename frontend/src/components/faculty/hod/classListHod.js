@@ -62,7 +62,9 @@ const HODClassList = () => {
     return (  
         <div className='root-hod'>
         <Navbar style={{marginBottom:'30px'}} title={dept+" HOD"} logout={true} />
+        <p className="dep-title">Your Classes</p>
         <div className="div-container-classesHOD">
+       
         {BTechClasses.length !== 0 && (
           <div>
             <h4> B.Tech</h4>
