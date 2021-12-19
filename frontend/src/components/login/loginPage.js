@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../global_ui/buttons/button";
 import "./loginPage.css";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const { signInWithGoogle,currentUser }=useAuth();
@@ -10,11 +10,12 @@ export default function LoginPage() {
   return currentUser===null?(
     <div className="loginPage">
       <div className="logos">
-      {/* put 3 logos here  */}
-        <img alt="loading" className="image" src="/Abhyas.jpeg" />
+        <img alt="abhyas" className="image" src="/"/>
+        <img alt="loading" className="vbit" src="/vbit.png" />
+        <img alt="loading" className="cs_logo" src="/cs_logo.png" />      
       </div>
 
-      <p>{JSON.stringify(currentUser)}</p>
+      {/* <p>{JSON.stringify(currentUser)}</p> */}
 
       <div className="row">
         <div className="button-and-icon">
