@@ -1,0 +1,36 @@
+
+.main{
+   display: flex;
+   width: 100vw;
+   flex-direction: column;
+   justify-content:center;
+   align-items:center;
+   font-family:Arial, Helvetica, sans-serif;
+   font-size: medium;
+   font-weight: bold;
+   margin-top: 50px;
+}
+
+.buttton{
+   color: rgba(14, 114, 171, 1);
+   width: 100px;
+   justify-self: bottom;
+   margin-top: 100px;
+}
+
+input[type="file"] {
+   display: none;
+ }
+
+ .customFileUpload {
+   background-color: rgba(14, 114, 171, 1);
+   color: white;
+   outline: none;
+   padding: 5px 10px;
+   border-radius: 5px;
+   border: none;
+   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+   text-align: center;
+   text-decoration: none;
+   cursor: pointer;
+ }
