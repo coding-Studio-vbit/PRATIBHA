@@ -4,7 +4,7 @@ import {admin} from 'firebase-admin'
 
 exports.verifyNewUser=functions.auth.user().onCreate((user)=>{
     if(user.email.length>10){
-        admin.auth().        
+        admin.auth().createUser       
     }
     functions.logger.log(user.email);
 
