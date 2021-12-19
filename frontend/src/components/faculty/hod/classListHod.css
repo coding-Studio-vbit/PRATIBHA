@@ -75,6 +75,10 @@ gap: 16px;
     color:#0E72AB;
     padding-left: 5px;
 }
+.view-style{
+    display: flex;
+    justify-content:center;
+}
 .xyz{
     width:200px;
 }
