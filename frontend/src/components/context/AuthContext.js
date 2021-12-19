@@ -18,13 +18,15 @@ export function AuthProvider({children}) {
       setLoading(true);
       await signInWithPopup(auth, provider)
         .then(async(result) => {
+          let isFirstSignIn=result.user.metadata.creationTime===result.user.metadata.lastSignInTime;
           if(result.user.email.split('@')[1] === 'vbithyd.ac.in'){
             setCurrentUser({
               uid:result.user.uid,
               email:result.user.email,
               profileURL:result.user.photoURL,
               username:result.user.displayName,
-              phoneNumber:result.user.phoneNumber
+              phoneNumber:result.user.phoneNumber,
+              isFirstSignIn:isFirstSignIn             
             });
             setLoading(false);
           }
@@ -64,12 +66,14 @@ export function AuthProvider({children}) {
       auth.onAuthStateChanged(user => {
         setLoading(true);
         if(user!=null){
+          let isFirstSignIn=user.metadata.creationTime===user.metadata.lastSignInTime;
           setCurrentUser({
             uid:user.uid,
             email:user.email,
             profileURL:user.photoURL,
             username:user.displayName,
-            phoneNumber:user.phoneNumber
+            phoneNumber:user.phoneNumber,
+            isFirstSignIn:isFirstSignIn             
           })
         }
         else{

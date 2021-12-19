@@ -34,3 +34,41 @@ input[type="file"] {
    text-decoration: none;
    cursor: pointer;
  }
+
+
+.inputStyle{
+   font-size: 14px;
+   outline: none;
+   background-color: #e5e4e2;
+   padding: 10px 15px;
+   border: none;
+   border-radius: 20px;
+   width: 400px;
+}
+
+.praLabel{
+   font-weight: 400;
+   font-size: 14px;
+   letter-spacing: 1pt;
+}
+
+.fileContainer{
+   margin-bottom: 25px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.errorField{
+   color:red;
+   padding-left: 15px;
+   font-size:12px;
+   font-weight: 450;
+}
+
+.fileName{
+   color:darkslategrey;
+   font-size:14x;
+   font-weight: 450;
+}
