@@ -10,12 +10,22 @@ export default function CoeSearch() {
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
-  const[button,setButton]=useState(true);
+  const [button, setButton] = useState(true);
 
-function handleView(){
-  //fetch the selected class from db and show ViewSubmissions screen of that class
-  console.log(Course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value+'_'+Subject.value);
-}
+  function handleView() {
+    //fetch the selected class from db and show ViewSubmissions screen of that class
+    console.log(
+      Course.value +
+        "_" +
+        Year.value +
+        "_" +
+        Department.value +
+        "_" +
+        Section.value +
+        "_" +
+        Subject.value
+    );
+  }
 
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
@@ -48,7 +58,6 @@ function handleView(){
     { value: "B", label: "B", link: "CSE" },
     { value: "C", label: "C", link: "CSE" },
     { value: "D", label: "D", link: "CSE" },
-   
   ];
   const Subjects = [
     { value: "PPS", label: "PPS", link: "CSE" },
@@ -64,69 +73,70 @@ function handleView(){
       link: "CE",
     },
   ];
-  
+
   return (
     <div className="CoESearch-container">
       <Navbar title="COE" />
-      <div className="dropdown">
-            <p className="dropdown-title">Course</p>
-            <Select
-              placeholder=""
-              className="select"
-              options={Courses}
-              onChange={(selectedCourse) => {
-                setCourse(selectedCourse);
-              }}
-            />
-            <p className="dropdown-title">Year</p>
-            <Select
-              className="select"
-              placeholder=""
-              options={Years}
-              isDisabled={!Course}
-              onChange={(selectedYear) => {
-                setYear(selectedYear);
-              }}
-            />
-            <p className="dropdown-title">Department</p>
-            <Select
-              className="select"
-              placeholder=""
-              options={Departments}
-              isDisabled={!Year}
-              onChange={(selectedDepartment) => {
-                setDepartment(selectedDepartment);
-              }}
-            />
-            <p className="dropdown-title">Section</p>
-            <Select
-              className="select"
-              placeholder=""
-              options={Sections}
-              isDisabled={!Department}
-              onChange={(selectedSection) => {
-                setSection(selectedSection);
-              }}
-            />
-            <p className="dropdown-title">Subject</p>
-            <Select
-              placeholder=""
-              options={Subjects}
-              className="select"
-              isDisabled={!Section}
-              onChange={(selectedSubject) => {
-                setSubject(selectedSubject);
-                setButton(false);
-              }}
-            />
-      <Button
-        className="done-button normal" disabled={button}
-        icon={<i className="fas fa-search"></i>}
-        children="View"
-        width="90"
-        height="40"
-        onClick={handleView}
-      />
+      <div className="coe-dropdown">
+        <p className="dropdown-title">Course</p>
+        <Select
+          placeholder=""
+          className="select"
+          options={Courses}
+          onChange={(selectedCourse) => {
+            setCourse(selectedCourse);
+          }}
+        />
+        <p className="dropdown-title">Year</p>
+        <Select
+          className="select"
+          placeholder=""
+          options={Years}
+          isDisabled={!Course}
+          onChange={(selectedYear) => {
+            setYear(selectedYear);
+          }}
+        />
+        <p className="dropdown-title">Department</p>
+        <Select
+          className="select"
+          placeholder=""
+          options={Departments}
+          isDisabled={!Year}
+          onChange={(selectedDepartment) => {
+            setDepartment(selectedDepartment);
+          }}
+        />
+        <p className="dropdown-title">Section</p>
+        <Select
+          className="select"
+          placeholder=""
+          options={Sections}
+          isDisabled={!Department}
+          onChange={(selectedSection) => {
+            setSection(selectedSection);
+          }}
+        />
+        <p className="dropdown-title">Subject</p>
+        <Select
+          placeholder=""
+          options={Subjects}
+          className="select"
+          isDisabled={!Section}
+          onChange={(selectedSubject) => {
+            setSubject(selectedSubject);
+            setButton(false);
+          }}
+        />
+        <Button
+          className="coe-button normal"
+          disabled={button}
+          icon={<i className="fas fa-search"></i>}
+          children="View"
+          width="90"
+          height="40"
+          onClick={handleView}
+        />
       </div>
     </div>
   );

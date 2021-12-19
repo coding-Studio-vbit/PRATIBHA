@@ -1,8 +1,6 @@
 .root {
-  /* background-color: #0e72ab; */
-  /* color: white; */
   text-align: center;
-  border-radius: 13px;
+  border-radius: 7px !important;
   border: none;
   box-shadow: 0 1px 1px 1px rgb(133, 131, 131);
   font-size: large;
@@ -12,7 +10,9 @@
 .normal {
   background-color: #0e72ab;
   color: white;
-  /* box-shadow: 0 2px 2px 2px rgb(85, 85, 85); */
+  width: auto !important;
+  padding: 5px 16px !important;
+  height: auto !important;
 }
 .rare {
   background-color: rgba(176, 196, 222, 0.43);
@@ -26,10 +26,11 @@ i {
   box-shadow: none;
 }
 
-@media screen and (max-width: 500px){
-  .root{
+@media screen and (max-width: 500px) {
+  .root {
     width: 70px;
+    border-radius: 7px !important;
     height: 30px;
-    font-size:14px;
+    font-size: 14px;
   }
 }
