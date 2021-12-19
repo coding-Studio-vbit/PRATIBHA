@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-Button {
+.locklist-button {
   margin: 10px;
 }
 .list-container {
@@ -11,6 +11,9 @@ Button {
   width: 300px;
   border-radius: 10px;
   padding: 5px;
+}
+.dropdown{
+  margin:0px;
 }
 
 .flex-container {
@@ -39,7 +42,7 @@ li{
   margin : 10px;
   text-align: left;
 }
-button{
+.add-button{
   border: none;
   background-color: white;
 }

@@ -77,7 +77,7 @@ export default function CoeSearch() {
   return (
     <div className="CoESearch-container">
       <Navbar title="COE" />
-      <div className="dropdown">
+      <div className="coe-dropdown">
         <p className="dropdown-title">Course</p>
         <Select
           placeholder=""
@@ -129,7 +129,7 @@ export default function CoeSearch() {
           }}
         />
         <Button
-          className="done-button normal"
+          className="coe-button normal"
           disabled={button}
           icon={<i className="fas fa-search"></i>}
           children="View"

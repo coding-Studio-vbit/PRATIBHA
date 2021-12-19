@@ -51,8 +51,8 @@ export default function StudentEnroll() {
     <div className="enroll-container">
       <Navbar back={false} title="Enrollment" logout={false} />
 
-      <div className="dropdown">
-        <p className="dropdown-title">Course</p>
+      <div className="enroll-dropdown">
+        <p className="enroll-dropdown-title">Course</p>
         <Select
           placeholder=""
           className="select"
@@ -61,31 +61,31 @@ export default function StudentEnroll() {
             setCourse(selectedCourse);
           }}
         />
-        <p className="dropdown-title">Year</p>
+        <p className="enroll-dropdown-title">Year</p>
         <Select
           placeholder=""
-          className="select"
+          className="enroll-select"
           options={Years}
           isDisabled={!Course}
           onChange={(selectedYear) => {
             setYear(selectedYear);
           }}
         />
-        <p className="dropdown-title">Department</p>
+        <p className="enroll-dropdown-title">Department</p>
         <Select
           placeholder=""
-          className="select"
+          className="enroll-select"
           options={Departments}
           isDisabled={!Year}
           onChange={(selectedDepartment) => {
             setDepartment(selectedDepartment);
           }}
         />
-        <p className="dropdown-title">Section</p>
+        <p className="enroll-dropdown-title">Section</p>
         <Select
           placeholder=""
           options={Sections}
-          className="select"
+          className="enroll-select"
           isDisabled={!Department}
           onChange={(selectedSection) => {
             setSection(selectedSection);
@@ -96,9 +96,9 @@ export default function StudentEnroll() {
 
       <Button
         onClick={handleEnroll}
-        className="button normal"
+        className="enroll-button normal"
         disabled={button}
-        width="90"
+        width="30"
         height="40"
         children="Enroll"
       />

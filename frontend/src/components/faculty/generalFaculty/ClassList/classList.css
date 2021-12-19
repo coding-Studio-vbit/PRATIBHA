@@ -26,7 +26,7 @@ h4 {
 @media screen and (max-width: 500px) {
   .div-container-classes {
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 20px;
     display: grid;
     align-content: center;
     grid-template-columns: repeat(2, 1fr);

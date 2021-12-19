@@ -3,7 +3,7 @@
     text-align: center;
 
 }
-Button{
+.coe-button{
     margin: 20px;
     align-self: center;
     
@@ -23,6 +23,7 @@ Button{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
    margin-right: auto;
    margin-left: auto;
   

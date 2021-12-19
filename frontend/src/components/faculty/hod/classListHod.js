@@ -9,6 +9,7 @@ import './classListHod.css';
 
 
 const HODClassList = () => {
+  const [Course, setCourse] = useState("");
     const [Year, setYear] = useState("");
     
     const [Section, setSection] = useState("");
@@ -59,9 +60,9 @@ const HODClassList = () => {
     
   }
     return (  
-        <div>
+        <div className='root-hod'>
         <Navbar style={{marginBottom:'30px'}} title={dept+" HOD"} logout={true} />
-        <div className="div-container-classes">
+        <div className="div-container-classesHOD">
         {BTechClasses.length !== 0 && (
           <div>
             <h4> B.Tech</h4>
@@ -111,14 +112,26 @@ const HODClassList = () => {
           </div>
         )}
       </div>
-        <p>{dept} Department</p>
+        <p className="dep-title">View Department Grades</p>
         <div className="hod-dd">
+        <div className='xyz'>
+        <span className='dd-text'>Course</span>
+        <Select
+              placeholder=""
+              className="course"
+              options={Years}
+              onChange={(selectedCourse) => {
+                setCourse(selectedCourse);
+              }}
+            />
+        </div>
         <div className='xyz'>
         <span className='dd-text'>Year</span>
         <Select
               placeholder=""
               className="year"
               options={Years}
+              isDisabled={!Course}
               onChange={(selectedYear) => {
                 setYear(selectedYear);
               }}
@@ -146,7 +159,7 @@ const HODClassList = () => {
                 setButton(false)
               }}/></div>
         </div>
-        <Button icon={<i class="fas fa-search"></i>}className='normal' disabled={button}  onClick={handleClick} children='View' />
+        <Button icon={<i class="fas fa-search"></i>}className='normal hod-button' disabled={button}  onClick={handleClick} children='View' />
 
         </div>
     );

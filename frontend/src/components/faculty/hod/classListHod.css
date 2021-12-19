@@ -1,4 +1,4 @@
-.div-container-classes {
+.div-container-classesHOD {
     justify-content: center;
     display: flex;
     flex-direction: column;
@@ -8,19 +8,40 @@
     gap: 16px;
   }
 @media screen and (max-width:500px) {
-    .div-container-classes{
+    .div-container-classesHOD{
+        justify-content: center;
+       justify-items: center;
+        margin-top: 20px;
+        display: grid;
+        /* align-content: center; */
+        grid-template-columns: repeat(2, 1fr);
+        width: min(500px, 90%);
+        margin-right:auto;
+        margin-left: auto;
+        padding-left: 0px;
         zoom: 0.7;
-
+        gap: 16px;
+        margin-right: auto;
+        margin-left: auto;
     }
-    
+   
+    .root-hod{
+        display: flex;
+        flex-direction: column;
+    }    
 }
 .card-container{
     height:80px;
     width:180px;
     margin-bottom:10px;
+    justify-content: center;
+    align-items: center;
 }
-Button{
+.hod-button{
     margin-top: 10px;
+    align-self: center;
+    justify-self: center;
+    margin-bottom: 10px;
 }
 .hod-dd{
     justify-content: space-evenly;
@@ -31,7 +52,13 @@ Button{
     margin-right: 20px;
     align-items: center;
 }
-
+.dd-text{
+    text-align: center;
+}
+.dep-title{
+    text-align: center;
+    font-weight: bold;
+}
 .xyz{
     width:200px;
 }
