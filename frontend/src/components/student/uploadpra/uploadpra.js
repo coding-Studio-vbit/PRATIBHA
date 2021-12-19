@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Viewer } from '@react-pdf-viewer/core';
 import styles from "./uploadpra.module.css";
 import Button from "../../global_ui/buttons/button";
 import Navbar from "../../global_ui/navbar/navbar";
@@ -46,8 +45,9 @@ const Upload =() => {
     }
 
     const submit = () => {
-      let a= uploadFile(url,url.name);
-      console.log(a,10);	
+      if(url!=null){
+        let a= uploadFile(url,url.name);
+      }  
 	}; 
   
     return(
@@ -61,39 +61,39 @@ const Upload =() => {
                         )
                 }
                 <div>
-                    <span>PRA : </span>
-                    <input style={{padding:'5px', borderRadius:'24px', width:'400px', fontSize:'18px', alignSelf:'center'}} 
-                    type="text"  placeholder="TITLE OF THE ACTIVITY" 
+                    <p className={styles.praLabel}>P.R.A Title</p>
+                    <input 
+                    type="text"  placeholder="TITLE OF THE ACTIVITY" className={styles.inputStyle}
                     value={praTitle} onChange={handleTitle} maxLength={50} />
 
-                    <p style={{marginTop:'1%', color:'red',  fontSize:'12px',textAlign:'center'}}>{titleError}</p>         
+                    <p className={styles.errorField}>{titleError}</p>         
                 </div> 
 
                 <p style={{marginTop:'2%', color:'red'}}>*Upload an abstract for your activity in not more than 150 words.</p>              
 
-                <div>
-                    {/* <input type="file" accept=".pdf" data-max-size= "200000" value={url} onChange={onChange} /> */}
+                <div className={styles.fileContainer}>                    
                     <label className={styles.customFileUpload}>
                         <input type="file" accept=".pdf"  onChange={onChange} /> 
                         {
                             fileName.length>0?"Change File":"Add File"
                         }
-                        </label>
+                    </label>
+                    { (fileError.length>0 || fileName.length>0) && <div style={{width:'30px'}}></div>}
                     {
                         fileError.length>0?
-                        <p style={{marginTop:'2%', color:'red', fontSize:'16px',textAlign:'center'}}>{fileError}</p> 
-                        :<p>{fileName}</p>          
-                    }
-                    
-                </div>               
+                        <p className={styles.errorField }>{fileError}</p> 
+                        :<p className={styles.fileName}>{fileName}</p>          
+                    } 
+                </div>
 
-                <Button buttonStyle={{
+                <Button 
+                className={{
                     width:'20ch',
                     alignSelf:'center',
-                    marginTop:'20px'                    
-                }} onClick={()=>{submit()}}>
-                Upload
-                </Button>
+                    marginTop:'20px',
+                }} 
+                onClick={()=>{submit()}}
+                >Upload</Button>
             </div>
         </>
     );
