@@ -28,8 +28,8 @@ const HODClassList = () => {
     const[button,setButton]=useState(true);
     const dept = Course.value;
     const Courses = [
-      { value: "B.TECH", label: "B.TECH" },
-      { value: "M.TECH", label: "M.TECH" },
+      { value: "B.TECH", label: "B.Tech" },
+      { value: "M.TECH", label: "M.Tech" },
       { value: "MBA", label: "MBA" }
     ];
     const Years = [
