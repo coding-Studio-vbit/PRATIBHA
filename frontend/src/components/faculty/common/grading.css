@@ -7,10 +7,15 @@
 }
 .details {
   display: flex;
-  padding: 8px 8px 0px 8px;
-  justify-content: space-between;
-  align-items: center;
+  margin-left: auto;
+  margin-bottom: 24px;
+  margin-right: auto; 
+  flex-direction: column;
 }
+.details div:first-child{
+  padding-left: 8px;
+}
+
 .details i{
   
   margin: 0px;

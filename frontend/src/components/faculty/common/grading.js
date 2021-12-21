@@ -57,26 +57,37 @@ const Grading = () => {
         }} className="fas fa-arrow-left black" aria-hidden="true"></i>
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
         <div className="details">
+          <div style={{
+            display:'flex',
+            gap:'8px'
+          }} >
           <span>Roll no:</span>
           <div>
           <input type="text" maxLength={10} value={rollNo} onChange={(e)=>setRollNo(e.target.value)}></input>
           <i style={{cursor:'pointer'}} onClick={searchRoll} class="fa fa-search" aria-hidden="true"></i>
           </div>
           </div>
+          
+          <div>
           <div style={{
             display:'flex',
+            gap:8,
             padding:'8px 8px 0px 8px',
-            justifyContent:'space-between'
-          }} ><span>Name:</span>
+          }} ><span>Name :</span>
             <span style={{fontWeight:'bold'}} >Revanth :)</span>
           </div>
+          </div>
+          <div>
           <div style={{
             display:'flex',
-            padding:'8px',
-            justifyContent:'space-between'
+            gap:8,
+            padding:'8px 8px 0px 8px',
           }} ><span>Subject:</span>
-          <span style={{fontWeight:'bold'}} >DM</span>
+            <span style={{fontWeight:'bold'}} >DM :/</span>
           </div>
+          </div>
+          </div>
+          
         
         <div className="mid1">
           <div>
@@ -88,10 +99,10 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              oninput="this.value = this.value.replace(/[^0-2.]/g, '').replace(/(\..*)\./g, '$1');"
               
-              type="text"
-              maxLength={1}
+              type="number"
+              min='0'
+              max='2'
               
             />
           </div>
