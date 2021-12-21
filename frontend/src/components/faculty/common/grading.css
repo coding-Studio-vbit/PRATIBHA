@@ -166,6 +166,19 @@ select {
   width: 100%;
   margin-top: 8rem;
 }
+
+.selectList{
+  background-color: #e5e4e2;
+  width: "200px";
+  padding: 8px,
+
+}
+
+.selectList:active{
+
+}
+
+
 @media screen and (max-width: 770px) {
   .grading {
     flex-direction: column-reverse;

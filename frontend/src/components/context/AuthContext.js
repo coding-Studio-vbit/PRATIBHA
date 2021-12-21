@@ -5,6 +5,16 @@ import { signInWithPopup } from "firebase/auth";
 
 const AuthContext= React.createContext();
 
+// const hasNumber=(myString)=> /\d/.test(myString);
+function checkStudent(myString){
+  if(myString.slice(2,6)==="p61a"){
+      return true;
+  }else{
+      return false;
+  }
+}
+
+
 export function useAuth() {
     return useContext(AuthContext);
 }
@@ -18,15 +28,21 @@ export function AuthProvider({children}) {
       setLoading(true);
       await signInWithPopup(auth, provider)
         .then(async(result) => {
-          let isFirstSignIn=result.user.metadata.creationTime===result.user.metadata.lastSignInTime;
+          // let isFirstSignIn = result.user.metadata.creationTime===result.user.metadata.lastSignInTime;
+          let userType="";
           if(result.user.email.split('@')[1] === 'vbithyd.ac.in'){
+            if(checkStudent(result.user.email.split('@')[0])){
+              userType="STUDENT";              
+            }else{
+              userType="FACULTY";
+            }
             setCurrentUser({
               uid:result.user.uid,
               email:result.user.email,
               profileURL:result.user.photoURL,
               username:result.user.displayName,
               phoneNumber:result.user.phoneNumber,
-              isFirstSignIn:isFirstSignIn             
+              userType:userType,
             });
             setLoading(false);
           }
@@ -40,9 +56,7 @@ export function AuthProvider({children}) {
               console.log("Signout Failed");
             }
             setLoading(false);
-
-          }
-         
+          }         
         })
         .catch((error) => {
           setCurrentUser(null);
@@ -66,14 +80,19 @@ export function AuthProvider({children}) {
       auth.onAuthStateChanged(user => {
         setLoading(true);
         if(user!=null){
-          let isFirstSignIn=user.metadata.creationTime===user.metadata.lastSignInTime;
+          let userType="";
+          if(checkStudent(user.email.split('@')[0])){
+            userType="STUDENT";              
+          }else{
+            userType="FACULTY";
+          }
           setCurrentUser({
             uid:user.uid,
             email:user.email,
             profileURL:user.photoURL,
             username:user.displayName,
             phoneNumber:user.phoneNumber,
-            isFirstSignIn:isFirstSignIn             
+            userType:userType,
           })
         }
         else{
