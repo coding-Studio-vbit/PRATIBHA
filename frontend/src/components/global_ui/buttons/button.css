@@ -27,11 +27,11 @@ i {
   border:1px solid #e5e4e2;
 }
 
-@media screen and (max-width: 500px) {
+/* @media screen and (max-width: 500px) {
   .root {
     width: 70px;
     border-radius: 7px !important;
     height: 30px;
     font-size: 14px;
   }
-}
+} */

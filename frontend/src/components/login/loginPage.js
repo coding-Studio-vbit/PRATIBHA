@@ -10,7 +10,7 @@ export default function LoginPage() {
   return currentUser===null?(
     <div className="loginPage">
       <div className="logos">
-        <img alt="abhyas" className="image" src="/"/>
+        <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg"/>
         <img alt="loading" className="vbit" src="/vbit.png" />
         <img alt="loading" className="cs_logo" src="/cs_logo.png" />      
       </div>
@@ -18,30 +18,29 @@ export default function LoginPage() {
       {/* <p>{JSON.stringify(currentUser)}</p> */}
 
       <div className="row">
-        <div className="button-and-icon">
-          <i className="fas fa-user-circle icons"></i>
-          <Button
-            className="studentButton normal"
-            onClick={signInWithGoogle}
-            width="250"
-            height="60"
-          >
-            Login as Student
-          </Button>
-        </div>
-        <div className="button-and-icon">
-          <i className="fas fa-graduation-cap icons "></i>
 
-          <Button
-            className="facultyButton normal"
-            width="250"
-            height="60"
-            onClick={signInWithGoogle}
-          >
-            Login as Faculty
-          </Button>
-        </div>
+          <div className="button-and-icon">
+            <i className="fas fa-user-circle icons"></i>
+            <button
+             className="loginBtn"
+             onClick={signInWithGoogle}
+
+            >
+              Login as Student
+            </button>
+          </div>
+          <div className="button-and-icon">
+            <i className="fas fa-graduation-cap icons "></i>
+
+            <button
+              className="loginBtn"
+              onClick={signInWithGoogle}
+            >
+              Login as Faculty
+            </button>
+          </div>
       </div>
+
     </div>
   ):<Navigate to="/home" />;
 }

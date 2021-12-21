@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Viewer } from "@react-pdf-viewer/core";
-import styles from "./grading.css";
+// import styles from "./grading.css";
 import Button from "../../global_ui/buttons/button";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Worker } from "@react-pdf-viewer/core";
@@ -212,12 +212,7 @@ const Grading = () => {
           >
             <i className="fa fa-angle-down" aria-hidden="true"></i>
             <select
-              style={{
-                width: "200px",
-                padding: "8px",
-                borderRadius: "24px",
-                marginRight: "12px",
-              }}
+              className="selectList"
               name="selectList"
               id="selectList"
             >

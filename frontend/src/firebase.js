@@ -1,6 +1,7 @@
-import firebase from 'firebase/compat/app';
+import { initializeApp} from "firebase/app";
 import { getAuth } from '@firebase/auth';
 import { getStorage,ref,uploadBytes } from "firebase/storage";
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey:process.env.REACT_APP_FIREBASE_API_KEY,
@@ -12,9 +13,11 @@ const firebaseConfig = {
   measurementId:process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
-const app = firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const storage = getStorage(app);
+const db = getFirestore();
+
 async function uploadFile(file,name){
     let error=null;
     const pra_ref = ref(storage, 'pra_ref/'+name);
@@ -28,9 +31,7 @@ async function uploadFile(file,name){
       console.log("Mahita");
         error=err;
     })
-    return {
-        error:error,
-    }
+    return error;
 }
 
-export {auth,app,uploadFile};
+export {auth,app,uploadFile,db};
