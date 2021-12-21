@@ -11,10 +11,8 @@ const Grading = () => {
    const [url, setUrl] = React.useState('');
    const [loading, setLoading] = React.useState(false); 
    const [rollNo, setRollNo] = React.useState('');
-   const [name, setName] = React.useState('');
-   const [subject, setSubject] = React.useState('');
-  
-
+   const [isMid1 , setIsMid1] = React.useState(true)
+   
 
    const searchRoll=(e)=>{
      if(rollNo.length===10)
@@ -60,15 +58,26 @@ const Grading = () => {
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
         <div className="details">
           <span>Roll no:</span>
+          <div>
           <input type="text" maxLength={10} value={rollNo} onChange={(e)=>setRollNo(e.target.value)}></input>
           <i style={{cursor:'pointer'}} onClick={searchRoll} class="fa fa-search" aria-hidden="true"></i>
-          <div >Name:
-            <p value={name}/>
           </div>
-          <div>Subject:
-          <p value={subject}/>
           </div>
-        </div>
+          <div style={{
+            display:'flex',
+            padding:'8px 8px 0px 8px',
+            justifyContent:'space-between'
+          }} ><span>Name:</span>
+            <span style={{fontWeight:'bold'}} >Revanth :)</span>
+          </div>
+          <div style={{
+            display:'flex',
+            padding:'8px',
+            justifyContent:'space-between'
+          }} ><span>Subject:</span>
+          <span style={{fontWeight:'bold'}} >DM</span>
+          </div>
+        
         <div className="mid1">
           <div>
             <span>Innovation:(2M)</span>
@@ -248,11 +257,17 @@ const Grading = () => {
                 borderRadius: "24px",
                 marginRight: "12px",
               }}
+              onChange={(e)=>{
+                
+                
+                  setIsMid1(e.target.value === 'm1'?true:false)
+                
+              }}
               name="selectList"
               id="selectList"
             >
-                <option value="option 1">Mid-I </option> 
-              <option value="option 2">Mid-II </option>
+                <option value="m1">Mid-I </option> 
+              <option value="m2">Mid-II </option>
             </select>
           </div>
           <div className="display">
@@ -287,8 +302,8 @@ const Grading = () => {
                 )}
             </div>
             </Worker>  */}
-           http
-            <Docviewer extension="jpg" object={''}/>
+            
+            <Docviewer extension="jpg" />
 
             
           </div>

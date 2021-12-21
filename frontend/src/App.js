@@ -11,7 +11,7 @@ import Grading from "./components/faculty/common/grading";
 const App = () => {
   return (
     <div className="App">
-     <AuthProvider>
+     {/* <AuthProvider>
         <Router>
           <Routes>
             <Route exact path="/"  element={ <LoginPage/> }/>
@@ -19,8 +19,8 @@ const App = () => {
             <Route exact path="/home" element={  <Home/> }/>
           </Routes>
         </Router>
-      </AuthProvider> 
-      
+      </AuthProvider>  */}
+      <Grading/>
     </div>
   );
 };
