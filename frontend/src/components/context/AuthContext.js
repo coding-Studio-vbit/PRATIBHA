@@ -26,42 +26,49 @@ export function AuthProvider({children}) {
     async function signInWithGoogle(){
       const provider = new GoogleAuthProvider();
       setLoading(true);
-      await signInWithPopup(auth, provider)
-        .then(async(result) => {
-          // let isFirstSignIn = result.user.metadata.creationTime===result.user.metadata.lastSignInTime;
-          let userType="";
-          if(result.user.email.split('@')[1] === 'vbithyd.ac.in'){
-            if(checkStudent(result.user.email.split('@')[0])){
-              userType="STUDENT";              
-            }else{
-              userType="FACULTY";
-            }
-            setCurrentUser({
-              uid:result.user.uid,
-              email:result.user.email,
-              profileURL:result.user.photoURL,
-              username:result.user.displayName,
-              phoneNumber:result.user.phoneNumber,
-              userType:userType,
-            });
-            setLoading(false);
-          }
-          else{
-            console.log("Domain Mismatch");
-            setLoading(true);
-            try{
-              await signOut();
-            }
-            catch(e){
-              console.log("Signout Failed");
-            }
-            setLoading(false);
-          }         
-        })
-        .catch((error) => {
-          setCurrentUser(null);
-          setLoading(false);
-        });
+      try{
+        await signInWithPopup(auth, provider);
+      }
+      catch(e){
+        console.log(e);
+        setCurrentUser(null);
+        setLoading(false);
+      }
+        // .then(async(result) => {
+        //   // let isFirstSignIn = result.user.metadata.creationTime===result.user.metadata.lastSignInTime;
+        //   // let userType="";
+        //   // if(result.user.email.split('@')[1] === 'vbithyd.ac.in'){
+        //   //   if(checkStudent(result.user.email.split('@')[0])){
+        //   //     userType="STUDENT";              
+        //   //   }else{
+        //   //     userType="FACULTY";
+        //   //   }
+        //   //   setCurrentUser({
+        //   //     uid:result.user.uid,
+        //   //     email:result.user.email,
+        //   //     profileURL:result.user.photoURL,
+        //   //     username:result.user.displayName,
+        //   //     phoneNumber:result.user.phoneNumber,
+        //   //     userType:userType,
+        //   //   });
+        //   //   setLoading(false);
+        //   // }
+        //   // else{
+        //   //   console.log("Domain Mismatch");
+        //   //   setLoading(true);
+        //   //   try{
+        //   //     await signOut();
+        //   //   }
+        //   //   catch(e){
+        //   //     console.log("Signout Failed");
+        //   //   }
+        //   //   setLoading(false);
+        //   // }         
+        // })
+        // .catch((error) => {
+        //   setCurrentUser(null);
+        //   setLoading(false);
+        // });
     };
     
     async function signOut() {
@@ -78,27 +85,39 @@ export function AuthProvider({children}) {
   
     useEffect(() => {
       auth.onAuthStateChanged(user => {
-        setLoading(true);
+        let userType="";
         if(user!=null){
-          let userType="";
-          if(checkStudent(user.email.split('@')[0])){
-            userType="STUDENT";              
-          }else{
-            userType="FACULTY";
+          if(user.email.split('@')[1] === 'vbithyd.ac.in'){
+            if(checkStudent(user.email.split('@')[0])){
+              userType="STUDENT";              
+            }else{
+              userType="FACULTY";
+            }
+            setCurrentUser({
+              uid:user.uid,
+              email:user.email,
+              profileURL:user.photoURL,
+              username:user.displayName,
+              phoneNumber:user.phoneNumber,
+              userType:userType,
+            });
+            setLoading(false);
           }
-          setCurrentUser({
-            uid:user.uid,
-            email:user.email,
-            profileURL:user.photoURL,
-            username:user.displayName,
-            phoneNumber:user.phoneNumber,
-            userType:userType,
-          })
+          else{
+            console.log("Domain Mismatch");
+            setLoading(true);
+            try{
+              signOut();
+            }
+            catch(e){
+              console.log("Signout Failed");
+            }
+            setLoading(false);
+          } 
+        }else{
+          setCurrentUser(null);
+          setLoading(false)
         }
-        else{
-          setCurrentUser(null)
-        }       
-        setLoading(false)
       });  
     }, [])
   

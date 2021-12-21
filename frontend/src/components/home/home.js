@@ -6,12 +6,14 @@ import { doc, getDoc } from "firebase/firestore";
 
 export default function Home() {
     const {currentUser,signOut}=useAuth();
-    const [isVerfied, setIsVerified] = useState(true);
+    const [isVerified, setIsVerified] = useState(true);
     const [error, setError] = useState(null);
 
     async function logOut() {
        signOut()      
     }
+
+    console.log(currentUser);
 
     async function fetchData(){
         if(currentUser.userType==="STUDENT"){
@@ -51,22 +53,22 @@ export default function Home() {
     }
 
     useEffect(() => {
-        fetchData(currentUser.userType);                
+        if(currentUser!=null){
+            fetchData(currentUser.userType);                
+        }
     },);
 
     return currentUser!=null?(
         <div>
             {
                 <div>
-                    <p>{isVerfied} fyfhj</p>
+                    <p>{isVerified} fyfhj</p>
                     <p>{error}</p>
                     <p></p>
                     <p>{JSON.stringify(currentUser)}</p>
                     <button onClick={()=>logOut()}>LOGOUT</button>         
                 </div>
-            }
-           
-           
+            }          
         </div>
     ):<Navigate to="/"/>;
 }
