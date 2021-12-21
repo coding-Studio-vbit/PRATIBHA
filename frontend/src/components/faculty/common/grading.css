@@ -14,11 +14,13 @@
   margin-right: 8px;
 }
 .input{
-    width: 8px;
+  width: 8px;
     border-radius:10px;
     text-align: center;
-    
 }
+
+
+
 .mid1 {
   display: flex;
 
@@ -119,6 +121,7 @@ select {
   justify-self: start;
 }
 
+
 .preview {
   width: auto;
   display: grid;
@@ -132,7 +135,7 @@ select {
     "re re re";
 }
 .menubar {
-  background-color: cornflowerblue;
+  background-color: rgb(4, 43, 116);
 }
 .remarksCon {
   grid-area: rt;

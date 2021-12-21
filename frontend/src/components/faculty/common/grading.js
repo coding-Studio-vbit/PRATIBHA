@@ -9,7 +9,30 @@ import Docviewer from "./docviewer";
 
 const Grading = () => {
    const [url, setUrl] = React.useState('');
+   const [loading, setLoading] = React.useState(false); 
+   const [rollNo, setRollNo] = React.useState('');
+   const [name, setName] = React.useState('');
+   const [subject, setSubject] = React.useState('');
+  
 
+
+   const searchRoll=(e)=>{
+     if(rollNo.length===10)
+     {
+       setLoading(true)
+       //http request 
+       setLoading(false)
+     }
+
+     else
+     {
+       //show error
+     }
+   }
+
+  //  const onCheck=(e)=>{
+  //    let value
+  //  }
   // const handleTitle=(e)=> {
   //     let value=e.target.value
   //      if(value.length==10){
@@ -37,10 +60,14 @@ const Grading = () => {
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
         <div className="details">
           <span>Roll no:</span>
-          <input type="text"></input>
-          <i class="fa fa-search" aria-hidden="true"></i>
-          <div>Name:Pranchal Agarwal</div>
-          <div>Subject: DM</div>
+          <input type="text" maxLength={10} value={rollNo} onChange={(e)=>setRollNo(e.target.value)}></input>
+          <i style={{cursor:'pointer'}} onClick={searchRoll} class="fa fa-search" aria-hidden="true"></i>
+          <div >Name:
+            <p value={name}/>
+          </div>
+          <div>Subject:
+          <p value={subject}/>
+          </div>
         </div>
         <div className="mid1">
           <div>
@@ -52,8 +79,11 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
-              pattern="[0-2]{1}"
+              oninput="this.value = this.value.replace(/[^0-2.]/g, '').replace(/(\..*)\./g, '$1');"
+              
+              type="text"
+              maxLength={1}
+              
             />
           </div>
           <div>
@@ -91,7 +121,7 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
+              type="tel"
               pattern="[0-2]{1}"
             />
           </div>
@@ -257,8 +287,8 @@ const Grading = () => {
                 )}
             </div>
             </Worker>  */}
-           
-            <Docviewer extension="pdf" object={'https://www.usciences.edu/student-life/student-handbook.pdf'}/>
+           http
+            <Docviewer extension="jpg" object={''}/>
 
             
           </div>
@@ -268,10 +298,9 @@ const Grading = () => {
             <button
               style={{
                 backgroundColor: "#0e72ab",
-                color: "white",
-                width: "20ch",
+                color: "white",      
                 margin: "auto",
-                padding: "10px",
+                padding: "4px 8px !important",
                 cursor:'pointer',
                 borderRadius: 25,
                 textAlign: "center",
