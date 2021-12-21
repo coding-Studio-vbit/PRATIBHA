@@ -26,7 +26,12 @@ const HODClassList = () => {
     ];
   
     const[button,setButton]=useState(true);
-    const dept = 'CSE';
+    const dept = Course.value;
+    const Courses = [
+      { value: "B.TECH", label: "B.Tech" },
+      { value: "M.TECH", label: "M.Tech" },
+      { value: "MBA", label: "MBA" }
+    ];
     const Years = [
         { value: "1", label: "1" },
         { value: "2", label: "2" },
@@ -53,7 +58,7 @@ const HODClassList = () => {
         },
       ];
     function handleClick(){
-      console.log(Year.value+'_'+Section.value+'_'+Subject.value);
+      console.log(Course.value+'_'+Year.value+'_'+Section.value+'_'+Subject.value);
     }
 
   function handleCard(){
@@ -61,8 +66,10 @@ const HODClassList = () => {
   }
     return (  
         <div className='root-hod'>
-        <Navbar style={{marginBottom:'30px'}} title={dept+" HOD"} logout={true} />
+        <Navbar style={{marginBottom:'30px'}} title={dept!==undefined ?dept+" HOD":"HOD"} logout={true} />
+        <p className="dep-title">Your Classes</p>
         <div className="div-container-classesHOD">
+       
         {BTechClasses.length !== 0 && (
           <div>
             <h4> B.Tech</h4>
@@ -119,7 +126,7 @@ const HODClassList = () => {
         <Select
               placeholder=""
               className="course"
-              options={Years}
+              options={Courses}
               onChange={(selectedCourse) => {
                 setCourse(selectedCourse);
               }}
@@ -159,8 +166,8 @@ const HODClassList = () => {
                 setButton(false)
               }}/></div>
         </div>
-        <Button icon={<i class="fas fa-search"></i>}className='normal hod-button' disabled={button}  onClick={handleClick} children='View' />
-
+        <span className="view-style"><Button icon={<i class="fas fa-search"></i>}className='normal hod-button' disabled={button}  onClick={handleClick} children='View' />
+        </span>
         </div>
     );
 }

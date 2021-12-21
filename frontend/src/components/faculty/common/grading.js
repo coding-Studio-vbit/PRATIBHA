@@ -9,7 +9,28 @@ import Docviewer from "./docviewer";
 
 const Grading = () => {
    const [url, setUrl] = React.useState('');
+   const [loading, setLoading] = React.useState(false); 
+   const [rollNo, setRollNo] = React.useState('');
+   const [isMid1 , setIsMid1] = React.useState(true)
+   
 
+   const searchRoll=(e)=>{
+     if(rollNo.length===10)
+     {
+       setLoading(true)
+       //http request 
+       setLoading(false)
+     }
+
+     else
+     {
+       //show error
+     }
+   }
+
+  //  const onCheck=(e)=>{
+  //    let value
+  //  }
   // const handleTitle=(e)=> {
   //     let value=e.target.value
   //      if(value.length==10){
@@ -36,12 +57,38 @@ const Grading = () => {
         }} className="fas fa-arrow-left black" aria-hidden="true"></i>
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
         <div className="details">
+          <div style={{
+            display:'flex',
+            gap:'8px'
+          }} >
           <span>Roll no:</span>
-          <input type="text"></input>
-          <i class="fa fa-search" aria-hidden="true"></i>
-          <div>Name:Pranchal Agarwal</div>
-          <div>Subject: DM</div>
-        </div>
+          <div>
+          <input type="text" maxLength={10} value={rollNo} onChange={(e)=>setRollNo(e.target.value)}></input>
+          <i style={{cursor:'pointer'}} onClick={searchRoll} class="fa fa-search" aria-hidden="true"></i>
+          </div>
+          </div>
+          
+          <div>
+          <div style={{
+            display:'flex',
+            gap:8,
+            padding:'8px 8px 0px 8px',
+          }} ><span>Name :</span>
+            <span style={{fontWeight:'bold'}} >Revanth :)</span>
+          </div>
+          </div>
+          <div>
+          <div style={{
+            display:'flex',
+            gap:8,
+            padding:'8px 8px 0px 8px',
+          }} ><span>Subject:</span>
+            <span style={{fontWeight:'bold'}} >DM :/</span>
+          </div>
+          </div>
+          </div>
+          
+        
         <div className="mid1">
           <div>
             <span>Innovation:(2M)</span>
@@ -52,8 +99,11 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
+              
               type="number"
-              pattern="[0-2]{1}"
+              min='0'
+              max='2'
+              
             />
           </div>
           <div>
@@ -91,7 +141,7 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
+              type="tel"
               pattern="[0-2]{1}"
             />
           </div>
@@ -212,12 +262,27 @@ const Grading = () => {
           >
             <i className="fa fa-angle-down" aria-hidden="true"></i>
             <select
+<<<<<<< HEAD
               className="selectList"
+=======
+              style={{
+                width: "200px",
+                padding: "8px",
+                borderRadius: "24px",
+                marginRight: "12px",
+              }}
+              onChange={(e)=>{
+                
+                
+                  setIsMid1(e.target.value === 'm1'?true:false)
+                
+              }}
+>>>>>>> 15794e979289086683feb26d9b05438ff1263b75
               name="selectList"
               id="selectList"
             >
-                <option value="option 1">Mid-I </option> 
-              <option value="option 2">Mid-II </option>
+                <option value="m1">Mid-I </option> 
+              <option value="m2">Mid-II </option>
             </select>
           </div>
           <div className="display">
@@ -252,8 +317,8 @@ const Grading = () => {
                 )}
             </div>
             </Worker>  */}
-           
-            <Docviewer extension="pdf" object={'https://www.usciences.edu/student-life/student-handbook.pdf'}/>
+            
+            <Docviewer extension="jpg" />
 
             
           </div>
@@ -263,10 +328,9 @@ const Grading = () => {
             <button
               style={{
                 backgroundColor: "#0e72ab",
-                color: "white",
-                width: "20ch",
+                color: "white",      
                 margin: "auto",
-                padding: "10px",
+                padding: "4px 8px !important",
                 cursor:'pointer',
                 borderRadius: 25,
                 textAlign: "center",
