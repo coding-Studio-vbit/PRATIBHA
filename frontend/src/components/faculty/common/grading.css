@@ -6,8 +6,20 @@
   overflow: hidden;
 }
 .details {
-  gap: 5px;
-  place-content: center;
+  display: flex;
+  padding: 8px 8px 0px 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+.details i{
+  
+  margin: 0px;
+  padding: 0px;
+  padding-left: 12px;
+  transform: translateY(3px);
+}
+.details i:hover{
+  transform: scale(1.05);
 }
 .left p {
   margin-left: 8px;
@@ -182,5 +194,22 @@ select {
   }
   .preview{
       margin: 16px;
+  }
+}
+@media screen and (max-width: 1220px) and (min-width:770px) {
+
+  .details{
+    flex-direction: column;
+
+  }
+  .details div{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+   
+  }
+  .details i{
+    padding: 8px;
+    margin: auto;
   }
 }
