@@ -5,12 +5,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
 import Home from "./components/home/home";
 import Upload from "./components/student/uploadpra/uploadpra";
+import Grading from "./components/faculty/common/grading";
 // import PrivateRoute from "./components/context/privateRoute";
 
 const App = () => {
   return (
     <div className="App">
-      <AuthProvider>
+     <AuthProvider>
         <Router>
           <Routes>
             <Route exact path="/"  element={ <LoginPage/> }/>
@@ -18,7 +19,8 @@ const App = () => {
             <Route exact path="/home" element={  <Home/> }/>
           </Routes>
         </Router>
-      </AuthProvider>
+      </AuthProvider> 
+      
     </div>
   );
 };
@@ -27,7 +29,7 @@ const App = () => {
 function Dummy() {
   return (
     <div>
-      <Upload/>
+      <Grading/>
       
     </div>
   )

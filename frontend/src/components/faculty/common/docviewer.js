@@ -3,7 +3,9 @@ import { Viewer } from "@react-pdf-viewer/core";
 import { Worker } from "@react-pdf-viewer/core";
 
 const ViewPPT=({object})=>{
-    return <div>PPT</div>;
+    return <div>
+        PPT
+    </div>;
 }
 
 const ViewImage=({object})=>{
@@ -23,7 +25,7 @@ const ViewVideo=({object})=>{
 
 const ViewPdf=({object})=>{
     return(
-        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.11.338/build/pdf.worker.min.js">
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
             <div className="mt4" style={{ height: '520px', padding:'0px',width:'100%', margin:'0px' }}>
                 {object ? (
                     <div
