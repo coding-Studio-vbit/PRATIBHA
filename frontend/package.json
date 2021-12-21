@@ -14,7 +14,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "firebase": "^9.6.1",
-    "pdfjs-dist": "^2.11.338",
+    "pdfjs-dist": "^2.6.347",
     "react": "^17.0.2",
     "react-datepicker": "^4.5.0",
     "react-dom": "^17.0.2",

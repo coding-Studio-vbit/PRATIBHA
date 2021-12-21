@@ -47,4 +47,5 @@ Button {
     gap: 80px;
     align-items: center;
     justify-content: center;
+    margin-top: 200px;
 }
