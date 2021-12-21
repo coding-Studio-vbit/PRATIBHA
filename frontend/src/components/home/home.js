@@ -20,6 +20,7 @@ export default function Home() {
                 console.log(10);
                 const docSnap = await getDoc(docRef);   
                 if(docSnap.exists()){
+                    console.log(docSnap,298103);
                     console.log(9);
                     setIsVerified(true);                        
                 }else{

@@ -262,9 +262,6 @@ const Grading = () => {
           >
             <i className="fa fa-angle-down" aria-hidden="true"></i>
             <select
-<<<<<<< HEAD
-              className="selectList"
-=======
               style={{
                 width: "200px",
                 padding: "8px",
@@ -277,7 +274,6 @@ const Grading = () => {
                   setIsMid1(e.target.value === 'm1'?true:false)
                 
               }}
->>>>>>> 15794e979289086683feb26d9b05438ff1263b75
               name="selectList"
               id="selectList"
             >

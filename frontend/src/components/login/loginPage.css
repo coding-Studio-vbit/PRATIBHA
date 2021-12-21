@@ -68,13 +68,7 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
-<<<<<<< HEAD
     margin-top: 20vh;
-
-=======
-    justify-content: center;
-    margin-top: 200px;
->>>>>>> 15794e979289086683feb26d9b05438ff1263b75
 }
 
 @media only screen and (max-width: 600px) {
