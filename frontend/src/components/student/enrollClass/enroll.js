@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 import { enrollCourse } from "../services/studentServices";
 import {Spinner} from '../../global_ui/spinner/spinner';
 import Dialog from '../../global_ui/dialog/dialog'
+import { useNavigate } from "react-router-dom";
 
 export default function StudentEnroll() {
   const [course, setCourse] = useState("");
@@ -18,7 +19,7 @@ export default function StudentEnroll() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(null);
-
+  const nav = useNavigate()
   async function handleEnroll(){
     if(course.value!=null &&  Year.value!=null && Department.value!=null && Section.value!=null){
       console.log("Entered");
@@ -32,6 +33,7 @@ export default function StudentEnroll() {
       })
       if(res==null){
         setShowDialog("Enrolled Successfully");
+        nav('/student/subjectslist',{replace:true})
       }else{
         setShowDialog(res);          
       }

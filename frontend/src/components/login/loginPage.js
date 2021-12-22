@@ -1,58 +1,66 @@
 import React, { useEffect } from "react";
-// import Button from "../global_ui/buttons/button";
 import "./loginPage.css";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 
 export default function LoginPage() {
-  const { signInWithGoogle,currentUser,loading }=useAuth();
-  const nav = useNavigate()
-  
+  const { signInWithGoogle, currentUser, loading } = useAuth();
+  const nav = useNavigate();
 
-  useEffect(()=>{
-    if(currentUser){
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.userType === "STUDENT") {
+        if (currentUser.isFirstTime) {
+          nav("/student/enroll", { replace: true });
 
-      nav('/home',{replace:true})
+        } else {
+          nav("/student/subjectslist", { replace: true });
+
+        }
+      } else if (currentUser.userType === "FACULTY") {
+        if (currentUser.isFirstTime) {
+          nav("/faculty/enroll", { replace: true });
+        } else {
+          nav("/faculty/classlist", { replace: true });
+        }
+      }else {
+        //COE
+        nav("/coesearch", { replace: true });
+        
+      }
     }
-  },[currentUser,nav])
+  }, [currentUser, nav]);
 
-  return loading===false?(
+  return loading === false ? (
     <div className="loginPage">
       <div className="logos">
-        <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg"/>
+        <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
         <img alt="loading" className="vbit" src="/vbit.png" />
-        <img alt="loading" className="cs_logo" src="/cs_logo.png" />      
+        <img alt="loading" className="cs_logo" src="/cs_logo.png" />
       </div>
 
       {/* <p>{JSON.stringify(currentUser)}</p> */}
 
       <div className="row">
+        <div className="button-and-icon">
+          <i className="fas fa-user-circle icons"></i>
+          <button className="loginBtn" onClick={signInWithGoogle}>
+            Login as Student
+          </button>
+        </div>
+        <div className="button-and-icon">
+          <i className="fas fa-graduation-cap icons "></i>
 
-          <div className="button-and-icon">
-            <i className="fas fa-user-circle icons"></i>
-            <button
-             className="loginBtn"
-             onClick={signInWithGoogle}
-
-            >
-              Login as Student
-            </button>
-          </div>
-          <div className="button-and-icon">
-            <i className="fas fa-graduation-cap icons "></i>
-
-            <button
-              className="loginBtn"
-              onClick={signInWithGoogle}
-            >
-              Login as Faculty
-            </button>
-          </div>
+          <button className="loginBtn" onClick={signInWithGoogle}>
+            Login as Faculty
+          </button>
+        </div>
       </div>
-
     </div>
-  ): <LoadingScreen/> ;
+  ) : (
+    <LoadingScreen />
+  );
 }
 
 // const validateMail = (result) => {
