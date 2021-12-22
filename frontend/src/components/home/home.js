@@ -6,31 +6,29 @@ import { doc, getDoc } from "firebase/firestore";
 
 export default function Home() {
     const {currentUser,signOut}=useAuth();
-    const [isVerified, setIsVerified] = useState(true);
+    const [isVerified, setIsVerified] = useState();
+    const [isEnrolled, setisEnrolled] = useState();
     const [error, setError] = useState(null);
 
     async function logOut() {
-       signOut()      
+       signOut();     
     }
-
-    console.log(currentUser);
 
     async function fetchData(){
         if(currentUser.userType==="STUDENT"){
             const docRef = doc(db,"users",currentUser.email);
             try{
-                console.log(10);
                 const docSnap = await getDoc(docRef);   
                 if(docSnap.exists()){
-                    console.log(docSnap,298103);
-                    console.log(9);
-                    setIsVerified(true);                        
+                    console.log(docSnap.data(),298103);
+                    setIsVerified(true); 
+                    if(docSnap.data()['isEnrolled']){
+
+                    }                       
                 }else{
-                    console.log(8);
                     setIsVerified(false);
                 }                     
             }catch(e){
-                console.log(7);
                 setIsVerified(false);
                 setError(e.toString());                                    
             }
@@ -38,7 +36,6 @@ export default function Home() {
         else if(currentUser.userType==="FACULTY"){
             const docRef = doc(db,"faculty",currentUser.email);
             try{
-                console.log(11);
                 const docSnap = await getDoc(docRef);   
                 if(docSnap.exists()){
                     setIsVerified(true);                        
@@ -61,8 +58,7 @@ export default function Home() {
     return currentUser!=null?(
         <div>
             {
-                <div>
-                    <p>{isVerified} fyfhj</p>
+                <div>                   
                     <p>{error}</p>
                     <p></p>
                     <p>{JSON.stringify(currentUser)}</p>

@@ -5,7 +5,6 @@ import { signInWithPopup } from "firebase/auth";
 
 const AuthContext= React.createContext();
 
-// const hasNumber=(myString)=> /\d/.test(myString);
 function checkStudent(myString){
   if(myString.slice(2,6)==="p61a"){
       return true;
@@ -34,41 +33,6 @@ export function AuthProvider({children}) {
         setCurrentUser(null);
         setLoading(false);
       }
-        // .then(async(result) => {
-        //   // let isFirstSignIn = result.user.metadata.creationTime===result.user.metadata.lastSignInTime;
-        //   // let userType="";
-        //   // if(result.user.email.split('@')[1] === 'vbithyd.ac.in'){
-        //   //   if(checkStudent(result.user.email.split('@')[0])){
-        //   //     userType="STUDENT";              
-        //   //   }else{
-        //   //     userType="FACULTY";
-        //   //   }
-        //   //   setCurrentUser({
-        //   //     uid:result.user.uid,
-        //   //     email:result.user.email,
-        //   //     profileURL:result.user.photoURL,
-        //   //     username:result.user.displayName,
-        //   //     phoneNumber:result.user.phoneNumber,
-        //   //     userType:userType,
-        //   //   });
-        //   //   setLoading(false);
-        //   // }
-        //   // else{
-        //   //   console.log("Domain Mismatch");
-        //   //   setLoading(true);
-        //   //   try{
-        //   //     await signOut();
-        //   //   }
-        //   //   catch(e){
-        //   //     console.log("Signout Failed");
-        //   //   }
-        //   //   setLoading(false);
-        //   // }         
-        // })
-        // .catch((error) => {
-        //   setCurrentUser(null);
-        //   setLoading(false);
-        // });
     };
     
     async function signOut() {
@@ -134,69 +98,3 @@ export function AuthProvider({children}) {
         </AuthContext.Provider>          
     )
 }
-
-
-
-// import React, { createContext, useReducer,useEffect } from "react";
-// import {auth} from '../../firebase.js'
-
-// export const AuthReducer = (state, action) => {
-//   switch (action.type) {
-//     case "PROCESSING":
-//       return {
-//         ...state,
-//         isLoading: action.payload,
-//       };
-//     case "LOGIN":
-//       return {
-//         ...state,
-//         user: action.payload,
-//         isLoading:false
-//       };
-//     case "LOGOUT":
-//       return {
-//         ...state,
-//         user: action.payload,
-//         isLoading:false
-//       };
-//       default:
-//         return {
-//           ...state,
-//           user: null,
-//           isLoading:false
-//         };
-//   }
-// };
-
-// const initialState = {
-//   user:null,
-//   isLoading:false,
-// };
-
-// export const AuthContext = createContext();
-
-// export const AuthProvider = (props) => {
-
-//   useEffect(() => {
-//     dispatch({
-//       type: "PROCESSING",
-//       payload:true,
-//     });
-
-//     const unsubscribe = auth.onAuthStateChanged(user => {
-//       dispatch({
-//         type: "LOGIN",
-//         payload: user,
-//       });
-//     }) 
-//     return unsubscribe
-//   }, [])
-
-//   const [state, dispatch] = useReducer(AuthReducer, initialState);
-
-//   return (
-//     <AuthContext.Provider value={{ user: state.user,isLoading:state.isLoading,dispatch }}>
-//       {props.children}
-//     </AuthContext.Provider>
-//   );
-// };

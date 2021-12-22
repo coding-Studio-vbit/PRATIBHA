@@ -28,7 +28,8 @@ async function uploadFile(file,name){
     await uploadBytes(pra_ref, file)
     .then((snapshot) => {
         console.log('Uploaded a blob or file!');
-        console.log(snapshot);
+        console.log(snapshot.ref.fullPath);
+        
     })
     .catch((err)=>{
       console.log("Mahita");
@@ -36,5 +37,6 @@ async function uploadFile(file,name){
     })
     return error;
 }
+
 
 export {auth,app,uploadFile,db};
