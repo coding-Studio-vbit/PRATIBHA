@@ -3,7 +3,7 @@ import {functions} from 'firebase-functions'
 import {admin} from 'firebase-admin'
 
 // const checkNumber=(myString)=> /\d/.test(myString);
-function hasNumber(myString){
+function checkStudent(myString){
     if(myString.slice(2,6)=="p61a"){
         return true;
     }else{
@@ -16,7 +16,7 @@ const domain="vbithyd.ac.in";
 exports.verifyNewUser=functions.auth.user().onCreate(async(user)=>{
     const splitEmail=user.email.split('@');
     if(splitEmail[1]===domain){
-        if(hasNumber(splitEmail[0])){
+        if(checkStudent(splitEmail[0])){
             try{
                 await admin.firestore().collection("users").doc(user.email)
                 .set({

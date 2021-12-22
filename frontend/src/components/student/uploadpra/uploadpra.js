@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import styles from "./uploadpra.module.css";
 import Button from "../../global_ui/buttons/button";
 import Navbar from "../../global_ui/navbar/navbar";
@@ -108,6 +108,14 @@ const Upload =() => {
         setshowDialog(false);        
         navigate('/')
     }
+
+    useEffect(() => {
+        if(mid!=="SELECT_MID"){
+            console.log("OK");            
+        }else{
+            console.log("F");
+        }            
+    }, [mid])
       
     return(
         <>            
@@ -118,12 +126,11 @@ const Upload =() => {
             }
             <div className={styles.main}>   
                 <div>    
-                    <select
-                    className={styles.selectList}
-                    value={mid} onChange={(e)=>handleSelect(e.target.value)}>
-                    <option value="SELECT_MID" >Select MID</option> 
-                      <option value="MID-I">MID-I</option> 
-                    <option value="MID-II">MID-II</option>
+                    <select className={styles.selectList} value={mid} 
+                        onChange={(e)=>handleSelect(e.target.value)}>
+                        <option value="SELECT_MID">Select MID</option> 
+                        <option value="MID-I">MID-I</option> 
+                        <option value="MID-II">MID-II</option>
                     </select>
                     {
                         selectError &&
@@ -177,6 +184,7 @@ const Upload =() => {
                                 }
                             </label>
                             { (fileError.length>0 || fileName.length>0) && <div style={{width:'30px'}}></div>}
+                            {/*for spacing*/}
                             {
                                 fileError.length>0?
                                 <p className={styles.errorField }>{fileError}</p> 
