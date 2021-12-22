@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import Button from "../global_ui/buttons/button";
 import "./loginPage.css";
-import { Navigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { LoadingScreen } from "../global_ui/spinner/spinner";
 
 export default function LoginPage() {
-  const { signInWithGoogle,currentUser }=useAuth();
+  const { signInWithGoogle,currentUser,loading }=useAuth();
+  const nav = useNavigate()
+  
 
-  return currentUser===null?(
+  useEffect(()=>{
+    if(currentUser){
+
+      nav('/home',{replace:true})
+    }
+  },[currentUser,nav])
+
+  return loading===false?(
     <div className="loginPage">
       <div className="logos">
         <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg"/>
@@ -42,7 +52,7 @@ export default function LoginPage() {
       </div>
 
     </div>
-  ):<Navigate to="/home" />;
+  ): <LoadingScreen/> ;
 }
 
 
