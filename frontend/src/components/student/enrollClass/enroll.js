@@ -5,6 +5,8 @@ import Button from "../../global_ui/buttons/button";
 import "./enroll.css";
 import { useAuth } from "../../context/AuthContext";
 import { enrollCourse } from "../services/studentServices";
+import {Spinner} from '../../global_ui/spinner/spinner';
+import Dialog from '../../global_ui/dialog/dialog'
 
 export default function StudentEnroll() {
   const [course, setCourse] = useState("");
@@ -14,17 +16,26 @@ export default function StudentEnroll() {
   const [button, setButton] = useState(true);
   const { currentUser }= useAuth();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [showDialog, setShowDialog] = useState(null);
+
   async function handleEnroll(){
     if(course.value!=null &&  Year.value!=null && Department.value!=null && Section.value!=null){
       console.log("Entered");
-        const res=await enrollCourse(currentUser.email,{
-          course:course.value,
-          year:Year.value,
-          department:Department.value,
-          section:Section.value,
-          isEnrolled:true,
-        })
-        console.log(res);
+      setIsLoading(true);
+      const res=await enrollCourse(currentUser.email,{
+        course:course.value,
+        year:Year.value,
+        department:Department.value,
+        section:Section.value,
+        isEnrolled:true,
+      })
+      if(res==null){
+        setShowDialog("Enrolled Successfully");
+      }else{
+        setShowDialog(res);          
+      }
+      console.log(res);
       console.log(course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value);
     }else{
       console.log("Provide Details");
@@ -101,10 +112,14 @@ export default function StudentEnroll() {
       
   },)
 
+
+
   return (
     <div className="enroll-container">
       <Navbar back={false} title="Enrollment" logout={false} />
-        
+      {
+        showDialog && <Dialog message={showDialog} onOK={()=>{console.log("Route From here")}}/>
+      }       
       <div className="enroll-dropdown">
         
         <p className="enroll-dropdown-title">Course</p>
@@ -160,15 +175,23 @@ export default function StudentEnroll() {
         />
 
       </div>
+      {
+        !isLoading?
+        <Button
+          onClick={handleEnroll}
+          className="enroll-button normal"
+          disabled={button}
+          width="30"
+          height="40"
+          children="Enroll"
+        />:
+        <div style={{marginTop:'20px'}}>
+          <Spinner radius={2}/>
+        </div>
 
-      <Button
-        onClick={handleEnroll}
-        className="enroll-button normal"
-        disabled={button}
-        width="30"
-        height="40"
-        children="Enroll"
-      />
+      }
+
+      
     </div>
   );
 }
