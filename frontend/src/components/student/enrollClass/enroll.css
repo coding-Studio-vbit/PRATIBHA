@@ -6,7 +6,9 @@
 }
 .enroll-dropdown-title {
     font-weight:500;
+    text-align: left;
   }
+  
 .enroll-dropdown{
  
   align-self: center;

@@ -4,7 +4,7 @@ import { AuthProvider } from "./components/context/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
 import Home from "./components/home/home";
-import Upload from "./components/student/uploadpra/uploadpra";
+import StudentEnroll from "./components/student/enrollClass/enroll";
 
 // import PrivateRoute from "./components/context/privateRoute";
 
@@ -30,7 +30,7 @@ const App = () => {
 function Dummy() {
   return (
     <div>
-      <Upload/>      
+      <StudentEnroll/>      
     </div>
   )
 }
