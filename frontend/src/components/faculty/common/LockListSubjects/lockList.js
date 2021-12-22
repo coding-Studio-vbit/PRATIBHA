@@ -13,8 +13,8 @@ const LockList = () => {
   const [BTechList, setBTechList] = useState([]);
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
-
   function handleDone() {
+    
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
     console.log(BTechList, MTechList, MBAList);
   }

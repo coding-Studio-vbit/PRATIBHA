@@ -97,7 +97,7 @@ export function AuthProvider({ children }) {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
                 
-                isFirstTime = docSnap.data['isEnrolled']
+                isFirstTime = docSnap.data()['isEnrolled']
               }
             } catch (e) {
               //Display it
