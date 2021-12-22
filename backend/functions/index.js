@@ -20,7 +20,6 @@ exports.verifyNewUser=functions.auth.user().onCreate(async(user)=>{
             try{
                 await admin.firestore().collection("users").doc(user.email)
                 .set({
-                    isDomainVerified:true,
                     isEnrolled:false,
                     role:['STUDENT']
                 });
@@ -31,7 +30,6 @@ exports.verifyNewUser=functions.auth.user().onCreate(async(user)=>{
             try{
                 await admin.firestore().collection("faculty").doc(user.email)
                 .set({
-                    isDomainVerified:true,
                     isEnrolled:false,
                     role:['FACULTY']
                 }); 
