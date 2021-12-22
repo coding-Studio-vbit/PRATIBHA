@@ -5,11 +5,11 @@ import { signInWithPopup } from "firebase/auth";
 
 const AuthContext= React.createContext();
 
-function useAuth() {
+export function useAuth() {
     return useContext(AuthContext);
 }
 
-function AuthProvider({children}) {
+export function AuthProvider({children}) {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(false);
   
@@ -93,7 +93,6 @@ function AuthProvider({children}) {
     )
 }
 
-export default {useAuth, AuthProvider};
 
 
 // import React, { createContext, useReducer,useEffect } from "react";

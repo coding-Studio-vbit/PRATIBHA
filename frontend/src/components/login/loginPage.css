@@ -1,13 +1,28 @@
 .loginPage {
- display: flex;
- flex-direction: column;
- flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
-.image {
-  width: 100%;
-  margin-bottom: 150px;
+
+.logos{
+  width: 100vw;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
   height: 80px;
 }
+
+.cs_logo{
+    height: 65px;
+}
+
+.vbit{
+  height: 65px;
+}
+
+
 Button {
   width: 250px;
   height: 60px;

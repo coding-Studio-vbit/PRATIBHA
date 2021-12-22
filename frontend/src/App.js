@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.css";
-import  AuthProvider  from "./components/context/AuthContext";
+import { AuthProvider } from "./components/context/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
 import Home from "./components/home/home";
+import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 // import PrivateRoute from "./components/context/privateRoute";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
           <Routes>
             <Route exact path="/"  element={ <LoginPage/> }/>
             <Route exact path="/home" element={  <Home/> }/>
+            <Route exact path="/list" element={ <ListofStudents/> }/>
           </Routes>
         </Router>
       </AuthProvider>

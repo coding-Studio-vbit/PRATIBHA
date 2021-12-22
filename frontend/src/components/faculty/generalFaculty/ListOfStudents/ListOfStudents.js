@@ -2,27 +2,50 @@ import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "./ListOfStudents.css";
 import Button from "../../../global_ui/buttons/button";
+import { ExportCSV } from "../../../export/ExportCSV";
+import {db}   from "../../../../firebase";
+import { doc, collection, where, getDoc} from "firebase/firestore";
 // import { AuthContext } from "../../../context/AuthContext";
 
-// import {collection, getDocs} from "firebase/firebase-firestore";
+// import {collection, getDoc} from "firebase/firebase-firestore";
 
 const ListofStudents = () => {
   const [info, setInfo] = useState([]);
   // const {user} = useContext(AuthContext);
-  // const marksCollectionRef = collection(app, "/faculty/cse@vbithyd.ac.in/3_CSED_DM");
-  // const usersCollectionRef = collection(app, "users");
+  const Fetchdata = async() => {
+    console.log("aatt");
+    const q = doc(db, "faculty", "cse@vbithyd.ac.in", "3_CSED_DM", "COcmAgICmUQfSaOIWoKN");
+    const docSnap = await getDoc(q);
+    console.log(docSnap);
 
-  // useEffect(() => {
-  //   const getInfo = async () => {
-  //     const data = await getDocs(marksCollectionRef);
-  //     console.log(data);
+    // if(docSnap.exist()){
+    //   console.log(docSnap.data());
+    // }
 
-  //   }
-  // })
 
-  // const Fetchdata = () => {
-  //   app.collection("faculty").
-  // }
+    // db.collection("faculty")
+    //   .doc("cse@vbithyd.ac.in")
+    //   .get().then((query) => {
+    //     query.forEach((doc)=>{
+    //       console.log(`${doc.id} => ${doc.data()}`);
+    //     })
+    //   })
+      // .collection("3_CSED_DM")
+      // .get()
+      // .then((document) => {
+      //   document.forEach((student) => {
+      //     console.log(student);
+      //     student.forEach((element) => {
+      //       var data = element.data();
+      //       setInfo((arr) => [...arr, data]);
+      //     });
+      //   });
+      // });
+  };
+
+  useEffect(() => {
+    Fetchdata();
+  }, []);
 
   const data = [
     {
@@ -47,6 +70,7 @@ const ListofStudents = () => {
       MID_2: "9",
     },
   ];
+  console.log(info);
   return (
     <div>
       <Navbar title="3_CSE_D_DA" pra={true} />
@@ -79,12 +103,7 @@ const ListofStudents = () => {
         </div>
       </div>
       <div className="export_">
-        <Button
-          icon={<i class="fas fa-file-export"></i>}
-          children="EXPORT"
-          className="normal"
-          width="150"
-        />
+        <ExportCSV csvData={data} fileName="3_CSE_D_DA" />
       </div>
     </div>
   );
