@@ -1,6 +1,8 @@
-import firebase from 'firebase/compat/app';
+import { initializeApp} from "firebase/app";
 import { getAuth } from '@firebase/auth';
-import {getFirestore} from 'firebase/firestore';
+import { getStorage,ref,uploadBytes } from "firebase/storage";
+import { getFirestore } from 'firebase/firestore';
+import { setPersistence, browserSessionPersistence } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey:process.env.REACT_APP_FIREBASE_API_KEY,
@@ -12,10 +14,29 @@ const firebaseConfig = {
   measurementId:process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
-const app = firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth();
-const db=getFirestore();
-// const db =firebase.firestore();
+setPersistence(auth, browserSessionPersistence)
+
+const storage = getStorage(app);
+const db = getFirestore();
+
+async function uploadFile(file,name){
+    let error=null;
+    const pra_ref = ref(storage, 'pra_ref/'+name);
+
+    await uploadBytes(pra_ref, file)
+    .then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        console.log(snapshot.ref.fullPath);
+        
+    })
+    .catch((err)=>{
+      console.log("Mahita");
+        error=err;
+    })
+    return error;
+}
 
 
-export {auth,app, db};
+export {auth,app,uploadFile,db};

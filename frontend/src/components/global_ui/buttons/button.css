@@ -1,10 +1,8 @@
 .root {
-  /* background-color: #0e72ab; */
-  /* color: white; */
   text-align: center;
-  border-radius: 13px;
+  border-radius: 7px !important;
   border: none;
-  box-shadow: 0 1px 1px 1px rgb(133, 131, 131);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   font-size: large;
   width: 100px;
   height: 50px;
@@ -13,9 +11,8 @@
   background-color: #0e72ab;
   color: white;
   width: auto !important;
-    padding: 5px 16px !important;
-    height: auto !important;
-  /* box-shadow: 0 2px 2px 2px rgb(85, 85, 85); */
+  padding: 5px 16px !important;
+  height: auto !important;
 }
 .rare {
   background-color: rgba(176, 196, 222, 0.43);
@@ -27,12 +24,14 @@ i {
 
 .root:hover {
   box-shadow: none;
+  border:1px solid #e5e4e2;
 }
 
-@media screen and (max-width: 500px){
-  .root{
+/* @media screen and (max-width: 500px) {
+  .root {
     width: 70px;
+    border-radius: 7px !important;
     height: 30px;
-    font-size:14px;
+    font-size: 14px;
   }
-}
+} */

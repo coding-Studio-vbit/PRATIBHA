@@ -1,0 +1,122 @@
+.inputField {
+    position : relative;
+    font-size: 1rem;
+    height: fit-content;
+    width: 100%;
+    --label-top:calc(23%);
+}
+.label {
+    position      : absolute;
+    left          : 0.6em;
+    padding-left  : 0.2em;
+    padding-right : 0.2em;
+    color         : #5a5858;
+    font-size     : 1em;
+    top           : var(--label-top);
+    pointer-events: none;
+    transition    : top 0.2s ease,
+        font-size 0.2s ease,
+        color 0.2s ease;
+}
+
+.input {
+    box-sizing:border-box;
+    border       : 2px solid #ddd;
+    padding      : 0.6em;
+    font-size    : 1.1em;
+    border-radius: 4px;
+    width: 100%;
+    outline      : none;
+    transition   : border-color 0.3s ease,
+    border-color 0.2s ease
+    ;
+    
+}
+
+.inputField span{
+    position: absolute;
+    left: 0.4%;
+    color: red;
+    font-size: 0.8em;
+    padding-top: 0.2em;
+    padding-left: 0.3em;
+}
+.inputField .normalField{
+    --label-top:calc(50% - 10px);
+}
+.errorField{
+    border-color: red;
+}
+
+.errorField +.label{
+    color: red;
+    --label-top:17%;    
+}
+.input:valid+.label,
+.input:focus+.label {
+    font-size   : 0.7em;
+    top         : -8px;
+    color       : black;
+    border-color: black;
+    background  : white;
+}
+
+.input:focus {
+    border-color: black;
+}
+.errorField:focus{
+    border-color: red;
+}
+.errorField:valid+.label,
+.errorField:focus +.label{
+    color: red;
+}
+.input[type=number]::-webkit-inner-spin-button, 
+.input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+textarea {
+    box-sizing:border-box;
+    border       : 2px solid #ddd;
+    font-size    : 1.1em;
+    border-radius: 4px;
+    width: 100%;
+    outline      : none;
+    transition   : border-color 0.3s ease,
+    border-color 0.2s ease
+    ;    
+    resize: none;
+    padding: 10px;    
+}
+textarea:focus{
+    border-color: black;
+
+}
+
+textarea+label{
+    top: 0;
+    left:1.2em;
+    text-align: center;
+    margin-top: 10px;
+    font-size:0.9em;
+    padding: 0px;
+    transition    : top 0.2s ease,
+        font-size 0.2s ease,
+        color 0.2s ease;   
+}
+
+textarea:valid+label,textarea:focus+label{
+    position:absolute;
+    top:-20px;
+    left: 0.7em;
+    padding: 0px 2px;
+    color: black;
+    height: 15px;
+    font-size   : 0.7em;
+
+    background-color: white;
+}

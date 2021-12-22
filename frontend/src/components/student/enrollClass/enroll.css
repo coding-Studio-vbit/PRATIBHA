@@ -4,20 +4,24 @@
     justify-content: center;
     text-align: center;
 }
-.dropdown-title {
+.enroll-dropdown-title {
     font-weight:500;
+    text-align: left;
   }
-.dropdown{
+  
+.enroll-dropdown{
  
   align-self: center;
    max-width: 300px;
-    margin-top: 50px;
+    margin-top: 30px;
 }
-Button{
+.enroll-button{
     margin-top: 30px;
     align-self: center;
+    margin-bottom: 10px;
+    
 }
-.select{
+.enroll-select{
     max-width: 300px;
     min-width: 270px;
     justify-self: center;

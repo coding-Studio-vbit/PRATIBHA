@@ -26,11 +26,11 @@ export default function Electives() {
       <Navbar title={"Electives"}  logout={true} />
       <div className="electives-dropdown">
       
-        <p>Professional Elective</p>
-        <Select className="select" placeholder="" options={pes} onChange={(selectedpe)=>{setpElective(selectedpe)}}/>
+        <p className="electives-dropdown-title">Professional Elective</p>
+        <Select className="electives-select" placeholder="" options={pes} onChange={(selectedpe)=>{setpElective(selectedpe)}}/>
 
-        <p>Open Elective</p>
-        <Select className="select" placeholder="" options={oes} disabled={!pElective} onChange={(selectedoe)=>{setoElective(selectedoe);setButton(false)}}/>
+        <p className="electives-dropdown-title">Open Elective</p>
+        <Select className="electives-select" placeholder="" options={oes} disabled={!pElective} onChange={(selectedoe)=>{setoElective(selectedoe);setButton(false)}}/>
      <Button className='electives-button normal' disabled={button} children="Enroll"/>
 
   

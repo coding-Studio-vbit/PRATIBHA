@@ -2,29 +2,35 @@ const functions = require("firebase-functions");
 import {functions} from 'firebase-functions'
 import {admin} from 'firebase-admin'
 
-const hasNumber=(myString)=> /\d/.test(myString);
+// const checkNumber=(myString)=> /\d/.test(myString);
+function checkStudent(myString){
+    if(myString.slice(2,6)=="p61a"){
+        return true;
+    }else{
+        return false;
+    }
+} 
+
 const domain="vbithyd.ac.in";
-
-
 
 exports.verifyNewUser=functions.auth.user().onCreate(async(user)=>{
     const splitEmail=user.email.split('@');
     if(splitEmail[1]===domain){
-        if(hasNumber(splitEmail[0])){
+        if(checkStudent(splitEmail[0])){
             try{
-                await admin.firestore().collection("users").doc(user.uid)
+                await admin.firestore().collection("users").doc(user.email)
                 .set({
-                    isDomainVerified:true,
-                    role:'STUDENT'
+                    isEnrolled:false,
+                    role:['STUDENT']
                 });
             }catch(e){
                 functions.logger.log("Domain Verification Unsuccessful - STUDENT");
             }            
         }else{
             try{
-                await admin.firestore().collection("faculty").doc(user.uid)
+                await admin.firestore().collection("faculty").doc(user.email)
                 .set({
-                    isDomainVerified:true,
+                    isEnrolled:false,
                     role:['FACULTY']
                 }); 
             }catch(e){

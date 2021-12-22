@@ -1,0 +1,108 @@
+
+.main{
+   display: flex;
+   width: 100vw;
+   flex-direction: column;
+   justify-content:center;
+   align-items:center;
+   font-family:Arial, Helvetica, sans-serif;
+   font-size: medium;
+   font-weight: bold;
+   margin-top: 50px;
+}
+
+.buttton{
+   color: rgba(14, 114, 171, 1);
+   width: 100px;
+   justify-self: bottom;
+   margin-top: 100px;
+}
+
+input[type="file"] {
+   display: none;
+ }
+
+ .customFileUpload {
+   background-color: rgba(14, 114, 171, 1);
+   color: white;
+   outline: none;
+   padding: 5px 10px;
+   border-radius: 5px;
+   border: none;
+   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+   text-align: center;
+   text-decoration: none;
+   cursor: pointer;
+ }
+
+
+.inputStyle{
+   font-size: 14px;
+   outline: none;
+   background-color: #e5e4e2;
+   padding: 10px 15px;
+   border: none;
+   border-radius: 20px;
+   width: 400px;
+}
+
+.praLabel{
+   font-weight: 400;
+   font-size: 14px;
+   letter-spacing: 1pt;
+   padding-left: 15px;
+}
+
+.fileContainer{
+   margin-bottom: 25px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.errorField{
+   color:red;
+   padding-left: 15px;
+   font-size:12px;
+   font-weight: 450;
+}
+
+.instructions{
+   color:darkslategrey;
+   font-size:16px;
+   font-weight: 450;
+   margin: 0px;
+}
+
+.fileName{
+   color:darkslategrey;
+   font-size:14x;
+   font-weight: 450;
+}
+
+.selectList{
+   width: 200px;
+   outline: none;
+   border: none;
+   border-radius: 14px;
+   background-color: #e5e4e2;
+   font-size: large;
+   font-weight: 500;
+   padding: 10px;
+   -moz-appearance:none; /* Firefox */
+   -webkit-appearance:none; /* Safari and Chrome */
+   appearance:none;
+   background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSdibGFjaycgaGVpZ2h0PScyNCcgdmlld0JveD0nMCAwIDI0IDI0JyB3aWR0aD0nMjQnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZD0nTTcgMTBsNSA1IDUtNXonLz48cGF0aCBkPSdNMCAwaDI0djI0SDB6JyBmaWxsPSdub25lJy8+PC9zdmc+);
+   background-repeat: no-repeat;
+   background-position-x: right;
+   background-position-y: center;
+   
+}
+
+.fileUploadModule{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}

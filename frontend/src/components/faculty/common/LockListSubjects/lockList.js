@@ -14,12 +14,11 @@ const LockList = () => {
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
 
-
-function handleDone(){
-  //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
-  console.log(BTechList,MTechList,MBAList);
-}
-
+  function handleDone() {
+    //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
+    console.log(BTechList, MTechList, MBAList);
+  }
+  //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
     if (Course.value === "B.Tech") {
       const newBTech =
@@ -53,7 +52,13 @@ function handleDone(){
       if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
     }
   };
-  //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
+
+  //handle remove
+  const handleRemove = (index) => {
+    BTechList.splice(index, 1);
+    setBTechList(BTechList);
+  };
+
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
     { value: "M.Tech", label: "M.Tech" },
@@ -167,7 +172,6 @@ function handleDone(){
               disabled={!Subject}
               onClick={handleAddButton}
             >
-              {" "}
               <i className="fas fa-plus"></i>ADD
             </button>
           </div>
@@ -177,9 +181,14 @@ function handleDone(){
                 <div>
                   <h4> B.Tech </h4>
                   <ul>
-                    {console.log(BTechList)}
                     {BTechList.map((item) => {
-                      return <li>{item}</li>;
+                      return (
+                        <li>
+                          {item}
+                        <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
+                        
+                        </li>
+                      );
                     })}
                   </ul>
                 </div>
@@ -188,9 +197,13 @@ function handleDone(){
                 <div>
                   <h4> M.Tech </h4>
                   <ul>
-                    {console.log(MTechList)}
                     {MTechList.map((item) => {
-                      return <li>{item}</li>;
+                      return (
+                        <li>
+                          {item} 
+                          <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
+                        </li>
+                      );
                     })}
                   </ul>
                 </div>
@@ -199,16 +212,19 @@ function handleDone(){
                 <div>
                   <h4> MBA </h4>
                   <ul>
-                    {console.log(MBAList)}
                     {MBAList.map((item) => {
-                      return <li>{item}</li>;
+                      return (
+                        <li>
+                          {item}   <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
+                        </li>
+                      );
                     })}
                   </ul>
                 </div>
               )}
             </div>
             <Button
-              className="done-button normal"
+              className="locklist-button normal"
               width="90"
               height="40"
               children="Done"
