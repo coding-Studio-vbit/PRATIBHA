@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "../../generalFaculty/ListOfStudents/ListOfStudents";
 import Button from "../../../global_ui/buttons/button";
+import { ExportCSV } from "../../../export/ExportCSV";
 
 const ViewSubmissions = () => {
   const data = [
@@ -59,12 +60,7 @@ const ViewSubmissions = () => {
             ))}
         </table>
         <div className="LOF_buttons">
-          <Button
-            icon={<i class="fas fa-file-export"></i>}
-            children="EXPORT"
-            className="normal"
-            width="150"
-          />
+        <ExportCSV csvData={data} fileName="3_CSE_D_DA" />
         </div>
       </div>
     </div>
