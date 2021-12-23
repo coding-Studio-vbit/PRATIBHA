@@ -57,8 +57,6 @@ const ViewSubmissions = () => {
 
     await getDocs(studentref).then((querySnapshot) => {
       querySnapshot.forEach(async (doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
         const email = doc.id.toString() + "@vbithyd.ac.in";
         const mid1 =
           doc.data()["mid1"]["criteria1"] +
@@ -72,7 +70,6 @@ const ViewSubmissions = () => {
           doc.data()["mid2"]["criteria3"] +
           doc.data()["mid2"]["criteria4"] +
           doc.data()["mid2"]["criteria5"];
-        // console.log(email);
 
         await fetchuser(email)
           .then((returndata) => {
@@ -91,14 +88,12 @@ const ViewSubmissions = () => {
           })
           .then((dataobj) => {
             setData((data) => [...data, dataobj]);
-            // console.log(data);
           });
       });
     });
   };
 
   const fetchuser = async (email) => {
-    console.log(email);
     const userRef = doc(db, "users", email);
     const userDoc = await getDoc(userRef);
     // console.log(userDoc.data());

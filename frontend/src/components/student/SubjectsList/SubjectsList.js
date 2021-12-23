@@ -4,10 +4,7 @@ import "../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css";
 import EditIcon from "@mui/icons-material/Edit";
 import { Spinner } from "../../global_ui/spinner/spinner";
 import { db } from "../../../firebase";
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
@@ -19,7 +16,6 @@ const SubjectsList = () => {
       const subjectsdata = userDoc.data()["subjects"];
 
       Object.keys(subjectsdata).map(async (item, index) => {
-        //  console.log(item)
         const date = await Fetchsubject(item);
         let gradetype;
         if (subjectsdata[item].isgraded_1 && subjectsdata[item].mid_1) {
@@ -32,7 +28,9 @@ const SubjectsList = () => {
 
         const resdata = {
           SUBJECT: item,
-          PRA_TOPIC: subjectsdata[item].topic_title ? subjectsdata[item].topic_title : "-",
+          PRA_TOPIC: subjectsdata[item].topic_title
+            ? subjectsdata[item].topic_title
+            : "-",
           STATUS: gradetype,
           SUBMIT_BEFORE: date,
         };
@@ -64,7 +62,6 @@ const SubjectsList = () => {
 
   useEffect(() => {
     Fetchdata();
-    
   }, []);
 
   const Data = [
