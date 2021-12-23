@@ -27,3 +27,9 @@
     justify-self: center;
     align-self: center;
 }
+
+.electives{
+    align-self: center;
+    max-width: 300px;
+    margin-top: 30px;
+}
