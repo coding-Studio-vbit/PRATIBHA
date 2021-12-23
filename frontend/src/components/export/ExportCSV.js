@@ -18,7 +18,7 @@ export const ExportCSV = ({ csvData, fileName }) => {
 
   return (
     <Button
-      icon={<i class="fas fa-file-export"></i>}
+      icon={<i className="fas fa-file-export"></i>}
       children="EXPORT"
       className="normal"
       width="150"

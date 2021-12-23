@@ -1,10 +1,73 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../global_ui/navbar/navbar";
-import '../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css';
+import "../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css";
 import EditIcon from "@mui/icons-material/Edit";
+import { Spinner } from "../../global_ui/spinner/spinner";
+import { db } from "../../../firebase";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 const SubjectsList = () => {
-  const data = [
+  const [data, setData] = useState([]);
+
+  const Fetchdata = async () => {
+    let email = "20P61A05N0@vbithyd.ac.in";
+    const userRef = doc(db, "users", email);
+    await getDoc(userRef).then((userDoc) => {
+      const subjectsdata = userDoc.data()["subjects"];
+
+      Object.keys(subjectsdata).map(async (item, index) => {
+        //  console.log(item)
+        const date = await Fetchsubject(item);
+        let gradetype;
+        if (subjectsdata[item].isgraded_1 && subjectsdata[item].mid_1) {
+          gradetype = "Graded";
+        } else if (!subjectsdata[item].isgraded_1 && subjectsdata[item].mid_1) {
+          gradetype = "Submitted for Graded";
+        } else {
+          gradetype = "Not Submitted";
+        }
+
+        const resdata = {
+          SUBJECT: item,
+          PRA_TOPIC: subjectsdata[item].topic_title ? subjectsdata[item].topic_title : "-",
+          STATUS: gradetype,
+          SUBMIT_BEFORE: date,
+        };
+        setData((data) => [...data, resdata]);
+      });
+    });
+  };
+
+  const Fetchsubject = async (subject) => {
+    let deadline;
+    const subjectRef = doc(db, "subjects", "3_CSE_A");
+    await getDoc(subjectRef).then((subjectDoc) => {
+      const res = subjectDoc.data();
+      Object.keys(res).map(async (item, index) => {
+        if (subject === item) {
+          const seconds = res[item]["deadline_1"]["seconds"];
+          let date = new Date(seconds * 1000);
+          deadline =
+            date.getDate().toString() +
+            "-" +
+            (date.getMonth() + 1).toString() +
+            "-" +
+            date.getFullYear().toString();
+        }
+      });
+    });
+    return deadline;
+  };
+
+  useEffect(() => {
+    Fetchdata();
+    
+  }, []);
+
+  const Data = [
     {
       SUBJECT: "WT",
       PRA_TOPIC: "ABCDEFGH",
@@ -27,29 +90,39 @@ const SubjectsList = () => {
   return (
     <div>
       <Navbar title="3_CSE_D" />
-      <div className="sub_body">
-        <table style={{ marginTop: "4.5rem" }}>
-          <tr>
-            <th>SUBJECT</th>
-            <th>PRA TOPIC</th>
-            <th>STATUS</th>
-            <th>SUBMIT BEFORE</th>
-            <th>EDIT</th>
-          </tr>
-          {data &&
-            data.map((dataitem) => (
+      {!data.length ? (
+        <div className="spinnerload">
+          <Spinner radius={2} />
+        </div>
+      ) : (
+        <div className="sub_body">
+          <table style={{ marginTop: "4.5rem" }}>
+            <thead>
               <tr>
-                <td>{dataitem.SUBJECT}</td>
-                <td>{dataitem.PRA_TOPIC}</td>
-                <td>{dataitem.STATUS}</td>
-                <td>{dataitem.SUBMIT_BEFORE}</td>
-                <td>
-                  <EditIcon style={{ color: "rgba(11, 91, 138, 1)" }} />
-                </td>
+                <th>SUBJECT</th>
+                <th>PRA TOPIC</th>
+                <th>STATUS</th>
+                <th>SUBMIT BEFORE</th>
+                <th>EDIT</th>
               </tr>
-            ))}
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {data &&
+                data.map((dataitem) => (
+                  <tr key={dataitem.SUBJECT}>
+                    <td>{dataitem.SUBJECT}</td>
+                    <td>{dataitem.PRA_TOPIC}</td>
+                    <td>{dataitem.STATUS}</td>
+                    <td>{dataitem.SUBMIT_BEFORE}</td>
+                    <td>
+                      <EditIcon style={{ color: "rgba(11, 91, 138, 1)" }} />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
