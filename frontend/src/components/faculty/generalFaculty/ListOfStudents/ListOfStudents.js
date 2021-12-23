@@ -5,17 +5,9 @@ import Button from "../../../global_ui/buttons/button";
 import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
-import {
-  doc,
-  collection,
-  where,
-  getDoc,
-  query,
-  getDocs,
-} from "firebase/firestore";
+import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
 
 const ListofStudents = () => {
-  const [isInfo, setIsInfo] = useState(false);
   const [data, setData] = useState([]);
 
   const Fetchdata = async () => {
@@ -25,8 +17,6 @@ const ListofStudents = () => {
 
     await getDocs(studentref).then((querySnapshot) => {
       querySnapshot.forEach(async (doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
         const email = doc.id.toString() + "@vbithyd.ac.in";
         const mid1 =
           doc.data()["mid1"]["criteria1"] +
@@ -40,7 +30,6 @@ const ListofStudents = () => {
           doc.data()["mid2"]["criteria3"] +
           doc.data()["mid2"]["criteria4"] +
           doc.data()["mid2"]["criteria5"];
-        // console.log(email);
 
         await fetchuser(email)
           .then((returndata) => {
@@ -59,15 +48,12 @@ const ListofStudents = () => {
           })
           .then((dataobj) => {
             setData((data) => [...data, dataobj]);
-            // data.sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? 1 : -1));
-            // console.log(data);
           });
       });
     });
   };
 
   const fetchuser = async (email) => {
-    console.log(email);
     const userRef = doc(db, "users", email);
     const userDoc = await getDoc(userRef);
     // console.log(userDoc.data());
@@ -101,9 +87,6 @@ const ListofStudents = () => {
       MID_2: "9",
     },
   ];
-  // if (isInfo === true) {
-  console.log(data);
-  // }
 
   return (
     <div>
