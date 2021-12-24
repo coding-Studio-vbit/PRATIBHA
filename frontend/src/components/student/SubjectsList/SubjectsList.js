@@ -2,8 +2,18 @@ import React, {useState, useEffect} from "react";
 import Navbar from "../../global_ui/navbar/navbar";
 import '../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css';
 import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+
 
 const SubjectsList = () => {
+
+  const nav = useNavigate()
+  const onClick=(e)=>
+    { 
+      nav('/student/uploadPRA');
+    }
+   
+
   const data = [
     {
       SUBJECT: "WT",
@@ -26,7 +36,7 @@ const SubjectsList = () => {
   ];
   return (
     <div>
-      <Navbar title="3_CSE_D" />
+      <Navbar title="3_CSE_D" onBackBtnPressed={()=>console.log("Mahita")} logout={true} />
       <div className="sub_body">
         <table style={{ marginTop: "4.5rem" }}>
           <tr>
@@ -44,7 +54,7 @@ const SubjectsList = () => {
                 <td>{dataitem.STATUS}</td>
                 <td>{dataitem.SUBMIT_BEFORE}</td>
                 <td>
-                  <EditIcon style={{ color: "rgba(11, 91, 138, 1)" }} />
+                  <EditIcon style={{ color: "rgba(11, 91, 138, 1)" }} onClick={onClick}/>
                 </td>
               </tr>
             ))}

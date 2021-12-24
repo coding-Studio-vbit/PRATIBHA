@@ -21,27 +21,30 @@ export default function StudentEnroll() {
   const [showDialog, setShowDialog] = useState(null);
   const nav = useNavigate()
   async function handleEnroll(){
-    if(course.value!=null &&  Year.value!=null && Department.value!=null && Section.value!=null){
-      console.log("Entered");
-      setIsLoading(true);
-      const res=await enrollCourse(currentUser.email,{
-        course:course.value,
-        year:Year.value,
-        department:Department.value,
-        section:Section.value,
-        isEnrolled:true,
-      })
-      if(res==null){
-        setShowDialog("Enrolled Successfully");
-        nav('/student/subjectslist',{replace:true})
-      }else{
-        setShowDialog(res);          
-      }
-      console.log(res);
-      console.log(course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value);
-    }else{
-      console.log("Provide Details");
-    }
+    console.log('Mahita');
+    nav('/student/subjectslist',{replace:true})
+    
+    // if(course.value!=null &&  Year.value!=null && Department.value!=null && Section.value!=null){
+    //   console.log("Entered");
+    //   setIsLoading(true);
+    //   const res=await enrollCourse(currentUser.email,{
+    //     course:course.value,
+    //     year:Year.value,
+    //     department:Department.value,
+    //     section:Section.value,
+    //     isEnrolled:true,
+    //   })
+    //   if(res==null){
+    //     setShowDialog("Enrolled Successfully");
+    //     nav('/student/subjectslist',{replace:true})
+    //   }else{
+    //     setShowDialog(res);          
+    //   }
+    //   console.log(res);
+    //   console.log(course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value);
+    // }else{
+    //   console.log("Provide Details");
+    // }
   }
 
   const courses = [
