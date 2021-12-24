@@ -10,6 +10,11 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (currentUser) {
+      const url = localStorage.getItem('url')
+      if(url) nav(url,{replace:true})
+      else{
+
+      
       if (currentUser.userType === "STUDENT") {
         if (currentUser.isFirstTime) {
           nav("/student/enroll", { replace: true });
@@ -30,6 +35,7 @@ export default function LoginPage() {
         
       }
     }
+  }
   }, [currentUser, nav]);
 
   return loading === false ? (

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import {
@@ -60,6 +60,10 @@ const App = () => {
 
 const PrivateRoutes = ({ children }) => {
   const { currentUser } = useAuth();
+  const location = useLocation()
+  useEffect(()=>{
+    localStorage.setItem('url',location.pathname)
+  },[location])
   return currentUser ? children : <Navigate to={"/"}></Navigate>;
 };
 
