@@ -68,6 +68,12 @@ export default function StudentEnroll() {
             setShowDialog(result.toString());            
           }
         }else{
+          console.log(res.document[1],34);
+          console.log(res.document[2],12);
+          console.log(res.document[2].map(
+            function(a) {
+              return  {value:a.subject, label:a.subject} 
+            }));
           setOpenElectives(res.document[1]);
           setProfessionalElectives(res.document[2]); 
           setSubjects(res.document[0]);
@@ -155,8 +161,7 @@ export default function StudentEnroll() {
     if(currentUser.isFirstTime){
       setIntialize(false);
     }else{
-      nav('/student/subjectslist',{replace:true})
-      
+      nav('/student/subjectslist',{replace:true})      
     }    
   }
 
@@ -253,46 +258,53 @@ export default function StudentEnroll() {
 
      
         {
-          (openElectives===null && professionalElectives===null)?
-          (
-            !isLoading?
-            <Button
-              onClick={getSubjects}
-              className="enroll-button normal"
-              disabled={button}
-              width="30"
-              height="40"
-              children="Enroll"
-            />:
-            <div style={{marginTop:'20px'}}>
-              <Spinner radius={2}/>
-            </div>
-          ):
+          (openElectives!==null && professionalElectives!==null)?
+          
           <div className="electives">
 
             <p className="enroll-dropdown-title">Open Elective</p>
             <Select
             placeholder=""
-            value={oe}
-            options={openElectives}
+            value={{value:oe.subject,label:oe.subject}}
+            options={
+              openElectives.map(
+                function(a) {
+                  return  {value:a.subject, label:a.subject} 
+                })
+            }
             className="enroll-select"
-            onChange={(selectedElective) => {
-              setOe(selectedElective);
-            }}
+            onChange={
+              (selectedElective) => {
+                openElectives.forEach(element =>{
+                  if(element.subject===selectedElective.value){
+                    setOe(element);
+                  }
+                });
+              }
+            }
             />
-            
-            {/* <p className="enroll-dropdown-title">{JSON.stringify(professionalElectives)}</p> */}
 
 
             <p className="enroll-dropdown-title">Professional Elective</p>
             <Select
-              placeholder=""
-              value={pe}
-              options={professionalElectives}
-              className="enroll-select"
-              onChange={(selectedElective) => {
-                setPe(selectedElective);
-              }}
+            placeholder=""
+            value={{value:pe.subject,label:pe.subject}}
+            options={
+              professionalElectives.map(
+                function(a) {
+                  return  {value:a.subject, label:a.subject} 
+                })
+            }
+            className="enroll-select"
+            onChange={
+              (selectedElective) => {
+                professionalElectives.forEach(element =>{
+                  if(element.subject===selectedElective.value){
+                    setPe(element);
+                  }
+                });
+              }
+            }
             />
             {
               !isLoading?
@@ -309,6 +321,21 @@ export default function StudentEnroll() {
               </div>
             }
           </div>
+          :
+          (
+            !isLoading?
+            <Button
+              onClick={getSubjects}
+              className="enroll-button normal"
+              disabled={button}
+              width="30"
+              height="40"
+              children="Enroll"
+            />:
+            <div style={{marginTop:'20px'}}>
+              <Spinner radius={2}/>
+            </div>
+          )
         }  
        </div>    
     </div>

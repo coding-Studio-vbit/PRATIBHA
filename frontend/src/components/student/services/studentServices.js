@@ -71,21 +71,14 @@ async function getCurriculumDetails(course_details) {
         });
         if(docSnap!=null){
             console.log(docSnap.data(),10);
-            let reg = [];
+            let reg = docSnap.data()['subjects'];
             let oe  = [];
             let pe  = [];
-            docSnap.data()['subjects'].forEach(element => {
-                reg.push({value:element.subject,label:element.subject})                                
-            });
             if(docSnap.data()['open_electives']!=null){
-                docSnap.data()['open_electives'].forEach(element => {
-                    oe.push({value:element.subject,label:element.subject})                                
-                });
+                oe=docSnap.data()['open_electives']
             }
             if(docSnap.data()['professional_electives']!=null){
-                docSnap.data()['professional_electives'].forEach(element => {
-                    pe.push({value:element.subject,label:element.subject})                                
-                });
+                pe=docSnap.data()['professional_electives']
             }
             console.log(pe);
             if(oe.length===0 || pe.length===0){
