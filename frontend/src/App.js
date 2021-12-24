@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import {
@@ -9,7 +9,6 @@ import {
   useLocation,
 } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
-import Home, { FacultyRoutes } from "./components/home/home";
 import StudentEnroll from "./components/student/enrollClass/enroll";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
 import Upload from "./components/student/uploadpra/uploadpra";
@@ -63,6 +62,10 @@ const App = () => {
 
 const PrivateRoutes = ({ children }) => {
   const { currentUser } = useAuth();
+  const location = useLocation()
+  useEffect(()=>{
+    localStorage.setItem('url',location.pathname)
+  },[location])
   return currentUser ? children : <Navigate to={"/"}></Navigate>;
 };
 
