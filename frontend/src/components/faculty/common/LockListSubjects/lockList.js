@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
+import Dialog from "../../../global_ui/dialog/dialog";
 import { enrollClasses } from "../../services/facultyServices";
 import "./lockList.css";
 
@@ -14,13 +15,16 @@ const LockList = () => {
   const [BTechList, setBTechList] = useState([]);
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
+
+  const [showDialog,setShowDialog]=useState(null);
+
   function handleDone() {
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
-    console.log(BTechList)
-    console.log(MTechList)
-    console.log( MBAList)
     var finalList = BTechList.concat(MTechList,MBAList)
     console.log(finalList)
+    if(finalList.length==0){
+      setShowDialog('Add your classes for this semester')
+    }
   //   var finalList = 
   //   enrollClasses(user,)
    }
@@ -37,6 +41,7 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!BTechList.includes(newBTech)) setBTechList([...BTechList, newBTech]);
+      else{setShowDialog('Class already added')}
     } else if (Course.value === "M.Tech") {
       const newMTech =
         Year.value +
@@ -47,6 +52,7 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!MTechList.includes(newMTech)) setMTechList([...MTechList, newMTech]);
+      else{setShowDialog('Class already added')}
     } else if (Course.value === "MBA") {
       const newMBA =
         Year.value +
@@ -57,6 +63,7 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
+      else{setShowDialog('Class already added')}
     }
   };
 
@@ -122,6 +129,14 @@ const LockList = () => {
       <div className="lockList-container">
         <Navbar title="Classes List" logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
+        {showDialog && (
+        <Dialog
+          message={showDialog}
+          onOK={() => {
+            setShowDialog(false);
+          }}
+        />
+      )}
         <div className="flex-container">
           <div className="dropdown">
             <p className="locklist-dropdown-title">Course</p>
@@ -190,10 +205,10 @@ const LockList = () => {
                   <h4> B.Tech </h4>
                   <ul>
                     {BTechList.map((item, index) => {
-                      const displayItem = item.split('_',1)
+                    
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {displayItem}
+                          {item}
 
                           <span className="far">
                             <i
