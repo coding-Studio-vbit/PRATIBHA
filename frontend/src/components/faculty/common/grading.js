@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Viewer } from "@react-pdf-viewer/core";
-// import styles from "./grading.css";
+import styles from "./grading.css";
 import Button from "../../global_ui/buttons/button";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Worker } from "@react-pdf-viewer/core";
@@ -13,10 +13,25 @@ const Grading = () => {
    const [loading, setLoading] = React.useState(false); 
    const [rollNo, setRollNo] = React.useState('');
    const [isMid1 , setIsMid1] = React.useState(true)
-   
-
+   const [innovation1 , setInnovation1] = React.useState('')
+   const [subRel1 , setSubRel1] = React.useState('')
+   const [individuality1 , setIndividuality1] = React.useState()
+   const [preparation1 , setPreparation1] = React.useState()
+   const [presentation1 , setPresentation1] = React.useState()
+   const [innovation2 , setInnovation2] = React.useState()
+   const [subRel2 , setSubRel2] = React.useState()
+   const [individuality2 , setIndividuality2] = React.useState()
+   const [preparation2 , setPreparation2] = React.useState()
+   const [presentation2 , setPresentation2] = React.useState()
+  const data=
+    {
+      NAME:"Mahita",
+      SUBJECT:"DM",
+      PRA_TITLE: "Bhuj Earthquake"
+    }
+  ;
    const searchRoll=(e)=>{
-     if(rollNo.length===10)
+     if(rollNo.length===10 )
      {
        setLoading(true)
        //http request 
@@ -29,19 +44,9 @@ const Grading = () => {
      }
    }
 
-  //  const onCheck=(e)=>{
-  //    let value
-  //  }
-  // const handleTitle=(e)=> {
-  //     let value=e.target.value
-  //      if(value.length==10){
-  //         setTitleError("title must have atleast 8 characters");
-  //     }
-  //     else{
-  //         setTitleError("")
-  //     }
-  //     setPraTitle(value)
-  // }
+  const Save=(e)=>{
+    //save values
+  }
 
         function onChange (e)  {
           const files = e.target.files;
@@ -54,18 +59,20 @@ const Grading = () => {
         <i style={{
             position:'absolute',
             left:'16px',
-            top:'16px'
+            top:'16px',
+            
         }} className="fas fa-arrow-left black" aria-hidden="true"></i>
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
         <div className="details">
           <div style={{
             display:'flex',
-            gap:'8px'
+            gap:'8px',
+            alignItems:'center'
           }} >
           <span>Roll no:</span>
           <div>
           <input type="text" maxLength={10} value={rollNo} onChange={(e)=>setRollNo(e.target.value)}></input>
-          <i style={{cursor:'pointer'}} onClick={searchRoll} class="fa fa-search" aria-hidden="true"></i>
+          <i style={{cursor:'pointer'}} onClick={searchRoll} class="fa fa-search" ></i>
           </div>
           </div>
           
@@ -75,7 +82,7 @@ const Grading = () => {
             gap:8,
             padding:'8px 8px 0px 8px',
           }} ><span>Name :</span>
-            <span style={{fontWeight:'bold'}} >Revanth :)</span>
+            <span style={{fontWeight:'bold'}}>{data.NAME} </span>
           </div>
           </div>
           <div>
@@ -84,7 +91,7 @@ const Grading = () => {
             gap:8,
             padding:'8px 8px 0px 8px',
           }} ><span>Subject:</span>
-            <span style={{fontWeight:'bold'}} >DM :/</span>
+            <span style={{fontWeight:'bold'}}>{data.SUBJECT}</span>
           </div>
           </div>
           </div>
@@ -101,9 +108,8 @@ const Grading = () => {
                 resize:'none'
               }}
               
-              type="number"
-              min='0'
-              max='2'
+              type="text"
+              maxLength={1} value={innovation1} onChange={(e)=>setInnovation1(e.target.value)}
               
             />
           </div>
@@ -116,8 +122,8 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
-              pattern="[0-2]{1}"
+              type="text"
+              maxLength={1} value={subRel1} onChange={(e)=>setSubRel1(e.target.value)}
             />
           </div>
           <div>
@@ -129,8 +135,8 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
-              pattern="[0-2]{1}"
+              type="text"
+              maxLength={1} value={individuality1} onChange={(e)=>setIndividuality1(e.target.value)}
             />
           </div>
           <div>
@@ -142,8 +148,8 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="tel"
-              pattern="[0-2]{1}"
+              type="text"
+              maxLength={1} value={preparation1} onChange={(e)=>setPreparation1(e.target.value)}
             />
           </div>
           <div>
@@ -155,12 +161,16 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
-              pattern="[0-2]{1}"
+              type="text"
+              maxLength={1} value={presentation1} onChange={(e)=>setPresentation1(e.target.value)}
             />
-          </div>
-          <div>
-            <span>MID-I:(10M)</span>
+          </div>          
+          <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
+            <span >MID-I:(10M) </span>
+            <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', textAlign:'center', borderRadius:'10px'}}>
+               {parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1)}
+               </span>
+
           </div>
         </div>
 
@@ -174,7 +184,8 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
+              type="text"
+              maxLength={1} value={innovation2} onChange={(e)=>setInnovation2(e.target.value)}
             />
           </div>
           <div>
@@ -186,7 +197,8 @@ const Grading = () => {
                 textAlign: "center",
                 resize:'none'
               }}
-              type="number"
+              type="text"
+              maxLength={1} value={subRel2} onChange={(e)=>setSubRel2(e.target.value)}
             />
           </div>
           <div>
@@ -198,7 +210,8 @@ const Grading = () => {
                 textAlign: "center",
                 resize: "none",
               }}
-              type="number"
+              type="text"
+              maxLength={1} value={individuality2} onChange={(e)=>setIndividuality2(e.target.value)}
             />
           </div>
           <div>
@@ -209,7 +222,8 @@ const Grading = () => {
                 borderRadius: "10px",
                 textAlign: "center",
               }}
-              type="number"
+              type="text"
+              maxLength={1} value={preparation2} onChange={(e)=>setPreparation2(e.target.value)}
             />
           </div>
           <div>
@@ -220,21 +234,22 @@ const Grading = () => {
                 borderRadius: "10px",
                 textAlign: "center",
               }}
-              type="number"
+              type="text"
+              maxLength={1} value={presentation2} onChange={(e)=>setPresentation2(e.target.value)}
             />
           </div>
-          <div>
-            <span>MID-II:(10M)</span>
+          <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
+            <span >MID-II:(10M)</span>
+            <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', textAlign:'center', borderRadius:'10px'}}> 
+            {parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2)}
+            </span>
           </div>
         </div>
         <div className="footer">
-          <i
-            class="fas fa-chevron-circle-left fa-2x"
-            style={{ cursor: "pointer" }}
-          ></i>
-          <i class="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }}></i>
+          <i class="fas fa-chevron-circle-left fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
+          <i class="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
         </div>
-      </div>
+      </div> 
 
       <div className="right">
         <div
@@ -278,61 +293,33 @@ const Grading = () => {
               name="selectList"
               id="selectList"
             >
-                <option value="m1">Mid-I </option> 
+                <option value="m1">Mid-I  </option> 
               <option value="m2">Mid-II </option>
             </select>
           </div>
+
           <div className="display">
-           {/* <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-            <input type="file" accept=".pdf" onChange={onChange} aria-hidden="false" />
-
-            <div className="mt4" style={{ height: '480px' }}>
-                {url ? (
-                    <div
-                        style={{
-                            border: '1px solid rgba(0, 0, 0, 0.3)',
-                            height: '100%',
-                        }}
-                    >
-
-                        <Viewer fileUrl={url} />
-                    </div>
-                ) : (
-                    <div
-                        style={{
-                            alignItems: 'center',
-                            //border: '2px dashed rgba(0, 0, 0, .3)',
-                            display: 'flex',
-                            fontSize: '2rem',
-                            height: '100%',
-                            justifyContent: 'center',
-                            width: '100%',
-                        }}
-                    >
-                        Preview area
-                    </div>
-                )}
-            </div>
-            </Worker>  */}
-            
-            <Docviewer extension="jpg" />
-
-            
-          </div>
+                      
+                <Docviewer extension="mp4" object="https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx" /> 
+    
+                
+              </div>
           <div className="remarksCon">
             <span className="remarks-title">REMARKS</span>
-            <textarea rows={3} className="remarks" style={{ resize: "none" }} />
+            <textarea rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
             <button
               style={{
                 backgroundColor: "#0e72ab",
                 color: "white",      
                 margin: "auto",
-                padding: "4px 8px !important",
+                padding: "8px 16px",
                 cursor:'pointer',
                 borderRadius: 25,
                 textAlign: "center",
                 border: "none",
               }}
+
+              onClick={Save}
             >
               SAVE
             </button>

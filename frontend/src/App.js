@@ -9,7 +9,6 @@ import {
   useLocation,
 } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
-//import Home, { FacultyRoutes } from "./components/home/home";
 import StudentEnroll from "./components/student/enrollClass/enroll";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
 import Upload from "./components/student/uploadpra/uploadpra";
@@ -18,8 +17,6 @@ import ClassList from "./components/faculty/generalFaculty/ClassList/classlist";
 import Grading from "./components/faculty/common/grading";
 import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 import CoeSearch from "./components/faculty/coe/coeSearch";
-
-// import PrivateRoute from "./components/context/privateRoute";
 
 const App = () => {
   return (
