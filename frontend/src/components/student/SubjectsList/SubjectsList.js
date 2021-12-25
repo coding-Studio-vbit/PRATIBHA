@@ -4,8 +4,12 @@ import '../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css';
 import EditIcon from "@mui/icons-material/Edit";
 import { getStudentData } from "../services/studentServices";
 import { useAuth } from './../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const SubjectsList = () => {
+  let navigate = useNavigate();
+
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);
   const [userDoc, setuserDoc] = useState(null);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
@@ -9,7 +9,6 @@ import { enrollCourse,getCurriculumDetails } from "../services/studentServices";
 import {LoadingScreen, Spinner} from '../../global_ui/spinner/spinner';
 import Dialog from '../../global_ui/dialog/dialog'
 import { useNavigate } from "react-router-dom";
-import { async } from "@firebase/util";
 
 export default function StudentEnroll() {
   const [course, setCourse] = useState("");
@@ -31,13 +30,7 @@ export default function StudentEnroll() {
   const [isLoading, setIsLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(null);
 
-
-  const [enrollType, setenrollType] = useState("NO_PRA");
-
-
   const nav = useNavigate();
-
-  const [intialize, setIntialize] = useState(true);
 
   async function getSubjects(){
     if(course.value!=null &&  Year.value!=null && Department.value!=null && Section.value!=null){
@@ -157,14 +150,7 @@ export default function StudentEnroll() {
     }
   }
 
-  function checkEnrollment() {
-    if(currentUser.isFirstTime){
-      setIntialize(false);
-    }else{
-      nav('/student/subjectslist',{replace:true})      
-    }    
-  }
-
+ 
   async function enrollStudent(){
     setIsLoading(true);
     const res = await enrollCourse(
@@ -187,11 +173,7 @@ export default function StudentEnroll() {
         
   }
 
-  useEffect(() => {    
-    checkEnrollment();
-  },)
-
-  return !intialize?(
+  return(
     <div className="enroll-container">
       <Navbar back={false} title="Enrollment" logout={false} />
       {
@@ -339,5 +321,5 @@ export default function StudentEnroll() {
         }  
        </div>    
     </div>
-  ):<LoadingScreen/>;
+  )
 }
