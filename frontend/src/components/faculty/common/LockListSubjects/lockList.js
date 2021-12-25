@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
+import { enrollClasses } from "../../services/facultyServices";
 import "./lockList.css";
 
 const LockList = () => {
@@ -15,12 +16,19 @@ const LockList = () => {
   const [MBAList, setMBAList] = useState([]);
   function handleDone() {
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
-    console.log(BTechList, MTechList, MBAList);
-  }
+    console.log(BTechList)
+    console.log(MTechList)
+    console.log( MBAList)
+    var finalList = BTechList.concat(MTechList,MBAList)
+    console.log(finalList)
+  //   var finalList = 
+  //   enrollClasses(user,)
+   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
     if (Course.value === "B.Tech") {
       const newBTech =
+      'BTech_'+
         Year.value +
         "_" +
         Department.value +
@@ -116,7 +124,7 @@ const LockList = () => {
         <p className="instruction">*Add your classes for this semester</p>
         <div className="flex-container">
           <div className="dropdown">
-            <p>COURSE</p>
+            <p className="locklist-dropdown-title">Course</p>
             <Select
               placeholder=""
               className="select"
@@ -125,7 +133,7 @@ const LockList = () => {
                 setCourse(selectedCourse);
               }}
             />
-            <p>YEAR</p>
+            <p className="locklist-dropdown-title">Year</p>
             <Select
               placeholder=""
               className="select"
@@ -135,7 +143,7 @@ const LockList = () => {
                 setYear(selectedYear);
               }}
             />
-            <p>DEPARTMENT</p>
+            <p className="locklist-dropdown-title">Department</p>
             <Select
               placeholder=""
               options={Departments}
@@ -145,7 +153,7 @@ const LockList = () => {
                 setDepartment(selectedDepartment);
               }}
             />
-            <p>SECTION</p>
+            <p className="locklist-dropdown-title">Section</p>
             <Select
               placeholder=""
               options={Sections}
@@ -155,7 +163,7 @@ const LockList = () => {
                 setSection(selectedSection);
               }}
             />
-            <p>SUBJECT</p>
+            <p className="locklist-dropdown-title">Subject</p>
             <Select
               placeholder=""
               options={Subjects}
@@ -182,9 +190,10 @@ const LockList = () => {
                   <h4> B.Tech </h4>
                   <ul>
                     {BTechList.map((item, index) => {
+                      const displayItem = item.split('_',1)
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {item}
+                          {displayItem}
 
                           <span className="far">
                             <i
