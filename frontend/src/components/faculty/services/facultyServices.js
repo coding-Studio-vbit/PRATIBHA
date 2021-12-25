@@ -1,5 +1,5 @@
 import { db } from "../../../firebase";
-import { doc,getDoc } from "firebase/firestore"; 
+import { doc,getDoc,updateDoc,query,collection, addDoc, setDoc } from "firebase/firestore"; 
 
 async function getEnrolledCourses(email){
     const docRef = doc(db, "faculty",email);
@@ -25,15 +25,33 @@ async function getEnrolledCourses(email){
 }
 
 async function enrollClasses(email,enrolled_classes){
-  const docRef = doc(db, "faculty",email);
-  const docSnap = await getDoc(docRef);
-  
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-  } else {
-    console.log("No such document!");
+  const facultyRef = doc(db, "faculty",email);
+  try {
+    await setDoc(facultyRef,{subjects:enrolled_classes,isEnrolled:false});
+    for (let i = 0; i < enrolled_classes.length; i++) {
+      await setDoc(
+        doc(db,`faculty/${email}/${enrolled_classes[i]}`,email),{
+          random:1
+      });
+    }     
+    await updateDoc(facultyRef,{isEnrolled:true});     
+  } catch (error) {
+    return error.code;
   }
-      
+  return null;      
 }
 
-export {getEnrolledCourses};
+// async function createSubCollection() {
+//   console.log("Started");
+//   try {
+//     await setDoc(doc(db,`dummy/abcd/ABCD`,"Lafoot"), {
+//       name: "Tokyo",
+//       country: "Japan"
+//     });
+//   } catch (error) {
+//     console.log("Fucked",error);    
+//   }
+//   console.log("Ended");   
+// }
+
+export {getEnrolledCourses,enrollClasses,createSubCollection};
