@@ -3,11 +3,15 @@ import "./card.css";
 
 const Card = ({
   text,  
-  onclick
+  onclick,
+  subtext
 }) => {
   return (
     <div className={`card-container`} onClick={onclick}>
+      <div className='text-container'>
       {text && <p>{text}</p>}
+      <span className='sub-text'>{subtext}</span>
+      </div>
     </div>
   );
 };
