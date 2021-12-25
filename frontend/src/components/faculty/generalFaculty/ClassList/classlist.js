@@ -29,14 +29,14 @@ const ClassList = () => {
       <div className="div-container-classes">
         {BTechClasses.length !== 0 && (
           <div>
-            <p style={{textAlign:'center'}}> B.Tech</p>
+            <h4> B.Tech</h4>
             <div className="card-flex">
               {BTechClasses.map((item) => {
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
-                    text={item.replaceAll("_"," ")}
+                    text={item}
                   />
                 );
               })}
@@ -45,14 +45,14 @@ const ClassList = () => {
         )}
         {MTechClasses.length !== 0 && (
           <div>
-            <p style={{textAlign:'center'}}> M.Tech</p>
+            <h4> M.Tech</h4>
             <div className="card-flex">
               {MTechClasses.map((item) => {
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
-                    text={item.replaceAll("_"," ")}
+                    text={item}
                   />
                 );
               })}
@@ -61,14 +61,14 @@ const ClassList = () => {
         )}
         {MBAClasses.length !== 0 && (
           <div>
-            <p style={{textAlign:'center'}}>MBA</p>
+            <h4>MBA</h4>
             <div className="card-flex">
               {MBAClasses.map((item) => {
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
-                    text={item.replaceAll("_"," ")}
+                    text={item}
                   />
                 );
               })}

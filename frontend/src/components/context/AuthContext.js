@@ -77,20 +77,20 @@ export function AuthProvider({ children }) {
               } 
             } catch (e) {
               //TODO
-               //DISPLAY
-             }
-           }
-           setCurrentUser({
-             uid: user.uid,
-             email: user.email,
-             profileURL: user.photoURL,
-             username: user.displayName,
-             phoneNumber: user.phoneNumber,
-             userType: userType,
-             isFirstTime:isFirstTime
+              //DISPLAY
+            }
+          }
+          setCurrentUser({
+            uid: user.uid,
+            email: user.email,
+            profileURL: user.photoURL,
+            username: user.displayName,
+            phoneNumber: user.phoneNumber,
+            userType: userType,
+            isFirstTime:isFirstTime
           });
-           setLoading(false);
-         } else {
+          setLoading(false);
+        } else {
           console.log("Domain Mismatch");
           setLoading(true);
           try {
