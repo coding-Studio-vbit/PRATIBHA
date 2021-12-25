@@ -1,6 +1,6 @@
+import { async } from "@firebase/util";
 import { doc,setDoc,getDoc,query, collection, getDocs } from "firebase/firestore"; 
 import {db} from '../../../firebase'
-
 
 async function checkEnrollment(email) {
     let error=null;
@@ -100,4 +100,31 @@ async function getCurriculumDetails(course_details) {
     }  
 }
 
-export {enrollCourse,checkEnrollment,getStudentData,getCurriculumDetails};
+async function getSubjectsList(email){
+    const userRef = collection(db, "users");
+    try {
+        const userDoc = await getDoc(userRef);
+        if(userDoc.exists()){
+            return {
+                data:{ 
+                    subjects:userDoc.data()["subjects"],
+                    openElectives:userDoc.data()["oe"]?userDoc.data()["oe"]:null,
+                    professionalElectives:userDoc.data()["pe"]?userDoc.data()["pe"]:null,
+                },
+                error:null
+            } 
+        }else{
+            return {
+                data:null,
+                error:"Enroll Details to get subject information"
+            }
+        }
+    } catch (e) {
+        return {
+            data:null,
+            error:e.code,
+        }       
+    }
+}
+
+export {enrollCourse,checkEnrollment,getStudentData,getCurriculumDetails,getSubjectsList};
