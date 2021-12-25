@@ -1,15 +1,17 @@
 .div-container-classes {
-  justify-content: center;
   display: flex;
   flex-direction: column;
-  width: min(500px, 90%);
-  padding-left: 20px;
-  flex-wrap: wrap;
+  justify-content: center;
+  /* width: min(500px, 90%); */
   gap: 16px;
 }
+
 .card-flex {
   font-size: 20px;
   display: flex;
+  flex-wrap: wrap; 
+  justify-content: left; 
+  align-items: center;   
   flex-direction: row;
   margin-right: auto;
   margin-left: auto;

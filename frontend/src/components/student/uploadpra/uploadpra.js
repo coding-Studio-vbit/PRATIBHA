@@ -119,7 +119,9 @@ const Upload =() => {
       
     return(
         <>            
-            <Navbar title="UPLOAD PRA"></Navbar>
+            <Navbar title="UPLOAD PRA"> <button className="bck">
+        <i className="fas fa-arrow-left">
+        </i></button></Navbar>
             {
                 showDialog &&
                 <Dialog message={"Upload Successful"} onOK={dialogClose}/>
