@@ -3,6 +3,8 @@ import "./loginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
+// import { createSubCollection } from "../faculty/services/facultyServices";
+
 
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
@@ -10,6 +12,11 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (currentUser) {
+      const url = localStorage.getItem('url')
+      if(url) nav(url,{replace:true})
+      else{
+
+      
       if (currentUser.userType === "STUDENT") {
         if (currentUser.isFirstTime) {
           nav("/student/enroll", { replace: true });
@@ -30,10 +37,12 @@ export default function LoginPage() {
         
       }
     }
+  }
   }, [currentUser, nav]);
 
   return loading === false ? (
     <div className="loginPage">
+      {/* <button onClick={createSubCollection}>Sub Collection</button> */}
       <div className="logos">
         <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
         <img alt="loading" className="vbit" src="/vbit.png" />

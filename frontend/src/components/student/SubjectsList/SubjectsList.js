@@ -2,18 +2,26 @@ import React, {useState, useEffect} from "react";
 import Navbar from "../../global_ui/navbar/navbar";
 import '../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css';
 import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";  
+
+import { getStudentData } from "../services/studentServices";
+import { useAuth } from './../../context/AuthContext';
 
 
 const SubjectsList = () => {
+  let navigate = useNavigate();
 
-  const nav = useNavigate()
-  const onClick=(e)=>
+
+  const [loading, setloading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userDoc, setuserDoc] = useState(null);
+  const { currentUser }= useAuth();
+
+ const onClick=(e)=>
     { 
       nav('/student/uploadPRA');
     }
-   
-
+  
   const data = [
     {
       SUBJECT: "WT",

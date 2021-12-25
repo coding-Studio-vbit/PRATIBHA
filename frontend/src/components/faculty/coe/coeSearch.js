@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
+import { useNavigate } from "react-router-dom";
+import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
 
 export default function CoeSearch() {
@@ -10,21 +12,30 @@ export default function CoeSearch() {
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
-  const [button, setButton] = useState(true);
+
+  const [showDialog, setShowDialog] = useState(null);
+
+  const nav = useNavigate();
 
   function handleView() {
-    //fetch the selected class from db and show ViewSubmissions screen of that class
-    console.log(
-      Course.value +
-        "_" +
-        Year.value +
-        "_" +
-        Department.value +
-        "_" +
-        Section.value +
-        "_" +
-        Subject.value
-    );
+    if (
+      Course.value != null &&
+      Year.value != null &&
+      Department.value != null &&
+      Section.value != null &&
+      Subject.value != null
+    ) {
+      var passing = {
+        Course: Course.value,
+        Year: Year.value,
+        Dept: Department.value,
+        Section: Section.value,
+        Subject: Subject.value,
+      };
+      nav("/viewsubmissions", { state: passing });
+    } else {
+      setShowDialog("Select all the options");
+    }
   }
 
   const Courses = [
@@ -33,12 +44,14 @@ export default function CoeSearch() {
     { value: "MBA", label: "MBA" },
   ];
   const Years = [
+    //fetch
     { value: "1", label: "1" },
     { value: "2", label: "2" },
     { value: "3", label: "3" },
     { value: "4", label: "4" },
   ];
   const Departments = [
+    //fetch
     { value: "CSE", label: "Computer Science & Engineering" },
     {
       value: "CSEAIML",
@@ -54,12 +67,14 @@ export default function CoeSearch() {
     { value: "IT", label: "Information Technology" },
   ];
   const Sections = [
+    //fetch
     { value: "A", label: "A", link: "CSE" },
     { value: "B", label: "B", link: "CSE" },
     { value: "C", label: "C", link: "CSE" },
     { value: "D", label: "D", link: "CSE" },
   ];
   const Subjects = [
+    //fetch
     { value: "PPS", label: "PPS", link: "CSE" },
     {
       value: "Software Engineering",
@@ -76,7 +91,15 @@ export default function CoeSearch() {
 
   return (
     <div className="CoESearch-container">
-      <Navbar title="COE" />
+      <Navbar title="CoE" />
+      {showDialog && (
+        <Dialog
+          message={showDialog}
+          onOK={() => {
+            setShowDialog(false);
+          }}
+        />
+      )}
       <div className="coe-dropdown">
         <p className="dropdown-title">Course</p>
         <Select
@@ -125,12 +148,10 @@ export default function CoeSearch() {
           isDisabled={!Section}
           onChange={(selectedSubject) => {
             setSubject(selectedSubject);
-            setButton(false);
           }}
         />
         <Button
           className="coe-button normal"
-          disabled={button}
           icon={<i className="fas fa-search"></i>}
           children="View"
           width="90"

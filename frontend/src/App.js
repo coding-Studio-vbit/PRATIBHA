@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import {
@@ -13,10 +13,11 @@ import StudentEnroll from "./components/student/enrollClass/enroll";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
 import Upload from "./components/student/uploadpra/uploadpra";
 import LockList from "./components/faculty/common/LockListSubjects/lockList";
-import ClassList from "./components/faculty/generalFaculty/ClassList/classlist";
+import ClassList from "./components/faculty/generalFaculty/ClassList/classList";
 import Grading from "./components/faculty/common/grading";
 import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 import CoeSearch from "./components/faculty/coe/coeSearch";
+import ViewSubmissions from "./components/faculty/common/ViewSubmissions/ViewSubmissions";
 
 const App = () => {
   return (
@@ -25,7 +26,12 @@ const App = () => {
         <Router>
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
-            <Route exact path="/ceosearch" element={<CoeSearch />} />
+            <Route exact path="/coesearch" element={<CoeSearch />} />
+            <Route
+              exact
+              path="/viewsubmissions"
+              element={<ViewSubmissions />}
+            />
             <Route
               path="/student/*"
               element={
@@ -60,6 +66,10 @@ const App = () => {
 
 const PrivateRoutes = ({ children }) => {
   const { currentUser } = useAuth();
+  const location = useLocation();
+  useEffect(() => {
+    localStorage.setItem("url", location.pathname);
+  }, [location]);
   return currentUser ? children : <Navigate to={"/"}></Navigate>;
 };
 

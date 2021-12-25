@@ -61,23 +61,21 @@ export function AuthProvider({ children }) {
               console.log(10);
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {                
-                isFirstTime = !docSnap.data()['isEnrolled']
-              }else{}
+                isFirstTime = false;
+              }
             } catch (e) {
               //Display it
             }
-           }
-         else {
-             userType = "FACULTY";
-             const docRef = doc(db, "faculty", user.email);
-             try {
-               console.log(11);
-               const docSnap = await getDoc(docRef);
-               if (docSnap.exists()) {
-                isFirstTime = !docSnap.data['isEnrolled']
-
-               } 
-             } catch (e) {
+          } else {
+            userType = "FACULTY";
+            const docRef = doc(db, "faculty", user.email);
+            try {
+              console.log(11);
+              const docSnap = await getDoc(docRef);
+              if (docSnap.exists()) {
+                isFirstTime = false;
+              } 
+            } catch (e) {
               //TODO
                //DISPLAY
              }

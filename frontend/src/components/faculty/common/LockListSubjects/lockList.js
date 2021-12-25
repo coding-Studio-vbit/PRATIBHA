@@ -25,7 +25,7 @@ const LockList = () => {
   },[BTechList])
   function handleDone() {
     
-    nav('/faculty/grading');
+    nav('/faculty/subjectsList');
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
     
   }
@@ -74,9 +74,10 @@ const LockList = () => {
   };
 
   //handle remove
-  const handleRemove = (index) => {
-    BTechList.splice(index, 1);
-    setBTechList(BTechList);
+  const handleRemove = (index, array, func) => {
+    var temp = [...array];
+    temp.splice(index, 1);
+    func(temp);
   };
 
   const Courses = [
@@ -203,12 +204,19 @@ const LockList = () => {
                 <div>
                   <h4> B.Tech </h4>
                   <ul>
-                    {BTechList.map((item) => {
+                    {BTechList.map((item, index) => {
                       return (
-                        <li>
+                        <li className="li-tag-flex" key={index}>
                           {item}
-                        <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
-                        
+
+                          <span className="far">
+                            <i
+                              onClick={() => {
+                                handleRemove(index, BTechList, setBTechList);
+                              }}
+                              className="lock-screen-icon fas fa-minus"
+                            />
+                          </span>
                         </li>
                       );
                     })}
@@ -219,11 +227,18 @@ const LockList = () => {
                 <div>
                   <h4> M.Tech </h4>
                   <ul>
-                    {MTechList.map((item) => {
+                    {MTechList.map((item, index) => {
                       return (
-                        <li>
-                          {item} 
-                          <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
+                        <li className="li-tag-flex" key={index}>
+                          {item}
+                          <span className="far">
+                            <i
+                              onClick={() => {
+                                handleRemove(index, MTechList, setMTechList);
+                              }}
+                              className=" lock-screen-icon fas fa-minus"
+                            />
+                          </span>
                         </li>
                       );
                     })}
@@ -234,10 +249,18 @@ const LockList = () => {
                 <div>
                   <h4> MBA </h4>
                   <ul>
-                    {MBAList.map((item) => {
+                    {MBAList.map((item, index) => {
                       return (
-                        <li>
-                          {item}   <i onClick={handleRemove(BTechList.indexOf(item))} className="far fa-times-circle"/>
+                        <li className="li-tag-flex" key={index}>
+                          {item}
+                          <span className="far">
+                            <i
+                              onClick={() => {
+                                handleRemove(index, MBAList, setMBAList);
+                              }}
+                              className="lock-screen-icon fas fa-minus"
+                            />
+                          </span>
                         </li>
                       );
                     })}
