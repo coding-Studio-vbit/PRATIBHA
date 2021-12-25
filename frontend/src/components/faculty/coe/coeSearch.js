@@ -25,8 +25,17 @@ export default function CoeSearch() {
         "_" +
         Subject.value
     );
-  }
 
+    console.log(passing);
+
+  }
+  var passing = {
+    passingCourse: Course.value,
+    passingYear: Year.value,
+    passingDept: Department.value,
+    passingSection: Section.value,
+    passingSubject: Subject.value,
+  };
   const Courses = [
     { value: "B.Tech", label: "B.Tech" },
     { value: "M.Tech", label: "M.Tech" },
@@ -76,7 +85,7 @@ export default function CoeSearch() {
 
   return (
     <div className="CoESearch-container">
-      <Navbar title="COE" />
+      <Navbar title="CoE" />
       <div className="coe-dropdown">
         <p className="dropdown-title">Course</p>
         <Select
