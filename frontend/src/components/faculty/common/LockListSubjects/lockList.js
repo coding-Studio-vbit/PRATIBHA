@@ -1,76 +1,55 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "./lockList.css";
-import { useNavigate } from "react-router-dom";
-
 
 const LockList = () => {
-  const nav = useNavigate()
   const [Course, setCourse] = useState("");
   const [Year, setYear] = useState("");
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
-  const [subjectsList, setSubjectsList] = useState([]);
-
   const [BTechList, setBTechList] = useState([]);
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
-
-  useEffect(()=>{
-    console.log(BTechList);
-  },[BTechList])
   function handleDone() {
-    
-    nav('/faculty/subjectsList');
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
-    
+    console.log(BTechList, MTechList, MBAList);
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
-    if (Course === "B.Tech") {
+    if (Course.value === "B.Tech") {
       const newBTech =
-        Year +
+        Year.value +
         "_" +
-        Department +
+        Department.value +
         "_" +
-        Section +
+        Section.value +
         "_" +
-        Subject;
-        console.log("hvkgh");
+        Subject.value;
       if (!BTechList.includes(newBTech)) setBTechList([...BTechList, newBTech]);
-    } else if (Course === "M.Tech") {
+    } else if (Course.value === "M.Tech") {
       const newMTech =
-        Year +
+        Year.value +
         "_" +
-        Department +
+        Department.value +
         "_" +
-        Section +
+        Section.value +
         "_" +
-        Subject;
+        Subject.value;
       if (!MTechList.includes(newMTech)) setMTechList([...MTechList, newMTech]);
-    } else if (Course === "MBA") {
+    } else if (Course.value === "MBA") {
       const newMBA =
-        Year +
+        Year.value +
         "_" +
-        Department +
+        Department.value +
         "_" +
-        Section +
+        Section.value +
         "_" +
-        Subject;
+        Subject.value;
       if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
     }
-    console.log({
-      course :Course,
-      year: Year,
-      department: Department,
-      section: Section,
-      subject: Subject,
-    });
-    console.log(BTechList);
   };
 
   //handle remove
@@ -134,7 +113,6 @@ const LockList = () => {
     <div>
       <div className="lockList-container">
         <Navbar title="Classes List" logout={false} />
-        <p>{JSON.stringify(BTechList)}</p>
         <p className="instruction">*Add your classes for this semester</p>
         <div className="flex-container">
           <div className="dropdown">
@@ -144,7 +122,7 @@ const LockList = () => {
               className="select"
               options={Courses}
               onChange={(selectedCourse) => {
-                setCourse(selectedCourse.value);
+                setCourse(selectedCourse);
               }}
             />
             <p>YEAR</p>
@@ -154,7 +132,7 @@ const LockList = () => {
               options={Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
-                setYear(selectedYear.value);
+                setYear(selectedYear);
               }}
             />
             <p>DEPARTMENT</p>
@@ -164,7 +142,7 @@ const LockList = () => {
               className="select"
               isDisabled={!Year}
               onChange={(selectedDepartment) => {
-                setDepartment(selectedDepartment.value);
+                setDepartment(selectedDepartment);
               }}
             />
             <p>SECTION</p>
@@ -174,7 +152,7 @@ const LockList = () => {
               className="select"
               isDisabled={!Department}
               onChange={(selectedSection) => {
-                setSection(selectedSection.value);
+                setSection(selectedSection);
               }}
             />
             <p>SUBJECT</p>
@@ -184,7 +162,7 @@ const LockList = () => {
               className="select"
               isDisabled={!Section}
               onChange={(selectedSubject) => {
-                setSubject(selectedSubject.value);
+                setSubject(selectedSubject);
               }}
             />
             <button
@@ -199,7 +177,6 @@ const LockList = () => {
           </div>
           <div>
             <div className="list-container">
-
               {BTechList.length !== 0 && (
                 <div>
                   <h4> B.Tech </h4>
