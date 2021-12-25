@@ -17,6 +17,7 @@ import ClassList from "./components/faculty/generalFaculty/ClassList/classList";
 import Grading from "./components/faculty/common/grading";
 import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 import CoeSearch from "./components/faculty/coe/coeSearch";
+import ViewSubmissions from "./components/faculty/common/ViewSubmissions/ViewSubmissions";
 
 const App = () => {
   return (
@@ -26,6 +27,11 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
             <Route exact path="/coesearch" element={<CoeSearch />} />
+            <Route
+              exact
+              path="/viewsubmissions"
+              element={<ViewSubmissions />}
+            />
             <Route
               path="/student/*"
               element={
@@ -60,10 +66,10 @@ const App = () => {
 
 const PrivateRoutes = ({ children }) => {
   const { currentUser } = useAuth();
-  const location = useLocation()
-  useEffect(()=>{
-    localStorage.setItem('url',location.pathname)
-  },[location])
+  const location = useLocation();
+  useEffect(() => {
+    localStorage.setItem("url", location.pathname);
+  }, [location]);
   return currentUser ? children : <Navigate to={"/"}></Navigate>;
 };
 
