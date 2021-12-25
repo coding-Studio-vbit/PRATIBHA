@@ -1,4 +1,4 @@
-import { doc,updateDoc,getDoc,query, collection, getDocs } from "firebase/firestore"; 
+import { doc,setDoc,getDoc,query, collection, getDocs } from "firebase/firestore"; 
 import {db} from '../../../firebase'
 
 
@@ -26,11 +26,11 @@ async function enrollCourse(email,course_details) {
     let error=null;
     const userRef = doc(db, 'users', email);   
     try{
-        await updateDoc(userRef,course_details); 
+        await setDoc(userRef,course_details); 
     }
     catch(e){
         console.log(e);
-        error=e.toString();
+        error=e.code;
     }
     return error;
 }
