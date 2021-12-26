@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
-  let navigate = useNavigate();
+  let nav = useNavigate();
 
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);

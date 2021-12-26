@@ -4,10 +4,12 @@ import Button from "../../global_ui/buttons/button";
 import Navbar from "../../global_ui/navbar/navbar";
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { uploadFile } from '../services/storageServices';
+// import { uploadFile } from '../../../firebase';
+import { getUploadedFile, uploadFile } from '../services/storageServices';
 import { Spinner } from '../../global_ui/spinner/spinner';
 import Dialog from '../../global_ui/dialog/dialog';
 import { useNavigate } from 'react-router-dom';
-
+import { Viewer,Worker } from '@react-pdf-viewer/core';
 
 const Upload =() => {
     let navigate = useNavigate();
@@ -19,7 +21,6 @@ const Upload =() => {
     const [showUploadModule, setShowUploadModule] = useState(false);
     const [error, setError] = useState(null);
     //error for deadlines
-
     const [praTitle, setPraTitle] = useState('');
     const [titleError, setTitleError] = useState('');   
 
@@ -31,7 +32,6 @@ const Upload =() => {
 
     const [showDialog, setshowDialog] = useState(false);
        
-
     async function handleSelect(value) {
         setShowUploadModule(false);
         setError(null);
@@ -74,7 +74,7 @@ const Upload =() => {
         else{
             setFileError("");
             setFileName(files.name)
-            setUrl(URL.createObjectURL(e.target.files[0]));
+            setUrl(e.target.files[0]);
         }
     }
     
@@ -82,7 +82,7 @@ const Upload =() => {
         setfileUploadLoading(true);
         let res;
         if(url!=null & handleTitle(praTitle)){
-            res = await uploadFile(url,fileName);
+            res = await uploadFile(url,"BTech","1","CSE","A","C","1","18p61a0513@vbithyd.ac.in");
             if(res==null){
                 setfileUploadLoading(false);
                 setError(null);
@@ -109,13 +109,17 @@ const Upload =() => {
         navigate('/')
     }
 
-    useEffect(() => {
-        if(mid!=="SELECT_MID"){
-            console.log("OK");            
-        }else{
-            console.log("F");
-        }            
-    }, [mid])
+    async function getFile() {
+        try {
+            const res = await getUploadedFile("BTech","1","CSE","A","C","1","18p61a0513@vbithyd.ac.in");
+            console.log(res);
+            setres(res.url);            
+        } catch (error) {
+            console.log(error);           
+        }      
+    }
+
+    const [res, setres] = useState();
       
     return(
         <>            
@@ -125,6 +129,15 @@ const Upload =() => {
                 <Dialog message={"Upload Successful"} onOK={dialogClose}/>
             }
             <div className={styles.main}>   
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
+                <div className="mt4" style={{ height: '120px', padding:'0px',width:'80px', margin:'0px' }}>
+                {
+                    res!=null?
+                    <Viewer fileUrl={res} />:
+                    <p>forferge</p>                  
+                }                           
+                </div>
+            </Worker>
                 <div>    
                     <select className={styles.selectList} value={mid} 
                         onChange={(e)=>handleSelect(e.target.value)}>
