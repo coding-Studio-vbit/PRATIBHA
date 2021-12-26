@@ -3,6 +3,7 @@ import "./loginPage.css";
 import {  useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
+import Download from "../global_ui/download/download";
 // import { createSubCollection } from "../faculty/services/facultyServices";
 
 
@@ -49,6 +50,10 @@ export default function LoginPage() {
       </div>
 
       {/* <p>{JSON.stringify(currentUser)}</p> */}
+
+      <p>
+        <Download text="DOWN"/>
+      </p>
 
       <div className="row">
         <div className="button-and-icon">
