@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from "react";
+
+import React,{useEffect} from "react";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import { useLocation } from "react-router-dom";
@@ -7,6 +8,8 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
+
 } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
@@ -26,6 +29,8 @@ const App = () => {
       <AuthProvider>
         <Router>
           <Routes>
+          <Route exact path="/abcd" element={<Upload />} />
+
             <Route exact path="/" element={<LoginPage />} />
             <Route
               exact
