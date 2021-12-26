@@ -73,6 +73,7 @@ export function AuthProvider({ children }) {
               console.log(11);
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
+               if(docSnap.data().isEnrolled)
                 isFirstTime = false;
               } 
             } catch (e) {

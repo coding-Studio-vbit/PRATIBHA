@@ -3,10 +3,11 @@ import Navbar from "../../../global_ui/navbar/navbar";
 import Card from "../../../global_ui/card/card.js";
 import "./classList.css";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 const ClassList = () => {
-  const location = useLocation();
-  console.log(location.state.email);
+ const {currentUser} = useAuth()
+ console.log(currentUser)
   const BTechClasses = [
     "2_CSM_B_Software Engineering",
     "3_CSB_A_Compiler Design",
