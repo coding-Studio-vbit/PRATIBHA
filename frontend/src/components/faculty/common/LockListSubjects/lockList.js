@@ -3,6 +3,7 @@ import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
+import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import { enrollClasses } from "../../services/facultyServices";
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";
@@ -153,7 +154,7 @@ const LockList = () => {
   return (
     <div>
       <div className="lockList-container">
-        <Navbar title="Classes List" logout={false} />
+        <Navbar title="Classes List" back={false} logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
         {showDialog && (
           <Dialog
@@ -163,6 +164,9 @@ const LockList = () => {
             }}
           />
         )}
+        {
+          isLoading && (<LoadingScreen/>)
+        }
         <div className="flex-container">
           <div className="dropdown">
             <p className="locklist-dropdown-title">Course</p>
@@ -231,9 +235,17 @@ const LockList = () => {
                   <h4> B.Tech </h4>
                   <ul>
                     {BTechList.map((item, index) => {
+                      var displayItem = item.split('_');
+                      displayItem.splice(0,1)
+                      let newItem =displayItem[0]
+                      let len=displayItem.length
+                      for (let i = 1;i<len;i++) {
+      newItem = newItem+ '_'+displayItem[i]
+     
+   }
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {item}
+                          {newItem}
 
                           <span className="far">
                             <i
@@ -254,9 +266,17 @@ const LockList = () => {
                   <h4> M.Tech </h4>
                   <ul>
                     {MTechList.map((item, index) => {
+                      var displayItem = item.split('_');
+                      displayItem.splice(0,1)
+                      let newItem =displayItem[0]
+                      let len=displayItem.length
+                      for (let i = 1;i<len;i++) {
+      newItem = newItem+ '_'+displayItem[i]
+     
+   }
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {item}
+                          {newItem}
                           <span className="far">
                             <i
                               onClick={() => {
@@ -275,10 +295,17 @@ const LockList = () => {
                 <div>
                   <h4> MBA </h4>
                   <ul>
-                    {MBAList.map((item, index) => {
+                    {MBAList.map((item, index) => { var displayItem = item.split('_');
+                      displayItem.splice(0,1)
+                      let newItem =displayItem[0]
+                      let len=displayItem.length
+                      for (let i = 1;i<len;i++) {
+      newItem = newItem+ '_'+displayItem[i]
+     
+   }
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {item}
+                          {newItem}
                           <span className="far">
                             <i
                               onClick={() => {

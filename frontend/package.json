@@ -26,8 +26,8 @@
     "react-scripts": "4.0.3",
     "react-select": "^5.2.1",
     "web-vitals": "^1.1.2",
-    "xlsx": "^0.17.4",
-    "webpack": "4.44.2"
+    "webpack": "4.44.2",
+    "xlsx": "^0.17.4"
   },
   "scripts": {
     "start": "react-scripts start",

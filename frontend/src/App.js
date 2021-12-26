@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+import React from "react";
+=======
 import React, { useContext, useEffect } from "react";
+>>>>>>> 2e257f2dc08e6cf7939b74d2cfa46c4f33ab892b
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import {
@@ -6,10 +10,8 @@ import {
   Routes,
   Route,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
-import StudentEnroll from "./components/student/enrollClass/enroll";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
 import Upload from "./components/student/uploadpra/uploadpra";
 import LockList from "./components/faculty/common/LockListSubjects/lockList";
@@ -17,7 +19,9 @@ import ClassList from "./components/faculty/generalFaculty/ClassList/classList";
 import Grading from "./components/faculty/common/grading";
 import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 import CoeSearch from "./components/faculty/coe/coeSearch";
+import EnrollClasses from "./components/student/enrollClass/enrollClasses";
 import ViewSubmissions from "./components/faculty/common/ViewSubmissions/ViewSubmissions";
+import CreatePra from "./components/faculty/common/createPRA/createPra";
 
 const App = () => {
   return (
@@ -26,7 +30,6 @@ const App = () => {
         <Router>
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
-            <Route exact path="/coesearch" element={<CoeSearch />} />
             <Route
               exact
               path="/viewsubmissions"
@@ -37,7 +40,7 @@ const App = () => {
               element={
                 <PrivateRoutes>
                   <Routes>
-                    <Route exact path="/enroll" element={<StudentEnroll />} />
+                    <Route exact path="/enroll" element={<EnrollClasses/>} />
                     <Route path="/subjectslist" element={<SubjectsList />} />
                     <Route path="/uploadPRA" element={<Upload />} />
                   </Routes>
@@ -49,6 +52,9 @@ const App = () => {
               element={
                 <PrivateRoutes>
                   <Routes>
+                  <Route exact path="/coesearch" element={<CoeSearch />} />
+                  <Route exact path="/createPra" element={ <CreatePra />}/>
+
                     <Route exact path="/enroll" element={<LockList />} />
                     <Route path="/classlist" element={<ClassList />} />
                     <Route path="/studentlist" element={<ListofStudents />} />
@@ -69,6 +75,8 @@ const PrivateRoutes = ({ children }) => {
   const location = useLocation();
   useEffect(() => {
     localStorage.setItem("url", location.pathname);
+    localStorage.setItem("state", JSON.stringify(location.state));
+
   }, [location]);
   return currentUser ? children : <Navigate to={"/"}></Navigate>;
 };

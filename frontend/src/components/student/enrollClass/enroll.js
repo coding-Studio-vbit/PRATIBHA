@@ -5,15 +5,73 @@ import Button from "../../global_ui/buttons/button";
 import "./enroll.css";
 import { useAuth } from "../../context/AuthContext";
 import { enrollCourse,getCurriculumDetails } from "../services/studentServices";
-
-import {LoadingScreen, Spinner} from '../../global_ui/spinner/spinner';
+import {Spinner} from '../../global_ui/spinner/spinner';
 import Dialog from '../../global_ui/dialog/dialog'
 import { useNavigate } from "react-router-dom";
 
 export default function StudentEnroll() {
   const [course, setCourse] = useState("");
+  const courses = [
+    { value: "BTech", label: "B.Tech" },
+    { value: "MTech", label: "M.Tech" },
+    { value: "MBA", label: "MBA" },
+  ];
+
+
   const [Year, setYear] = useState("");
+  const Years = [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" }
+  ];
+  const yearsList=(type)=>{
+    if(type==="BTech" ){
+      return Years;
+    }else if(type==='MBA' || type==="MTech"){
+      return Years.slice(0,2);
+    }
+    else{
+      return [];
+    }
+  }
+
+
   const [Department, setDepartment] = useState("");
+  const Departments = [
+    { value: "CSE", label: "Computer Science & Engineering" },
+    { value: "CSM",label: "CSE(Artificial Intelligence & Machine Learning)", },
+    { value: "CSD", label: "CSE(Data Science)" },
+    { value: "CSC", label: "CSE(Cyber Security)" },
+    { value: "CSB", label: "Computer Science & Business System" },
+    { value: "ECE", label: "Electronics & Communications Engineering" },
+    { value: "EEE", label: "Electrical & Electronics Engineering" },
+    { value: "CE", label: "Civil Engineering" },
+    { value: "ME", label: "Mechanical Engineering" },
+    { value: "IT", label: "Information Technology" },
+
+    { value: "MASTERS", label: "Some Eng" },
+    { value: "VLSI", label: "VLSI Engineering" },
+
+    { value: "Marketing",label:'Marketing'},
+    { value: "Entrepreneurship",label:'Entrepreneurship'},
+    { value: "Finance",label:'Finance'},
+  ];
+  const depList=(type)=>{
+    if(type==="BTech" ){
+      return Departments.slice(0,10);
+    }else if(type==='MTech'){
+      return Departments.slice(10,12);
+    }
+    else if(type==='MBA'){
+      return Departments.slice(12,15);
+    }
+    else{
+      return [];
+    }
+  }
+
+
   const [Section, setSection] = useState("");
   const [button, setButton] = useState(true);
   const { currentUser }= useAuth();
@@ -29,6 +87,9 @@ export default function StudentEnroll() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(null);
+
+  const [peCount, setpeCount] = useState(0);
+  const [oeCount, setoeCount] = useState(0);
 
   const nav = useNavigate();
 
@@ -49,7 +110,6 @@ export default function StudentEnroll() {
               year:Year.value,
               department:Department.value,
               section:Section.value,
-              isEnrolled:true,
               subjects:res.document[0]
            }
           )
@@ -63,9 +123,11 @@ export default function StudentEnroll() {
         }else{
           console.log(res.document[1],34);
           console.log(res.document[2],12);
+          setoeCount(res.numberOfOE);
+          setpeCount(res.numberOfPE);
           console.log(res.document[2].map(
             function(a) {
-              return  {value:a.subject, label:a.subject} 
+              return {value:a.subject, label:a.subject} 
             }));
           setOpenElectives(res.document[1]);
           setProfessionalElectives(res.document[2]); 
@@ -84,85 +146,36 @@ export default function StudentEnroll() {
   }
 
   
-  const courses = [
-    { value: "BTech", label: "B.Tech" },
-    { value: "MTech", label: "M.Tech" },
-    { value: "MBA", label: "MBA" },
-  ];
   
-  const Years = [
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-    { value: "3", label: "3" },
-    { value: "4", label: "4" }
-  ];
+  
+  
 
-  const Departments = [
-    //fetch from db
-    { value: "CSE", label: "Computer Science & Engineering" },
-    { value: "CSM",label: "CSE(Artificial Intelligence & Machine Learning)", },
-    { value: "CSD", label: "CSE(Data Science)" },
-    { value: "CSC", label: "CSE(Cyber Security)" },
-    { value: "CSB", label: "Computer Science & Business System" },
-    { value: "ECE", label: "Electronics & Communications Engineering" },
-    { value: "EEE", label: "Electrical & Electronics Engineering" },
-    { value: "CE", label: "Civil Engineering" },
-    { value: "ME", label: "Mechanical Engineering" },
-    { value: "IT", label: "Information Technology" },
-
-    { value: "MASTERS", label: "Some Eng" },
-    { value: "VLSI", label: "VLSI Engineering" },
-
-    { value: "Marketing",label:'Marketing'},
-    { value: "Entrepreneurship",label:'Entrepreneurship'},
-    { value: "Finance",label:'Finance'},
-  ];
+  
   const Sections = [
-    //fetch from db
     { value: "A", label: "A" },
     { value: "B", label: "B" },
     { value: "C", label: "C" },
     { value: "D", label: "D" },
   ];
 
-  const yearsList=(type)=>{
-    if(type==="BTech" ){
-      return Years;
-    }else if(type==='MBA' || type==="MTech"){
-      return Years.slice(0,2);
-    }
-    else{
-      return [];
-    }
-  }
+  
 
-  const depList=(type)=>{
-    if(type==="BTech" ){
-      return Departments.slice(0,10);
-    }else if(type==='MTech'){
-      return Departments.slice(10,12);
-    }
-    else if(type==='MBA'){
-      return Departments.slice(12,15);
-    }
-    else{
-      return [];
-    }
-  }
+  
 
  
   async function enrollStudent(){
     setIsLoading(true);
+    let s=subjects;
+    s.push(oe);
+    s.push(pe);
+    
     const res = await enrollCourse(
       currentUser.email,{
         course:course.value,
         year:Year.value,
         department:Department.value,
         section:Section.value,
-        subjects:subjects,
-        isEnrolled:true,
-        oe:oe,
-        pe:pe 
+        subjects:s,
       });
       if(res==null){
         setIsLoading(false);
@@ -245,18 +258,21 @@ export default function StudentEnroll() {
           <div className="electives">
 
             <p className="enroll-dropdown-title">Open Elective</p>
+
             <Select
             placeholder=""
-            value={{value:oe.subject,label:oe.subject}}
+            value={{value:oe.subject,label:oe.subject}} 
             options={
               openElectives.map(
-                function(a) {
-                  return  {value:a.subject, label:a.subject} 
+                function(a){
+                  return { value:a.subject,label:a.subject }
                 })
             }
             className="enroll-select"
             onChange={
               (selectedElective) => {
+                console.log(selectedElective);
+
                 openElectives.forEach(element =>{
                   if(element.subject===selectedElective.value){
                     setOe(element);
@@ -264,8 +280,8 @@ export default function StudentEnroll() {
                 });
               }
             }
+            isMulti={oeCount>1?true:false}
             />
-
 
             <p className="enroll-dropdown-title">Professional Elective</p>
             <Select
@@ -280,6 +296,7 @@ export default function StudentEnroll() {
             className="enroll-select"
             onChange={
               (selectedElective) => {
+                console.log(selectedElective);
                 professionalElectives.forEach(element =>{
                   if(element.subject===selectedElective.value){
                     setPe(element);
@@ -287,6 +304,8 @@ export default function StudentEnroll() {
                 });
               }
             }
+            isMulti={peCount>1?true:false}
+
             />
             {
               !isLoading?
