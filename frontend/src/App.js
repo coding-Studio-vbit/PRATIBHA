@@ -2,7 +2,6 @@
 import React,{useEffect} from "react";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
-import { useLocation } from "react-router-dom";
 import {
   BrowserRouter as Router,
   Routes,
