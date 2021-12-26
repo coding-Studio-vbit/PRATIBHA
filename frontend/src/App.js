@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+
+import React,{useEffect} from "react";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import {
@@ -6,7 +7,8 @@ import {
   Routes,
   Route,
   Navigate,
-  useLocation
+  useLocation,
+
 } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
