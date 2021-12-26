@@ -281,7 +281,7 @@ const Grading = () => {
               justifySelf: "end",
             }}
           >
-            <i className="fa fa-angle-down" aria-hidden="true"></i>
+            <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>
             <select
               style={{
                 width: "200px",
