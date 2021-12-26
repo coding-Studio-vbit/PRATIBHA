@@ -1,18 +1,13 @@
 import { doc,setDoc,getDoc,query, collection, getDocs } from "firebase/firestore"; 
 import {db} from '../../../firebase'
 
-
 async function checkEnrollment(email) {
     let error=null;
     const userRef = doc(db, 'users', email);   
     try {
         const userDoc = await getDoc(userRef);
         if(userDoc.exists()){
-            if(userDoc.data()["isEnrolled"]){
-                error="STUDENT_ENROLLED"
-            }else{
-                error=null;
-            }
+            error=null;
         }else{
             error="STUDENT_NOT_VERIFIED";
         }
@@ -29,7 +24,6 @@ async function enrollCourse(email,course_details) {
         await setDoc(userRef,course_details); 
     }
     catch(e){
-        console.log(e);
         error=e.code;
     }
     return error;
@@ -40,17 +34,13 @@ async function getStudentData(email){
         const userRef = doc(db,"users", email);   
         const userDoc = await getDoc(userRef);
         if(userDoc.exists()){
-            if(userDoc.data()["isEnrolled"]){
-                return {document:userDoc.data(),error:null};
-            }else{
-                return {document:null,error:"Enroll the details to access"}
-            }
+            return { document:userDoc.data(), error:null };
         }else{
-            return {document:null,error:"User not verified"}
+            return { document:null, error:"Enroll the details to access"}
         }       
     }
     catch(e){
-        return {document:null,error:e.toString()}
+        return { document:null, error:e.code }
     }        
 }
 
@@ -70,34 +60,74 @@ async function getCurriculumDetails(course_details) {
             } // "doc1" and "doc2"
         });
         if(docSnap!=null){
-            console.log(docSnap.data(),10);
-            let reg = docSnap.data()['subjects'];
-            let oe  = [];
-            let pe  = [];
-            if(docSnap.data()['open_electives']!=null){
-                oe=docSnap.data()['open_electives']
+            let result={
+                subjects:docSnap.data()['subjects'],
+                sections:docSnap.data()['sections']
+            };
+            if(docSnap.data()['OEs']!=null){
+                result.oe=docSnap.data()['OEs'];
+                result.numberOEs=docSnap.data()['numberOEs'];
             }
-            if(docSnap.data()['professional_electives']!=null){
-                pe=docSnap.data()['professional_electives']
+            if(docSnap.data()['PEs']!=null){
+                result.pe=docSnap.data()['PEs'];
+                result.numberPEs=docSnap.data()['numberPEs'];
             }
-            console.log(pe);
-            if(oe.length===0 || pe.length===0){
-                return { 
-                    document:[reg], 
-                    error:null
-                };
-            }else{
-                return {
-                    document:[reg,oe,pe],
-                    error:null
-                }
-            }           
+            return {
+                document:result,
+                error:null
+            }                     
         }else{
             return { document:null, error:'Give proper details to enroll'}
         } 
-    } catch (error) {
+    }catch(error){
         return {document:null,error:error.toString()}                
     }  
 }
 
-export {enrollCourse,checkEnrollment,getStudentData,getCurriculumDetails};
+async function getSubjectsList(email){
+    const userRef = doc(db, "users",email);
+    try {
+        const userDoc = await getDoc(userRef);
+        if(userDoc.exists()){
+            return {
+                data:{ 
+                    subjects:userDoc.data()["subjects"],
+                },
+                error:null
+            } 
+        }else{
+            return {
+                data:null,
+                error:"Enroll Details to get subject information"
+            }
+        }
+    } catch (e) {
+        return {
+            data:null,
+            error:e.code,
+        }       
+    }
+}
+
+
+async function fetchDepartments(course,year){
+    const depRef = query(collection(db,`curriculum/${course}/${year}`));
+    try {
+        const docs = await getDocs(depRef);
+        let depList=[];
+        docs.forEach(e=>{
+            depList.push(e);
+        })
+        return {
+            data:depList,
+            error:null
+        }                
+    } catch (error) {
+        return {
+            data:null,
+            error:error.code
+        }         
+    }             
+}
+
+export {enrollCourse,checkEnrollment,getStudentData,getCurriculumDetails,getSubjectsList,fetchDepartments};

@@ -54,11 +54,16 @@ li{
   margin-left : 1px;
   text-align: left;
 }
+
+.locklist-dropdown-title {
+  font-weight: 500;
+}
 .add-button{
   border: none;
   background-color: white;
   width:auto;
   font-size: 16px;
+  margin-top: 5px;
 }
 .lock-screen-icon{
  text-align: right;
