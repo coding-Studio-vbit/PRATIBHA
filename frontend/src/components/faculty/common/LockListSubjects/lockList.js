@@ -6,6 +6,7 @@ import Dialog from "../../../global_ui/dialog/dialog";
 import { enrollClasses } from "../../services/facultyServices";
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LockList = () => {
   const [Course, setCourse] = useState("");
@@ -19,8 +20,10 @@ const LockList = () => {
 
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess,setIsSuccess]=useState(false);
 
   const { currentUser } = useAuth();
+  const nav = useNavigate();
 
   function handleDone() {
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
@@ -141,6 +144,7 @@ const LockList = () => {
     if (res == null) {
       setIsLoading(false);
       setShowDialog("Course Enrolled Successfully");
+      setIsSuccess(true);
     } else {
       setShowDialog(res);
     }
@@ -155,7 +159,7 @@ const LockList = () => {
           <Dialog
             message={showDialog}
             onOK={() => {
-              setShowDialog(false);
+              isSuccess ? (nav('/faculty/classlist',{state:currentUser},{replace:true})):(setShowDialog(false))
             }}
           />
         )}
