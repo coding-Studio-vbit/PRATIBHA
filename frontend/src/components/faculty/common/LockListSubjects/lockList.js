@@ -3,6 +3,7 @@ import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
+import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import { enrollClasses } from "../../services/facultyServices";
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";
@@ -163,6 +164,9 @@ const LockList = () => {
             }}
           />
         )}
+        {
+          isLoading && (<LoadingScreen/>)
+        }
         <div className="flex-container">
           <div className="dropdown">
             <p className="locklist-dropdown-title">Course</p>
