@@ -26,7 +26,6 @@ const App = () => {
         <Router>
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
-            <Route exact path="/coesearch" element={<CoeSearch />} />
             <Route
               exact
               path="/viewsubmissions"
@@ -49,6 +48,8 @@ const App = () => {
               element={
                 <PrivateRoutes>
                   <Routes>
+                  <Route exact path="/coesearch" element={<CoeSearch />} />
+
                     <Route exact path="/enroll" element={<LockList />} />
                     <Route path="/classlist" element={<ClassList />} />
                     <Route path="/studentlist" element={<ListofStudents />} />
