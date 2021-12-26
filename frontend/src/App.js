@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import {
@@ -6,12 +6,13 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
 import Upload from "./components/student/uploadpra/uploadpra";
 import LockList from "./components/faculty/common/LockListSubjects/lockList";
-import ClassList from "./components/faculty/generalFaculty/ClassList/classlist";
+import ClassList from "./components/faculty/generalFaculty/ClassList/classList";
 import Grading from "./components/faculty/common/grading";
 import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 import CoeSearch from "./components/faculty/coe/coeSearch";
