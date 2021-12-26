@@ -7,6 +7,7 @@ import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useLocation } from "react-router-dom";
+import { getStudentData } from "../../../student/services/studentServices";
 import {
   doc,
   collection,
@@ -21,6 +22,8 @@ const ViewSubmissions = () => {
   const [data, setData] = useState([]);
   const location = useLocation();
   console.log(location.state);
+  const [error, setError] = useState(null);
+  const [loading, setloading] = useState(true);
 
   const storage = getStorage();
   const gsReference = ref(
@@ -59,48 +62,57 @@ const ViewSubmissions = () => {
     );
 
     await getDocs(studentref).then((querySnapshot) => {
-      querySnapshot.forEach(async (doc) => {
-        const email = doc.id.toString() + "@vbithyd.ac.in";
-        const mid1 =
-          doc.data()["mid1"]["criteria1"] +
-          doc.data()["mid1"]["criteria2"] +
-          doc.data()["mid1"]["criteria3"] +
-          doc.data()["mid1"]["criteria4"] +
-          doc.data()["mid1"]["criteria5"];
-        const mid2 =
-          doc.data()["mid2"]["criteria1"] +
-          doc.data()["mid2"]["criteria2"] +
-          doc.data()["mid2"]["criteria3"] +
-          doc.data()["mid2"]["criteria4"] +
-          doc.data()["mid2"]["criteria5"];
+      if (querySnapshot) {
+        querySnapshot.forEach(async (doc) => {
+          const email = doc.id.toString() + "@vbithyd.ac.in";
+          const docData = doc.data();
+          const mid1 =
+            docData["mid1"]["criteria1"] +
+            docData["mid1"]["criteria2"] +
+            docData["mid1"]["criteria3"] +
+            docData["mid1"]["criteria4"] +
+            docData["mid1"]["criteria5"];
+          const mid2 =
+            docData["mid2"]["criteria1"] +
+            docData["mid2"]["criteria2"] +
+            docData["mid2"]["criteria3"] +
+            docData["mid2"]["criteria4"] +
+            docData["mid2"]["criteria5"];
 
-        await fetchuser(email)
-          .then((returndata) => {
-            let topic, name;
+          await getStudentData(email)
+            .then(({ document, error }) => {
+              let returndata = document;
+              let topic, name;
 
-            topic = returndata["subjects"]["DAA"]["topic_title"];
-            name = returndata.name;
-            const dataobj = {
-              ROLL_NO: doc.id.toString(),
-              STUDENT_NAME: name,
-              TOPIC_NAME: topic,
-              MID_1: mid1,
-              MID_2: mid2,
-            };
-            return dataobj;
-          })
-          .then((dataobj) => {
-            setData((data) => [...data, dataobj]);
-          });
-      });
+              if (error == null) {
+                let obj = returndata["subjects"].find(
+                  (o) => o.subject === "DAA"
+                );
+                topic = obj.topic;
+                name = returndata.name;
+                const dataobj = {
+                  ROLL_NO: doc.id.toString(),
+                  STUDENT_NAME: name,
+                  TOPIC_NAME: topic,
+                  MID_1: mid1,
+                  MID_2: mid2,
+                };
+                return dataobj;
+              } else {
+                return null;
+              }
+            })
+            .then((dataobj) => {
+              if (dataobj) {
+                setData((data) => [...data, dataobj]);
+              }
+            });
+        });
+      } else {
+        setError("NO ONE ENROLLED THIS SUBJECT");
+      }
     });
-  };
-
-  const fetchuser = async (email) => {
-    const userRef = doc(db, "users", email);
-    const userDoc = await getDoc(userRef);
-    // console.log(userDoc.data());
-    return userDoc.data();
+    setloading(false);
   };
 
   useEffect(() => {
@@ -133,10 +145,12 @@ const ViewSubmissions = () => {
   return (
     <div>
       <Navbar title="3_CSE_D_DA" logout={false} />
-      {!data.length ? (
+      {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
         </div>
+      ) : error ? (
+        <div>{error}</div>
       ) : (
         <div className="sub_body">
           <table style={{ marginTop: "4.5rem" }}>

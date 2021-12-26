@@ -18,59 +18,74 @@ const SubjectsList = () => {
   const [userDoc, setuserDoc] = useState(null);
   const { currentUser } = useAuth();
 
-  const Fetchdata = async () => {
-    let email = "20P61A05N0@vbithyd.ac.in";
-    const userRef = doc(db, "users", email);
-    await getDoc(userRef).then((userDoc) => {
-      const subjectsdata = userDoc.data()["subjects"];
+  const fetchData = async () => {
+    // const { document, error } = await getStudentData(currentUser.email);
+    const { document, error } = await getStudentData(
+      "20P61A05N0@vbithyd.ac.in"
+    );
+    if (error == null) {
+      setuserDoc(document);
 
-      Object.keys(subjectsdata).map(async (item, index) => {
-        const date = await Fetchsubject(item);
-        let gradetype;
-        if (subjectsdata[item].isgraded_1 && subjectsdata[item].mid_1) {
-          gradetype = "Graded";
-        } else if (!subjectsdata[item].isgraded_1 && subjectsdata[item].mid_1) {
-          gradetype = "Submitted for Graded";
-        } else {
-          gradetype = "Not Submitted";
-        }
+      try {
+        const subjectsdata = document["subjects"];
+        await subjectsdata.map(async (item, index) => {
+          const date = await Fetchsubject(item.subject);
+          if (data) {
+            let gradetype;
+            if (item.isgraded_1 && item.mid_1) {
+              gradetype = "Graded";
+            } else if (!item.isgraded_1 && item.mid_1) {
+              gradetype = "Submitted for Graded";
+            } else {
+              gradetype = "Not Submitted";
+            }
 
-        const resdata = {
-          SUBJECT: item,
-          PRA_TOPIC: subjectsdata[item].topic_title
-            ? subjectsdata[item].topic_title
-            : "-",
-          STATUS: gradetype,
-          SUBMIT_BEFORE: date,
-        };
-        setData((data) => [...data, resdata]);
-      });
-    });
+            const resdata = {
+              SUBJECT: item.subject,
+              PRA_TOPIC: item.topic ? item.topic : "-",
+              STATUS: gradetype,
+              SUBMIT_BEFORE: date,
+            };
+            setData((data) => [...data, resdata]);
+          }
+        });
+      } catch {
+        setError("ERROR OCCURED");
+      }
+    } else {
+      setError(error);
+    }
+    setloading(false);
   };
 
   const Fetchsubject = async (subject) => {
     let deadline;
     const subjectRef = doc(db, "subjects", "3_CSE_A");
     await getDoc(subjectRef).then((subjectDoc) => {
-      const res = subjectDoc.data();
-      Object.keys(res).map(async (item, index) => {
-        if (subject === item) {
-          const seconds = res[item]["deadline_1"]["seconds"];
-          let date = new Date(seconds * 1000);
-          deadline =
-            date.getDate().toString() +
-            "-" +
-            (date.getMonth() + 1).toString() +
-            "-" +
-            date.getFullYear().toString();
-        }
-      });
+      if (subjectDoc.exists()) {
+        const res = subjectDoc.data();
+        Object.keys(res).map(async (item, index) => {
+          if (subject === item) {
+            const seconds = res[item]["deadline_1"]["seconds"];
+            let date = new Date(seconds * 1000);
+            deadline =
+              date.getDate().toString() +
+              "-" +
+              (date.getMonth() + 1).toString() +
+              "-" +
+              date.getFullYear().toString();
+          }
+        });
+      } else {
+        setError("SUBJECT DOES NOT EXIST");
+        return null;
+      }
     });
     return deadline;
   };
 
   useEffect(() => {
-    Fetchdata();
+    fetchData();
   }, []);
 
   const Data = [
@@ -94,19 +109,6 @@ const SubjectsList = () => {
     },
   ];
 
-  async function fetchData() {
-    const { document, error } = await getStudentData(currentUser.email);
-    if (error == null) {
-      setuserDoc(document);
-    } else {
-      setError(error);
-    }
-    setloading(false);
-  }
-
-  useEffect(() => {
-    fetchData();
-  });
   return (
     <div>
       <Navbar title="3_CSE_D" />
