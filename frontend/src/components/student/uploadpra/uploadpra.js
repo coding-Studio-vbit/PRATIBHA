@@ -3,7 +3,7 @@ import styles from "./uploadpra.module.css";
 import Button from "../../global_ui/buttons/button";
 import Navbar from "../../global_ui/navbar/navbar";
 import '@react-pdf-viewer/core/lib/styles/index.css';
-import { uploadFile } from '../../../firebase';
+import { uploadFile } from '../../student/services/storageServices';
 import { Spinner } from '../../global_ui/spinner/spinner';
 import Dialog from '../../global_ui/dialog/dialog';
 import { useNavigate } from 'react-router-dom';
