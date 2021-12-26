@@ -8,20 +8,13 @@ import { Spinner } from "../../../global_ui/spinner/spinner";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useLocation } from "react-router-dom";
 import { getStudentData } from "../../../student/services/studentServices";
-import {
-  doc,
-  collection,
-  where,
-  getDoc,
-  query,
-  getDocs,
-} from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
 
 const ViewSubmissions = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const location = useLocation();
-  console.log(location.state);
+  console.log(location.state.Course);
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
 

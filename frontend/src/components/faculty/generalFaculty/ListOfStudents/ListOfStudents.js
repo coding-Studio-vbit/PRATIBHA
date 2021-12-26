@@ -5,7 +5,7 @@ import Button from "../../../global_ui/buttons/button";
 import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
-import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
 import { getStudentData } from "../../../student/services/studentServices";
 import { useIsomorphicLayoutEffect } from "@react-pdf-viewer/core";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,8 +14,8 @@ const ListofStudents = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
   const Fetchdata = async () => {
     const studentref = query(
       collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
@@ -102,7 +102,7 @@ const ListofStudents = () => {
       MID_2: "9",
     },
   ];
-
+console.log(location.state);
   return (
     <div>
       <Navbar title="3_CSE_D_DA" pra={true} />
@@ -145,9 +145,14 @@ const ListofStudents = () => {
             </table>
             {/* </div> */}
             <div className="LOF_buttons">
-              <Button children="GRADE" onClick={()=>{
-                navigate('/faculty/grading',{state:location.state})
-              }} width="200" className="rare" />
+              <Button
+                children="GRADE"
+                onClick={() => {
+                  navigate("/faculty/grading", { state: location.state });
+                }}
+                width="200"
+                className="rare"
+              />
             </div>
           </div>
           <div className="export_">

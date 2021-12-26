@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation
 } from "react-router-dom";
 import LoginPage from "./components/login/loginPage";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
@@ -31,6 +32,8 @@ const App = () => {
               path="/viewsubmissions"
               element={<ViewSubmissions />}
             />
+            <Route exact path="/coesearch" element={<CoeSearch />} />
+            <Route exact path="/dump" element={<ListofStudents />} />
             <Route
               path="/student/*"
               element={
