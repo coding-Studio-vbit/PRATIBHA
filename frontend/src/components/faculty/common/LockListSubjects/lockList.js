@@ -153,7 +153,7 @@ const LockList = () => {
   return (
     <div>
       <div className="lockList-container">
-        <Navbar title="Classes List" logout={false} />
+        <Navbar title="Classes List" back={false} logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
         {showDialog && (
           <Dialog
@@ -231,9 +231,17 @@ const LockList = () => {
                   <h4> B.Tech </h4>
                   <ul>
                     {BTechList.map((item, index) => {
+                      var displayItem = item.split('_');
+                      displayItem.splice(0,1)
+                      let newItem =displayItem[0]
+                      let len=displayItem.length
+                      for (let i = 1;i<len;i++) {
+      newItem = newItem+ '_'+displayItem[i]
+     
+   }
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {item}
+                          {newItem}
 
                           <span className="far">
                             <i
@@ -254,9 +262,17 @@ const LockList = () => {
                   <h4> M.Tech </h4>
                   <ul>
                     {MTechList.map((item, index) => {
+                      var displayItem = item.split('_');
+                      displayItem.splice(0,1)
+                      let newItem =displayItem[0]
+                      let len=displayItem.length
+                      for (let i = 1;i<len;i++) {
+      newItem = newItem+ '_'+displayItem[i]
+     
+   }
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {item}
+                          {newItem}
                           <span className="far">
                             <i
                               onClick={() => {
@@ -275,10 +291,17 @@ const LockList = () => {
                 <div>
                   <h4> MBA </h4>
                   <ul>
-                    {MBAList.map((item, index) => {
+                    {MBAList.map((item, index) => { var displayItem = item.split('_');
+                      displayItem.splice(0,1)
+                      let newItem =displayItem[0]
+                      let len=displayItem.length
+                      for (let i = 1;i<len;i++) {
+      newItem = newItem+ '_'+displayItem[i]
+     
+   }
                       return (
                         <li className="li-tag-flex" key={index}>
-                          {item}
+                          {newItem}
                           <span className="far">
                             <i
                               onClick={() => {

@@ -54,4 +54,4 @@ async function enrollClasses(email,enrolled_classes){
 //   console.log("Ended");   
 // }
 
-export {getEnrolledCourses,enrollClasses,createSubCollection};
+export {getEnrolledCourses,enrollClasses};
