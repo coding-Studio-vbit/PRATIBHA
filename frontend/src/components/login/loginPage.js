@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./loginPage.css";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 // import { createSubCollection } from "../faculty/services/facultyServices";
@@ -9,9 +9,13 @@ import { LoadingScreen } from "../global_ui/spinner/spinner";
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
   const nav = useNavigate();
-
   useEffect(() => {
     if (currentUser) {
+      const url = localStorage.getItem('url')
+      if(url) nav(url,{replace:true,state:JSON.parse(localStorage.getItem('state'))})
+      else{
+
+      
       if (currentUser.userType === "STUDENT") {
         if (currentUser.isFirstTime) {
           nav("/student/enroll", { replace: true });
@@ -32,6 +36,7 @@ export default function LoginPage() {
         
       }
     }
+  }
   }, [currentUser, nav]);
 
   return loading === false ? (
