@@ -18,34 +18,41 @@ const SubjectsList = () => {
   const [userDoc, setuserDoc] = useState(null);
   const { currentUser } = useAuth();
 
-  const Fetchdata = async () => {
-    let email = "20P61A05N0@vbithyd.ac.in";
-    const userRef = doc(db, "users", email);
-    await getDoc(userRef).then((userDoc) => {
-      const subjectsdata = userDoc.data()["subjects"];
+  const fetchData = async () => {
+    // const { document, error } = await getStudentData(currentUser.email);
+    const { document, error } = await getStudentData(
+      "20P61A05N0@vbithyd.ac.in"
+    );
+    if (error == null) {
+      setuserDoc(document);
 
-      Object.keys(subjectsdata).map(async (item, index) => {
-        const date = await Fetchsubject(item);
+      const subjectsdata = document["subjects"];
+      console.log(subjectsdata);
+      await subjectsdata.map(async (item, index) => {
+        console.log("hi");
+
+        const date = await Fetchsubject(item.subject);
         let gradetype;
-        if (subjectsdata[item].isgraded_1 && subjectsdata[item].mid_1) {
+        if (item.isgraded_1 && item.mid_1) {
           gradetype = "Graded";
-        } else if (!subjectsdata[item].isgraded_1 && subjectsdata[item].mid_1) {
+        } else if (!item.isgraded_1 && item.mid_1) {
           gradetype = "Submitted for Graded";
         } else {
           gradetype = "Not Submitted";
         }
 
         const resdata = {
-          SUBJECT: item,
-          PRA_TOPIC: subjectsdata[item].topic_title
-            ? subjectsdata[item].topic_title
-            : "-",
+          SUBJECT: item.subject,
+          PRA_TOPIC: item.topic ? item.topic : "-",
           STATUS: gradetype,
           SUBMIT_BEFORE: date,
         };
         setData((data) => [...data, resdata]);
       });
-    });
+    } else {
+      setError(error);
+    }
+    setloading(false);
   };
 
   const Fetchsubject = async (subject) => {
@@ -70,7 +77,7 @@ const SubjectsList = () => {
   };
 
   useEffect(() => {
-    Fetchdata();
+    fetchData();
   }, []);
 
   const Data = [
@@ -94,19 +101,7 @@ const SubjectsList = () => {
     },
   ];
 
-  async function fetchData() {
-    const { document, error } = await getStudentData(currentUser.email);
-    if (error == null) {
-      setuserDoc(document);
-    } else {
-      setError(error);
-    }
-    setloading(false);
-  }
-
-  useEffect(() => {
-    fetchData();
-  });
+  console.log(data);
   return (
     <div>
       <Navbar title="3_CSE_D" />
