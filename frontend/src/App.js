@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React from "react";
-=======
 import React, { useContext, useEffect } from "react";
->>>>>>> 2e257f2dc08e6cf7939b74d2cfa46c4f33ab892b
 import "./App.css";
 import { AuthProvider, useAuth } from "./components/context/AuthContext";
 import {
