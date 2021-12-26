@@ -18,6 +18,7 @@ import Grading from "./components/faculty/common/grading";
 import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 import CoeSearch from "./components/faculty/coe/coeSearch";
 import ViewSubmissions from "./components/faculty/common/ViewSubmissions/ViewSubmissions";
+import CreatePra from "./components/faculty/common/createPRA/createPra";
 
 const App = () => {
   return (
@@ -49,6 +50,7 @@ const App = () => {
                 <PrivateRoutes>
                   <Routes>
                   <Route exact path="/coesearch" element={<CoeSearch />} />
+                  <Route exact path="/createPra" element={ <CreatePra />}/>
 
                     <Route exact path="/enroll" element={<LockList />} />
                     <Route path="/classlist" element={<ClassList />} />
