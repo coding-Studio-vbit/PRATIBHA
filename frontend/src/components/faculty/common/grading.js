@@ -5,6 +5,7 @@ import Button from "../../global_ui/buttons/button";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Worker } from "@react-pdf-viewer/core";
 import Docviewer from "./docviewer";
+import Dialog from "../../global_ui/dialog/dialog";
 
 
 
@@ -26,11 +27,10 @@ const Grading = () => {
   const data=
     {
       NAME:"Mahita",
-      SUBJECT:"DM",
-      PRA_TITLE: "Bhuj Earthquake"
+      SUBJECT:"DM"
     }
   ;
-   const searchRoll=(e)=>{
+   const searchRoll=()=>{
      if(rollNo.length===10 )
      {
        setLoading(true)
@@ -40,13 +40,14 @@ const Grading = () => {
 
      else
      {
-       //show error
+       
      }
    }
 
-  const Save=(e)=>{
+  function Save () {
     //save values
-  }
+    
+  } 
 
         function onChange (e)  {
           const files = e.target.files;
@@ -54,6 +55,7 @@ const Grading = () => {
       };
 
   return (
+    
     <div className="grading">
       <div className="left">
         <i style={{
@@ -167,8 +169,11 @@ const Grading = () => {
           </div>          
           <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
             <span >MID-I:(10M) </span>
-            <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', textAlign:'center', borderRadius:'10px'}}>
-               {parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1)}
+            <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', height:'20px', textAlign:'center', borderRadius:'10px'}}>
+               {(parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1))?
+
+              (parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1)):" "
+               }
                </span>
 
           </div>

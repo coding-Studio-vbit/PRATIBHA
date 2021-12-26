@@ -9,7 +9,7 @@ import { useAuth } from './../../context/AuthContext';
 
 
 const SubjectsList = () => {
-  let navigate = useNavigate();
+  let nav = useNavigate();
 
 
   const [loading, setloading] = useState(true);

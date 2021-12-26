@@ -13,7 +13,7 @@ import StudentEnroll from "./components/student/enrollClass/enroll";
 import SubjectsList from "./components/student/SubjectsList/SubjectsList";
 import Upload from "./components/student/uploadpra/uploadpra";
 import LockList from "./components/faculty/common/LockListSubjects/lockList";
-import ClassList from "./components/faculty/generalFaculty/ClassList/classList";
+import ClassList from "./components/faculty/generalFaculty/ClassList/classlist";
 import Grading from "./components/faculty/common/grading";
 import ListofStudents from "./components/faculty/generalFaculty/ListOfStudents/ListOfStudents";
 import CoeSearch from "./components/faculty/coe/coeSearch";
