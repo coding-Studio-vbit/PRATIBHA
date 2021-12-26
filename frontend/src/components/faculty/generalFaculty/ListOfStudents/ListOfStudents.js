@@ -2,29 +2,69 @@ import React, { useState, useEffect, useContext } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "./ListOfStudents.css";
 import Button from "../../../global_ui/buttons/button";
-// import { AuthContext } from "../../../context/AuthContext";
-
-// import {collection, getDocs} from "firebase/firebase-firestore";
+import { ExportCSV } from "../../../export/ExportCSV";
+import { db } from "../../../../firebase";
+import { Spinner } from "../../../global_ui/spinner/spinner";
+import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
 
 const ListofStudents = () => {
-  const [info, setInfo] = useState([]);
-  // const {user} = useContext(AuthContext);
-  // const marksCollectionRef = collection(app, "/faculty/cse@vbithyd.ac.in/3_CSED_DM");
-  // const usersCollectionRef = collection(app, "users");
+  const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   const getInfo = async () => {
-  //     const data = await getDocs(marksCollectionRef);
-  //     console.log(data);
+  const Fetchdata = async () => {
+    const studentref = query(
+      collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
+    );
 
-  //   }
-  // })
+    await getDocs(studentref).then((querySnapshot) => {
+      querySnapshot.forEach(async (doc) => {
+        const email = doc.id.toString() + "@vbithyd.ac.in";
+        const mid1 =
+          doc.data()["mid1"]["criteria1"] +
+          doc.data()["mid1"]["criteria2"] +
+          doc.data()["mid1"]["criteria3"] +
+          doc.data()["mid1"]["criteria4"] +
+          doc.data()["mid1"]["criteria5"];
+        const mid2 =
+          doc.data()["mid2"]["criteria1"] +
+          doc.data()["mid2"]["criteria2"] +
+          doc.data()["mid2"]["criteria3"] +
+          doc.data()["mid2"]["criteria4"] +
+          doc.data()["mid2"]["criteria5"];
 
-  // const Fetchdata = () => {
-  //   app.collection("faculty").
-  // }
+        await fetchuser(email)
+          .then((returndata) => {
+            let topic, name;
 
-  const data = [
+            topic = returndata["subjects"]["DAA"]["topic_title"];
+            name = returndata.name;
+            const dataobj = {
+              ROLL_NO: doc.id.toString(),
+              STUDENT_NAME: name,
+              TOPIC_NAME: topic,
+              MID_1: mid1,
+              MID_2: mid2,
+            };
+            return dataobj;
+          })
+          .then((dataobj) => {
+            setData((data) => [...data, dataobj]);
+          });
+      });
+    });
+  };
+
+  const fetchuser = async (email) => {
+    const userRef = doc(db, "users", email);
+    const userDoc = await getDoc(userRef);
+    // console.log(userDoc.data());
+    return userDoc.data();
+  };
+
+  useEffect(() => {
+    Fetchdata();
+  }, []);
+
+  const Data = [
     {
       ROLL_NO: "19P6XXXXX1",
       STUDENT_NAME: "ABCDEFGH",
@@ -47,45 +87,55 @@ const ListofStudents = () => {
       MID_2: "9",
     },
   ];
+
   return (
     <div>
       <Navbar title="3_CSE_D_DA" pra={true} />
-      <div className="sub_body">
-        <p>SUBJECT : Data Analytics</p>
-        <p>No. of students enrolled: 68</p>
-        {/* <div> */}
-        <table style={{ marginTop: "4.5rem" }}>
-          <tr>
-            <th>ROLL NO</th>
-            <th>STUDENT NAME</th>
-            <th>TOPIC NAME</th>
-            <th>MID-1 GRADING</th>
-            <th>MID-2 GRADING</th>
-          </tr>
-          {data &&
-            data.map((dataitem) => (
-              <tr>
-                <td>{dataitem.ROLL_NO}</td>
-                <td>{dataitem.STUDENT_NAME}</td>
-                <td>{dataitem.TOPIC_NAME}</td>
-                <td>{dataitem.MID_1}</td>
-                <td>{dataitem.MID_2}</td>
-              </tr>
-            ))}
-        </table>
-        {/* </div> */}
-        <div className="LOF_buttons">
-          <Button children="GRADE" width="200" className="rare" />
+      {!data.length ? (
+        <div className="spinnerload">
+          <Spinner radius={2} />
         </div>
-      </div>
-      <div className="export_">
-        <Button
-          icon={<i class="fas fa-file-export"></i>}
-          children="EXPORT"
-          className="normal"
-          width="150"
-        />
-      </div>
+      ) : (
+        <>
+          <div className="sub_body">
+            <p>SUBJECT : Data Analytics</p>
+            <p>No. of students enrolled: 68</p>
+            {/* <div> */}
+            <table style={{ marginTop: "4.5rem" }}>
+              <thead>
+                <tr>
+                  <th>ROLL NO</th>
+                  <th>STUDENT NAME</th>
+                  <th>TOPIC NAME</th>
+                  <th>MID-1 GRADING</th>
+                  <th>MID-2 GRADING</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data &&
+                  data
+                    .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
+                    .map((dataitem) => (
+                      <tr key={dataitem.ROLL_NO}>
+                        <td>{dataitem.ROLL_NO}</td>
+                        <td>{dataitem.STUDENT_NAME}</td>
+                        <td>{dataitem.TOPIC_NAME}</td>
+                        <td>{dataitem.MID_1}</td>
+                        <td>{dataitem.MID_2}</td>
+                      </tr>
+                    ))}
+              </tbody>
+            </table>
+            {/* </div> */}
+            <div className="LOF_buttons">
+              <Button children="GRADE" width="200" className="rare" />
+            </div>
+          </div>
+          <div className="export_">
+            <ExportCSV csvData={data} fileName="3_CSE_D_DA" />
+          </div>
+        </>
+      )}
     </div>
   );
 };
