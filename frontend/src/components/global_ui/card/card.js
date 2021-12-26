@@ -6,7 +6,7 @@ const Card = ({
   onclick
 }) => {
   return (
-    <div className={`card-container`} onClick={onclick}>
+    <div className={`card-container`} onClick={()=>onclick(text)}>
       {text && <p>{text}</p>}
     </div>
   );

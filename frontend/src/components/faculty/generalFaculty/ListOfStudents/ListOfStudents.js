@@ -8,12 +8,14 @@ import { Spinner } from "../../../global_ui/spinner/spinner";
 import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
 import { getStudentData } from "../../../student/services/studentServices";
 import { useIsomorphicLayoutEffect } from "@react-pdf-viewer/core";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
-
+  const location = useLocation()
+  const navigate = useNavigate()
   const Fetchdata = async () => {
     const studentref = query(
       collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
@@ -143,7 +145,9 @@ const ListofStudents = () => {
             </table>
             {/* </div> */}
             <div className="LOF_buttons">
-              <Button children="GRADE" width="200" className="rare" />
+              <Button children="GRADE" onClick={()=>{
+                navigate('/faculty/grading',{state:location.state})
+              }} width="200" className="rare" />
             </div>
           </div>
           <div className="export_">

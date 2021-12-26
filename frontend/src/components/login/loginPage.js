@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./loginPage.css";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 // import { createSubCollection } from "../faculty/services/facultyServices";
@@ -9,11 +9,10 @@ import { LoadingScreen } from "../global_ui/spinner/spinner";
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
   const nav = useNavigate();
-
   useEffect(() => {
     if (currentUser) {
       const url = localStorage.getItem('url')
-      if(url) nav(url,{replace:true})
+      if(url) nav(url,{replace:true,state:JSON.parse(localStorage.getItem('state'))})
       else{
 
       
