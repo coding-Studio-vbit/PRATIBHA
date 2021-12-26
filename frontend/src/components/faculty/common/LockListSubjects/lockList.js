@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
+import Dialog from "../../../global_ui/dialog/dialog";
+import { enrollClasses } from "../../services/facultyServices";
 import "./lockList.css";
+import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LockList = () => {
   const [Course, setCourse] = useState("");
@@ -13,14 +17,28 @@ const LockList = () => {
   const [BTechList, setBTechList] = useState([]);
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
+
+  const [showDialog, setShowDialog] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess,setIsSuccess]=useState(false);
+
+  const { currentUser } = useAuth();
+  const nav = useNavigate();
+
   function handleDone() {
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
-    console.log(BTechList, MTechList, MBAList);
+    var finalList = BTechList.concat(MTechList, MBAList);
+    console.log(finalList);
+    if (finalList.length == 0) {
+      setShowDialog("Add your classes for this semester");
+    }
+    else{enroll(finalList)}
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
     if (Course.value === "B.Tech") {
       const newBTech =
+        "BTech_" +
         Year.value +
         "_" +
         Department.value +
@@ -29,8 +47,12 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!BTechList.includes(newBTech)) setBTechList([...BTechList, newBTech]);
+      else {
+        setShowDialog("Class already added");
+      }
     } else if (Course.value === "M.Tech") {
       const newMTech =
+      'MTech_'+
         Year.value +
         "_" +
         Department.value +
@@ -39,8 +61,12 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!MTechList.includes(newMTech)) setMTechList([...MTechList, newMTech]);
+      else {
+        setShowDialog("Class already added");
+      }
     } else if (Course.value === "MBA") {
       const newMBA =
+      'MBA_'+
         Year.value +
         "_" +
         Department.value +
@@ -49,6 +75,9 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
+      else {
+        setShowDialog("Class already added");
+      }
     }
   };
 
@@ -109,14 +138,34 @@ const LockList = () => {
     },
   ];
 
+  async function enroll(list) {
+    setIsLoading(true);
+    const res = await enrollClasses(currentUser.email,list);
+    if (res == null) {
+      setIsLoading(false);
+      setShowDialog("Course Enrolled Successfully");
+      setIsSuccess(true);
+    } else {
+      setShowDialog(res);
+    }
+  }
+
   return (
     <div>
       <div className="lockList-container">
         <Navbar title="Classes List" logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
+        {showDialog && (
+          <Dialog
+            message={showDialog}
+            onOK={() => {
+              isSuccess ? (nav('/faculty/classlist',{state:currentUser},{replace:true})):(setShowDialog(false))
+            }}
+          />
+        )}
         <div className="flex-container">
           <div className="dropdown">
-            <p>COURSE</p>
+            <p className="locklist-dropdown-title">Course</p>
             <Select
               placeholder=""
               className="select"
@@ -125,7 +174,7 @@ const LockList = () => {
                 setCourse(selectedCourse);
               }}
             />
-            <p>YEAR</p>
+            <p className="locklist-dropdown-title">Year</p>
             <Select
               placeholder=""
               className="select"
@@ -135,7 +184,7 @@ const LockList = () => {
                 setYear(selectedYear);
               }}
             />
-            <p>DEPARTMENT</p>
+            <p className="locklist-dropdown-title">Department</p>
             <Select
               placeholder=""
               options={Departments}
@@ -145,7 +194,7 @@ const LockList = () => {
                 setDepartment(selectedDepartment);
               }}
             />
-            <p>SECTION</p>
+            <p className="locklist-dropdown-title">Section</p>
             <Select
               placeholder=""
               options={Sections}
@@ -155,7 +204,7 @@ const LockList = () => {
                 setSection(selectedSection);
               }}
             />
-            <p>SUBJECT</p>
+            <p className="locklist-dropdown-title">Subject</p>
             <Select
               placeholder=""
               options={Subjects}
