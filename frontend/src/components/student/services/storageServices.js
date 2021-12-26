@@ -1,11 +1,11 @@
 import { storage } from "../../../firebase";
-import { ref,uploadBytes } from "firebase/storage";
+import { ref,uploadBytes, getDownloadURL } from "firebase/storage";
 
-async function uploadFile(fileObj,name,course,year,department,section,subject,midNo,email){
+async function uploadFile(fileObj,course,year,department,section,subject,midNo,email){
     let error=null;
     const pra_ref = ref(
         storage,
-        `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.slice(0,10)}+"."+${name.split(".")[name.split(".").length-1]}`
+        `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
     );
     await uploadBytes(pra_ref,fileObj)
     .then((snapshot) => {
@@ -19,4 +19,20 @@ async function uploadFile(fileObj,name,course,year,department,section,subject,mi
     return error;
 }
 
-export {uploadFile}
+async function getUploadedFile(course,year,department,section,subject,midNo,email) {
+    let res={
+        url:null,
+        error:null,    
+    }
+    await getDownloadURL(ref(storage,`${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`))
+    .then((url) => {
+        console.log(url);
+        res.url=url;
+    })
+    .catch((error) => {
+        res.error=error.code;    
+    })
+    return res;  
+}
+
+export {uploadFile,getUploadedFile}

@@ -50,6 +50,7 @@ export default function LoginPage() {
 
       {/* <p>{JSON.stringify(currentUser)}</p> */}
 
+
       <div className="row">
         <div className="button-and-icon">
           <i className="fas fa-user-circle icons"></i>
