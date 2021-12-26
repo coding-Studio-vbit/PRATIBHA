@@ -6,6 +6,7 @@ import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { useLocation } from "react-router-dom";
 import {
   doc,
   collection,
@@ -18,6 +19,8 @@ import {
 const ViewSubmissions = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const location = useLocation();
+  console.log(location.state);
 
   const storage = getStorage();
   const gsReference = ref(
