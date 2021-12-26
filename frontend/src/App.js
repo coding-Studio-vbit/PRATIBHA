@@ -27,8 +27,6 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
             <Route exact path="/coesearch" element={<CoeSearch />} />
-            <Route exact path="/dump" element={<SubjectsList />} />
-            
             <Route
               exact
               path="/viewsubmissions"

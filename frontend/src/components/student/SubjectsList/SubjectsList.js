@@ -26,29 +26,32 @@ const SubjectsList = () => {
     if (error == null) {
       setuserDoc(document);
 
-      const subjectsdata = document["subjects"];
-      console.log(subjectsdata);
-      await subjectsdata.map(async (item, index) => {
-        console.log("hi");
+      try {
+        const subjectsdata = document["subjects"];
+        await subjectsdata.map(async (item, index) => {
+          const date = await Fetchsubject(item.subject);
+          if (data) {
+            let gradetype;
+            if (item.isgraded_1 && item.mid_1) {
+              gradetype = "Graded";
+            } else if (!item.isgraded_1 && item.mid_1) {
+              gradetype = "Submitted for Graded";
+            } else {
+              gradetype = "Not Submitted";
+            }
 
-        const date = await Fetchsubject(item.subject);
-        let gradetype;
-        if (item.isgraded_1 && item.mid_1) {
-          gradetype = "Graded";
-        } else if (!item.isgraded_1 && item.mid_1) {
-          gradetype = "Submitted for Graded";
-        } else {
-          gradetype = "Not Submitted";
-        }
-
-        const resdata = {
-          SUBJECT: item.subject,
-          PRA_TOPIC: item.topic ? item.topic : "-",
-          STATUS: gradetype,
-          SUBMIT_BEFORE: date,
-        };
-        setData((data) => [...data, resdata]);
-      });
+            const resdata = {
+              SUBJECT: item.subject,
+              PRA_TOPIC: item.topic ? item.topic : "-",
+              STATUS: gradetype,
+              SUBMIT_BEFORE: date,
+            };
+            setData((data) => [...data, resdata]);
+          }
+        });
+      } catch {
+        setError("ERROR OCCURED");
+      }
     } else {
       setError(error);
     }
@@ -59,19 +62,24 @@ const SubjectsList = () => {
     let deadline;
     const subjectRef = doc(db, "subjects", "3_CSE_A");
     await getDoc(subjectRef).then((subjectDoc) => {
-      const res = subjectDoc.data();
-      Object.keys(res).map(async (item, index) => {
-        if (subject === item) {
-          const seconds = res[item]["deadline_1"]["seconds"];
-          let date = new Date(seconds * 1000);
-          deadline =
-            date.getDate().toString() +
-            "-" +
-            (date.getMonth() + 1).toString() +
-            "-" +
-            date.getFullYear().toString();
-        }
-      });
+      if (subjectDoc.exists()) {
+        const res = subjectDoc.data();
+        Object.keys(res).map(async (item, index) => {
+          if (subject === item) {
+            const seconds = res[item]["deadline_1"]["seconds"];
+            let date = new Date(seconds * 1000);
+            deadline =
+              date.getDate().toString() +
+              "-" +
+              (date.getMonth() + 1).toString() +
+              "-" +
+              date.getFullYear().toString();
+          }
+        });
+      } else {
+        setError("SUBJECT DOES NOT EXIST");
+        return null;
+      }
     });
     return deadline;
   };
@@ -101,7 +109,6 @@ const SubjectsList = () => {
     },
   ];
 
-  console.log(data);
   return (
     <div>
       <Navbar title="3_CSE_D" />
