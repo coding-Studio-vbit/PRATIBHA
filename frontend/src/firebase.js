@@ -21,21 +21,21 @@ setPersistence(auth, browserSessionPersistence)
 const storage = getStorage(app);
 const db = getFirestore();
 
-async function uploadFile(file,name){
-    let error=null;
-    const pra_ref = ref(storage, 'pra_ref/'+name);
+// async function uploadFile(file,name){
+//     let error=null;
+//     const pra_ref = ref(storage, 'pra_ref/'+name);
 
-    await uploadBytes(pra_ref, file)
-    .then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-        console.log(snapshot.ref.fullPath);        
-    })
-    .catch((err)=>{
-      console.log("Mahita");
-        error=err;
-    })
-    return error;
-}
+//     await uploadBytes(pra_ref, file)
+//     .then((snapshot) => {
+//         console.log('Uploaded a blob or file!');
+//         console.log(snapshot.ref.fullPath);        
+//     })
+//     .catch((err)=>{
+//       console.log("Mahita");
+//         error=err;
+//     })
+//     return error;
+// }
 
 
 async function viewUploadedFile(fileName) {
@@ -53,4 +53,4 @@ async function viewUploadedFile(fileName) {
 }
 
 
-export {auth,app,uploadFile,db,viewUploadedFile};
+export {auth,app,db,viewUploadedFile,storage};
