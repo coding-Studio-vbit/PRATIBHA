@@ -11,7 +11,7 @@ const ViewPPT=({object})=>{
 const ViewImage=({object})=>{
     return(
         <div>
-            <img src={object} alt="Unable to Load Image"/>
+            <img src={object} alt="Unable to Load"/>
         </div>
     );
 }

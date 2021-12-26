@@ -33,41 +33,6 @@ export function AuthProvider({ children }) {
       setCurrentUser(null);
       setLoading(false);
     }
-    // .then(async(result) => {
-    //   // let isFirstSignIn = result.user.metadata.creationTime===result.user.metadata.lastSignInTime;
-    //   // let userType="";
-    //   // if(result.user.email.split('@')[1] === 'vbithyd.ac.in'){
-    //   //   if(checkStudent(result.user.email.split('@')[0])){
-    //   //     userType="STUDENT";
-    //   //   }else{
-    //   //     userType="FACULTY";
-    //   //   }
-    //   //   setCurrentUser({
-    //   //     uid:result.user.uid,
-    //   //     email:result.user.email,
-    //   //     profileURL:result.user.photoURL,
-    //   //     username:result.user.displayName,
-    //   //     phoneNumber:result.user.phoneNumber,
-    //   //     userType:userType,
-    //   //   });
-    //   //   setLoading(false);
-    //   // }
-    //   // else{
-    //   //   console.log("Domain Mismatch");
-    //   //   setLoading(true);
-    //   //   try{
-    //   //     await signOut();
-    //   //   }
-    //   //   catch(e){
-    //   //     console.log("Signout Failed");
-    //   //   }
-    //   //   setLoading(false);
-    //   // }
-    // })
-    // .catch((error) => {
-    //   setCurrentUser(null);
-    //   setLoading(false);
-    // });
   }
 
   async function signOut() {
@@ -85,7 +50,7 @@ export function AuthProvider({ children }) {
     setLoading(true)
     auth.onAuthStateChanged(async (user) => {
       let userType = "";
-      let isFirstTime = true
+      let isFirstTime = true;
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
@@ -95,9 +60,8 @@ export function AuthProvider({ children }) {
             try {
               console.log(10);
               const docSnap = await getDoc(docRef);
-              if (docSnap.exists()) {
-                
-                isFirstTime = docSnap.data()['isEnrolled']
+              if (docSnap.exists()) {                
+                isFirstTime = false;
               }
             } catch (e) {
               //Display it
@@ -109,8 +73,7 @@ export function AuthProvider({ children }) {
               console.log(11);
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-                isFirstTime = docSnap.data['isEnrolled']
-
+                isFirstTime = false;
               } 
             } catch (e) {
               //TODO

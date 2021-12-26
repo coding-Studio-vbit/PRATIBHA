@@ -1,6 +1,6 @@
 import { initializeApp} from "firebase/app";
 import { getAuth } from '@firebase/auth';
-import { getStorage,ref,uploadBytes } from "firebase/storage";
+import { getStorage,ref,uploadBytes,getDownloadURL } from "firebase/storage";
 import { getFirestore } from 'firebase/firestore';
 import { setPersistence, browserSessionPersistence } from "firebase/auth";
 
@@ -28,8 +28,7 @@ async function uploadFile(file,name){
     await uploadBytes(pra_ref, file)
     .then((snapshot) => {
         console.log('Uploaded a blob or file!');
-        console.log(snapshot.ref.fullPath);
-        
+        console.log(snapshot.ref.fullPath);        
     })
     .catch((err)=>{
       console.log("Mahita");
@@ -39,4 +38,19 @@ async function uploadFile(file,name){
 }
 
 
-export {auth,app,uploadFile,db};
+async function viewUploadedFile(fileName) {
+  let url=null,error=null;
+  
+  await getDownloadURL(ref(storage, 'pra_ref/prashanithID.pdf'))
+  .then((urlx) => {
+    console.log(urlx);
+    return urlx;
+  })
+  .catch((e) => {
+    error=e;
+  }); 
+  console.log(url,error);
+}
+
+
+export {auth,app,uploadFile,db,viewUploadedFile};

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
 import "./enroll.css";
 import { useAuth } from "../../context/AuthContext";
-import { enrollCourse } from "../services/studentServices";
-import {Spinner} from '../../global_ui/spinner/spinner';
+import { enrollCourse,getCurriculumDetails } from "../services/studentServices";
+
+import {LoadingScreen, Spinner} from '../../global_ui/spinner/spinner';
 import Dialog from '../../global_ui/dialog/dialog'
 import { useNavigate } from "react-router-dom";
 
@@ -17,33 +18,72 @@ export default function StudentEnroll() {
   const [button, setButton] = useState(true);
   const { currentUser }= useAuth();
 
+  const [courseFlag, setCourseFlag] = useState(false);
+
+  const [oe, setOe] = useState("");
+  const [pe, setPe] = useState("");
+
+  const [openElectives, setOpenElectives] = useState(null);
+  const [professionalElectives, setProfessionalElectives] = useState(null);
+  const [subjects, setSubjects] = useState();
+
   const [isLoading, setIsLoading] = useState(false);
   const [showDialog, setShowDialog] = useState(null);
-  const nav = useNavigate()
-  async function handleEnroll(){
+
+  const nav = useNavigate();
+
+  async function getSubjects(){
     if(course.value!=null &&  Year.value!=null && Department.value!=null && Section.value!=null){
-      console.log("Entered");
       setIsLoading(true);
-      const res=await enrollCourse(currentUser.email,{
+      const res =await getCurriculumDetails({
         course:course.value,
         year:Year.value,
         department:Department.value,
-        section:Section.value,
-        isEnrolled:true,
-      })
-      if(res==null){
-        setShowDialog("Enrolled Successfully");
-        nav('/student/subjectslist',{replace:true})
+        section:Section.value, 
+      });      
+      if(res.error==null){
+        if(res.document.length===1){
+          const result = await enrollCourse(
+            currentUser.email,{
+              course:course.value,
+              year:Year.value,
+              department:Department.value,
+              section:Section.value,
+              isEnrolled:true,
+              subjects:res.document[0]
+           }
+          )
+          if(result==null){
+            setIsLoading(false);
+            setShowDialog("Enrolled Successfully");
+          }else{
+            setIsLoading(false);
+            setShowDialog(result.toString());            
+          }
+        }else{
+          console.log(res.document[1],34);
+          console.log(res.document[2],12);
+          console.log(res.document[2].map(
+            function(a) {
+              return  {value:a.subject, label:a.subject} 
+            }));
+          setOpenElectives(res.document[1]);
+          setProfessionalElectives(res.document[2]); 
+          setSubjects(res.document[0]);
+          setIsLoading(false);  
+          setCourseFlag(true);
+        } 
       }else{
-        setShowDialog(res);          
-      }
-      console.log(res);
+        setIsLoading(false);
+        setShowDialog(res.error);        
+      }      
       console.log(course.value+'_'+Year.value+'_'+Department.value+'_'+Section.value);
     }else{
       console.log("Provide Details");
     }
   }
 
+  
   const courses = [
     { value: "BTech", label: "B.Tech" },
     { value: "MTech", label: "M.Tech" },
@@ -110,25 +150,47 @@ export default function StudentEnroll() {
     }
   }
 
-  useEffect(() => {
-      
-  },)
+ 
+  async function enrollStudent(){
+    setIsLoading(true);
+    const res = await enrollCourse(
+      currentUser.email,{
+        course:course.value,
+        year:Year.value,
+        department:Department.value,
+        section:Section.value,
+        subjects:subjects,
+        isEnrolled:true,
+        oe:oe,
+        pe:pe 
+      });
+      if(res==null){
+        setIsLoading(false);
+        setShowDialog("Course Enrolled Successfully");
+      }else{
+        setShowDialog(res);
+      }
+        
+  }
 
-
-
-  return (
+  return(
     <div className="enroll-container">
       <Navbar back={false} title="Enrollment" logout={false} />
       {
-        showDialog && <Dialog message={showDialog} onOK={()=>{console.log("Route From here")}}/>
+        showDialog && <Dialog message={showDialog} onOK={()=>{nav('/student/subjectslist',{replace:true})}}/>
       }       
       <div className="enroll-dropdown">
+        <ul>
+          <li>Update the details in the form to enroll into classes</li>
+          <li>Once you submit the details you cannot change</li>
+        </ul>
         
         <p className="enroll-dropdown-title">Course</p>
         <Select
           placeholder=""
           value={course}
           className="select"
+          isDisabled={courseFlag}
           options={courses}
           onChange={(selectedCourse) => {
             setYear("");
@@ -144,7 +206,7 @@ export default function StudentEnroll() {
           value={Year}
           className="enroll-select"
           options={yearsList(course.value)}
-          isDisabled={!course}
+          isDisabled={!course || courseFlag}
           onChange={(selectedYear) => {
             setYear(selectedYear);
           }}
@@ -156,7 +218,7 @@ export default function StudentEnroll() {
           value={Department}
           className="enroll-select"
           options={depList(course.value)}
-          isDisabled={!Year}
+          isDisabled={!Year || courseFlag}
           onChange={(selectedDepartment) => {
             setSection("");
             setDepartment(selectedDepartment);
@@ -169,31 +231,95 @@ export default function StudentEnroll() {
           value={Section}
           options={Sections}
           className="enroll-select"
-          isDisabled={!Department}
+          isDisabled={!Department || courseFlag}
           onChange={(selectedSection) => {
             setSection(selectedSection);
             setButton(false);
           }}
         />
 
-      </div>
-      {
-        !isLoading?
-        <Button
-          onClick={handleEnroll}
-          className="enroll-button normal"
-          disabled={button}
-          width="30"
-          height="40"
-          children="Enroll"
-        />:
-        <div style={{marginTop:'20px'}}>
-          <Spinner radius={2}/>
-        </div>
+     
+        {
+          (openElectives!==null && professionalElectives!==null)?
+          
+          <div className="electives">
 
-      }
+            <p className="enroll-dropdown-title">Open Elective</p>
+            <Select
+            placeholder=""
+            value={{value:oe.subject,label:oe.subject}}
+            options={
+              openElectives.map(
+                function(a) {
+                  return  {value:a.subject, label:a.subject} 
+                })
+            }
+            className="enroll-select"
+            onChange={
+              (selectedElective) => {
+                openElectives.forEach(element =>{
+                  if(element.subject===selectedElective.value){
+                    setOe(element);
+                  }
+                });
+              }
+            }
+            />
 
-      
+
+            <p className="enroll-dropdown-title">Professional Elective</p>
+            <Select
+            placeholder=""
+            value={{value:pe.subject,label:pe.subject}}
+            options={
+              professionalElectives.map(
+                function(a) {
+                  return  {value:a.subject, label:a.subject} 
+                })
+            }
+            className="enroll-select"
+            onChange={
+              (selectedElective) => {
+                professionalElectives.forEach(element =>{
+                  if(element.subject===selectedElective.value){
+                    setPe(element);
+                  }
+                });
+              }
+            }
+            />
+            {
+              !isLoading?
+              <Button
+                onClick={enrollStudent}
+                className="enroll-button normal"
+                disabled={button}
+                width="30"
+                height="40"
+                children="Enroll"
+              />:
+              <div style={{marginTop:'20px'}}>
+                <Spinner radius={2}/>
+              </div>
+            }
+          </div>
+          :
+          (
+            !isLoading?
+            <Button
+              onClick={getSubjects}
+              className="enroll-button normal"
+              disabled={button}
+              width="30"
+              height="40"
+              children="Enroll"
+            />:
+            <div style={{marginTop:'20px'}}>
+              <Spinner radius={2}/>
+            </div>
+          )
+        }  
+       </div>    
     </div>
-  );
+  )
 }

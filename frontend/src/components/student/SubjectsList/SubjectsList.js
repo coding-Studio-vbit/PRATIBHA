@@ -5,9 +5,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Spinner } from "../../global_ui/spinner/spinner";
 import { db } from "../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { getStudentData } from "../services/studentServices";
+import { useAuth } from "./../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
+  let navigate = useNavigate();
+
+  const [loading, setloading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userDoc, setuserDoc] = useState(null);
+  const { currentUser } = useAuth();
 
   const Fetchdata = async () => {
     let email = "20P61A05N0@vbithyd.ac.in";
@@ -84,41 +93,57 @@ const SubjectsList = () => {
       SUBMIT_BEFORE: "3-12-21",
     },
   ];
+
+  async function fetchData() {
+    const { document, error } = await getStudentData(currentUser.email);
+    if (error == null) {
+      setuserDoc(document);
+    } else {
+      setError(error);
+    }
+    setloading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  });
   return (
     <div>
       <Navbar title="3_CSE_D" />
-      {!data.length ? (
-        <div className="spinnerload">
-          <Spinner radius={2} />
-        </div>
+      {!loading ? (
+        error == null ? (
+          <div className="sub_body">
+            <table style={{ marginTop: "4.5rem" }}>
+              <thead>
+                <tr>
+                  <th>SUBJECT</th>
+                  <th>PRA TOPIC</th>
+                  <th>STATUS</th>
+                  <th>SUBMIT BEFORE</th>
+                  <th>EDIT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data &&
+                  data.map((dataitem) => (
+                    <tr key={dataitem.SUBJECT}>
+                      <td>{dataitem.SUBJECT}</td>
+                      <td>{dataitem.PRA_TOPIC}</td>
+                      <td>{dataitem.STATUS}</td>
+                      <td>{dataitem.SUBMIT_BEFORE}</td>
+                      <td>
+                        <EditIcon style={{ color: "rgba(11, 91, 138, 1)" }} />
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div>{error}</div>
+        )
       ) : (
-        <div className="sub_body">
-          <table style={{ marginTop: "4.5rem" }}>
-            <thead>
-              <tr>
-                <th>SUBJECT</th>
-                <th>PRA TOPIC</th>
-                <th>STATUS</th>
-                <th>SUBMIT BEFORE</th>
-                <th>EDIT</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data &&
-                data.map((dataitem) => (
-                  <tr key={dataitem.SUBJECT}>
-                    <td>{dataitem.SUBJECT}</td>
-                    <td>{dataitem.PRA_TOPIC}</td>
-                    <td>{dataitem.STATUS}</td>
-                    <td>{dataitem.SUBMIT_BEFORE}</td>
-                    <td>
-                      <EditIcon style={{ color: "rgba(11, 91, 138, 1)" }} />
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+        <div>loading</div>
       )}
     </div>
   );

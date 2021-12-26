@@ -44,6 +44,7 @@
 h4{
   text-align: center;
   margin: 5px;
+  color:#0e72ab;
 }
 ul{
   padding:10px;
@@ -58,5 +59,14 @@ li{
   background-color: white;
   width:auto;
   font-size: 16px;
+}
+.lock-screen-icon{
+ text-align: right;
+ color:#0e72ab;
+}
+.li-tag-flex{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
