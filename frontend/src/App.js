@@ -70,6 +70,8 @@ const PrivateRoutes = ({ children }) => {
   const location = useLocation();
   useEffect(() => {
     localStorage.setItem("url", location.pathname);
+    localStorage.setItem("state", JSON.stringify(location.state));
+
   }, [location]);
   return currentUser ? children : <Navigate to={"/"}></Navigate>;
 };
