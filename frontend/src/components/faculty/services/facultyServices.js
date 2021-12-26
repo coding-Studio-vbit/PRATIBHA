@@ -41,6 +41,28 @@ async function enrollClasses(email,enrolled_classes){
   return null;      
 }
 
+async function fetchStudentPRA(email,subject) {
+  const facultyRef = doc(db,`faculty/${email}/subject/`,email+"@vbithyd.ac.in");
+  const userRef = doc(db,"users",email+"@vbithyd.ac.in");
+
+  let res={};
+  try{
+    const docSnap = await getDoc(facultyRef);
+    if(docSnap.exists()){      
+        res.marksDoc=docSnap.data();
+        res.error=null;
+        const dataSnap = await getDoc(userRef);
+        // if()
+    }else{
+        return {
+          error:"Not Graded Yet"
+        }
+    }
+  }catch(e){
+
+  }  
+}
+
 // async function createSubCollection() {
 //   console.log("Started");
 //   try {
@@ -54,4 +76,4 @@ async function enrollClasses(email,enrolled_classes){
 //   console.log("Ended");   
 // }
 
-export {getEnrolledCourses,enrollClasses,createSubCollection};
+export {getEnrolledCourses,enrollClasses};

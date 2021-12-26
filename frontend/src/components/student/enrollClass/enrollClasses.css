@@ -1,0 +1,31 @@
+.enrollPage{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+.instructions{
+    padding: 5px 10px ;
+}
+
+.enrollForm{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    min-width: 390px;
+}
+
+.enrollBtn{
+    justify-self: center;
+    text-align: center;
+    padding: 10px 15px;
+    color: white;
+    display: block;
+    /* align-self: center; */
+}
+
+.btnSpinner{
+    margin-top: 20px;
+}
