@@ -3,7 +3,6 @@ import styles from "./uploadpra.module.css";
 import Button from "../../global_ui/buttons/button";
 import Navbar from "../../global_ui/navbar/navbar";
 import '@react-pdf-viewer/core/lib/styles/index.css';
-import { uploadFile } from '../services/storageServices';
 // import { uploadFile } from '../../../firebase';
 import { getUploadedFile, uploadFile } from '../services/storageServices';
 import { Spinner } from '../../global_ui/spinner/spinner';
