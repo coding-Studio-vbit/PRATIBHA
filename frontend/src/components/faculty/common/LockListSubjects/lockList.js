@@ -5,6 +5,7 @@ import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { enrollClasses } from "../../services/facultyServices";
 import "./lockList.css";
+import { useAuth } from "../../../context/AuthContext";
 
 const LockList = () => {
   const [Course, setCourse] = useState("");
@@ -16,23 +17,25 @@ const LockList = () => {
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
 
-  const [showDialog,setShowDialog]=useState(null);
+  const [showDialog, setShowDialog] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { currentUser } = useAuth();
 
   function handleDone() {
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
-    var finalList = BTechList.concat(MTechList,MBAList)
-    console.log(finalList)
-    if(finalList.length==0){
-      setShowDialog('Add your classes for this semester')
+    var finalList = BTechList.concat(MTechList, MBAList);
+    console.log(finalList);
+    if (finalList.length == 0) {
+      setShowDialog("Add your classes for this semester");
     }
-  //   var finalList = 
-  //   enrollClasses(user,)
-   }
+    else{enroll(finalList)}
+  }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
     if (Course.value === "B.Tech") {
       const newBTech =
-      'BTech_'+
+        "BTech_" +
         Year.value +
         "_" +
         Department.value +
@@ -41,9 +44,12 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!BTechList.includes(newBTech)) setBTechList([...BTechList, newBTech]);
-      else{setShowDialog('Class already added')}
+      else {
+        setShowDialog("Class already added");
+      }
     } else if (Course.value === "M.Tech") {
       const newMTech =
+      'MTech_'+
         Year.value +
         "_" +
         Department.value +
@@ -52,9 +58,12 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!MTechList.includes(newMTech)) setMTechList([...MTechList, newMTech]);
-      else{setShowDialog('Class already added')}
+      else {
+        setShowDialog("Class already added");
+      }
     } else if (Course.value === "MBA") {
       const newMBA =
+      'MBA_'+
         Year.value +
         "_" +
         Department.value +
@@ -63,7 +72,9 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
-      else{setShowDialog('Class already added')}
+      else {
+        setShowDialog("Class already added");
+      }
     }
   };
 
@@ -124,19 +135,30 @@ const LockList = () => {
     },
   ];
 
+  async function enroll(list) {
+    setIsLoading(true);
+    const res = await enrollClasses(currentUser.email,list);
+    if (res == null) {
+      setIsLoading(false);
+      setShowDialog("Course Enrolled Successfully");
+    } else {
+      setShowDialog(res);
+    }
+  }
+
   return (
     <div>
       <div className="lockList-container">
         <Navbar title="Classes List" logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
         {showDialog && (
-        <Dialog
-          message={showDialog}
-          onOK={() => {
-            setShowDialog(false);
-          }}
-        />
-      )}
+          <Dialog
+            message={showDialog}
+            onOK={() => {
+              setShowDialog(false);
+            }}
+          />
+        )}
         <div className="flex-container">
           <div className="dropdown">
             <p className="locklist-dropdown-title">Course</p>
@@ -205,7 +227,6 @@ const LockList = () => {
                   <h4> B.Tech </h4>
                   <ul>
                     {BTechList.map((item, index) => {
-                    
                       return (
                         <li className="li-tag-flex" key={index}>
                           {item}
