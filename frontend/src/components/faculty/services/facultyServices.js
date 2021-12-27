@@ -34,13 +34,13 @@ async function getEnrolledCourses(email) {
 async function enrollClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
   try {
-    await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false });
+    await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false,role: null});
     for (let i = 0; i < enrolled_classes.length; i++) {
       await setDoc(doc(db, `faculty/${email}/${enrolled_classes[i]}`, email), {
         random: 1,
       });
     }
-    await updateDoc(facultyRef, { isEnrolled: true });
+    await updateDoc(facultyRef, { isEnrolled: true ,role:['faculty']});
   } catch (error) {
     return error.code;
   }
