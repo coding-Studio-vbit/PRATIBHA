@@ -128,7 +128,7 @@ const SubjectsList = () => {
 
   return (
     <div>
-      <Navbar title={course} />
+      <Navbar title={courseTitle} />
       {!loading ? (
         error == null ? (
           <div className="sub_body">

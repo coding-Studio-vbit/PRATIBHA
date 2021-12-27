@@ -44,7 +44,7 @@ const ViewSubmissions = () => {
     var dict = {};
 
     for (var student = 0; student <= data.length; student++) {
-      rollnum = data[student]["ROLL_NO"];
+     let rollnum = data[student]["ROLL_NO"];
       dict[rollnum] = getUploadedFile(
         passedData.Course,
         passedData.Year,
@@ -181,7 +181,7 @@ const ViewSubmissions = () => {
                       <td>{dataitem.MID_1}</td>
                       <td>{dataitem.MID_2}</td>
                       <td>
-                        <a href={dict[dataitem.ROLL_NO].url} style={{textDecoration="none"}}>
+                        <a href={links[dataitem.ROLL_NO].url} style={{textDecoration:'none'}}>
                           <i
                             className="fa fa-download"
                             aria-hidden="true"
