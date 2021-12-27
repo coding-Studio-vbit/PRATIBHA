@@ -76,7 +76,7 @@ export function AuthProvider({ children }) {
                if(docSnap.data().isEnrolled)
                 isFirstTime = false;
               }else{
-                isFirstTime = false
+                isFirstTime = true;
               } 
             } catch (e) {
               //TODO
