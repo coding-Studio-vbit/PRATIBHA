@@ -157,7 +157,7 @@ const ListofStudents = () => {
             </div>
           </div>
           <div className="export_">
-            <ExportCSV csvData={data} fileName="3_CSE_D_DA" />
+            <ExportCSV csvData={data} fileName='BTech_CSE_D_DAA' />
           </div>
         </>
       )}

@@ -52,7 +52,7 @@ const ClassList = () => {
         width: "100vw",
       }}
     >
-      <Navbar title="Your Classes" logout={true} />
+      <Navbar title="Your Classes" back={false} logout={true} />
       <div className="div-container-classes">
         {subs.btechSubs.length !== 0 && (
           <div>
