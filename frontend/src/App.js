@@ -21,6 +21,7 @@ import CoeSearch from "./components/faculty/coe/coeSearch";
 import EnrollClasses from "./components/student/enrollClass/enrollClasses";
 import ViewSubmissions from "./components/faculty/common/ViewSubmissions/ViewSubmissions";
 import CreatePra from "./components/faculty/common/createPRA/createPra";
+import HODClassList from "./components/faculty/hod/classListHod";
 
 const App = () => {
   return (
@@ -58,6 +59,7 @@ const App = () => {
 
                     <Route exact path="/enroll" element={<LockList />} />
                     <Route path="/classlist" element={<ClassList />} />
+                    <Route path="/hodclasslist" element={<HODClassList />} />
                     <Route path="/studentlist" element={<ListofStudents />} />
                     <Route path="/grading" element={<Grading />} />
                   </Routes>
