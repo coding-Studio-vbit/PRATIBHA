@@ -1,19 +1,28 @@
 import * as React from "react";
 import { Viewer } from "@react-pdf-viewer/core";
-import styles from "./grading.module.css";
+import styles from "./grading.css";
 import Button from "../../global_ui/buttons/button";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Worker } from "@react-pdf-viewer/core";
 import Docviewer from "./docviewer";
 import Dialog from "../../global_ui/dialog/dialog";
 import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
+import { getUploadedFile } from "../../student/services/storageServices";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { async } from "@firebase/util";
+
 
 
 const Grading = () => {
+   let location = useLocation();
+   const [user,setUser] = useState(location.state);
+
+
    const [url, setUrl] = React.useState('');
    const [loading, setLoading] = React.useState(false); 
    const [rollNo, setRollNo] = React.useState('');
-   const [isMid1 , setIsMid1] = React.useState(true)
+   const [midNo,setMid] = React.useState(1);
    const [innovation1 , setInnovation1] = React.useState()
    const [subRel1 , setSubRel1] = React.useState()
    const [individuality1 , setIndividuality1] = React.useState()
@@ -23,13 +32,37 @@ const Grading = () => {
    const [subRel2 , setSubRel2] = React.useState()
    const [individuality2 , setIndividuality2] = React.useState()
    const [preparation2 , setPreparation2] = React.useState()
-   const [presentation2 , setPresentation2] = React.useState()
+   const [presentation2 , setPresentation2] = React.useState();
 
-    // const Fetchdata = async () => {
-    //  const studentref = query(
-    //    collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
-    //  );
-    // }
+   const [marksError,setMarksError] = React.useState(null);
+   const [fileError,setFileError] = React.useState(null);
+
+    //  const Fetchdata = async () => {
+    //   const studentref = query(
+    //     collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA/`)
+    //   );
+    //  }
+  async function handleMidSelect(val) {
+    setMid(val);
+    setLoading(true);
+    
+      const res= await getUploadedFile();
+      // const midMarks = await getMarks();
+
+      if(res.error==null){
+        setUrl(res.url);        
+      }
+      else{
+        setFileError(res.error);
+        setUrl(null);
+      }
+      //check the above condition with midMarks
+      
+    //make http request
+
+    setLoading(false)
+        
+  }
 
    
   
@@ -40,16 +73,17 @@ const Grading = () => {
     }
   ;
    const searchRoll=()=>{
-     if(rollNo.length===10 )
+     if(rollNo.length!==10 )
      {
-       setLoading(true)
-       //http request 
-       setLoading(false)
+      //  setSearch()
+       
      }
 
      else
      {
-      
+      setLoading(true)
+       //http request 
+       setLoading(false)
      }
    }
 
@@ -58,13 +92,36 @@ const Grading = () => {
     
   } 
 
-        function onChange (e)  {
-          const files = e.target.files;
-          files.length > 0 && setUrl(URL.createObjectURL(files[0]));
-      };
+        
+  
+  async function getMarks() {
+    //call http function here    
+  }
 
-  return (
+  async function getUserData() {
+    const res = await getUploadedFile();
+    if(res.error==null){
+      setUrl(res.url);        
+    }
+    else{
+      setFileError(res.error);
+      setUrl(null);
+    } 
+    await getMarks(); 
+    // if(res.error==null){
+    //   setMarks(res.marks);        
+    // }
+    // else{
+    //   setMarkserror(res.error);
+    //   setMarks(null);
+    // }    
+  }
     
+  React.useEffect(()=>{
+    getUserData();      
+  },[])
+
+  return (    
     <div className="grading">
       <div className="left">
         <i style={{
@@ -107,6 +164,7 @@ const Grading = () => {
           </div>
           </div>
           
+       
         
         <div className="mid1">
           <div>
@@ -120,7 +178,7 @@ const Grading = () => {
               }}
               
               type="text"
-              maxLength={1} value={innovation1} onChange={(e)=>setInnovation1(e.target.value)}
+               value={innovation1} onChange={(e)=>setInnovation1(e.target.value)}
               
             />
           </div>
@@ -186,6 +244,10 @@ const Grading = () => {
 
           </div>
         </div>
+
+        {
+          midNo==2 &&
+        
 
         <div className="mid2">
           <div>
@@ -253,11 +315,14 @@ const Grading = () => {
           </div>
           <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
             <span >MID-II:(10M)</span>
-            <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', textAlign:'center', borderRadius:'10px'}}> 
-            {parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2)}
+            <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px',height:'20px', textAlign:'center', borderRadius:'10px'}}> 
+            {(parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2))?
+              (parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2)):" "
+               }
             </span>
           </div>
         </div>
+        }
         <div className="footer">
           <i class="fas fa-chevron-circle-left fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
           <i class="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
@@ -297,17 +362,11 @@ const Grading = () => {
                 borderRadius: "24px",
                 marginRight: "12px",
               }}
-              onChange={(e)=>{
-                
-                
-                  setIsMid1(e.target.value === 'm1'?true:false)
-                
-              }}
+              onChange={(e)=>handleMidSelect(e.target.value)}
               name="selectList"
-              id="selectList"
-            >
-                <option value="m1">Mid-I  </option> 
-              <option value="m2">Mid-II </option>
+              id="selectList">
+              <option value={1}>MID-I</option> 
+              <option value={2}>MID-II</option>
             </select>
           </div>
 
