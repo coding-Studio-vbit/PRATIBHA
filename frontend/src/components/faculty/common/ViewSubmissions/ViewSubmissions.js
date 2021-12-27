@@ -5,28 +5,62 @@ import "../../generalFaculty/ListOfStudents/ListOfStudents.css";
 import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getUploadedFile } from "../../../student/services/storageServices";
 import { useLocation } from "react-router-dom";
 import { getStudentData } from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
+import { useAuth } from "../../../context/AuthContext";
 
 const ViewSubmissions = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [links, setLinks] = useState({});
+  const { currentUser } = useAuth();
   const location = useLocation();
-  console.log(location.state.Course);
+  const passedData = location.state;
+  let title =
+    passedData.Year +
+    "-" +
+    passedData.Dept +
+    "_" +
+    passedData.Section +
+    "_" +
+    passedData.Subject;
+
+  let course;
+
+  if (passedData.Course === "B.Tech") {
+    course = "BTech";
+  } else if (passedData.Course === "M.Tech") {
+    course = "MTech";
+  }
+
+  course = course + "_" + title;
+
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
 
-  const storage = getStorage();
-  const gsReference = ref(
-    storage,
-    "gs://pratibha-d4e57.appspot.com/pra_ref/Prashanith-Resume.pdf"
-  );
-  
+  const Fetchlink = async () => {
+    var dict = {};
+
+    for (var student = 0; student <= data.length; student++) {
+      rollnum = data[student]["ROLL_NO"];
+      dict[rollnum] = getUploadedFile(
+        passedData.Course,
+        passedData.Year,
+        passedData.Dept,
+        passedData.Section,
+        passedData.Subject,
+        "2",
+        rollnum
+      );
+    }
+    setLinks(dict);
+  };
+
   const Fetchdata = async () => {
     const studentref = query(
-      collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
+      collection(db, `faculty/${currentUser.email}/${course}`)
     );
 
     await getDocs(studentref).then((querySnapshot) => {
@@ -34,18 +68,20 @@ const ViewSubmissions = () => {
         querySnapshot.forEach(async (doc) => {
           const email = doc.id.toString() + "@vbithyd.ac.in";
           const docData = doc.data();
-          const mid1 =
-            docData["mid1"]["criteria1"] +
-            docData["mid1"]["criteria2"] +
-            docData["mid1"]["criteria3"] +
-            docData["mid1"]["criteria4"] +
-            docData["mid1"]["criteria5"];
-          const mid2 =
-            docData["mid2"]["criteria1"] +
-            docData["mid2"]["criteria2"] +
-            docData["mid2"]["criteria3"] +
-            docData["mid2"]["criteria4"] +
-            docData["mid2"]["criteria5"];
+          const mid1 = docData["mid1"]
+            ? docData["mid1"]["Innovation1"] +
+              docData["mid1"]["Subject_Relevance1"] +
+              docData["mid1"]["Individuality1"] +
+              docData["mid1"]["Preparation1"] +
+              docData["mid1"]["Presentation1"]
+            : " ";
+          const mid2 = docData["mid2"]
+            ? docData["mid2"]["Innovation2"] +
+              docData["mid2"]["Subject_Relevance2"] +
+              docData["mid2"]["Individuality2"] +
+              docData["mid2"]["Preparation2"] +
+              docData["mid2"]["Presentation1"]
+            : " ";
 
           await getStudentData(email)
             .then(({ document, error }) => {
@@ -54,7 +90,7 @@ const ViewSubmissions = () => {
 
               if (error == null) {
                 let obj = returndata["subjects"].find(
-                  (o) => o.subject === "DAA"
+                  (o) => o.subject === passedData.Subject
                 );
                 topic = obj.topic;
                 name = returndata.name;
@@ -85,6 +121,7 @@ const ViewSubmissions = () => {
 
   useEffect(() => {
     Fetchdata();
+    Fetchlink();
   }, []);
 
   const Data = [
@@ -112,7 +149,7 @@ const ViewSubmissions = () => {
   ];
   return (
     <div>
-      <Navbar title="3_CSE_D_DA" logout={false} />
+      <Navbar title={title} logout={false} />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
@@ -143,19 +180,21 @@ const ViewSubmissions = () => {
                       <td>{dataitem.TOPIC_NAME}</td>
                       <td>{dataitem.MID_1}</td>
                       <td>{dataitem.MID_2}</td>
-                      <td >
-                        <i
-                          className="fa fa-download"
-                          aria-hidden="true"
-                          style={{ color: "rgba(11, 91, 138, 1)" }}
-                        ></i>
+                      <td>
+                        <a href={dict[dataitem.ROLL_NO].url} style={{textDecoration="none"}}>
+                          <i
+                            className="fa fa-download"
+                            aria-hidden="true"
+                            style={{ color: "rgba(11, 91, 138, 1)" }}
+                          ></i>
+                        </a>
                       </td>
                     </tr>
                   ))}
             </tbody>
           </table>
           <div className="LOF_buttons">
-            <ExportCSV csvData={data} fileName="3_CSE_D_DA" />
+            <ExportCSV csvData={data} fileName={course} />
           </div>
         </div>
       )}

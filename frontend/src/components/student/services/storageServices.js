@@ -19,12 +19,12 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
     return error;
 }
 
-async function getUploadedFile(course,year,department,section,subject,midNo,email) {
+async function getUploadedFile(course,year,department,section,subject,midNo,rollno) {
     let res={
         url:null,
         error:null,    
     }
-    await getDownloadURL(ref(storage,`${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`))
+    await getDownloadURL(ref(storage,`${course}/${year}/${department}/${section}/${subject}/${midNo}/${rollno}`))
     .then((url) => {
         console.log(url);
         res.url=url;

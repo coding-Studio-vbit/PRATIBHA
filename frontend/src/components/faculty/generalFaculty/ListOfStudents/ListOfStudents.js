@@ -225,17 +225,14 @@ const ListofStudents = () => {
             <div className="LOF_buttons">
               <Button
                 children="GRADE"
-                onClick={ async () => {
-                  let std = await Fetchnumber(data);
-                  navigate("/faculty/grading", { state: std });
-                }}
+                onClick={Fetchnumber(data)}
                 width="200"
                 className="rare"
               />
             </div>
           </div>
           <div className="export_">
-            <ExportCSV csvData={data} fileName="3_CSE_D_DA" />
+            <ExportCSV csvData={data} fileName={location.state} />
           </div>
         </>
       )}
