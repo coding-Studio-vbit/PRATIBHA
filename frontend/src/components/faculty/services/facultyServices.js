@@ -6,7 +6,11 @@ import {
   setDoc,
   arrayUnion,
   arrayRemove,
+  collection,
+  query,
+  getDocs,
 } from "firebase/firestore";
+import { async } from "@firebase/util";
 
 async function getEnrolledCourses(email) {
   const docRef = doc(db, "faculty", email);
@@ -45,6 +49,36 @@ async function enrollClasses(email, enrolled_classes) {
     return error.code;
   }
   return null;
+}
+
+export const getDepartments = async (course,year)=>{
+  try {
+    const q =  query(collection(db,'curriculum',course,year))
+    const alldocs = await getDocs(q)
+    
+    let departments = []
+    let subjects = {}
+    alldocs.docs.forEach((e)=>{
+      departments.push({value:e.id,label:e.id})
+      for (let index = 0; index < e.data()['subjects'].length; index++) {
+        const ele = e.data()['subjects'][index];
+        if(subjects[e.id]){
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject,label:ele.subject}]
+
+        }else{
+
+          subjects[e.id]=[{value:ele.subject,label:ele.subject}]
+        }
+      }
+    })
+    return {departments:departments,subjects:subjects}
+    // for (let index = 0; index < data.length; index++) {
+    //   const dep = data[index];
+    //   departments.push(dep.)
+    // }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export const setPRA = async (sub,department,date,inst)=>{

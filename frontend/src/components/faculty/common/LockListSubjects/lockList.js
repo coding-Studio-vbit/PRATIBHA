@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
-import { enrollClasses } from "../../services/facultyServices";
+import { enrollClasses, getDepartments } from "../../services/facultyServices";
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const LockList = () => {
-  const [Course, setCourse] = useState("");
+  const [Course, setCourse] = useState({ value:'ihb' });
   const [Year, setYear] = useState("");
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
@@ -22,10 +22,28 @@ const LockList = () => {
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess,setIsSuccess]=useState(false);
-
+  const [subjects,setSubjects] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
+  const [departments,setDepartments] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
   const { currentUser } = useAuth();
   const nav = useNavigate();
+  useEffect(()=>{
+    const getLables = async ()=>{
+      const res = await getDepartments(Course.value,Year.value)
+      if(!res) return
+       setSubjects(res.subjects)
+      setDepartments(res.departments)
+    }
+    getLables()
+  },[Course,Year])
+  useEffect(()=>{
 
+  },[departments])
   function handleDone() {
     
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
@@ -91,8 +109,8 @@ const LockList = () => {
   };
 
   const Courses = [
-    { value: "B.Tech", label: "B.Tech" },
-    { value: "M.Tech", label: "M.Tech" },
+    { value: "BTech", label: "BTech" },
+    { value: "MTech", label: "MTech" },
     { value: "MBA", label: "MBA" },
   ];
   const Years = [
@@ -101,6 +119,11 @@ const LockList = () => {
     { value: "2", label: "2" },
     { value: "3", label: "3" },
     { value: "4", label: "4" },
+  ];
+  const MYears = [
+    //fetch from db for the selected course
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
   ];
   const Departments = [
     //fetch from db for the selected course
@@ -118,6 +141,7 @@ const LockList = () => {
     { value: "ME", label: "Mechanical Engineering" },
     { value: "IT", label: "Information Technology" },
   ];
+  
   const Sections = [
     //fetch from db for the selected department
     { value: "A", label: "A" },
@@ -183,7 +207,7 @@ const LockList = () => {
             <Select
               placeholder=""
               className="select"
-              options={Years}
+              options={Course.value[0]==='M'? MYears:Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
                 setYear(selectedYear);
@@ -192,7 +216,7 @@ const LockList = () => {
             <p className="locklist-dropdown-title">Department</p>
             <Select
               placeholder=""
-              options={Departments}
+              options={departments}
               className="select"
               isDisabled={!Year}
               onChange={(selectedDepartment) => {
@@ -212,7 +236,7 @@ const LockList = () => {
             <p className="locklist-dropdown-title">Subject</p>
             <Select
               placeholder=""
-              options={Subjects}
+              options={subjects[Department.value]}
               className="select"
               isDisabled={!Section}
               onChange={(selectedSubject) => {
