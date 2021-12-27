@@ -75,7 +75,7 @@ const ListofStudents = () => {
               docData["mid2"]["Subject_Relevance2"] +
               docData["mid2"]["Individuality2"] +
               docData["mid2"]["Preparation2"] +
-              docData["mid2"]["Presentation1"]
+              docData["mid2"]["Presentation2"]
             : " ";
 
           await getStudentData(email)

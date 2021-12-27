@@ -20,53 +20,56 @@ const ViewSubmissions = () => {
   const passedData = location.state;
   let title =
     passedData.Year +
-    "-" +
+    "_" +
     passedData.Dept +
     "_" +
     passedData.Section +
     "_" +
     passedData.Subject;
 
-  let course;
-
+  let course, courseName;
   if (passedData.Course === "B.Tech") {
     course = "BTech";
   } else if (passedData.Course === "M.Tech") {
     course = "MTech";
   }
 
+  courseName = course;
+
   course = course + "_" + title;
 
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
 
-  const Fetchlink = async () => {
+  const Fetchlink = async (rollnum) => {
     var dict = {};
+    dict["rollno"] = rollnum;
+    const res = await getUploadedFile(
+      courseName,
+      passedData.Year,
+      passedData.Dept,
+      passedData.Section,
+      passedData.Subject,
+      "2",
+      rollnum + "@vbithyd.ac.in"
+    );
+    console.log(res);
+    links[rollnum] = res.url;
 
-    for (var student = 0; student <= data.length; student++) {
-     let rollnum = data[student]["ROLL_NO"];
-      dict[rollnum] = getUploadedFile(
-        passedData.Course,
-        passedData.Year,
-        passedData.Dept,
-        passedData.Section,
-        passedData.Subject,
-        "2",
-        rollnum
-      );
-    }
-    setLinks(dict);
+    setLinks(links);
   };
 
   const Fetchdata = async () => {
     const studentref = query(
       collection(db, `faculty/${currentUser.email}/${course}`)
+      // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
 
     await getDocs(studentref).then((querySnapshot) => {
       if (querySnapshot) {
         querySnapshot.forEach(async (doc) => {
           const email = doc.id.toString() + "@vbithyd.ac.in";
+          Fetchlink(doc.id.toString());
           const docData = doc.data();
           const mid1 = docData["mid1"]
             ? docData["mid1"]["Innovation1"] +
@@ -80,7 +83,7 @@ const ViewSubmissions = () => {
               docData["mid2"]["Subject_Relevance2"] +
               docData["mid2"]["Individuality2"] +
               docData["mid2"]["Preparation2"] +
-              docData["mid2"]["Presentation1"]
+              docData["mid2"]["Presentation2"]
             : " ";
 
           await getStudentData(email)
@@ -90,7 +93,7 @@ const ViewSubmissions = () => {
 
               if (error == null) {
                 let obj = returndata["subjects"].find(
-                  (o) => o.subject === passedData.Subject
+                  (o) => o.subject ===  passedData.Subject //"DAA"
                 );
                 topic = obj.topic;
                 name = returndata.name;
@@ -116,12 +119,12 @@ const ViewSubmissions = () => {
         setError("NO ONE ENROLLED THIS SUBJECT");
       }
     });
+
     setloading(false);
   };
 
   useEffect(() => {
     Fetchdata();
-    Fetchlink();
   }, []);
 
   const Data = [
@@ -149,7 +152,7 @@ const ViewSubmissions = () => {
   ];
   return (
     <div>
-      <Navbar title={title} logout={false} />
+      <Navbar title={title} logout={true} />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
@@ -181,7 +184,10 @@ const ViewSubmissions = () => {
                       <td>{dataitem.MID_1}</td>
                       <td>{dataitem.MID_2}</td>
                       <td>
-                        <a href={links[dataitem.ROLL_NO].url} style={{textDecoration:'none'}}>
+                        <a
+                          href={links[dataitem.ROLL_NO]}
+                          style={{ textDecoration: "none" }}
+                        >
                           <i
                             className="fa fa-download"
                             aria-hidden="true"
