@@ -31,6 +31,26 @@ async function getEnrolledCourses(email) {
   }
 }
 
+
+
+
+async function enrollHODClasses(email, enrolled_classes) {
+  const facultyRef = doc(db, "faculty", email);
+  try {
+    await updateDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false});
+    for (let i = 0; i < enrolled_classes.length; i++) {
+      await setDoc(doc(db, `faculty/${email}/${enrolled_classes[i]}`, email), {
+        random: 1,
+      });
+    }
+    await updateDoc(facultyRef, { isEnrolled: true });
+  } catch (error) {
+    return error.code;
+  }
+  return null;
+}
+
+
 async function enrollClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
   try {
@@ -115,4 +135,4 @@ export const getSubjects = async (email) => {
 //   console.log("Ended");
 // }
 
-export { getEnrolledCourses, enrollClasses };
+export { getEnrolledCourses, enrollClasses,enrollHODClasses };
