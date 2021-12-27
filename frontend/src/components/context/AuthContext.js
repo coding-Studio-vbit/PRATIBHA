@@ -51,6 +51,7 @@ export function AuthProvider({ children }) {
     auth.onAuthStateChanged(async (user) => {
       let userType = "";
       let isFirstTime = true;
+      let isHOD=false;
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
@@ -75,6 +76,10 @@ export function AuthProvider({ children }) {
               if (docSnap.exists()) {
                if(docSnap.data().isEnrolled)
                 isFirstTime = false;
+                else if(docSnap.data().role!=null){
+                  isFirstTime = true;
+                  isHOD=true;
+                }
               }else{
                 isFirstTime = true;
               } 
@@ -90,7 +95,8 @@ export function AuthProvider({ children }) {
             username: user.displayName,
             phoneNumber: user.phoneNumber,
             userType: userType,
-            isFirstTime:isFirstTime
+            isFirstTime:isFirstTime,
+            isHOD:isHOD
           });
           setLoading(false);
         } else {
