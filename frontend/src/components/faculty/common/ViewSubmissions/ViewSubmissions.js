@@ -23,32 +23,7 @@ const ViewSubmissions = () => {
     storage,
     "gs://pratibha-d4e57.appspot.com/pra_ref/Prashanith-Resume.pdf"
   );
-  const onclickdownload = () => {
-    getDownloadURL(gsReference)
-      .then((url) => {
-        // `url` is the download URL for 'images/stars.jpg'
-        console.log(url);
-        navigate(url);
-
-        // This can be downloaded directly:
-        // const xhr = new XMLHttpRequest();
-        // xhr.responseType = "blob";
-        // xhr.onload = (event) => {
-        //   const blob = xhr.response;
-        // };
-        // xhr.open("GET", url);
-        // xhr.send();
-
-        // Or inserted into an <img> element
-        // const img = document.getElementById('myimg');
-        // img.setAttribute('src', url);
-      })
-      .catch((error) => {
-        // Handle any errors
-        console.log(error);
-      });
-  };
-
+  
   const Fetchdata = async () => {
     const studentref = query(
       collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
@@ -168,7 +143,7 @@ const ViewSubmissions = () => {
                       <td>{dataitem.TOPIC_NAME}</td>
                       <td>{dataitem.MID_1}</td>
                       <td>{dataitem.MID_2}</td>
-                      <td onClick={onclickdownload}>
+                      <td >
                         <i
                           className="fa fa-download"
                           aria-hidden="true"
