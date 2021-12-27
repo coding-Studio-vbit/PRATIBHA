@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+.error{
+  background-color: #e76c6c;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

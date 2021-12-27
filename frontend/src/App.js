@@ -75,8 +75,8 @@ const PrivateRoutes = ({ children }) => {
   const { currentUser } = useAuth();
   const location = useLocation();
   useEffect(() => {
-    localStorage.setItem("url", location.pathname);
-    localStorage.setItem("state", JSON.stringify(location.state));
+    sessionStorage.setItem("url", location.pathname);
+    sessionStorage.setItem("state", JSON.stringify(location.state));
 
   }, [location]);
   return currentUser ? children : <Navigate to={"/"}></Navigate>;
