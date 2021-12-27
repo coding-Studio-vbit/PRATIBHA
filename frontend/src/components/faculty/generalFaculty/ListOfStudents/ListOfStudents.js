@@ -27,17 +27,17 @@ const ListofStudents = () => {
           const email = doc.id.toString() + "@vbithyd.ac.in";
           const docData = doc.data();
           const mid1 =
-            docData["mid1"]["criteria1"] +
-            docData["mid1"]["criteria2"] +
-            docData["mid1"]["criteria3"] +
-            docData["mid1"]["criteria4"] +
-            docData["mid1"]["criteria5"];
+            docData["mid1"]["Innovation1"] +
+            docData["mid1"]["Subject_Relevance1"] +
+            docData["mid1"]["Individuality1"] +
+            docData["mid1"]["Preparation1"] +
+            docData["mid1"]["Presentation1"];
           const mid2 =
-            docData["mid2"]["criteria1"] +
-            docData["mid2"]["criteria2"] +
-            docData["mid2"]["criteria3"] +
-            docData["mid2"]["criteria4"] +
-            docData["mid2"]["criteria5"];
+            docData["mid2"]["Innovation2"] +
+            docData["mid2"]["Subject_Relevance2"] +
+            docData["mid2"]["Individuality2"] +
+            docData["mid2"]["Preparation2"] +
+            docData["mid2"]["Presentation1"];
 
           await getStudentData(email)
             .then(({ document, error }) => {
