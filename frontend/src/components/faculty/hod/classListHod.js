@@ -68,9 +68,6 @@ getRoles(currentUser.email);
     
     const [Section, setSection] = useState("");
     const [Subject, setSubject] = useState("");
-    const Deadlines = [{class:'2_CSM_B_Software Engineering', mid1:'22-3-21', mid2:''},
-                     {class:'2_CE_A_Engineering Mechanics', mid1:'22-3-21', mid2:''},
-                     {class:'2_Engineering Mechanics', mid1:'22-3-21', mid2:''}];
     const BTechClasses = [
       "2_CSM_B_Software Engineering",
       "3_CSB_A_Compiler Design",
@@ -137,11 +134,6 @@ getRoles(currentUser.email);
                     classname="card-container"
                     onclick={handleCard}
                     text={item}
-                    subtext={Deadlines.map((pra) => {
-                      return (
-                        pra.class===item?pra.mid2===''?'PRA 1 Deadline: '+pra.mid1:'PRA 2 Deadline: '+pra.mid2:false
-                      )
-                    })}
                   />
                 );
               })}
@@ -158,11 +150,6 @@ getRoles(currentUser.email);
                     classname="card-container"
                     onclick={handleCard}
                     text={item}
-                    subtext={Deadlines.map((pra) => {
-                      return (
-                        pra.class===item?pra.mid2===''?'PRA 1 Deadline: '+pra.mid1:'PRA 2 Deadline: '+pra.mid2:false
-                      )
-                    })}
                   />
                 );
               })}
@@ -179,11 +166,6 @@ getRoles(currentUser.email);
                     classname="card-container"
                     onclick={handleCard}
                     text={item}
-                    subtext={Deadlines.map((pra) => {
-                      return (
-                        pra.class===item?pra.mid2===''?'PRA 1 Deadline: '+pra.mid1:'PRA 2 Deadline: '+pra.mid2:false
-                      )
-                    })}
                   />
                 );
               })}
