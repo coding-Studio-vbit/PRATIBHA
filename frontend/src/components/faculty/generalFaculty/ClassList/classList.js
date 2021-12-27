@@ -16,7 +16,7 @@ const ClassList = () => {
   useEffect(()=>{
     const fetchSubjects = async ()=>{
 
-     const res = await getSubjects('cse@vbithyd.ac.in')
+     const res = await getSubjects(currentUser.email)
      console.log(res);
       if(res === -1){
         //display error

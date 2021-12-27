@@ -49,14 +49,15 @@ const LockList = () => {
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
     var finalList = BTechList.concat(MTechList, MBAList);
     console.log(finalList);
-    if (finalList.length == 0) {
+    if (finalList.length === 0) {
       setShowDialog("Add your classes for this semester");
     }
     else{enroll(finalList)}
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
-    if (Course.value === "B.Tech") {
+    console.log(Course.value);
+    if (Course.value === "BTech") {
       const newBTech =
         "BTech_" +
         Year.value +
@@ -70,7 +71,7 @@ const LockList = () => {
       else {
         setShowDialog("Class already added");
       }
-    } else if (Course.value === "M.Tech") {
+    } else if (Course.value === "MTech") {
       const newMTech =
       'MTech_'+
         Year.value +

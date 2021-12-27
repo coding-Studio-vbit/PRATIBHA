@@ -122,6 +122,7 @@ export const getSubjects = async (email) => {
     for (let index = 0; index < data.length; index++) {
       const sub = data[index];
       const klass = sub.split("_", 1)[0];
+      console.log(klass);
       if (klass === "Btech") {
         btechSubs.push(sub);
       } else if (klass === "Mtech") {
