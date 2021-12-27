@@ -11,7 +11,7 @@ export default function LoginPage() {
   const nav = useNavigate();
   useEffect(() => {
     if (currentUser) {
-      const url = localStorage.getItem('url')
+      const url = sessionStorage.getItem('url')
       if(url) nav(url,{replace:true,state:JSON.parse(localStorage.getItem('state'))})
       else{
 
@@ -36,6 +36,7 @@ export default function LoginPage() {
         
       }
     }
+    
   }
   }, [currentUser, nav]);
 

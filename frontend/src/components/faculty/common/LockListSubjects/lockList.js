@@ -28,7 +28,6 @@ const LockList = () => {
 
   function handleDone() {
     
-    nav('/faculty/subjectslist');
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
     var finalList = BTechList.concat(MTechList, MBAList);
     console.log(finalList);
