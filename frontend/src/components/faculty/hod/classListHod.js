@@ -1,14 +1,68 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import Select from 'react-select'
 import Navbar from '../../global_ui/navbar/navbar.js';
 import Card from '../../global_ui/card/card.js'
 import Button from '../../global_ui/buttons/button'
 import './classListHod.css';
+import {useAuth} from '../../context/AuthContext'
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../../../firebase";
+import { getSubjects } from '../services/facultyServices';
+
 
 
 
 
 const HODClassList = () => {
+  const [multiHod,setMultiHod] = useState(false)
+  const [subs,setSubs] = useState()
+  const {currentUser} = useAuth(); 
+  // console.log(currentUser);
+  useEffect(()=>{
+    const fetchSubjects = async ()=>{
+
+     const res = await getSubjects('cse@vbithyd.ac.in')
+     console.log(res);
+      if(res === -1){
+        //display error
+      }else{
+        setSubs(res)
+
+      }
+    }
+    fetchSubjects()
+    console.log(subs)
+
+  },[])
+  async function getRoles(email){
+    const docRef = doc(db, "faculty",email);
+    try {
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        if(docSnap.data()["role"][2].slice(0,5) === "MTech"){
+          setMultiHod(true)
+          
+        }
+        return {
+          data:docSnap.data()["role"],
+          error:null
+        }
+      } else {
+        return {
+          data:null,
+          error:"Enroll Courses to get details"
+        }
+      }
+    } catch (error) {
+      return {
+        data:null,
+        error:error.code
+      }      
+    }    
+}
+getRoles(currentUser.email);
+ 
+  
   const [Course, setCourse] = useState("");
     const [Year, setYear] = useState("");
     
@@ -139,7 +193,7 @@ const HODClassList = () => {
       </div>
         <p className="dep-title">View Department Grades</p>
         <div className="hod-dd">
-        <div className='xyz'>
+        {multiHod?<div className='xyz'>
         <span className='dd-text'>Course</span>
         <Select
               placeholder=""
@@ -149,14 +203,14 @@ const HODClassList = () => {
                 setCourse(selectedCourse);
               }}
             />
-        </div>
+        </div>:false}
         <div className='xyz'>
         <span className='dd-text'>Year</span>
         <Select
               placeholder=""
               className="year"
               options={Years}
-              isDisabled={!Course}
+              isDisabled={multiHod?!Course:false}
               onChange={(selectedYear) => {
                 setYear(selectedYear);
               }}
