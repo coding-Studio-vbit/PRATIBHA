@@ -77,7 +77,7 @@ export default function CoeSearch() {
     //fetch
     { value: "PPS", label: "PPS", link: "CSE" },
     {
-      value: "SE",
+      value: "Software Engineering",
       label: "Software Engineering",
       link: "CSE",
     },
