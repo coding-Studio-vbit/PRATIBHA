@@ -16,6 +16,7 @@ const ListofStudents = () => {
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
   const [buttonText, setButtonText] = useState("CREATE PRA");
+  const [student, setStudent] = useState(null);
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -29,7 +30,6 @@ const ListofStudents = () => {
     subjectval[2] +
     "_" +
     subjectval[3];
-  console.log(subjectval[4]);
 
   const Fetchsubject = async () => {
     try {
@@ -51,26 +51,6 @@ const ListofStudents = () => {
     } catch (e) {
       setError("UNKNOWN_ERROR");
     }
-  };
-
-  const Fetchnumber = (data) => {
-    let std1, std2;
-    if (data) {
-      for (var student = 0; student < data.length; student++) {
-        if (data[student]["MID_1"] == " ") {
-          std1 = data[student]["ROLL_NO"].toString()+"@vbithyd.ac.in";
-          break;
-        }
-      }
-      for (var student = 0; student < data.length; student++) {
-        if (data[student]["MID_2"] == " ") {
-          std2 = data[student]["ROLL_NO"].toString()+"@vbithyd.ac.in";
-        }
-      }
-    }
-    let std = std1 ? std1 : std2;
-    console.log(std);
-    navigate("/faculty/grading", { state: std })
   };
 
   const Fetchdata = async () => {
@@ -134,12 +114,33 @@ const ListofStudents = () => {
     setloading(false);
   };
 
+
+
+  const Fetchnumber = () => {
+    var std1, std2;
+    if (data) {
+      for (var student = 0; student < data.length; student++) {
+        if (data[student]["MID_1"] == " ") {
+          std1 = data[student]["ROLL_NO"].toString() + "@vbithyd.ac.in";
+          break;
+        }
+      }
+      for (var student = 0; student < data.length; student++) {
+        if (data[student]["MID_2"] == " ") {
+          std2 = data[student]["ROLL_NO"].toString() + "@vbithyd.ac.in";
+        }
+      }
+    }
+    var std = std1 ? std1 : std2;
+    setStudent(std);
+    return std;
+  };
+
   useEffect(() => {
     Fetchdata();
     Fetchsubject();
+    Fetchnumber();
   }, []);
-
-  console.log(data);
 
   const Data = [
     {
@@ -164,7 +165,6 @@ const ListofStudents = () => {
       MID_2: "9",
     },
   ];
-  console.log(location.state);
   return (
     <div>
       <Navbar title={location.state}>
@@ -210,7 +210,11 @@ const ListofStudents = () => {
                     .map((dataitem) => (
                       <tr
                         key={dataitem.ROLL_NO}
-                        onClick={Fetchnumber(Data)}
+                        onClick={() => {
+                          navigate("/faculty/grading", {
+                            state: dataitem.ROLL_NO + "@vbithyd.ac.in"
+                          });
+                        }}
                       >
                         <td>{dataitem.ROLL_NO}</td>
                         <td>{dataitem.STUDENT_NAME}</td>
@@ -225,7 +229,9 @@ const ListofStudents = () => {
             <div className="LOF_buttons">
               <Button
                 children="GRADE"
-                onClick={Fetchnumber(data)}
+                onClick={() => {
+                  navigate("/faculty/grading", { state: student });
+                }}
                 width="200"
                 className="rare"
               />
