@@ -55,7 +55,6 @@ export function AuthProvider({ children }) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
             userType = "STUDENT";
-
             const docRef = doc(db, "users", user.email);
             try {
               console.log(10);

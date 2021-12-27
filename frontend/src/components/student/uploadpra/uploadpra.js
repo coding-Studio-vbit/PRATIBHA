@@ -5,12 +5,15 @@ import Navbar from "../../global_ui/navbar/navbar";
 import '@react-pdf-viewer/core/lib/styles/index.css';
 // import { uploadFile } from '../../../firebase';
 import { getUploadedFile, uploadFile } from '../services/storageServices';
-import { Spinner } from '../../global_ui/spinner/spinner';
+import { LoadingScreen, Spinner } from '../../global_ui/spinner/spinner';
 import Dialog from '../../global_ui/dialog/dialog';
 import { useNavigate } from 'react-router-dom';
 import { Viewer,Worker } from '@react-pdf-viewer/core';
+import { getStudentData } from '../services/studentServices';
+import { useAuth } from '../../context/AuthContext';
 
-const Upload =() => {
+const Upload =({subject}) => {
+    const { currentUser} = useAuth();
     let navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -110,7 +113,7 @@ const Upload =() => {
 
     async function getFile() {
         try {
-            const res = await getUploadedFile("BTech","1","CSE","A","C","1","18p61a0513@vbithyd.ac.in");
+            const res = await getUploadedFile(user.course,user.year,user.department,user.section,subject,mid,currentUser.email);
             console.log(res);
             setres(res.url);            
         } catch (error) {
@@ -119,8 +122,31 @@ const Upload =() => {
     }
 
     const [res, setres] = useState();
+
+    const [user, setUser] = useState();
+
+    const [pageLoad, setPageLoad] = useState();
+
+    async function getUserData() {
+        setPageLoad(true);
+        const res = await getStudentData(currentUser.email);
+        if(res.error==null){
+            setUser({
+                course:res.document["course"],
+                year:res.document["year"],
+                department:res.document["department"],
+                section:res.document["section"]
+            })            
+        }else{
+            console.log();
+        }
+    }
+
+    useEffect(() => {
+        getUserData();
+    },)
       
-    return(
+    return !pageLoad?(
         <>            
             <Navbar title="UPLOAD PRA"></Navbar>
             {
@@ -229,7 +255,7 @@ const Upload =() => {
                 </div>        
             </div>
         </>
-    );
+    ):<LoadingScreen/>;
 }
 
 export default Upload;
