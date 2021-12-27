@@ -105,7 +105,13 @@ const ListofStudents = () => {
 
   return (
     <div>
-      <Navbar title="3_CSE_D_DA" pra={true} />
+      <Navbar title={location.state} > <span
+      onClick={()=>navigate('/faculty/createPra',{state:location.state})}
+      style={{
+        cursor:'pointer',
+        fontWeight:'bold'
+      }} >CREATE PRA</span>
+       </Navbar>
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
