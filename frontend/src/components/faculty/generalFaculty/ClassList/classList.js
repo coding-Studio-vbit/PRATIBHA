@@ -42,7 +42,6 @@ const ClassList = () => {
   // ];
 
   function handleCard(sub){
-    console.log(sub);
       navigate('/faculty/studentlist',{state:sub})
   }
 
@@ -52,7 +51,7 @@ const ClassList = () => {
         width: "100vw",
       }}
     >
-      <Navbar title="Your Classes" logout={true} />
+      <Navbar back={false} title="Your Classes" logout={true} />
       <div className="div-container-classes">
         {subs.btechSubs.length !== 0 && (
           <div>
