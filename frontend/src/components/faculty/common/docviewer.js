@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Viewer } from "@react-pdf-viewer/core";
 import { Worker } from "@react-pdf-viewer/core";
-import {Presentation, Slide, Text,Shape, Image, render} from "react-pptx";
-import fs from "fs";
+
 
 const ViewPPT=({object})=>{
     const linkToPPTFile =

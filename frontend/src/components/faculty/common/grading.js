@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Viewer } from "@react-pdf-viewer/core";
-import styles from "./grading.css";
+import styles from "./grading.module.css";
 import Button from "../../global_ui/buttons/button";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { Worker } from "@react-pdf-viewer/core";
 import Docviewer from "./docviewer";
 import Dialog from "../../global_ui/dialog/dialog";
-
+import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
 
 
 const Grading = () => {
@@ -14,8 +14,8 @@ const Grading = () => {
    const [loading, setLoading] = React.useState(false); 
    const [rollNo, setRollNo] = React.useState('');
    const [isMid1 , setIsMid1] = React.useState(true)
-   const [innovation1 , setInnovation1] = React.useState('')
-   const [subRel1 , setSubRel1] = React.useState('')
+   const [innovation1 , setInnovation1] = React.useState()
+   const [subRel1 , setSubRel1] = React.useState()
    const [individuality1 , setIndividuality1] = React.useState()
    const [preparation1 , setPreparation1] = React.useState()
    const [presentation1 , setPresentation1] = React.useState()
@@ -24,6 +24,15 @@ const Grading = () => {
    const [individuality2 , setIndividuality2] = React.useState()
    const [preparation2 , setPreparation2] = React.useState()
    const [presentation2 , setPresentation2] = React.useState()
+
+    // const Fetchdata = async () => {
+    //  const studentref = query(
+    //    collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
+    //  );
+    // }
+
+   
+  
   const data=
     {
       NAME:"Mahita",
@@ -40,7 +49,7 @@ const Grading = () => {
 
      else
      {
-       
+      
      }
    }
 
@@ -171,7 +180,6 @@ const Grading = () => {
             <span >MID-I:(10M) </span>
             <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', height:'20px', textAlign:'center', borderRadius:'10px'}}>
                {(parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1))?
-
               (parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1)):" "
                }
                </span>
@@ -281,7 +289,7 @@ const Grading = () => {
               justifySelf: "end",
             }}
           >
-            <i className="fa fa-angle-down" aria-hidden="true"></i>
+            <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>
             <select
               style={{
                 width: "200px",

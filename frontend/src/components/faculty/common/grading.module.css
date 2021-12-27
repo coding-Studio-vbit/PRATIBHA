@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+.error{
+  background-color: #e76c6c;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -133,7 +137,7 @@ select {
   text-align: center;
 }
 
-.dropdown i {
+.dropdown-i {
   position: absolute;
   right: 40px;
   top: 30%;
