@@ -29,7 +29,7 @@ const App = () => {
       <AuthProvider>
         <Router>
           <Routes>
-          <Route exact path="/abcd" element={<Upload />} />
+          <Route exact path="/abcd" element={<CoeSearch />} />
 
             <Route exact path="/" element={<LoginPage />} />
             <Route
@@ -37,6 +37,7 @@ const App = () => {
               path="/viewsubmissions"
               element={<ViewSubmissions />}
             />
+            <Route exact path="/dump" element={<ListofStudents />} />
             <Route
               path="/student/*"
               element={
