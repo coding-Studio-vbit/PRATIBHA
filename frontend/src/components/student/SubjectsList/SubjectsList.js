@@ -18,6 +18,8 @@ const SubjectsList = () => {
   const [userDoc, setuserDoc] = useState(null);
   const { currentUser } = useAuth();
 
+  
+
   const fetchData = async () => {
     // const { document, error } = await getStudentData(currentUser.email);
     const { document, error } = await getStudentData(
