@@ -18,8 +18,10 @@ const ListofStudents = () => {
   const navigate = useNavigate();
   const Fetchdata = async () => {
     const studentref = query(
-      collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA`)
+      collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
+    // console.log(`faculty/cse@vbithyd.ac.in/${location.state}`)
+    console.log(studentref);
 
     await getDocs(studentref).then((querySnapshot) => {
       if (querySnapshot) {
@@ -79,6 +81,8 @@ const ListofStudents = () => {
     Fetchdata();
   }, []);
 
+  console.log(data);
+
   const Data = [
     {
       ROLL_NO: "19P6XXXXX1",
@@ -102,10 +106,10 @@ const ListofStudents = () => {
       MID_2: "9",
     },
   ];
-console.log(location.state);
+  console.log(location.state);
   return (
     <div>
-      <Navbar title="3_CSE_D_DA" pra={true} />
+      <Navbar title={location.state} pra={true} />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />

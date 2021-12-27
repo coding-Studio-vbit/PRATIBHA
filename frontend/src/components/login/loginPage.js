@@ -12,8 +12,9 @@ export default function LoginPage() {
   useEffect(() => {
     if (currentUser) {
       const url = localStorage.getItem('url')
-      if(url) nav(url,{replace:true,state:JSON.parse(localStorage.getItem('state'))})
-      else{
+      // if(url) nav(url,{replace:true,state:JSON.parse(localStorage.getItem('state'))})
+      // else
+      {
 
       
       if (currentUser.userType === "STUDENT") {
