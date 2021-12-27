@@ -37,8 +37,6 @@ export default function LoginPage() {
       }
     }
     
-  }else{
-    sessionStorage.clear()
   }
   }, [currentUser, nav]);
 

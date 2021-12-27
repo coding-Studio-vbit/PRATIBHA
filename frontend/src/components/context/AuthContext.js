@@ -105,6 +105,7 @@ export function AuthProvider({ children }) {
         }
       } else {
         setCurrentUser(null);
+        sessionStorage.clear()
         setLoading(false);
       }
     });
