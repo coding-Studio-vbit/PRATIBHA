@@ -1,0 +1,17 @@
+.download{
+    text-decoration: none;
+    background-color:#0E72AB;
+    color: white;
+    font-size: small;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding:6px 14px;
+    border-radius: 4px;
+    font-weight: 400;
+    cursor: pointer;
+}
+.download:hover{
+    background-color: white;
+    color: #0E72AB;
+    box-shadow: none;
+    border: 1px solid #0E72AB;
+}

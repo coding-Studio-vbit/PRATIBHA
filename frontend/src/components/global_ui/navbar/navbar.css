@@ -11,9 +11,18 @@
     font-weight:200;
     width:100%
 }
+.nav > *{
+    flex: 1;
+}
 .title{
     font-size: 20px;
     font-weight: 400;
+    margin: auto;
+    flex-grow: 1;
+    text-align: center;
+}
+.createPRA > *{
+    margin-right: 2rem;
 }
 .btn{
     position:absolute;

@@ -1,3 +1,10 @@
+.spinnerload {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .sub_body {
   margin: 8px;
   display: flex;
@@ -35,14 +42,14 @@ tr {
   margin: 10px;
 }
 
-tr:nth-child(even) {
+tbody tr:nth-child(odd) {
   background-color: rgba(176, 196, 222, 0.43);
 }
 
-tr:nth-child(odd):not(:first-child) {
+tbody tr:nth-child(even) {
   background-color: rgba(176, 196, 222, 0.63);
 }
-p{
+p {
   font-weight: bold;
 }
 
