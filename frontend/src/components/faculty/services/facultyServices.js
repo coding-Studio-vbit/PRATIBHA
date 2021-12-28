@@ -6,6 +6,9 @@ import {
   setDoc,
   arrayUnion,
   arrayRemove,
+  collection,
+  query,
+  getDocs,
 } from "firebase/firestore";
 
 async function getEnrolledCourses(email) {
@@ -31,6 +34,26 @@ async function getEnrolledCourses(email) {
   }
 }
 
+
+
+
+async function enrollHODClasses(email, enrolled_classes) {
+  const facultyRef = doc(db, "faculty", email);
+  try {
+    await updateDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false});
+    for (let i = 0; i < enrolled_classes.length; i++) {
+      await setDoc(doc(db, `faculty/${email}/${enrolled_classes[i]}`, email), {
+        random: 1,
+      });
+    }
+    await updateDoc(facultyRef, { isEnrolled: true });
+  } catch (error) {
+    return error.code;
+  }
+  return null;
+}
+
+
 async function enrollClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
   try {
@@ -45,6 +68,75 @@ async function enrollClasses(email, enrolled_classes) {
     return error.code;
   }
   return null;
+}
+
+export const getDepartments = async (course,year)=>{
+  console.log(year);
+  if(year===0) return
+  try {
+    const q =  query(collection(db,'curriculum',course,year))
+    const alldocs = await getDocs(q)
+    
+    let departments = []
+    let subjects = {}
+    let sections = {}
+
+    alldocs.docs.forEach((e)=>{
+      departments.push({value:e.id,label:e.id})
+      
+      for (let index = 0; index < e.data()['subjects'].length; index++) {
+        const ele = e.data()['subjects'][index];
+        if(subjects[e.id]){
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject,label:ele.subject}]
+
+        }else{
+
+          subjects[e.id]=[{value:ele.subject,label:ele.subject}]
+        }
+      }
+      if(e.data()['OEs'])
+      for (let index = 0; index < e.data()['OEs'].length; index++) {
+        const ele = e.data()['OEs'][index];
+        if(subjects[e.id]){
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject + ' (OE)',label:ele.subject}]
+
+        }else{
+
+          subjects[e.id]=[{value:ele.subject + ' (OE)',label:ele.subject}]
+        }
+      }
+      if(e.data()['PEs'])
+      for (let index = 0; index < e.data()['PEs'].length; index++) {
+        const ele = e.data()['PEs'][index];
+        if(subjects[e.id]){
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject + ' (PE)',label:ele.subject}]
+
+        }else{
+
+          subjects[e.id]=[{value:ele.subject + ' (PE)',label:ele.subject}]
+        }
+      }
+      console.log(e.data());
+      const sectionsDoc = e.data()['sections']
+
+      for (let index = 0; index < sectionsDoc.length; index++) {
+        const element = sectionsDoc[index];
+        if(sections[e.id]){
+          sections[e.id] = [...sections[e.id],{value:element,label:element}]
+
+        }else
+        sections[e.id] = [{value:element,label:element}]
+      }
+    })
+    console.log(sections);
+    return {departments:departments,subjects:subjects,sections:sections}
+    // for (let index = 0; index < data.length; index++) {
+    //   const dep = data[index];
+    //   departments.push(dep.)
+    // }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export const setPRA = async (sub,department,date,inst)=>{
@@ -88,6 +180,7 @@ export const getSubjects = async (email) => {
     for (let index = 0; index < data.length; index++) {
       const sub = data[index];
       const klass = sub.split("_", 1)[0];
+      console.log(klass);
       if (klass === "Btech") {
         btechSubs.push(sub);
       } else if (klass === "Mtech") {
@@ -115,4 +208,4 @@ export const getSubjects = async (email) => {
 //   console.log("Ended");
 // }
 
-export { getEnrolledCourses, enrollClasses };
+export { getEnrolledCourses, enrollClasses,enrollHODClasses };

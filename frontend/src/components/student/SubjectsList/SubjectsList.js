@@ -16,22 +16,29 @@ const SubjectsList = () => {
   const [loading, setloading] = useState(true);
   const [error, setError] = useState(null);
   const [userDoc, setuserDoc] = useState(null);
-  const { currentUser } = useAuth();
+  const [courseTitle, setCourseTitle] = useState(" ");
 
-  
+  const { currentUser } = useAuth();
 
   const fetchData = async () => {
     // const { document, error } = await getStudentData(currentUser.email);
-    const { document, error } = await getStudentData(
-      "20P61A05N0@vbithyd.ac.in"
-    );
+    const { document, error } = await getStudentData(`${currentUser.email}`);
     if (error == null) {
       setuserDoc(document);
+      let course =
+        document.course +
+        "_" +
+        document.year +
+        "_" +
+        document.department +
+        "_" +
+        document.section;
+        setCourseTitle(course);
 
       try {
         const subjectsdata = document["subjects"];
         await subjectsdata.map(async (item, index) => {
-          const date = await Fetchsubject(item.subject);
+          const date = await Fetchsubject(item.subject, document);
           if (data) {
             let gradetype;
             if (item.isgraded_1 && item.mid_1) {
@@ -44,7 +51,7 @@ const SubjectsList = () => {
 
             const resdata = {
               SUBJECT: item.subject,
-              PRA_TOPIC: item.topic ? item.topic : "-",
+              PRA_TOPIC: item.topic ? item.topic : " ",
               STATUS: gradetype,
               SUBMIT_BEFORE: date,
             };
@@ -60,15 +67,23 @@ const SubjectsList = () => {
     setloading(false);
   };
 
-  const Fetchsubject = async (subject) => {
+  const Fetchsubject = async (subject, document) => {
     let deadline;
-    const subjectRef = doc(db, "subjects", "3_CSE_A");
+    let course =
+      document.course +
+      "_" +
+      document.year +
+      "_" +
+      document.department +
+      "_" +
+      document.section;
+    const subjectRef = doc(db, "subjects", course);
     await getDoc(subjectRef).then((subjectDoc) => {
       if (subjectDoc.exists()) {
-        const res = subjectDoc.data();
-        Object.keys(res).map(async (item, index) => {
-          if (subject === item) {
-            const seconds = res[item]["deadline_1"]["seconds"];
+        const res = subjectDoc.data()["subjects"];
+        res.map(async (item, index) => {
+          if (subject === item.subject) {
+            const seconds = item["deadline_1"]["seconds"];
             let date = new Date(seconds * 1000);
             deadline =
               date.getDate().toString() +
@@ -113,7 +128,7 @@ const SubjectsList = () => {
 
   return (
     <div>
-      <Navbar title="3_CSE_D" />
+      <Navbar title={courseTitle} />
       {!loading ? (
         error == null ? (
           <div className="sub_body">
