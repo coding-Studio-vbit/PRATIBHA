@@ -314,8 +314,17 @@ const LockList = () => {
                         displayItem.splice(0, 1);
                         let newItem = displayItem[0];
                         let len = displayItem.length;
-                        for (let i = 1; i < len; i++) {
-                          newItem = newItem + "_" + displayItem[i];
+                        if (displayItem[0] == "1")
+                          newItem =
+                            newItem +
+                            "_" +
+                            displayItem[2] +
+                            "_" +
+                            displayItem[3];
+                        else {
+                          for (let i = 1; i < len; i++) {
+                            newItem = newItem + "_" + displayItem[i];
+                          }
                         }
                         return (
                           <li className="li-tag-flex" key={index}>
