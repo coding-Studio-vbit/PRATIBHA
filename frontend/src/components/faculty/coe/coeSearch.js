@@ -79,45 +79,7 @@ export default function CoeSearch() {
     { value: "1", label: "1" },
     { value: "2", label: "2" },
   ];
-  
-  const Departments = [
-    //fetch
-    { value: "CSE", label: "Computer Science & Engineering" },
-    {
-      value: "CSEAIML",
-      label: "CSE(Artificial Intelligence & Machine Learning)",
-    },
-    { value: "CSEDS", label: "CSE(Data Science)" },
-    { value: "CSECS", label: "CSE(Cyber Security)" },
-    { value: "CSBS", label: "Computer Science & Business System" },
-    { value: "ECE", label: "Electronics & Communications Engineering" },
-    { value: "EEE", label: "Electrical & Electronics Engineering" },
-    { value: "CE", label: "Civil Engineering" },
-    { value: "ME", label: "Mechanical Engineering" },
-    { value: "IT", label: "Information Technology" },
-  ];
-  const Sections = [
-    //fetch
-    { value: "A", label: "A", link: "CSE" },
-    { value: "B", label: "B", link: "CSE" },
-    { value: "C", label: "C", link: "CSE" },
-    { value: "D", label: "D", link: "CSE" },
-  ];
-  const Subjects = [
-    //fetch
-    { value: "PPS", label: "PPS", link: "CSE" },
-    {
-      value: "Software Engineering",
-      label: "Software Engineering",
-      link: "CSE",
-    },
-    { value: "Compiler Design", label: "Compiler Design", link: "CSE" },
-    {
-      value: "Engineering Mechanics",
-      label: "Engineering Mechanics",
-      link: "CE",
-    },
-  ];
+
 
   return (
     <div className="CoESearch-container">
@@ -142,14 +104,14 @@ export default function CoeSearch() {
         />
         <p className="dropdown-title">Year</p>
         <Select
-          className="select"
-          placeholder=""
-          options={Years}
-          isDisabled={!Course}
-          onChange={(selectedYear) => {
-            setYear(selectedYear);
-          }}
-        />
+              placeholder=""
+              className="select"
+              options={Course.value[0]==='M'? MYears:Years}
+              isDisabled={!Course}
+              onChange={(selectedYear) => {
+                setYear(selectedYear);
+              }}
+            />
         <p className="dropdown-title">Department</p>
         <Select
           className="select"
