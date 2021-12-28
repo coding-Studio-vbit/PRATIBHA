@@ -10,7 +10,6 @@ import {
   query,
   getDocs,
 } from "firebase/firestore";
-import { async } from "@firebase/util";
 
 async function getEnrolledCourses(email) {
   const docRef = doc(db, "faculty", email);
@@ -72,14 +71,19 @@ async function enrollClasses(email, enrolled_classes) {
 }
 
 export const getDepartments = async (course,year)=>{
+  console.log(year);
+  if(year===0) return
   try {
     const q =  query(collection(db,'curriculum',course,year))
     const alldocs = await getDocs(q)
     
     let departments = []
     let subjects = {}
+    let sections = {}
+
     alldocs.docs.forEach((e)=>{
       departments.push({value:e.id,label:e.id})
+      
       for (let index = 0; index < e.data()['subjects'].length; index++) {
         const ele = e.data()['subjects'][index];
         if(subjects[e.id]){
@@ -90,8 +94,42 @@ export const getDepartments = async (course,year)=>{
           subjects[e.id]=[{value:ele.subject,label:ele.subject}]
         }
       }
+      if(e.data()['OEs'])
+      for (let index = 0; index < e.data()['OEs'].length; index++) {
+        const ele = e.data()['OEs'][index];
+        if(subjects[e.id]){
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject,label:ele.subject}]
+
+        }else{
+
+          subjects[e.id]=[{value:ele.subject,label:ele.subject}]
+        }
+      }
+      if(e.data()['PEs'])
+      for (let index = 0; index < e.data()['PEs'].length; index++) {
+        const ele = e.data()['PEs'][index];
+        if(subjects[e.id]){
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject,label:ele.subject}]
+
+        }else{
+
+          subjects[e.id]=[{value:ele.subject,label:ele.subject}]
+        }
+      }
+      console.log(e.data());
+      const sectionsDoc = e.data()['sections']
+
+      for (let index = 0; index < sectionsDoc.length; index++) {
+        const element = sectionsDoc[index];
+        if(sections[e.id]){
+          sections[e.id] = [...sections[e.id],{value:element,label:element}]
+
+        }else
+        sections[e.id] = [{value:element,label:element}]
+      }
     })
-    return {departments:departments,subjects:subjects}
+    console.log(sections);
+    return {departments:departments,subjects:subjects,sections:sections}
     // for (let index = 0; index < data.length; index++) {
     //   const dep = data[index];
     //   departments.push(dep.)
