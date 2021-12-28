@@ -152,7 +152,7 @@ const LockList = () => {
       const res = await enrollClasses(currentUser.email, list);
       if (res == null) {
         setIsLoading(false);
-        setShowDialog("Course Enrolled Successfully");
+        setShowDialog("Classes Enrolled Successfully");
         setIsSuccess(true);
       } else {
         setShowDialog(res);
