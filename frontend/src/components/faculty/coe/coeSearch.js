@@ -56,7 +56,7 @@ export default function CoeSearch() {
         Section: Section.value,
         Subject: Subject.value,
       };
-      nav("/viewsubmissions", { state: passing });
+      nav("/faculty/viewsubmissions", { state: passing });
     } else {
       setShowDialog("Select all the options");
     }
