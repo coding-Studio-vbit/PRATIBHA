@@ -83,7 +83,7 @@ export default function CoeSearch() {
 
   return (
     <div className="CoESearch-container">
-      <Navbar title="CoE" />
+      <Navbar title="COE" back={false} logout />
       {showDialog && (
         <Dialog
           message={showDialog}
