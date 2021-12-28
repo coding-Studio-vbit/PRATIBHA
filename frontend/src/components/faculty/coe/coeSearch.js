@@ -2,14 +2,14 @@ import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
-import { enrollClasses, enrollHODClasses,getDepartments } from "../services/facultyServices";
+import { getDepartments } from "../services/facultyServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
 
 export default function CoeSearch() {
-  const [Course, setCourse] = useState({value:'loading'});
-  const [Year, setYear] = useState("");
+  const [Course, setCourse] = useState({value:'none'});
+  const [Year, setYear] = useState({value:0});
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
@@ -61,10 +61,9 @@ export default function CoeSearch() {
       setShowDialog("Select all the options");
     }
   }
-
   const Courses = [
-    { value: "B.Tech", label: "B.Tech" },
-    { value: "M.Tech", label: "M.Tech" },
+    { value: "BTech", label: "BTech" },
+    { value: "MTech", label: "MTech" },
     { value: "MBA", label: "MBA" },
   ];
   const Years = [
@@ -83,7 +82,7 @@ export default function CoeSearch() {
 
   return (
     <div className="CoESearch-container">
-      <Navbar title="CoE" />
+      <Navbar title="CoE" back={false} />
       {showDialog && (
         <Dialog
           message={showDialog}
