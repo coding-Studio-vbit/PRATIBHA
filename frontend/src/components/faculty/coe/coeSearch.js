@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
-import { enrollClasses, enrollHODClasses,getDepartments } from "../../services/facultyServices";
+import { enrollClasses, enrollHODClasses,getDepartments } from "../services/facultyServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
