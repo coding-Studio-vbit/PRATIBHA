@@ -74,21 +74,16 @@ export function AuthProvider({ children }) {
               if (docSnap.exists()) {
                 console.log(docSnap.data().role);
                 roles = docSnap.data().role;
-
+                if(docSnap.data().isHOD){
+                  isHOD = true;
+                }
+                if(docSnap.data().isCOE){
+                  isCOE = true
+                }
                 if (docSnap.data().isEnrolled) {
                   isFirstTime = false;
-                } else if (docSnap.data().role != null) {
-                  isFirstTime = true;
-                  if(docSnap.data().isHOD){
-                    isHOD = true;
-                  }
-                  if(docSnap.data().isCOE){
-                    isCOE = true
-                  }
                 }
-              } else {
-                isFirstTime = true;
-              }
+              } 
             } catch (e) {
               //TODO
               //DISPLAY
