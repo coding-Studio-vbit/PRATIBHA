@@ -55,8 +55,8 @@ const ListofStudents = () => {
 
   const Fetchdata = async () => {
     const studentref = query(
-      // collection(db, `faculty/${currentUser.email}/${location.state}`)
-      collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
+      collection(db, `faculty/${currentUser.email}/${location.state}`)
+      // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
 
     await getDocs(studentref).then((querySnapshot) => {

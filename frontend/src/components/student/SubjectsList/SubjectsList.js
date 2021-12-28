@@ -30,7 +30,7 @@ const SubjectsList = () => {
     }
   };
 
-  const fetchData = async () => {
+  const fetchdata = async () => {
     const { document, error } = await getStudentData(`${currentUser.email}`);
     if (error == null) {
       setuserDoc(document);
@@ -44,18 +44,56 @@ const SubjectsList = () => {
         document.section;
       setCourseTitle(course);
 
-      try {
-        const subjectsdata = document["subjects"];
-        await subjectsdata.map(async (item, index) => {
-          let coedeadLine = await fetchDeadline();
-          const [date, seconds] = await Fetchsubject(
-            item.subject,
-            document,
-            coedeadLine
-          );
+      let coedeadLine = await fetchDeadline();
+      await fetchsubject(document, coedeadLine, course);
+    } else {
+      setError(error);
+    }
+    setloading(false);
+  };
+
+  const fetchsubject = async (document, coedeadLine, course) => {
+    let deadline, seconds, mid;
+    const subjectRef = doc(db, "subjects", course);
+    await getDoc(subjectRef).then(async (subjectDoc) => {
+      if (subjectDoc.exists()) {
+        const res = subjectDoc.data()["subjects"];
+        await res.map(async (item, index) => {
+          const seconds1 = item["deadline1"]["seconds"];
+          if (coedeadLine > seconds1) {
+            // console.log("1");
+            mid = 1;
+            seconds = seconds1;
+          } else {
+            // console.log("2");
+            mid = 2;
+            seconds = item["deadline2"]["seconds"];
+          }
+
+          let date = new Date(seconds * 1000);
+          deadline =
+            date.getDate().toString() +
+            "-" +
+            (date.getMonth() + 1).toString() +
+            "-" +
+            date.getFullYear().toString();
+
+          await fetchusersubject(document, deadline, mid, item.subject);
+        });
+      } else {
+        // setError("SUBJECT DOES NOT EXIST");
+      }
+    });
+  };
+
+  const fetchusersubject = async (document, date, mid, subject) => {
+    try {
+      const subjectsdata = document["subjects"];
+      await subjectsdata.map(async (item, index) => {
+        if (item.subject === subject) {
           let gradetype;
           if (date !== undefined) {
-            if (coedeadLine > seconds) {
+            if (mid === 1) {
               if (item.isgraded_1 && item.mid_1) {
                 gradetype = "Graded";
               } else if (!item.isgraded_1 && item.mid_1) {
@@ -83,60 +121,15 @@ const SubjectsList = () => {
             SUBMIT_BEFORE: date,
           };
           setData((data) => [...data, resdata]);
-        });
-      } catch {
-        setError("ERROR OCCURED");
-      }
-    } else {
-      setError(error);
+        }
+      });
+    } catch {
+      setError("ERROR OCCURED");
     }
-    setloading(false);
-  };
-
-  const Fetchsubject = async (subject, document, coedeadLine) => {
-    let deadline, seconds;
-    let course =
-      document.course +
-      "_" +
-      document.year +
-      "_" +
-      document.department +
-      "_" +
-      document.section;
-    const subjectRef = doc(db, "subjects", course);
-    await getDoc(subjectRef).then((subjectDoc) => {
-      if (subjectDoc.exists()) {
-        const res = subjectDoc.data()["subjects"];
-        res.map(async (item, index) => {
-          if (subject === item.subject) {
-            const seconds1 = item["deadline1"]["seconds"];
-            if (coedeadLine > seconds1) {
-              // console.log("1");
-              seconds = seconds1;
-            } else {
-              // console.log("2");
-              seconds = item["deadline2"]["seconds"];
-            }
-
-            let date = new Date(seconds * 1000);
-            deadline =
-              date.getDate().toString() +
-              "-" +
-              (date.getMonth() + 1).toString() +
-              "-" +
-              date.getFullYear().toString();
-          }
-        });
-      } else {
-        setError("SUBJECT DOES NOT EXIST");
-        return null;
-      }
-    });
-    return [deadline, seconds];
   };
 
   useEffect(() => {
-    fetchData();
+    fetchdata();
   }, []);
 
   const Data = [
@@ -187,8 +180,8 @@ const SubjectsList = () => {
                       <td
                         onClick={() => {
                           navigate("/student/uploadPRA", {
-                           rollno :`${currentUser.email}`,
-                           subject: dataitem.SUBJECT
+                            rollno: `${currentUser.email}`,
+                            subject: dataitem.SUBJECT,
                           });
                         }}
                       >
