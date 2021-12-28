@@ -13,19 +13,21 @@ import { useState, useEffect} from "react";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 
-import Select from 'react-select'
+import { getMarks,postMarks } from "../services/facultyServices";
+import { useAuth } from "../../context/AuthContext";
+import Dialog from "../../global_ui/dialog/dialog";
 
 const Grading = () => {
    let location = useLocation();
+   const {currentUser} = useAuth();
+   let navigate =useNavigate();
 
    const [subject, setSubject] = useState("Computer Networks");
    const [rollNo, setRollNo] = React.useState('18p61a0513');
 
-
    const [pageLoading, setPageLoading] = React.useState();
    const [pageLoadError, setPageLoadError] = React.useState();
-
-   const [loading, setLoading] = React.useState(false); 
+   
    const [innovation1 , setInnovation1] = React.useState()
    const [subRel1 , setSubRel1] = React.useState()
    const [individuality1 , setIndividuality1] = React.useState()
@@ -37,31 +39,40 @@ const Grading = () => {
    const [preparation2 , setPreparation2] = React.useState()
    const [presentation2 , setPresentation2] = React.useState();
 
+
+   const [loading, setLoading] = React.useState(false); 
    const [marksError,setMarksError] = React.useState(" ");
-   const navigate = useNavigate()
+  //  const navigate = useNavigate()
     //  const Fetchdata = async () => {
     //   const studentref = query(
     //     collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA/`)
     //   );
     //  }
-  
-  const data=
-    {
-      NAME:"Mahita",
-      SUBJECT:"DM"
+    const [remarks, setRemarks] = useState();
+
+  async function updateMarks(){
+    let marks={};
+    if(midNo==="1"){
+      marks.Individuality1=parseInt(individuality1);
+      marks.Innovation1=parseInt(innovation1);
+      marks.Preparation1=parseInt(preparation1);
+      marks.Presentation1=parseInt(presentation1);
+      marks.Subject_Relevance1=parseInt(subRel1);
+
+    }else{
+      marks.Individuality2=parseInt(individuality2);
+      marks.Innovation2=parseInt(innovation2);
+      marks.Preparation2=parseInt(preparation2);
+      marks.Presentation2=parseInt(presentation2);
+      marks.Subject_Relevance2=parseInt(subRel2);
     }
-  ;
-   
-
-  function Save () {
-    //save values
     
-  } 
-
-        
-  
-  async function getMarks() {
-    //call http function here    
+    const res = await postMarks('cse@vbithyd.ac.in','BTech_2_CSE_D_DAA','19p61a05i2',midNo,marks,remarks); 
+    if(res==null){
+      setSetDialog(`${midNo} Marks Updated Successfully`);
+    }else{
+      setSetDialog(null);
+    }
   }
 
   async function searchRoll() {
@@ -76,67 +87,76 @@ const Grading = () => {
     // }   
   }
 
-  
-    async function getUserData() {
-      // if(midNo===1){
-      //   if(location.state.path1!==null)
-      // }
-      // else{
-      //   if(location.state.path2!=null)
-      //   getUserData(location.state.path2)  
-      // }
-      setPageLoading(true);                
-        const res = await getUploadedFileByPath(
-        "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
-        //location.state.path
-      );
-      if(res.error==null){
-        console.log(res.url);
-        setUrl(res.url);
-        //http request
-        setPageLoading(false);
-        setPageLoadError(null);       
-      }
-      else{
-        setUrl(null);
-        setPageLoading(false);
-        setPageLoadError("Error in Fetching details");
-      }      
-    }
-
-
-   
     const [midNo,setMid] = React.useState("1");
     const [fileError,setFileError] = React.useState(null);
     const [url, setUrl] = React.useState(null);
 
-
-
     async function handleMidSelect(val) {
       setMid(val);
-      setLoading(true);
-      const res = await getUploadedFileByPath(
-        "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
-        //location.state.path
-      );
-      console.log(res);
-      // const midMarks = await getMarks();
-      if(res.error==null){
-        setUrl(res.url);        
-      }
-      else{
-        setFileError(res.error);
-        setUrl(null);
-      }
-      // check the above condition with midMarks
-      // make http request
-      setLoading(false)          
+      // setLoading(true);
+      // const res = await getUploadedFileByPath(
+      //   "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
+      //   //location.state.path
+      // );
+      // console.log(res);
+      // // const midMarks = await getMarks();
+      // if(res.error==null){
+      //   setUrl(res.url);        
+      // }
+      // else{
+      //   setFileError(res.error);
+      //   setUrl(null);
+      // }
+      // // check the above condition with midMarks
+      // // make http request
+      // setLoading(false)          
     }
 
-    const [remarks, setRemarks] = useState();
 
-  
-    
+    const [setDialog, setSetDialog] = useState();
+
+    async function getUserData() {
+      setPageLoading(true);                
+
+      const response = await getMarks(
+        'cse@vbithyd.ac.in','BTech_2_CSE_D_DAA','19p61a05i2'
+        // currentUser.email,location.state.className,rollNo
+      );
+      console.log(response);
+      if(response.error==null){
+          setIndividuality1(response.data["mid1"]["Individuality1"]);
+          setIndividuality2(response.data["mid2"]["Individuality2"]);
+
+          setInnovation1(response.data["mid1"]["Innovation1"]);
+          setInnovation2(response.data["mid2"]["Innovation2"]);
+
+          setPreparation1(response.data["mid1"]["Preparation1"]);
+          setPreparation2(response.data["mid2"]["Preparation2"]);
+
+          setPresentation1(response.data["mid1"]["Presentation1"]);
+          setPresentation2(response.data["mid2"]["Presentation2"]);
+
+          setSubRel1(response.data["mid1"]["Subject_Relevance1"]);
+          setSubRel2(response.data["mid2"]["Subject_Relevance2"]);
+      }
+        const res = await getUploadedFileByPath(
+          "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
+          //location.state.path
+          );
+      if(res.error==null){
+        //console.log(res.url);
+        setUrl(res.url);     
+      }
+      else{
+        setUrl(null);
+      }      
+      setPageLoading(false);
+      if(res.error!=null && response.error!=null){
+        console.log(res.error,response.error);
+        setPageLoadError("Error in Fetching details");
+      }
+    }
+
     useEffect(() => {        
       getUserData()  
     },[])
@@ -144,6 +164,9 @@ const Grading = () => {
   return (!pageLoading)? (         
     pageLoadError==null?
     <div className="grading">
+      {
+        setDialog!=null && <Dialog message={setDialog} onOK={()=>navigate('/')}/>
+      }
 
       <div className="left">
 
@@ -224,59 +247,60 @@ const Grading = () => {
         </div>
 
         {
-          midNo==="2" &&
-        
+          midNo==="2" &&        
+          <div className="mid2">
+              <div>
+                <span>Innovation:(2M)</span>
+                <input className="inputStyle"  type="text" maxLength={1} 
+                  value={innovation2} onChange={
+                    (e)=>{
+                      setInnovation2(e.target.value)
+                    }
+                  }
+                />
+              </div>
 
-        <div className="mid2">
+              <div>
+                <span>Subject Relevance:(2M)</span>
+                <input className="inputStyle"  type="text" maxLength={1} 
+                  value={subRel2} onChange={(e)=>setSubRel2(e.target.value)}/>
+              </div>
 
-            <div>
-              <span>Innovation:(2M)</span>
-              <input className="inputStyle"  type="text" maxLength={1} 
-                value={innovation2} onChange={(e)=>setInnovation2(e.target.value)}
-              />
-            </div>
+              <div>
+                <span>Individuality:(2M)</span>
+                <input className="inputStyle"  type="text" maxLength={1} 
+                  value={individuality2} onChange={(e)=>setIndividuality2(e.target.value)}
+                />
+              </div>
 
-            <div>
-              <span>Subject Relevance:(2M)</span>
-              <input className="inputStyle"  type="text" maxLength={1} 
-                value={subRel2} onChange={(e)=>setSubRel2(e.target.value)}/>
-            </div>
+              <div>
+                <span>Preparation:(2M)</span>
+                <input className="inputStyle"  type="text" maxLength={1} 
+                  value={preparation2} onChange={(e)=>setPreparation2(e.target.value)}/>
+              </div>
 
-            <div>
-              <span>Individuality:(2M)</span>
-              <input className="inputStyle"  type="text" maxLength={1} 
-                value={individuality2} onChange={(e)=>setIndividuality2(e.target.value)}
-              />
-            </div>
+              <div>
+                <span>Presentation:(2M)</span>
+                <input
+                  style={{
+                    width: "24px",
+                    borderRadius: "10px",
+                    textAlign: "center",
+                  }}
+                  type="text"
+                  maxLength={1} value={presentation2} onChange={(e)=>setPresentation2(e.target.value)}/>
+              </div>
 
-            <div>
-              <span>Preparation:(2M)</span>
-              <input className="inputStyle"  type="text" maxLength={1} 
-                value={preparation2} onChange={(e)=>setPreparation2(e.target.value)}/>
-            </div>
-
-            <div>
-              <span>Presentation:(2M)</span>
-              <input
-                style={{
-                  width: "24px",
-                  borderRadius: "10px",
-                  textAlign: "center",
-                }}
-                type="text"
-                maxLength={1} value={presentation2} onChange={(e)=>setPresentation2(e.target.value)}/>
-            </div>
-
-            <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
-              <span >MID-II:(10M)</span>
-              <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px',height:'20px', textAlign:'center', borderRadius:'10px'}}> 
-              {(parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2))?
-                (parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2)):" "
-                }
-              </span>
-            </div>
-        </div>
-      }
+              <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
+                <span >MID-II:(10M)</span>
+                <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px',height:'20px', textAlign:'center', borderRadius:'10px'}}> 
+                {(parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2))?
+                  (parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2)):" "
+                  }
+                </span>
+              </div>
+          </div>
+        }
         {/* <div className="footer">
           <i class="fas fa-chevron-circle-left fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
           <i class="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
@@ -343,7 +367,7 @@ const Grading = () => {
                     textAlign: "center",
                     border: "none",
                   }}
-                  onClick={Save}
+                  onClick={()=>updateMarks()}
                 >
                   SAVE
                 </button>
