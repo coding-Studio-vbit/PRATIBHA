@@ -185,7 +185,7 @@ const ViewSubmissions = () => {
   ];
   return (
     <div>
-      <Navbar title={title} logout={true} />
+      <Navbar title={title} backURL={'/faculty/coesearch'} logout={true} />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
