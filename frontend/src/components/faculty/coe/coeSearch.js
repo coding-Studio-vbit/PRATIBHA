@@ -8,7 +8,7 @@ import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
 
 export default function CoeSearch() {
-  const [Course, setCourse] = useState("");
+  const [Course, setCourse] = useState({value:'loading'});
   const [Year, setYear] = useState("");
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
