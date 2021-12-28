@@ -63,7 +63,7 @@ async function enrollClasses(email, enrolled_classes) {
         random: 1,
       });
     }
-    await updateDoc(facultyRef, { isEnrolled: true ,role:['faculty']});
+    await updateDoc(facultyRef, { isEnrolled: true });
   } catch (error) {
     return error.code;
   }
