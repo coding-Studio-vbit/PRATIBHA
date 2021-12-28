@@ -114,34 +114,35 @@ export default function CoeSearch() {
             />
         <p className="dropdown-title">Department</p>
         <Select
-          className="select"
-          placeholder=""
-          options={Departments}
-          isDisabled={!Year}
-          onChange={(selectedDepartment) => {
-            setDepartment(selectedDepartment);
-          }}
-        />
+              placeholder=""
+              options={departments}
+              className="select"
+              isDisabled={!Year}
+              onChange={(selectedDepartment) => {
+                setDepartment(selectedDepartment);
+                setSections((c)=>{return {...c}})
+              }}
+            />
         <p className="dropdown-title">Section</p>
         <Select
-          className="select"
-          placeholder=""
-          options={Sections}
-          isDisabled={!Department}
-          onChange={(selectedSection) => {
-            setSection(selectedSection);
-          }}
-        />
+              placeholder=""
+              options={sections[Department.value]}
+              className="select"
+              isDisabled={!Department}
+              onChange={(selectedSection) => {
+                setSection(selectedSection);
+              }}
+            />
         <p className="dropdown-title">Subject</p>
         <Select
-          placeholder=""
-          options={Subjects}
-          className="select"
-          isDisabled={!Section}
-          onChange={(selectedSubject) => {
-            setSubject(selectedSubject);
-          }}
-        />
+              placeholder=""
+              options={subjects[Department.value]}
+              className="select"
+              isDisabled={!Section}
+              onChange={(selectedSubject) => {
+                setSubject(selectedSubject);
+              }}
+            />
         <Button
           className="coe-button normal"
           icon={<i className="fas fa-search"></i>}
