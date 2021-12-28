@@ -51,7 +51,7 @@ tbody tr:nth-child(odd) {
 tbody tr:nth-child(even) {
   background-color: rgba(176, 196, 222, 0.63);
 }
-p {
+.bold {
   font-weight: bold;
 }
 @media screen and (max-width: 500px) {

@@ -58,11 +58,18 @@ const ClassList = () => {
             <h4> B.Tech</h4>
             <div className="card-flex">
               {subs.btechSubs.map((item) => {
+                var displayItem = item.split("_");
+                 displayItem.splice(0, 1);
+                 let newItem = displayItem[0];
+                 let len = displayItem.length;
+                 for (let i = 1; i < len; i++) {
+                   newItem = newItem + "_" + displayItem[i];
+                 }
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
-                    text={item}
+                    text={newItem}
                   />
                 );
               })}
@@ -74,11 +81,18 @@ const ClassList = () => {
             <h4> M.Tech</h4>
             <div className="card-flex">
               {subs.mtechSubs.map((item) => {
+                var displayItem = item.split("_");
+                 displayItem.splice(0, 1);
+                 let newItem = displayItem[0];
+                 let len = displayItem.length;
+                 for (let i = 1; i < len; i++) {
+                   newItem = newItem + "_" + displayItem[i];
+                 }
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
-                    text={item}
+                    text={newItem}
                   />
                 );
               })}
@@ -90,11 +104,24 @@ const ClassList = () => {
             <h4>MBA</h4>
             <div className="card-flex">
               {subs.mbaSubs.map((item) => {
+                var displayItem = item.split("_");
+                 displayItem.splice(0, 1);
+                 let newItem = displayItem[0];
+                 let len = displayItem.length;
+                 if(displayItem[0]=='1')
+                   newItem = newItem + "_" + displayItem[2]+'_'+displayItem[3]
+                   else{
+
+                   for (let i = 1; i < len; i++) {
+                   newItem = newItem + "_" + displayItem[i];
+                 }
+                 
+                   }
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
-                    text={item}
+                    text={newItem}
                   />
                 );
               })}

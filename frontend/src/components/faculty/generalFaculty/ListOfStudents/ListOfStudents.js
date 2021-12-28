@@ -223,8 +223,8 @@ const ListofStudents = () => {
       ) : (
         <>
           <div className="sub_body">
-            <p>SUBJECT : {subjectval[4]}</p>
-            <p>Number of students enrolled: {data.length}</p>
+            <p className="bold">SUBJECT : {subjectval[4]}</p>
+            <p className="bold">Number of students enrolled: {data.length}</p>
             {/* <div> */}
             <table style={{ marginTop: "4.5rem" }}>
               <thead>
