@@ -202,23 +202,27 @@ async function getMarks(facultyID,className,studentID) {
   try {
     const docSnap = await getDoc(facultyRef);
     if(docSnap.exists()){
-      if(docSnap.data()["isGraded"]){
-        return {
-          data:docSnap.data(),
-          status:"GRADED",
-          error:null
-        }
-      }else{
-        return {
-          data:docSnap.data(),
-          status:"UNGRADED",
-          error:null
-        }
-      }                    
+      return {
+        data:docSnap.data(),
+        error:null,
+      }
+      // if(docSnap.data()["isGraded"]){
+      //   return {
+      //     data:docSnap.data(),
+      //     status:"GRADED",
+      //     error:null
+      //   }
+      // }else{
+      //   return {
+      //     data:docSnap.data(),
+      //     status:"UNGRADED",
+      //     error:null
+      //   }
+      // }                    
     }else{
       return {
         data:null,
-        status:"UNGRADED", 
+        // status:"UNGRADED", 
         error:null                            
       }
     }
@@ -233,21 +237,26 @@ async function getMarks(facultyID,className,studentID) {
 
 
 
-async function postMarks(facultyID,className,studentID,midNo,marks) {
+async function postMarks(facultyID,className,studentID,midNo,marks,remarks) {
   let error=null;
-  const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
+  console.log(`faculty/${facultyID}/${className}`);
+  const facultyRef = doc(db,"faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA","19p61a05i2");
+  console.log(marks);
   try {
-    if(midNo===1){
-      await setDoc(facultyRef,{
-        mid_1:marks,
+    if(midNo==="1"){
+      await updateDoc(facultyRef,{
+        mid1:marks,
+        remarks1:remarks,
       });
       
-    }else if(midNo===2){
-      await setDoc(facultyRef,{
-        mid_2:marks
+    }else if(midNo==="2"){
+      await updateDoc(facultyRef,{
+        mid2:marks,
+        remarks2:remarks,
       });
     }    
   } catch (e) {
+    console.log(e);
     error=e.code;
   }  
   return error;
