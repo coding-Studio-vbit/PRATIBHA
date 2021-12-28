@@ -39,7 +39,7 @@ const ListofStudents = () => {
         let document = subjectDoc.data();
         if (document["subjects"]) {
           let obj = document["subjects"].find(
-            (o) => o.subject === "DAA" //subjectval[4]
+            (o) => o.subject === subjectval[4]
           );
           if (obj) {
             setButtonText("EDIT PRA");
