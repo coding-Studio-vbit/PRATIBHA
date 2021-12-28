@@ -207,5 +207,46 @@ export const getSubjects = async (email) => {
 //   }
 //   console.log("Ended");
 // }
+export const fetchSectionsAndSubs= async (course,year,departments)=>{
+  console.log(course,year,departments);
+  try {
+    let subjects = []
+    let sections = []
+    for (let index = 0; index < departments.length; index++) {
+      const element = departments[index].value;
+      const q =  query(doc(db,'curriculum',course,year,element))
+      const alldocs = await getDoc(q)
+      console.log(alldocs);
+      const data = alldocs.data()
+      console.log(data);
+      for(let i=0;i<data.subjects.length;i++){
+
+        if(subjects[alldocs.id]){
+          subjects[alldocs.id] =[...subjects[alldocs.id],{value:data.subjects[i].subject,label:data.subjects[i].subject}]
+
+        }else{
+
+          subjects[alldocs.id]=[{value:data.subjects[i].subject,label:data.subjects[i].subject}]
+        }
+      }
+      const sectionsDoc = data['sections']
+
+      for (let index = 0; index < sectionsDoc.length; index++) {
+        const element = sectionsDoc[index];
+        if(sections[alldocs.id]){
+          sections[alldocs.id] = [...sections[alldocs.id],{value:element,label:element}]
+
+        }else
+        sections[alldocs.id] = [{value:element,label:element}]
+      }
+
+    }
+    console.log(subjects);
+    return {subjects:subjects,sections:sections}
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export { getEnrolledCourses, enrollClasses,enrollHODClasses };
