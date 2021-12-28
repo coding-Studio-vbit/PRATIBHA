@@ -263,7 +263,7 @@ const Upload =() => {
                                                         }
                                                     </label>
                                                     { (fileError.length>0 || fileName.length>0) && <div style={{width:'30px'}}></div>}
-                                                    {/*for spacing*/}
+                                                    {/for spacing/}
                                                     {
                                                         fileError.length>0?
                                                         <p className={styles.errorField }>{fileError}</p> 
