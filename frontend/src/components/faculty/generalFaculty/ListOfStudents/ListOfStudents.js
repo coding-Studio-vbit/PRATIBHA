@@ -55,8 +55,8 @@ const ListofStudents = () => {
 
   const Fetchdata = async () => {
     const studentref = query(
-      // collection(db, `faculty/${currentUser.email}/${location.state}`)
-      collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
+      collection(db, `faculty/${currentUser.email}/${location.state}`)
+      // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
 
     await getDocs(studentref).then((querySnapshot) => {
@@ -224,16 +224,16 @@ const ListofStudents = () => {
         <>
           <div className="sub_body">
             <p>SUBJECT : {subjectval[4]}</p>
-            <p>No. of students enrolled: {data.length}</p>
+            <p>Number of students enrolled: {data.length}</p>
             {/* <div> */}
             <table style={{ marginTop: "4.5rem" }}>
               <thead>
                 <tr>
-                  <th>ROLL NO</th>
+                  <th>ROLL.NO</th>
                   <th>STUDENT NAME</th>
                   <th>TOPIC NAME</th>
-                  <th>MID-1 GRADING</th>
-                  <th>MID-2 GRADING</th>
+                  <th>MID-1 MARKS</th>
+                  <th>MID-2 MARKS</th>
                 </tr>
               </thead>
               <tbody>
