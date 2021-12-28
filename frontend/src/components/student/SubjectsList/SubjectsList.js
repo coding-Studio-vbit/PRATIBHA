@@ -180,7 +180,12 @@ const SubjectsList = () => {
               <tbody>
                 {data &&
                   data.map((dataitem) => (
-                    <tr key={dataitem.SUBJECT}>
+                    <tr className="single-row" onClick={() => {
+                          navigate("/student/uploadPRA", { state:
+                           {rollno :`${currentUser.email}`,
+                           subject: dataitem.SUBJECT}
+                          });
+                        }} key={dataitem.SUBJECT}>
                       <td>{dataitem.SUBJECT}</td>
                       <td>{dataitem.PRA_TOPIC}</td>
                       <td>{dataitem.STATUS}</td>
