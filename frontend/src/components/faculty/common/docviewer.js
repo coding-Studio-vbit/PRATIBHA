@@ -45,7 +45,8 @@ const ViewPdf=({object})=>{
                     <div
                         style={{
                             border: '1px solid rgba(0, 0, 0, 0.3)',
-                            height: '100%',
+                            height: "500px",
+                            width:"100%"
                             
                         }}
                     >

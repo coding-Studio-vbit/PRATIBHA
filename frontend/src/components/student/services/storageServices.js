@@ -35,4 +35,20 @@ async function getUploadedFile(course,year,department,section,subject,midNo,emai
     return res;  
 }
 
-export {uploadFile,getUploadedFile}
+async function getUploadedFileByPath(path) {
+    let res={
+        url:null,
+        error:null,    
+    }
+    await getDownloadURL(ref(storage,path))
+    .then((url) => {
+        console.log(url);
+        res.url=url;
+    })
+    .catch((error) => {
+        res.error=error.code;    
+    })
+    return res;  
+}
+
+export {uploadFile,getUploadedFile,getUploadedFileByPath }
