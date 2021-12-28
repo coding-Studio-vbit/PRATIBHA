@@ -186,9 +186,9 @@ const SubjectsList = () => {
                       <td>{dataitem.SUBMIT_BEFORE}</td>
                       <td
                         onClick={() => {
-                          navigate("/student/uploadPRA", {
-                           rollno :`${currentUser.email}`,
-                           subject: dataitem.SUBJECT
+                          navigate("/student/uploadPRA", { state:
+                           {rollno :`${currentUser.email}`,
+                           subject: dataitem.SUBJECT}
                           });
                         }}
                       >

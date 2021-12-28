@@ -27,6 +27,9 @@ const Upload =() => {
     const [fileError, setFileError] = useState('');
     const [fileUploadLoading, setfileUploadLoading] = useState(false);
 
+    console.log(location.state.rollno)
+    console.log(location.state.subject)
+
     function handleTitle(e){
         let value=e;
         setPraTitle(value)             
