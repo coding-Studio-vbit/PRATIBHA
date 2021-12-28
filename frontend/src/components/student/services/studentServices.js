@@ -130,4 +130,123 @@ async function fetchDepartments(course,year){
     }             
 }
 
-export {enrollCourse,checkEnrollment,getStudentData,getCurriculumDetails,getSubjectsList,fetchDepartments};
+async function getDeadLines(course,year,department,section,subject,midNo){
+    
+    const deadLinesRef = doc(db,"subjects",`${course}_${year}_${department}_${section}`);
+    try {
+        const deadLineDoc = await getDoc(deadLinesRef);
+        if(deadLineDoc.exists()){
+            let subs = deadLineDoc.data()["subjects"];
+            let deadline={};
+            let dataFetch=false;
+            for (let i = 0; i < subs.length; i++) {                
+                if(subs[i].subject===subject){
+                    if(midNo==="1"){                        
+                        if(subs[i].deadline1!=null){
+                            deadline.lastDate = subs[i].deadline1; 
+                            deadline.instructions = subs[i].instructions
+                            dataFetch=true
+                        }else{
+                            return {
+                                data:null,
+                                error:"Deadline not defined",
+                            }
+                        }                        
+                    }else if(midNo==="2"){
+                        if(subs[i].deadline2!=null){
+                            deadline.lastDate = subs[i].deadline2;
+                            deadline.instructions = subs[i].instructions
+                            dataFetch=true
+                        }else{
+                            return {
+                                data:null,
+                                error:"Deadline not defined",
+                            }
+                        }                        
+                    }
+                    break;
+                }                
+            }
+            if(dataFetch){
+                return {
+                    data:deadline,
+                    error:null,
+                }
+            }else{
+                return {
+                    data:null,
+                    error:"Unknown Error Occured"
+                }
+            }
+        }else{
+            return {
+                data:null,
+                error:"Unknown Error Occured "
+            }
+        }
+    } catch (error) {
+        return {
+            data:null,
+            error:error.code
+        }        
+    }    
+}
+
+async function getFileUploadDetails(email,subject,midNo){
+    const userRef = doc(db,"users",email);
+    // return {
+    //     data:{ link:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",topic:"Computer Networks"},
+    //     error:null
+    // }
+    try {
+        console.log(email,subject,midNo);
+        const doc = await getDoc(userRef);
+        if(doc.exists()){
+            let subs = doc.data()["subjects"] 
+            for (let i = 0; i < subs.length; i++) {
+                if(subject===subs[i].subject){
+                    if(midNo==="1"){
+                        if(subs[i].topic!=null && subs[i].mid_1!=null){
+                            return {
+                                data:{ link:subs[i].mid_1,topic:subs[i].topic},
+                                error:null
+                            }
+                        }else{
+                            return {
+                                data:null,
+                                error:"PRA not submitted"
+                            }
+                        }                  
+                    }else if(midNo==="2"){
+                        if(subs[i].topic!=null && subs[i].mid_2!=null){
+                            return {
+                                data:{ link:subs[i].mid_1,topic:subs[i].topic},
+                                error:null
+                            }
+                        }else{
+                            return {
+                                data:null,
+                                error:"PRA not submitted"
+                            }
+                        }                
+                    }
+                    break;
+                }  
+                              
+            }            
+        }else{
+            return {
+                data:null,
+                error:"Enroll to get details"
+            }
+        }
+    } catch (error) {
+        return {
+            data:null,
+            error:error.code
+        }        
+    }    
+}
+
+export {enrollCourse,checkEnrollment,getStudentData,
+    getCurriculumDetails,getSubjectsList,fetchDepartments,getDeadLines,getFileUploadDetails};
