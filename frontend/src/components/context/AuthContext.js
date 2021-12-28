@@ -50,17 +50,17 @@ export function AuthProvider({ children }) {
     auth.onAuthStateChanged(async (user) => {
       let userType = "";
       let isFirstTime = true;
-      let isHOD=false;
-      let roles = []
+      let isHOD = false;
+      let roles = [];
+      let isCOE = false
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
             userType = "STUDENT";
             const docRef = doc(db, "users", user.email);
             try {
-              console.log(10);
               const docSnap = await getDoc(docRef);
-              if (docSnap.exists()) {                
+              if (docSnap.exists()) {
                 isFirstTime = false;
               }
             } catch (e) {
@@ -70,24 +70,25 @@ export function AuthProvider({ children }) {
             userType = "FACULTY";
             const docRef = doc(db, "faculty", user.email);
             try {
-              console.log(11);
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-               console.log(docSnap.data().role);
-               roles = docSnap.data().role
+                console.log(docSnap.data().role);
+                roles = docSnap.data().role;
 
-               if(docSnap.data().isEnrolled){
-
-                 isFirstTime = false;
-               }
-                
-                else if(docSnap.data().role!=null){
+                if (docSnap.data().isEnrolled) {
+                  isFirstTime = false;
+                } else if (docSnap.data().role != null) {
                   isFirstTime = true;
-                  isHOD=true;
+                  if(docSnap.data().isHOD){
+                    isHOD = true;
+                  }
+                  if(docSnap.data().isCOE){
+                    isCOE = true
+                  }
                 }
-              }else{
+              } else {
                 isFirstTime = true;
-              } 
+              }
             } catch (e) {
               //TODO
               //DISPLAY
@@ -100,9 +101,10 @@ export function AuthProvider({ children }) {
             username: user.displayName,
             phoneNumber: user.phoneNumber,
             userType: userType,
-            isFirstTime:isFirstTime,
-            isHOD:isHOD,
-            roles:roles
+            isFirstTime: isFirstTime,
+            isHOD: isHOD,
+            isCOE:isCOE,
+            roles: roles,
           });
           setLoading(false);
         } else {
@@ -117,7 +119,7 @@ export function AuthProvider({ children }) {
         }
       } else {
         setCurrentUser(null);
-        sessionStorage.clear()
+        sessionStorage.clear();
         setLoading(false);
       }
     });
