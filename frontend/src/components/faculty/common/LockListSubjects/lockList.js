@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
-import { enrollClasses } from "../../services/facultyServices";
+import { enrollClasses, enrollHODClasses,getDepartments } from "../../services/facultyServices";
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const LockList = () => {
-  const [Course, setCourse] = useState("");
-  const [Year, setYear] = useState("");
+  const [Course, setCourse] = useState({value:'none'});
+  const [Year, setYear] = useState({value:0});
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
@@ -22,23 +22,45 @@ const LockList = () => {
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess,setIsSuccess]=useState(false);
-
+  const [subjects,setSubjects] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
+  const [departments,setDepartments] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
+  const [sections,setSections] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
   const { currentUser } = useAuth();
   const nav = useNavigate();
-
+  useEffect(()=>{
+    const getLables = async ()=>{
+      const res = await getDepartments(Course.value,Year.value)
+      if(!res) return
+       setSubjects(res.subjects)
+       setDepartments(res.departments)
+       setSections(res.sections)
+    }
+    getLables()
+  },[Course,Year])
+  
   function handleDone() {
-    
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
     var finalList = BTechList.concat(MTechList, MBAList);
     console.log(finalList);
-    if (finalList.length == 0) {
+    if (finalList.length === 0) {
       setShowDialog("Add your classes for this semester");
+    } else {
+      enroll(finalList);
     }
-    else{enroll(finalList)}
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
-    if (Course.value === "B.Tech") {
+    console.log(Course.value);
+    if (Course.value === "BTech") {
       const newBTech =
         "BTech_" +
         Year.value +
@@ -52,9 +74,9 @@ const LockList = () => {
       else {
         setShowDialog("Class already added");
       }
-    } else if (Course.value === "M.Tech") {
+    } else if (Course.value === "MTech") {
       const newMTech =
-      'MTech_'+
+        "MTech_" +
         Year.value +
         "_" +
         Department.value +
@@ -68,7 +90,7 @@ const LockList = () => {
       }
     } else if (Course.value === "MBA") {
       const newMBA =
-      'MBA_'+
+        "MBA_" +
         Year.value +
         "_" +
         Department.value +
@@ -91,8 +113,8 @@ const LockList = () => {
   };
 
   const Courses = [
-    { value: "B.Tech", label: "B.Tech" },
-    { value: "M.Tech", label: "M.Tech" },
+    { value: "BTech", label: "BTech" },
+    { value: "MTech", label: "MTech" },
     { value: "MBA", label: "MBA" },
   ];
   const Years = [
@@ -101,6 +123,11 @@ const LockList = () => {
     { value: "2", label: "2" },
     { value: "3", label: "3" },
     { value: "4", label: "4" },
+  ];
+  const MYears = [
+    //fetch from db for the selected course
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
   ];
   const Departments = [
     //fetch from db for the selected course
@@ -118,6 +145,7 @@ const LockList = () => {
     { value: "ME", label: "Mechanical Engineering" },
     { value: "IT", label: "Information Technology" },
   ];
+  
   const Sections = [
     //fetch from db for the selected department
     { value: "A", label: "A" },
@@ -140,20 +168,40 @@ const LockList = () => {
     },
   ];
 
+  
+
   async function enroll(list) {
-    setIsLoading(true);
-    const res = await enrollClasses(currentUser.email,list);
-    if (res == null) {
-      setIsLoading(false);
-      setShowDialog("Course Enrolled Successfully");
-      setIsSuccess(true);
+    if (currentUser.isHOD) {
+      console.log('hodcalled')
+      console.log(currentUser.isHOD)
+      setIsLoading(true);
+      const res = await enrollHODClasses(currentUser.email, list);
+      if (res == null) {
+        setIsLoading(false);
+        setShowDialog("Course Enrolled Successfully");
+        setIsSuccess(true);
+      } else {
+        setShowDialog(res);
+      }
     } else {
-      setShowDialog(res);
+      console.log('normalcalled')
+      console.log(currentUser.isHOD)
+      setIsLoading(true);
+      const res = await enrollClasses(currentUser.email, list);
+      if (res == null) {
+        setIsLoading(false);
+        setShowDialog("Course Enrolled Successfully");
+        setIsSuccess(true);
+      } else {
+        setShowDialog(res);
+      }
     }
   }
 
+
   return (
     <div>
+    {currentUser.isFirstTime ? (
       <div className="lockList-container">
         <Navbar title="Classes List" back={false} logout={false} />
         <p className="instruction">*Add your classes for this semester</p>
@@ -183,7 +231,7 @@ const LockList = () => {
             <Select
               placeholder=""
               className="select"
-              options={Years}
+              options={Course.value[0]==='M'? MYears:Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
                 setYear(selectedYear);
@@ -192,17 +240,18 @@ const LockList = () => {
             <p className="locklist-dropdown-title">Department</p>
             <Select
               placeholder=""
-              options={Departments}
+              options={departments}
               className="select"
               isDisabled={!Year}
               onChange={(selectedDepartment) => {
                 setDepartment(selectedDepartment);
+                setSections((c)=>{return {...c}})
               }}
             />
             <p className="locklist-dropdown-title">Section</p>
             <Select
               placeholder=""
-              options={Sections}
+              options={sections[Department.value]}
               className="select"
               isDisabled={!Department}
               onChange={(selectedSection) => {
@@ -212,7 +261,7 @@ const LockList = () => {
             <p className="locklist-dropdown-title">Subject</p>
             <Select
               placeholder=""
-              options={Subjects}
+              options={subjects[Department.value]}
               className="select"
               isDisabled={!Section}
               onChange={(selectedSubject) => {
@@ -248,90 +297,103 @@ const LockList = () => {
                         <li className="li-tag-flex" key={index}>
                           {newItem}
 
-                          <span className="far">
-                            <i
-                              onClick={() => {
-                                handleRemove(index, BTechList, setBTechList);
-                              }}
-                              className="lock-screen-icon fas fa-minus"
-                            />
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-              {MTechList.length !== 0 && (
-                <div>
-                  <h4> M.Tech </h4>
-                  <ul>
-                    {MTechList.map((item, index) => {
-                      var displayItem = item.split('_');
-                      displayItem.splice(0,1)
-                      let newItem =displayItem[0]
-                      let len=displayItem.length
-                      for (let i = 1;i<len;i++) {
-      newItem = newItem+ '_'+displayItem[i]
-     
-   }
-                      return (
-                        <li className="li-tag-flex" key={index}>
-                          {newItem}
-                          <span className="far">
-                            <i
-                              onClick={() => {
-                                handleRemove(index, MTechList, setMTechList);
-                              }}
-                              className=" lock-screen-icon fas fa-minus"
-                            />
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-              {MBAList.length !== 0 && (
-                <div>
-                  <h4> MBA </h4>
-                  <ul>
-                    {MBAList.map((item, index) => { var displayItem = item.split('_');
-                      displayItem.splice(0,1)
-                      let newItem =displayItem[0]
-                      let len=displayItem.length
-                      for (let i = 1;i<len;i++) {
-      newItem = newItem+ '_'+displayItem[i]
-     
-   }
-                      return (
-                        <li className="li-tag-flex" key={index}>
-                          {newItem}
-                          <span className="far">
-                            <i
-                              onClick={() => {
-                                handleRemove(index, MBAList, setMBAList);
-                              }}
-                              className="lock-screen-icon fas fa-minus"
-                            />
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </div>
-            <Button
-              className="locklist-button normal"
-              width="90"
-              height="40"
-              children="Done"
-              onClick={handleDone}
-            />
-          </div>
-        </div>
-      </div>
+                     <span className="far">
+                       <i
+                         onClick={() => {
+                           handleRemove(index, BTechList, setBTechList);
+                         }}
+                         className="lock-screen-icon fas fa-minus"
+                       />
+                     </span>
+                   </li>
+                 );
+               })}
+             </ul>
+           </div>
+         )}
+         {MTechList.length !== 0 && (
+           <div>
+             <h4> M.Tech </h4>
+             <ul>
+               {MTechList.map((item, index) => {
+                 var displayItem = item.split("_");
+                 displayItem.splice(0, 1);
+                 let newItem = displayItem[0];
+                 let len = displayItem.length;
+                 for (let i = 1; i < len; i++) {
+                   newItem = newItem + "_" + displayItem[i];
+                 }
+                 return (
+                   <li className="li-tag-flex" key={index}>
+                     {newItem}
+                     <span className="far">
+                       <i
+                         onClick={() => {
+                           handleRemove(index, MTechList, setMTechList);
+                         }}
+                         className=" lock-screen-icon fas fa-minus"
+                       />
+                     </span>
+                   </li>
+                 );
+               })}
+             </ul>
+           </div>
+         )}
+         {MBAList.length !== 0 && (
+           <div>
+             <h4> MBA </h4>
+             <ul>
+               {MBAList.map((item, index) => {
+                 var displayItem = item.split("_");
+                 displayItem.splice(0, 1);
+                 let newItem = displayItem[0];
+                 let len = displayItem.length;
+                 for (let i = 1; i < len; i++) {
+                   newItem = newItem + "_" + displayItem[i];
+                 }
+                 return (
+                   <li className="li-tag-flex" key={index}>
+                     {newItem}
+                     <span className="far">
+                       <i
+                         onClick={() => {
+                           handleRemove(index, MBAList, setMBAList);
+                         }}
+                         className="lock-screen-icon fas fa-minus"
+                       />
+                     </span>
+                   </li>
+                 );
+               })}
+             </ul>
+           </div>
+         )}
+       </div>
+       <Button
+         className="locklist-button normal"
+         width="90"
+         height="40"
+         children="Done"
+         onClick={handleDone}
+       />
+     </div>
+   </div>
+ </div>
+    
+
+ 
+    ):(<Dialog
+      message='Already Enrolled'
+      onOK={()=>{
+        nav(
+                    "/faculty/classlist",
+                    { state: currentUser },
+                    { replace: true }
+                  )
+      }}
+      
+    />)}
     </div>
   );
 };
@@ -339,3 +401,8 @@ const LockList = () => {
 export default LockList;
 
 //this screen is common for HOD and general faculty roles
+
+
+
+
+
