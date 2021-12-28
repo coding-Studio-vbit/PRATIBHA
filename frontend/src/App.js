@@ -34,7 +34,7 @@ const App = () => {
             <Route
               exact
               path="/viewsubmissions"
-              element={<ViewSubmissions />}
+              element={<ViewSubmissions/>}
             />
             <Route
               path="/student/*"
