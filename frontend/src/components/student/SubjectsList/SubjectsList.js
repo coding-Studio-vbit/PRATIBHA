@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { getStudentData } from "../services/studentServices";
 import { useAuth } from "./../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import {LoadingScreen} from '../../global_ui/spinner/spinner'
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
@@ -203,7 +204,7 @@ const SubjectsList = () => {
           <div>{error}</div>
         )
       ) : (
-        <div>loading</div>
+        <div><LoadingScreen/></div>
       )}
     </div>
   );

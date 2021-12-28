@@ -26,7 +26,7 @@ const Upload =() => {
     const [fileName, setFileName] = useState('');    
     const [fileError, setFileError] = useState('');
     const [fileUploadLoading, setfileUploadLoading] = useState(false);
-
+// DATA FROM THE PREVIOUS SCREEN
     console.log(location.state.rollno)
     console.log(location.state.subject)
 
