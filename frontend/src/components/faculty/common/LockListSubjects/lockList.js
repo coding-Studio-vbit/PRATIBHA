@@ -10,8 +10,8 @@ import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const LockList = () => {
-  const [Course, setCourse] = useState({ value:'ihb' });
-  const [Year, setYear] = useState("");
+  const [Course, setCourse] = useState({value:'none'});
+  const [Year, setYear] = useState({value:0});
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
@@ -30,6 +30,10 @@ const LockList = () => {
     
     { value: "loading", label: "Loading..." },
   ]);
+  const [sections,setSections] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
   const { currentUser } = useAuth();
   const nav = useNavigate();
   useEffect(()=>{
@@ -37,13 +41,12 @@ const LockList = () => {
       const res = await getDepartments(Course.value,Year.value)
       if(!res) return
        setSubjects(res.subjects)
-      setDepartments(res.departments)
+       setDepartments(res.departments)
+       setSections(res.sections)
     }
     getLables()
   },[Course,Year])
-  useEffect(()=>{
-
-  },[departments])
+  
   function handleDone() {
     //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
     var finalList = BTechList.concat(MTechList, MBAList);
@@ -242,12 +245,13 @@ const LockList = () => {
               isDisabled={!Year}
               onChange={(selectedDepartment) => {
                 setDepartment(selectedDepartment);
+                setSections((c)=>{return {...c}})
               }}
             />
             <p className="locklist-dropdown-title">Section</p>
             <Select
               placeholder=""
-              options={Sections}
+              options={sections[Department.value]}
               className="select"
               isDisabled={!Department}
               onChange={(selectedSection) => {
