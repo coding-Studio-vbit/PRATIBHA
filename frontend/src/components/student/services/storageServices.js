@@ -19,9 +19,17 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                 for(var i=0;i<subs.length;i++){
                     if(subs[i].subject===subject){
                         let s=subs[i];
-                        s.topic=title
-                        s.mid_1=snapshot.ref.fullPath;
-                        subs[i]=s;
+
+                        if(midNo==="1"){
+                            s.topic=title
+                            s.mid_1=snapshot.ref.fullPath;
+                            subs[i]=s;
+                        }else if(midNo==="2"){
+                            s.topic=title
+                            s.mid_2=snapshot.ref.fullPath;
+                            subs[i]=s;
+                        }
+                        
                     }                
                 }
                 try {

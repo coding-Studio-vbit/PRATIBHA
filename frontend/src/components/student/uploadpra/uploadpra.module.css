@@ -106,3 +106,16 @@ input[type="file"] {
    justify-content: center;
    align-items: center;
 }
+
+.btn{
+   background-color: rgba(14, 114, 171, 1);
+   color: white;
+   justify-self: bottom;
+   margin-top: 50px;
+   border: none;
+   outline: none;
+   padding: 10px 30px;
+   border-radius: 6px;
+   font-size: large;
+   cursor: pointer;
+}

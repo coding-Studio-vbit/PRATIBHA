@@ -1,32 +1,29 @@
 import * as React from "react";
-import { Viewer } from "@react-pdf-viewer/core";
-import styles from "./grading.css";
-import Button from "../../global_ui/buttons/button";
+// import { Viewer } from "@react-pdf-viewer/core";
+import "./grading.css";
+// import Button from "../../global_ui/buttons/button";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { Worker } from "@react-pdf-viewer/core";
+// import { Worker } from "@react-pdf-viewer/core";
 import Docviewer from "./docviewer";
-import Dialog from "../../global_ui/dialog/dialog";
-import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
+// import Dialog from "../../global_ui/dialog/dialog";
+// import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
 import { getUploadedFile } from "../../student/services/storageServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect} from "react";
-import { async } from "@firebase/util";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 
-
+import Select from 'react-select'
 
 const Grading = () => {
    let location = useLocation();
    const [user,setUser] = useState(location.state);
 
-
-   const [url, setUrl] = React.useState(null);
-   const [loading, setLoading] = React.useState(false); 
    const [pageLoading, setPageLoading] = React.useState();
    const [pageLoadError, setPageLoadError] = React.useState();
+
+   const [loading, setLoading] = React.useState(false); 
    const [rollNo, setRollNo] = React.useState('');
-   const [midNo,setMid] = React.useState(1);
    const [innovation1 , setInnovation1] = React.useState()
    const [subRel1 , setSubRel1] = React.useState()
    const [individuality1 , setIndividuality1] = React.useState()
@@ -39,36 +36,12 @@ const Grading = () => {
    const [presentation2 , setPresentation2] = React.useState();
 
    const [marksError,setMarksError] = React.useState(" ");
-   const [fileError,setFileError] = React.useState(null);
    const navigate = useNavigate()
     //  const Fetchdata = async () => {
     //   const studentref = query(
     //     collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA/`)
     //   );
     //  }
-  async function handleMidSelect(val) {
-    setMid(val);
-    setLoading(true);
-    
-      const res= await getUploadedFile();
-      // const midMarks = await getMarks();
-
-      if(res.error==null){
-        setUrl(res.url);        
-      }
-      else{
-        setFileError(res.error);
-        setUrl(null);
-      }
-      //check the above condition with midMarks
-      
-    //make http request
-
-    setLoading(false)
-        
-  }
-
-   
   
   const data=
     {
@@ -104,10 +77,16 @@ const Grading = () => {
 
   
     async function getUserData(fileUrl) {
-      setPageLoading(true);
-                
+      // if(midNo===1){
+      //   if(location.state.path1!==null)
+      // }
+      // else{
+      //   if(location.state.path2!=null)
+      //   getUserData(location.state.path2)  
+      // }
+      setPageLoading(true);                
         const res = await getUploadedFileByPath(
-        "BTech/1/CSE/A/Computer Networks/1/18p61a0513"
+        "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
         //location.state.path
       );
       if(res.error==null){
@@ -121,31 +100,49 @@ const Grading = () => {
         setUrl(null);
         setPageLoading(false);
         setPageLoadError("Error in Fetching details");
-      } 
-      
-     
+      }      
     }
-    
+
+
+   
+    const [midNo,setMid] = React.useState("1");
+    const [fileError,setFileError] = React.useState(null);
+    const [url, setUrl] = React.useState(null);
+
+
+
+    async function handleMidSelect(val) {
+      setMid(val);
+      setLoading(true);
+      const res = await getUploadedFileByPath(
+        "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
+        //location.state.path
+      );
+      console.log(res);
+      // const midMarks = await getMarks();
+      if(res.error==null){
+        setUrl(res.url);        
+      }
+      else{
+        setFileError(res.error);
+        setUrl(null);
+      }
+      // check the above condition with midMarks
+      // make http request
+      setLoading(false)          
+    }
+
   
     
-     useEffect(() => {        
-        if(midNo===1) 
-        {
-          if(location.state.path1!==null)
-        getUserData(location.state.path1)  
-        }
-        else 
-        {
-          if(location.state.path2!=null)
-        getUserData(location.state.path2)  
-        }
-     }, [])
+    useEffect(() => {        
+      getUserData()  
+    },[])
 
-  return (!pageLoading)? (    
-     
+  return (!pageLoading)? (         
     pageLoadError==null?
     <div className="grading">
-      <div className="left">
+      <div></div>
+      {/* <div className="left">
         <i style={{
             position:'absolute',
             left:'16px',
@@ -358,81 +355,77 @@ const Grading = () => {
           <i class="fas fa-chevron-circle-left fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
           <i class="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }} onClick={Save}></i>
         </div>
-      </div> 
+      </div>  */}
 
       <div className="right">
-        <div
-          className="preview"
-          style={{ display: "grid", gridTemplateColumns: "0.3fr 0.3fr 0.3fr" }}
-        >
-          
-          <span
-            style={{
-              marginLeft: "auto",
-              marginRight: "auto",
-              padding: "16px",
-              gridArea: "title",
-              alignSelf: "center",
-            }}
-          >
-            PREVIEW
-          </span>
-          <div
-            className="dropdown"
-            style={{
-              alignSelf: "end",
-              padding: "16px",
-              justifySelf: "end",
-            }}
-          >
-            <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>
-            <select
-              style={{
-                width: "200px",
-                padding: "8px",
-                borderRadius: "24px",
-                marginRight: "12px",
-              }}
-              onChange={(e)=>handleMidSelect(e.target.value)}
-              name="selectList"
-              id="selectList">
-              <option value={1}>MID-I</option> 
-              <option value={2}>MID-II</option>
-            </select>
-          </div>
+          <div className="preview" style={{ display: "grid", gridTemplateColumns: "0.3fr 0.3fr 0.3fr" }}> 
 
-          <div className="display">
-          {
-            url!==null?
-            <Docviewer extension="pdf" object={url}/>
-            : "File Not Submitted"
-          } 
-                
-          </div>
-          <div className="remarksCon">
-            <span className="remarks-title">REMARKS</span>
-            <textarea rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
-            <button
-              style={{
-                backgroundColor: "#0e72ab",
-                color: "white",      
-                margin: "auto",
-                padding: "8px 16px",
-                cursor:'pointer',
-                borderRadius: 25,
-                textAlign: "center",
-                border: "none",
-              }}
+              <span style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  padding: "16px",
+                  gridArea: "title",
+                  alignSelf: "center",
+                }}>PREVIEW
+              </span>
 
-              onClick={Save}
-            >
-              SAVE
-            </button>
+              <div className="dropdown" style={{
+                  alignSelf: "end",
+                  padding: "16px",
+                  justifySelf: "end",
+                }}>
+                  <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>                  
+                  <select
+                    style={{
+                      width: "200px",
+                      padding: "8px",
+                      borderRadius: "24px",
+                      marginRight: "12px",
+                    }}
+                    value={midNo}
+                    onChange={
+                      (e)=>handleMidSelect(e.target.value)
+                    }
+                    name="selectList"
+                    id="selectList">
+                    <option value="1">MID-I</option> 
+                    <option value="2">MID-II</option>
+                  </select>
+              </div>
+
+              <div className="display">
+                {
+                  url!==null?
+                  <Docviewer extension="pdf" object={url}/>:"File Not Submitted"
+                }   
+              </div>
+
+              <div className="remarksCon">
+                <span className="remarks-title">REMARKS</span>
+
+                <textarea rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
+                <button
+                  style={{
+                    backgroundColor: "#0e72ab",
+                    color: "white",      
+                    margin: "auto",
+                    padding: "8px 16px",
+                    cursor:'pointer',
+                    borderRadius: 25,
+                    textAlign: "center",
+                    border: "none",
+                  }}
+                  onClick={Save}
+                >
+                  SAVE
+                </button>
+              </div>
           </div>
-        </div>
       </div>
-    </div>: <div>{pageLoadError} </div>
-  ): <LoadingScreen />
+    </div>: 
+    <div>{pageLoadError}</div>
+  ): 
+  <LoadingScreen />
 };
 
 export default Grading;

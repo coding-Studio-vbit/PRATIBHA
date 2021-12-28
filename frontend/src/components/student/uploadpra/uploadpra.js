@@ -43,7 +43,13 @@ const Upload =() => {
  
     const onChange = (e) => {
         let files=e.target.files[0];
-        if (files.size > 200000){
+        let size=200000;
+        if(mid==="1"){
+            size=200000;
+        }else if(mid==="2"){
+            size=1048576000;
+        }
+        if (files.size > size){
             setUrl(null)
             setFileError("File Limit Exceeded");
         }
@@ -125,7 +131,7 @@ const Upload =() => {
     const [selectError, setSelectError] =useState(null);
 
     const [praError, setPraError] = useState();
-    const [deadLineInfo, setDeadLineInfo] = useState();
+    const [deadLineInfo, setDeadLineInfo] = useState(null);
 
     const [existingFile, setexistingFile] = useState(null);
     const [loadExisting, setloadExisting] = useState(false);
@@ -142,6 +148,7 @@ const Upload =() => {
             )
             console.log(res);
             if(res.error==null){
+                console.log("If");
                 setShowUploadModule(true);
                 setLoading(false);
                 setDeadLineInfo(res.data);
@@ -152,9 +159,11 @@ const Upload =() => {
                 console.log(res.data);
             }
             else{
+                console.log("Else");
                 setLoading(false);
-                setPraError(res.error);
+                setPraError(res.error.toString());
             }
+            console.log("Ended");
         }else{
             setLoading(false);
             setSelectError("select mid number to continue");           
@@ -168,8 +177,13 @@ const Upload =() => {
 
     async function getUserData() {
         setPageLoad(true);
+        // console.log("Getting User Data");
         const res = await getStudentData("18p61a0513@vbithyd.ac.in");
+        // console.log("Got Response");
         if(res.error==null){
+            // console.log("If");
+            console.log(res.document);
+
             setUser({
                 course:res.document["course"],
                 year:res.document["year"],
@@ -177,11 +191,14 @@ const Upload =() => {
                 section:res.document["section"]
             })  
             setPageLoad(false);
-            setPageLoadError(null);          
+            setPageLoadError(null);
+            // console.log("Ending");          
         }else{
+            // console.log("Else");
             setPageLoadError(res.error);
             setPageLoad(false);
         }
+        console.log("Intialized");
     }
 
     const [editPRA, seteditPRA] = useState(false);
@@ -234,17 +251,17 @@ const Upload =() => {
                                     (
                                         <div>
                                             <p>{praTitle}</p>
-                                            <button onClick={()=>seteditPRA(true)} className={styles.buttton}>Edit PRA</button>
+                                            <button onClick={()=>seteditPRA(true)} className={styles.btn}>Edit PRA</button>
                                         </div>
                                     ):                               
                                     <div className={styles.fileUploadModule}>
                                         <p className={styles.instructions} style={{alignSelf:'start'}}>Instructions</p>
-                                        <p className={styles.instructions} style={{alignSelf:'start'}}>
+                                        <div className={styles.instructions} style={{alignSelf:'start'}}>
                                             {
-                                                deadLineInfo &&
+                                                deadLineInfo!=null &&
                                                 <p>{deadLineInfo.instructions}</p>
                                             }
-                                        </p>  
+                                        </div>  
 
                                         <div>
                                             <p className={styles.praLabel}>P.R.A Title</p>
@@ -253,34 +270,42 @@ const Upload =() => {
                                             <p className={styles.errorField}>{titleError}</p>         
                                         </div> 
                                         {
-                                            (deadLineInfo && (new Date() < deadLineInfo.lastDate.toDate())) &&
+                                            deadLineInfo!=null &&
                                             <div>
-                                                 <div className={styles.fileContainer} style={{marginBottom:'30px'}}>                    
-                                                    <label className={styles.customFileUpload}>
-                                                        <input type="file" accept=".pdf"  onChange={onChange} /> 
-                                                        {
-                                                            fileName.length>0?"Change File":"Add File"
-                                                        }
-                                                    </label>
-                                                    { (fileError.length>0 || fileName.length>0) && <div style={{width:'30px'}}></div>}
-                                                    {/for spacing/}
-                                                    {
-                                                        fileError.length>0?
-                                                        <p className={styles.errorField }>{fileError}</p> 
-                                                        :<p className={styles.fileName}>{fileName}</p>          
-                                                    } 
-                                                </div>
-                                                <Button 
-                                                className={{
-                                                    width:'20ch',
-                                                    alignSelf:'center',
-                                                    marginTop:'20px',
-                                                }} 
-                                                onClick={()=>{submit()}}>
-                                                Upload</Button>
+                                                {
+                                                     (new Date() < deadLineInfo.lastDate.toDate()) && 
+                                                     <div>
+                                                         <div className={styles.fileContainer} style={{marginBottom:'30px'}}>                    
+                                                            <label className={styles.customFileUpload}>
+                                                                {
+                                                                   mid===1?
+                                                                   <input type="file" accept=".pdf"  onChange={onChange} /> :
+                                                                   <input type="file"  onChange={onChange} /> 
 
+                                                                }
+                                                                {
+                                                                    fileName.length>0?"Change File":"Add File"
+                                                                }
+                                                            </label>
+                                                            { (fileError.length>0 || fileName.length>0) && <div style={{width:'30px'}}></div>}
+                                                            {
+                                                                fileError.length>0?
+                                                                <p className={styles.errorField }>{fileError}</p> 
+                                                                :<p className={styles.fileName}>{fileName}</p>          
+                                                            } 
+                                                        </div>
+                                                        <Button 
+                                                            className={{
+                                                                width:'20ch',
+                                                                alignSelf:'center',
+                                                                marginTop:'20px',
+                                                            }} 
+                                                        onClick={()=>{submit()}}>
+                                                        Upload</Button>
+                                                     </div>
+                                                }                                           
                                             </div>
-                                        }                                    
+                                        }
                                         {
                                             error &&
                                             <div>

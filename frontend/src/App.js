@@ -28,6 +28,8 @@ const App = () => {
       <AuthProvider>
         <Router>
           <Routes>
+          <Route exact path="/abcd" element={<Grading />} />
+
             <Route exact path="/" element={<LoginPage />} />
 
             <Route
