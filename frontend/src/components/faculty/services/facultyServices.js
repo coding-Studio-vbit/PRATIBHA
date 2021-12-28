@@ -139,7 +139,7 @@ export const getDepartments = async (course,year)=>{
   }
 }
 
-export const setPRA = async (sub,department,date,inst)=>{
+export const setPRA = async (sub,department,date,inst,email)=>{
   try {
     const docRef = doc(db,'subjects',department)
     const docData = await getDoc(docRef)
@@ -153,16 +153,16 @@ export const setPRA = async (sub,department,date,inst)=>{
         if(ele.subject === sub){
           d1 = false
           await updateDoc(docRef,{subjects:arrayRemove(ele)})
-          await updateDoc(docRef,{subjects:arrayUnion({deadline1:ele.deadline1,deadline2:date,instructions:inst,subject:sub})})
+          await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date,instructions:inst,subject:sub})})
           break
         }
       }
       if(d1){
 
-        await updateDoc(docRef,{subjects:arrayUnion({deadline1:date,instructions:inst,subject:sub})})
+        await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
       }
     }else{
-      await setDoc(docRef,{subjects:[{deadline1:date,instructions:inst,subject:sub}]})
+      await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
     }
   } catch (error) {
     console.log(error);

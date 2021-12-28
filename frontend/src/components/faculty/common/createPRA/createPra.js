@@ -6,18 +6,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation } from "react-router-dom";
 import { setPRA } from "../../services/facultyServices.js";
+import { useAuth } from "../../../context/AuthContext.js";
 
 const CreatePra = () => {
   const [date, setDate] = useState(new Date());
   const [inst, setInst] = useState("");
   const location = useLocation();
-
+  const {currentUser} = useAuth()
   async function handleCreate() {
     const parts = location.state.split("_");
     const sub = parts[4];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
-    await setPRA(sub, department, date, inst);
+    await setPRA(sub, department, date, inst,currentUser.email);
   }
 
   return (
