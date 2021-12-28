@@ -21,7 +21,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
@@ -47,7 +47,6 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    setLoading(true)
     auth.onAuthStateChanged(async (user) => {
       let userType = "";
       let isFirstTime = true;
