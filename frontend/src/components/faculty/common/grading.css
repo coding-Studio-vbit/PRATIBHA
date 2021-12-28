@@ -6,6 +6,13 @@
   overflow: hidden;
 }
 
+.inputStyle{
+  width: 24px;
+  border-radius: 10px;
+  text-align: center;
+  resize:none
+}
+
 .error{
   background-color: #e76c6c;
 }
@@ -245,6 +252,14 @@ select {
   .preview{
       margin: 16px;
   }
+}
+
+.searchBtn{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color:white;
+  padding: 0px;
 }
 @media screen and (max-width: 1220px) and (min-width:770px) {
 
