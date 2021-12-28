@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
+import { enrollClasses, enrollHODClasses,getDepartments } from "../../services/facultyServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
@@ -12,10 +13,33 @@ export default function CoeSearch() {
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
+  const [subjects,setSubjects] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
+  const [departments,setDepartments] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
+  const [sections,setSections] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
 
   const [showDialog, setShowDialog] = useState(null);
 
   const nav = useNavigate();
+  useEffect(()=>{
+    const getLables = async ()=>{
+      const res = await getDepartments(Course.value,Year.value)
+      if(!res) return
+       setSubjects(res.subjects)
+       setDepartments(res.departments)
+       setSections(res.sections)
+    }
+    getLables()
+  },[Course,Year])
+
 
   function handleView() {
     if (
@@ -50,6 +74,12 @@ export default function CoeSearch() {
     { value: "3", label: "3" },
     { value: "4", label: "4" },
   ];
+  const MYears = [
+    //fetch from db for the selected course
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+  ];
+  
   const Departments = [
     //fetch
     { value: "CSE", label: "Computer Science & Engineering" },
