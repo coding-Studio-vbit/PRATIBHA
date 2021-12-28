@@ -1,19 +1,55 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import Select from 'react-select'
 import Navbar from '../../global_ui/navbar/navbar.js';
 import Card from '../../global_ui/card/card.js'
 import Button from '../../global_ui/buttons/button'
 import './classListHod.css';
+import { useAuth } from '../../context/AuthContext.js';
+import { fetchDepartments } from '../../student/services/studentServices.js';
+import { fetchSectionsAndSubs } from '../services/facultyServices.js';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 const HODClassList = () => {
-  const [Course, setCourse] = useState("");
+  const [Course, setCourse] = useState({ value: "Loading", label: "Loading" });
     const [Year, setYear] = useState("");
-    
+    const {currentUser} = useAuth()
     const [Section, setSection] = useState("");
     const [Subject, setSubject] = useState("");
+    const nav = useNavigate()
+    const [klass,setKlass] = useState(
+      [{ value: "Loading", label: "Loading" }],
+
+    )
+    const [dep,setDep ]  = useState('')
+    const [department,setDepartment] = useState(
+      [{ value: "Loading", label: "Loading" }],
+
+    )
+    const [subjects,setSubjects] = useState(
+      [{ value: "Loading", label: "Loading" }],
+
+    )
+    const [sections,setsections] = useState(
+      [{ value: "Loading", label: "Loading" }],
+
+    )
+    useEffect(()=>{
+      let klasses = []
+      let departments = []
+      for(let i=0;i<currentUser.roles.length;i++){
+        const parts = currentUser.roles[i].split('_')
+        klasses.push({value:parts[0],label:parts[0]})
+        departments.push({value:parts[1],label:parts[1]})
+      }
+      setKlass(klasses)
+      setDepartment(departments)
+
+
+    },[])
+
     const BTechClasses = [
       "2_CSM_B_Software Engineering",
       "3_CSB_A_Compiler Design",
@@ -38,6 +74,11 @@ const HODClassList = () => {
         { value: "3", label: "3" },
         { value: "4", label: "4" },
       ];
+      const MYears = [
+        { value: "1", label: "1" },
+        { value: "2", label: "2" },
+
+      ];
       const Sections = [
         { value: "A", label: "A" },
         { value: "B", label: "B" },
@@ -59,6 +100,12 @@ const HODClassList = () => {
       ];
     function handleClick(){
       console.log(Course.value+'_'+Year.value+'_'+Section.value+'_'+Subject.value);
+      nav('/viewsubmissions',{state:{
+        Year:Year.value,
+        Dept:dep.value,
+        Section:Section.value,
+        Subject:Subject.value
+      }})
     }
 
   function handleCard(){
@@ -126,7 +173,7 @@ const HODClassList = () => {
         <Select
               placeholder=""
               className="course"
-              options={Courses}
+              options={klass}
               onChange={(selectedCourse) => {
                 setCourse(selectedCourse);
               }}
@@ -137,18 +184,38 @@ const HODClassList = () => {
         <Select
               placeholder=""
               className="year"
-              options={Years}
+              options={Course.value[0]==='M'?MYears: Years}
               isDisabled={!Course}
-              onChange={(selectedYear) => {
+              onChange={ async (selectedYear)  => {
                 setYear(selectedYear);
+                const res  = await fetchSectionsAndSubs(Course.value,selectedYear.value,department)
+                setSubjects(res.subjects)
+                setsections(res.sections)
+
               }}
             />
         </div>
+
+        <div className='xyz'>
+        <span className='dd-text'>Department</span>
+        <Select
+              placeholder=""
+              className="department"
+              options={department}
+              isDisabled={!Year}
+              onChange={ async (d)  => {
+                setDep(d);
+                
+
+              }}
+            />
+        </div>
+
         <div className='xyz'>
         <span className='dd-text'>Section</span>
         <Select
               placeholder=""
-              options={Sections}
+              options={sections[dep.value]}
               isDisabled={!Year}
               onChange={(selectedSection) => {
                 setSection(selectedSection);
@@ -159,7 +226,7 @@ const HODClassList = () => {
         <span className='dd-text'>Subject</span>
         <Select
               placeholder=""
-              options={Subjects}
+              options={subjects[dep.value]}
             isDisabled={!Section}
               onChange={(selectedSubject) => {
                 setSubject(selectedSubject);
