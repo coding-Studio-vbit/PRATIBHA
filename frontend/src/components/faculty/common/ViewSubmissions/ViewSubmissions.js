@@ -53,7 +53,6 @@ const ViewSubmissions = () => {
       "2",
       rollnum + "@vbithyd.ac.in"
     );
-    console.log(res);
     links[rollnum] = res.url;
 
     setLinks(links);
