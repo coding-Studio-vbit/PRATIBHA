@@ -99,15 +99,23 @@ const Grading = () => {
   }
 
   async function getUserData() {
-    const res = await getUploadedFile();
-    if(res.error==null){
-      setUrl(res.url);        
-    }
-    else{
-      setFileError(res.error);
-      setUrl(null);
-    } 
-    await getMarks(); 
+    // setPageLoading(true);
+    // const res = await getUploadedFile(
+    //   user.course,user.year,user.department,user.section,user.subject,midNo,user.email
+    // );
+    // if(res.error==null){
+    //   setUrl(res.url);
+    //   //http request
+    //   setPageLoading(false);
+    //   setPageLoadError(null);       
+    // }
+    // else{
+    //   setUrl(null);
+    //   setPageLoading(false);
+    //   setPageLoadError("Error Fetching Details");
+    // } 
+   }
+    // await getMarks(); 
     // if(res.error==null){
     //   setMarks(res.marks);        
     // }
@@ -115,11 +123,9 @@ const Grading = () => {
     //   setMarkserror(res.error);
     //   setMarks(null);
     // }    
-  }
+   
     
-  React.useEffect(()=>{
-    getUserData();      
-  },[])
+  
 
   return (    
     <div className="grading">
@@ -178,7 +184,15 @@ const Grading = () => {
               }}
               
               type="text"
-               value={innovation1} onChange={(e)=>setInnovation1(e.target.value)}
+               value={innovation1} onChange={(e)=>{
+                 if(e.target.value==="1" || e.target.value==="2" || e.target.value==="3"){
+                   setInnovation1(e.target.value)
+                 }
+                 else{
+                   setInnovation1()
+                 }
+
+               }}
               
             />
           </div>
@@ -370,11 +384,9 @@ const Grading = () => {
             </select>
           </div>
 
-          <div className="display">
-                      
+          <div className="display">                      
                 <Docviewer extension="mp4" object="https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx" /> 
     
-                
               </div>
           <div className="remarksCon">
             <span className="remarks-title">REMARKS</span>
