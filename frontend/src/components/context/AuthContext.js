@@ -79,6 +79,7 @@ export function AuthProvider({ children }) {
                 }
                 if(docSnap.data().isCOE){
                   isCOE = true
+                  isFirstTime= false
                 }
                 if (docSnap.data().isEnrolled) {
                   isFirstTime = false;
