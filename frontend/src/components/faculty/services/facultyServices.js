@@ -195,6 +195,64 @@ export const getSubjects = async (email) => {
   }
 };
 
+
+
+async function getMarks(facultyID,className,studentID) {
+  const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
+  try {
+    const docSnap = await getDoc(facultyRef);
+    if(docSnap.exists()){
+      if(docSnap.data()["isGraded"]){
+        return {
+          data:docSnap.data(),
+          status:"GRADED",
+          error:null
+        }
+      }else{
+        return {
+          data:docSnap.data(),
+          status:"UNGRADED",
+          error:null
+        }
+      }                    
+    }else{
+      return {
+        data:null,
+        status:"UNGRADED", 
+        error:null                            
+      }
+    }
+  } catch (error) {
+    return {
+      data:null,
+      status:null,
+      error:error.code
+    }    
+  }  
+}
+
+
+
+async function postMarks(facultyID,className,studentID,midNo,marks) {
+  let error=null;
+  const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
+  try {
+    if(midNo===1){
+      await setDoc(facultyRef,{
+        mid_1:marks,
+      });
+      
+    }else if(midNo===2){
+      await setDoc(facultyRef,{
+        mid_2:marks
+      });
+    }    
+  } catch (e) {
+    error=e.code;
+  }  
+  return error;
+}
+
 // async function createSubCollection() {
 //   console.log("Started");
 //   try {
@@ -249,4 +307,4 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
   }
 }
 
-export { getEnrolledCourses, enrollClasses,enrollHODClasses };
+export { getEnrolledCourses, enrollClasses,enrollHODClasses,postMarks,getMarks};
