@@ -8,9 +8,11 @@ import Docviewer from "./docviewer";
 import Dialog from "../../global_ui/dialog/dialog";
 import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
 import { getUploadedFile } from "../../student/services/storageServices";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect} from "react";
 import { async } from "@firebase/util";
+import { LoadingScreen } from "../../global_ui/spinner/spinner";
+import { getUploadedFileByPath } from "../../student/services/storageServices";
 
 
 
@@ -19,8 +21,10 @@ const Grading = () => {
    const [user,setUser] = useState(location.state);
 
 
-   const [url, setUrl] = React.useState('');
+   const [url, setUrl] = React.useState(null);
    const [loading, setLoading] = React.useState(false); 
+   const [pageLoading, setPageLoading] = React.useState();
+   const [pageLoadError, setPageLoadError] = React.useState();
    const [rollNo, setRollNo] = React.useState('');
    const [midNo,setMid] = React.useState(1);
    const [innovation1 , setInnovation1] = React.useState()
@@ -34,9 +38,9 @@ const Grading = () => {
    const [preparation2 , setPreparation2] = React.useState()
    const [presentation2 , setPresentation2] = React.useState();
 
-   const [marksError,setMarksError] = React.useState(null);
+   const [marksError,setMarksError] = React.useState(" ");
    const [fileError,setFileError] = React.useState(null);
-
+   const navigate = useNavigate()
     //  const Fetchdata = async () => {
     //   const studentref = query(
     //     collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA/`)
@@ -98,44 +102,57 @@ const Grading = () => {
     //call http function here    
   }
 
-  async function getUserData() {
-    // setPageLoading(true);
-    // const res = await getUploadedFile(
-    //   user.course,user.year,user.department,user.section,user.subject,midNo,user.email
-    // );
-    // if(res.error==null){
-    //   setUrl(res.url);
-    //   //http request
-    //   setPageLoading(false);
-    //   setPageLoadError(null);       
-    // }
-    // else{
-    //   setUrl(null);
-    //   setPageLoading(false);
-    //   setPageLoadError("Error Fetching Details");
-    // } 
-   }
-    // await getMarks(); 
-    // if(res.error==null){
-    //   setMarks(res.marks);        
-    // }
-    // else{
-    //   setMarkserror(res.error);
-    //   setMarks(null);
-    // }    
-   
+  
+    async function getUserData(fileUrl) {
+      setPageLoading(true);
+                
+        const res = await getUploadedFileByPath(
+        "BTech/1/CSE/A/Computer Networks/1/18p61a0513"
+        //location.state.path
+      );
+      if(res.error==null){
+        console.log(res.url);
+        setUrl(res.url);
+        //http request
+        setPageLoading(false);
+        setPageLoadError(null);       
+      }
+      else{
+        setUrl(null);
+        setPageLoading(false);
+        setPageLoadError("Error in Fetching details");
+      } 
+      
+     
+    }
     
   
+    
+     useEffect(() => {        
+        if(midNo===1) 
+        {
+          if(location.state.path1!==null)
+        getUserData(location.state.path1)  
+        }
+        else 
+        {
+          if(location.state.path2!=null)
+        getUserData(location.state.path2)  
+        }
+     }, [])
 
-  return (    
+  return (!pageLoading)? (    
+     
+    pageLoadError==null?
     <div className="grading">
       <div className="left">
         <i style={{
             position:'absolute',
             left:'16px',
             top:'16px',
-            
-        }} className="fas fa-arrow-left black" aria-hidden="true"></i>
+            cursor:'pointer'
+
+        }} className="fas fa-arrow-left"  onClick={()=>navigate('/faculty/studentlist')}></i>
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
         <div className="details">
           <div style={{
@@ -185,16 +202,16 @@ const Grading = () => {
               
               type="text"
                value={innovation1} onChange={(e)=>{
-                 if(e.target.value==="1" || e.target.value==="2" || e.target.value==="3"){
-                   setInnovation1(e.target.value)
-                 }
-                 else{
-                   setInnovation1()
-                 }
-
-               }}
-              
-            />
+                 if(e.target.value==="0"|| e.target.value==="1" || e.target.value==="2" || e.target.value===" ")
+                setInnovation1(e.target.value)
+                else
+                {
+                  setMarksError("!")
+                }
+              }
+                       
+            }
+            ></input>
           </div>
           <div>
             <span>Subject Relevance:(2M)</span>
@@ -348,7 +365,7 @@ const Grading = () => {
           className="preview"
           style={{ display: "grid", gridTemplateColumns: "0.3fr 0.3fr 0.3fr" }}
         >
-          <div></div>
+          
           <span
             style={{
               marginLeft: "auto",
@@ -384,10 +401,14 @@ const Grading = () => {
             </select>
           </div>
 
-          <div className="display">                      
-                <Docviewer extension="mp4" object="https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx" /> 
-    
-              </div>
+          <div className="display">
+          {
+            url!==null?
+            <Docviewer extension="pdf" object={url}/>
+            : "File Not Submitted"
+          } 
+                
+          </div>
           <div className="remarksCon">
             <span className="remarks-title">REMARKS</span>
             <textarea rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
@@ -410,8 +431,8 @@ const Grading = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>: <div>{pageLoadError} </div>
+  ): <LoadingScreen />
 };
 
 export default Grading;
