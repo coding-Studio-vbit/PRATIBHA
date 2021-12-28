@@ -70,19 +70,43 @@ const ViewSubmissions = () => {
           const email = doc.id.toString() + "@vbithyd.ac.in";
           Fetchlink(doc.id.toString());
           const docData = doc.data();
+          let Innovation1 = "",
+            Innovation2 = "",
+            Subject_Relevance1 = "",
+            Subject_Relevance2 = "",
+            Individuality1 = "",
+            Individuality2 = "",
+            Preparation1 = "",
+            Preparation2 = "",
+            Presentation1 = "",
+            Presentation2 = "";
+          if (docData["mid1"]) {
+            Innovation1 = docData["mid1"]["Innovation1"];
+            Subject_Relevance1 = docData["mid1"]["Subject_Relevance1"];
+            Individuality1 = docData["mid1"]["Individuality1"];
+            Preparation1 = docData["mid1"]["Preparation1"];
+            Presentation1 = docData["mid1"]["Presentation1"];
+          }
+          if (docData["mid2"]) {
+            Innovation2 = docData["mid2"]["Innovation2"];
+            Subject_Relevance2 = docData["mid2"]["Subject_Relevance2"];
+            Individuality2 = docData["mid2"]["Individuality2"];
+            Preparation2 = docData["mid2"]["Preparation2"];
+            Presentation2 = docData["mid2"]["Presentation2"];
+          }
           const mid1 = docData["mid1"]
-            ? docData["mid1"]["Innovation1"] +
-              docData["mid1"]["Subject_Relevance1"] +
-              docData["mid1"]["Individuality1"] +
-              docData["mid1"]["Preparation1"] +
-              docData["mid1"]["Presentation1"]
+            ? Innovation1 +
+              Subject_Relevance1 +
+              Individuality1 +
+              Preparation1 +
+              Presentation1
             : " ";
           const mid2 = docData["mid2"]
-            ? docData["mid2"]["Innovation2"] +
-              docData["mid2"]["Subject_Relevance2"] +
-              docData["mid2"]["Individuality2"] +
-              docData["mid2"]["Preparation2"] +
-              docData["mid2"]["Presentation2"]
+            ? Innovation2 +
+              Subject_Relevance2 +
+              Individuality2 +
+              Preparation2 +
+              Presentation2
             : " ";
 
           await getStudentData(email)
@@ -92,7 +116,7 @@ const ViewSubmissions = () => {
 
               if (error == null) {
                 let obj = returndata["subjects"].find(
-                  (o) => o.subject ===  passedData.Subject //"DAA"
+                  (o) => o.subject === passedData.Subject //"DAA"
                 );
                 topic = obj.topic;
                 name = returndata.name;
@@ -100,7 +124,17 @@ const ViewSubmissions = () => {
                   ROLL_NO: doc.id.toString(),
                   STUDENT_NAME: name,
                   TOPIC_NAME: topic,
+                  Innovation1: Innovation1,
+                  Subject_Relevance1: Subject_Relevance1,
+                  Individuality1: Individuality1,
+                  Preparation1: Preparation1,
+                  Presentation1: Presentation1,
                   MID_1: mid1,
+                  Innovation2: Innovation2,
+                  Subject_Relevance2: Subject_Relevance2,
+                  Individuality2: Individuality2,
+                  Preparation2: Preparation2,
+                  Presentation2: Presentation2,
                   MID_2: mid2,
                 };
                 return dataobj;
