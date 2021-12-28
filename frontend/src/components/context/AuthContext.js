@@ -21,7 +21,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
@@ -47,7 +47,6 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    setLoading(true)
     auth.onAuthStateChanged(async (user) => {
       let userType = "";
       let isFirstTime = true;
@@ -56,7 +55,6 @@ export function AuthProvider({ children }) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
             userType = "STUDENT";
-
             const docRef = doc(db, "users", user.email);
             try {
               console.log(10);
