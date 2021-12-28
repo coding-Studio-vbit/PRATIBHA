@@ -57,13 +57,13 @@ async function enrollHODClasses(email, enrolled_classes) {
 async function enrollClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
   try {
-    await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false,role: null});
+    await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false});
     for (let i = 0; i < enrolled_classes.length; i++) {
       await setDoc(doc(db, `faculty/${email}/${enrolled_classes[i]}`, email), {
         random: 1,
       });
     }
-    await updateDoc(facultyRef, { isEnrolled: true ,role:['faculty']});
+    await updateDoc(facultyRef, { isEnrolled: true });
   } catch (error) {
     return error.code;
   }
@@ -139,7 +139,7 @@ export const getDepartments = async (course,year)=>{
   }
 }
 
-export const setPRA = async (sub,department,date,inst)=>{
+export const setPRA = async (sub,department,date,inst,email)=>{
   try {
     const docRef = doc(db,'subjects',department)
     const docData = await getDoc(docRef)
@@ -153,16 +153,16 @@ export const setPRA = async (sub,department,date,inst)=>{
         if(ele.subject === sub){
           d1 = false
           await updateDoc(docRef,{subjects:arrayRemove(ele)})
-          await updateDoc(docRef,{subjects:arrayUnion({deadline1:ele.deadline1,deadline2:date,instructions:inst,subject:sub})})
+          await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date,instructions:inst,subject:sub})})
           break
         }
       }
       if(d1){
 
-        await updateDoc(docRef,{subjects:arrayUnion({deadline1:date,instructions:inst,subject:sub})})
+        await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
       }
     }else{
-      await setDoc(docRef,{subjects:[{deadline1:date,instructions:inst,subject:sub}]})
+      await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
     }
   } catch (error) {
     console.log(error);
@@ -195,6 +195,73 @@ export const getSubjects = async (email) => {
   }
 };
 
+
+
+async function getMarks(facultyID,className,studentID) {
+  const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
+  try {
+    const docSnap = await getDoc(facultyRef);
+    if(docSnap.exists()){
+      return {
+        data:docSnap.data(),
+        error:null,
+      }
+      // if(docSnap.data()["isGraded"]){
+      //   return {
+      //     data:docSnap.data(),
+      //     status:"GRADED",
+      //     error:null
+      //   }
+      // }else{
+      //   return {
+      //     data:docSnap.data(),
+      //     status:"UNGRADED",
+      //     error:null
+      //   }
+      // }                    
+    }else{
+      return {
+        data:null,
+        // status:"UNGRADED", 
+        error:null                            
+      }
+    }
+  } catch (error) {
+    return {
+      data:null,
+      status:null,
+      error:error.code
+    }    
+  }  
+}
+
+
+
+async function postMarks(facultyID,className,studentID,midNo,marks,remarks) {
+  let error=null;
+  console.log(`faculty/${facultyID}/${className}`);
+  const facultyRef = doc(db,"faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA","19p61a05i2");
+  console.log(marks);
+  try {
+    if(midNo==="1"){
+      await updateDoc(facultyRef,{
+        mid1:marks,
+        remarks1:remarks,
+      });
+      
+    }else if(midNo==="2"){
+      await updateDoc(facultyRef,{
+        mid2:marks,
+        remarks2:remarks,
+      });
+    }    
+  } catch (e) {
+    console.log(e);
+    error=e.code;
+  }  
+  return error;
+}
+
 // async function createSubCollection() {
 //   console.log("Started");
 //   try {
@@ -207,5 +274,46 @@ export const getSubjects = async (email) => {
 //   }
 //   console.log("Ended");
 // }
+export const fetchSectionsAndSubs= async (course,year,departments)=>{
+  console.log(course,year,departments);
+  try {
+    let subjects = []
+    let sections = []
+    for (let index = 0; index < departments.length; index++) {
+      const element = departments[index].value;
+      const q =  query(doc(db,'curriculum',course,year,element))
+      const alldocs = await getDoc(q)
+      console.log(alldocs);
+      const data = alldocs.data()
+      console.log(data);
+      for(let i=0;i<data.subjects.length;i++){
 
-export { getEnrolledCourses, enrollClasses,enrollHODClasses };
+        if(subjects[alldocs.id]){
+          subjects[alldocs.id] =[...subjects[alldocs.id],{value:data.subjects[i].subject,label:data.subjects[i].subject}]
+
+        }else{
+
+          subjects[alldocs.id]=[{value:data.subjects[i].subject,label:data.subjects[i].subject}]
+        }
+      }
+      const sectionsDoc = data['sections']
+
+      for (let index = 0; index < sectionsDoc.length; index++) {
+        const element = sectionsDoc[index];
+        if(sections[alldocs.id]){
+          sections[alldocs.id] = [...sections[alldocs.id],{value:element,label:element}]
+
+        }else
+        sections[alldocs.id] = [{value:element,label:element}]
+      }
+
+    }
+    console.log(subjects);
+    return {subjects:subjects,sections:sections}
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { getEnrolledCourses, enrollClasses,enrollHODClasses,postMarks,getMarks};

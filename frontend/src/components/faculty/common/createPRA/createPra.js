@@ -4,20 +4,25 @@ import "./createPra.css";
 import Button from "../../../global_ui/buttons/button.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { setPRA } from "../../services/facultyServices.js";
+import { useAuth } from "../../../context/AuthContext.js";
+import Dialog from '../../../global_ui/dialog/dialog';
 
 const CreatePra = () => {
+  const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
+  const [dialog,setdialog] = useState(null);
   const [inst, setInst] = useState("");
   const location = useLocation();
-
+  const {currentUser} = useAuth()
   async function handleCreate() {
     const parts = location.state.split("_");
     const sub = parts[4];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
-    await setPRA(sub, department, date, inst);
+    await setPRA(sub, department, date, inst,currentUser.email);
+    setdialog('PRA created')
   }
 
   return (
@@ -27,6 +32,9 @@ const CreatePra = () => {
       }}
     >
       <Navbar title="Create PRA" />
+      {
+                dialog && <Dialog message={dialog} onOK={()=>{navigate('/faculty/studentlist',{state:location.state},{replace:true})}}/>
+            } 
       <div className="div-container">
         <span className="text-style">Enter instructions (if any):</span>
         <textarea

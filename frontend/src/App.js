@@ -30,11 +30,7 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<LoginPage />} />
 
-            <Route
-              exact
-              path="/viewsubmissions"
-              element={<ViewSubmissions />}
-            />
+            
             <Route
               path="/student/*"
               element={
@@ -54,7 +50,11 @@ const App = () => {
                   <Routes>
                     <Route exact path="/coesearch" element={<CoeSearch />} />
                     <Route exact path="/createPra" element={<CreatePra />} />
-
+                    <Route
+              exact
+              path="/viewsubmissions"
+              element={<ViewSubmissions/>}
+            />
                     <Route exact path="/enroll" element={<LockList />} />
                     <Route path="/classlist" element={<ClassList />} />
                     <Route path="/hodclasslist" element={<HODClassList />} />

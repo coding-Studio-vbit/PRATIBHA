@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { getStudentData } from "../services/studentServices";
 import { useAuth } from "./../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import {LoadingScreen} from '../../global_ui/spinner/spinner'
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
@@ -172,16 +173,21 @@ const SubjectsList = () => {
               <tbody>
                 {data &&
                   data.map((dataitem) => (
-                    <tr key={dataitem.SUBJECT}>
+                    <tr className="single-row" onClick={() => {
+                          navigate("/student/uploadPRA", { state:
+                           {rollno :`${currentUser.email}`,
+                           subject: dataitem.SUBJECT}
+                          });
+                        }} key={dataitem.SUBJECT}>
                       <td>{dataitem.SUBJECT}</td>
                       <td>{dataitem.PRA_TOPIC}</td>
                       <td>{dataitem.STATUS}</td>
                       <td>{dataitem.SUBMIT_BEFORE}</td>
                       <td
                         onClick={() => {
-                          navigate("/student/uploadPRA", {
-                            rollno: `${currentUser.email}`,
-                            subject: dataitem.SUBJECT,
+                          navigate("/student/uploadPRA", { state:
+                           {rollno :`${currentUser.email}`,
+                           subject: dataitem.SUBJECT}
                           });
                         }}
                       >
@@ -196,7 +202,7 @@ const SubjectsList = () => {
           <div>{error}</div>
         )
       ) : (
-        <div>loading</div>
+        <div><LoadingScreen/></div>
       )}
     </div>
   );

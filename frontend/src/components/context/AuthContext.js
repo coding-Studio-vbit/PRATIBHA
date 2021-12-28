@@ -50,17 +50,17 @@ export function AuthProvider({ children }) {
     auth.onAuthStateChanged(async (user) => {
       let userType = "";
       let isFirstTime = true;
-      let isHOD=false;
+      let isHOD = false;
+      let roles = [];
+      let isCOE = false
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
             userType = "STUDENT";
-
             const docRef = doc(db, "users", user.email);
             try {
-              console.log(10);
               const docSnap = await getDoc(docRef);
-              if (docSnap.exists()) {                
+              if (docSnap.exists()) {
                 isFirstTime = false;
               }
             } catch (e) {
@@ -70,17 +70,20 @@ export function AuthProvider({ children }) {
             userType = "FACULTY";
             const docRef = doc(db, "faculty", user.email);
             try {
-              console.log(11);
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-               if(docSnap.data().isEnrolled)
-                isFirstTime = false;
-                else if(docSnap.data().role!=null){
-                  isFirstTime = true;
-                  isHOD=true;
+                console.log(docSnap.data().role);
+                roles = docSnap.data().role;
+                if(docSnap.data().isHOD){
+                  isHOD = true;
                 }
-              }else{
-                isFirstTime = true;
+                if(docSnap.data().isCOE){
+                  isCOE = true
+                  isFirstTime= false
+                }
+                if (docSnap.data().isEnrolled) {
+                  isFirstTime = false;
+                }
               } 
             } catch (e) {
               //TODO
@@ -94,8 +97,10 @@ export function AuthProvider({ children }) {
             username: user.displayName,
             phoneNumber: user.phoneNumber,
             userType: userType,
-            isFirstTime:isFirstTime,
-            isHOD:isHOD
+            isFirstTime: isFirstTime,
+            isHOD: isHOD,
+            isCOE:isCOE,
+            roles: roles,
           });
           setLoading(false);
         } else {
@@ -110,7 +115,7 @@ export function AuthProvider({ children }) {
         }
       } else {
         setCurrentUser(null);
-        sessionStorage.clear()
+        sessionStorage.clear();
         setLoading(false);
       }
     });

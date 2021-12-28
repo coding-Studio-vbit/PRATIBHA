@@ -142,7 +142,7 @@ function EnrollClasses() {
                     if(res==null){
                         console.log("Enrolled");
                         setLoading(false);
-                        setdialog("Enroll Successful")
+                        setdialog("Enrolled Successfully")
                     }
                 }else{
                     console.log("Invalid");
@@ -164,8 +164,8 @@ function EnrollClasses() {
             <div className='enrollPage'>
                 <div className='instructions'>
                     <ul>
-                        <li>Update the details in the form to enroll into classes</li>
-                        <li>Once you submit the details you cannot change</li>
+                        <li>Update the details in the form to enroll to your class.</li>
+                        <li>Once you enroll, the details cannot be changed.</li>
                     </ul>
                 </div>
                 <div className='enrollForm'>

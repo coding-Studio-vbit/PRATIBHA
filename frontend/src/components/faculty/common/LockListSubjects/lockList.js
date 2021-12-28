@@ -129,45 +129,7 @@ const LockList = () => {
     { value: "1", label: "1" },
     { value: "2", label: "2" },
   ];
-  const Departments = [
-    //fetch from db for the selected course
-    { value: "CSE", label: "Computer Science & Engineering" },
-    {
-      value: "CSM",
-      label: "CSE(Artificial Intelligence & Machine Learning)",
-    },
-    { value: "CSD", label: "CSE(Data Science)" },
-    { value: "CS", label: "CSE(Cyber Security)" },
-    { value: "CSB", label: "Computer Science & Business System" },
-    { value: "ECE", label: "Electronics & Communications Engineering" },
-    { value: "EEE", label: "Electrical & Electronics Engineering" },
-    { value: "CE", label: "Civil Engineering" },
-    { value: "ME", label: "Mechanical Engineering" },
-    { value: "IT", label: "Information Technology" },
-  ];
   
-  const Sections = [
-    //fetch from db for the selected department
-    { value: "A", label: "A" },
-    { value: "B", label: "B" },
-    { value: "C", label: "C" },
-    { value: "D", label: "D" },
-  ];
-  const Subjects = [
-    //fetch from db for the combination of the above 4 dropdowns
-    { value: "PPS", label: "PPS", link: "CSE" },
-    {
-      value: "Software Engineering",
-      label: "Software Engineering",
-      link: "CSE",
-    },
-    { value: "Compiler Design", label: "Compiler Design" },
-    {
-      value: "Engineering Mechanics",
-      label: "Engineering Mechanics",
-    },
-  ];
-
   
 
   async function enroll(list) {
@@ -190,7 +152,7 @@ const LockList = () => {
       const res = await enrollClasses(currentUser.email, list);
       if (res == null) {
         setIsLoading(false);
-        setShowDialog("Course Enrolled Successfully");
+        setShowDialog("Classes Enrolled Successfully");
         setIsSuccess(true);
       } else {
         setShowDialog(res);

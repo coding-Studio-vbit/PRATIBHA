@@ -1,21 +1,45 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
+import { getDepartments } from "../services/facultyServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
 
 export default function CoeSearch() {
-  const [Course, setCourse] = useState("");
-  const [Year, setYear] = useState("");
+  const [Course, setCourse] = useState({value:'none'});
+  const [Year, setYear] = useState({value:0});
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
+  const [subjects,setSubjects] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
+  const [departments,setDepartments] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
+  const [sections,setSections] = useState([
+    
+    { value: "loading", label: "Loading..." },
+  ]);
 
   const [showDialog, setShowDialog] = useState(null);
 
   const nav = useNavigate();
+  useEffect(()=>{
+    const getLables = async ()=>{
+      const res = await getDepartments(Course.value,Year.value)
+      if(!res) return
+       setSubjects(res.subjects)
+       setDepartments(res.departments)
+       setSections(res.sections)
+    }
+    getLables()
+  },[Course,Year])
+
 
   function handleView() {
     if (
@@ -32,15 +56,14 @@ export default function CoeSearch() {
         Section: Section.value,
         Subject: Subject.value,
       };
-      nav("/viewsubmissions", { state: passing });
+      nav("/faculty/viewsubmissions", { state: passing });
     } else {
       setShowDialog("Select all the options");
     }
   }
-
   const Courses = [
-    { value: "B.Tech", label: "B.Tech" },
-    { value: "M.Tech", label: "M.Tech" },
+    { value: "BTech", label: "BTech" },
+    { value: "MTech", label: "MTech" },
     { value: "MBA", label: "MBA" },
   ];
   const Years = [
@@ -50,48 +73,16 @@ export default function CoeSearch() {
     { value: "3", label: "3" },
     { value: "4", label: "4" },
   ];
-  const Departments = [
-    //fetch
-    { value: "CSE", label: "Computer Science & Engineering" },
-    {
-      value: "CSEAIML",
-      label: "CSE(Artificial Intelligence & Machine Learning)",
-    },
-    { value: "CSEDS", label: "CSE(Data Science)" },
-    { value: "CSECS", label: "CSE(Cyber Security)" },
-    { value: "CSBS", label: "Computer Science & Business System" },
-    { value: "ECE", label: "Electronics & Communications Engineering" },
-    { value: "EEE", label: "Electrical & Electronics Engineering" },
-    { value: "CE", label: "Civil Engineering" },
-    { value: "ME", label: "Mechanical Engineering" },
-    { value: "IT", label: "Information Technology" },
+  const MYears = [
+    //fetch from db for the selected course
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
   ];
-  const Sections = [
-    //fetch
-    { value: "A", label: "A", link: "CSE" },
-    { value: "B", label: "B", link: "CSE" },
-    { value: "C", label: "C", link: "CSE" },
-    { value: "D", label: "D", link: "CSE" },
-  ];
-  const Subjects = [
-    //fetch
-    { value: "PPS", label: "PPS", link: "CSE" },
-    {
-      value: "Software Engineering",
-      label: "Software Engineering",
-      link: "CSE",
-    },
-    { value: "Compiler Design", label: "Compiler Design", link: "CSE" },
-    {
-      value: "Engineering Mechanics",
-      label: "Engineering Mechanics",
-      link: "CE",
-    },
-  ];
+
 
   return (
     <div className="CoESearch-container">
-      <Navbar title="CoE" />
+      <Navbar title="COE" back={false} logout />
       {showDialog && (
         <Dialog
           message={showDialog}
@@ -112,44 +103,45 @@ export default function CoeSearch() {
         />
         <p className="dropdown-title">Year</p>
         <Select
-          className="select"
-          placeholder=""
-          options={Years}
-          isDisabled={!Course}
-          onChange={(selectedYear) => {
-            setYear(selectedYear);
-          }}
-        />
+              placeholder=""
+              className="select"
+              options={Course.value[0]==='M'? MYears:Years}
+              isDisabled={!Course}
+              onChange={(selectedYear) => {
+                setYear(selectedYear);
+              }}
+            />
         <p className="dropdown-title">Department</p>
         <Select
-          className="select"
-          placeholder=""
-          options={Departments}
-          isDisabled={!Year}
-          onChange={(selectedDepartment) => {
-            setDepartment(selectedDepartment);
-          }}
-        />
+              placeholder=""
+              options={departments}
+              className="select"
+              isDisabled={!Year}
+              onChange={(selectedDepartment) => {
+                setDepartment(selectedDepartment);
+                setSections((c)=>{return {...c}})
+              }}
+            />
         <p className="dropdown-title">Section</p>
         <Select
-          className="select"
-          placeholder=""
-          options={Sections}
-          isDisabled={!Department}
-          onChange={(selectedSection) => {
-            setSection(selectedSection);
-          }}
-        />
+              placeholder=""
+              options={sections[Department.value]}
+              className="select"
+              isDisabled={!Department}
+              onChange={(selectedSection) => {
+                setSection(selectedSection);
+              }}
+            />
         <p className="dropdown-title">Subject</p>
         <Select
-          placeholder=""
-          options={Subjects}
-          className="select"
-          isDisabled={!Section}
-          onChange={(selectedSubject) => {
-            setSubject(selectedSubject);
-          }}
-        />
+              placeholder=""
+              options={subjects[Department.value]}
+              className="select"
+              isDisabled={!Section}
+              onChange={(selectedSubject) => {
+                setSubject(selectedSubject);
+              }}
+            />
         <Button
           className="coe-button normal"
           icon={<i className="fas fa-search"></i>}
