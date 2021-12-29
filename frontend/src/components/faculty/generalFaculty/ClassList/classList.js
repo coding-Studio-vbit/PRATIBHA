@@ -38,8 +38,13 @@ const ClassList = () => {
   //   "1_CSE_A_Engineering Mechanics",
   // ];
 
-  function handleCard(sub) {
-    navigate("/faculty/studentlist", { state: sub });
+  function handleCard(sub){
+    if(subs.praSetSubs[sub]){
+      navigate('/faculty/studentlist',{state:sub})
+    }else{
+      navigate('/faculty/createPRA',{state:{editPRA:true,sub:sub}})
+
+    }
   }
 
   return loading ? (
@@ -69,6 +74,8 @@ const ClassList = () => {
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
+                    subText={subs.praSetSubs[item]?true:false}
+                    klass = {item}
                   />
                 );
               })}

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import Navbar from "../../../global_ui/navbar/navbar.js";
 import "./createPra.css";
 import Button from "../../../global_ui/buttons/button.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation,useNavigate } from "react-router-dom";
-import { setPRA } from "../../services/facultyServices.js";
+import { getPRA, setPRA } from "../../services/facultyServices.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import Dialog from '../../../global_ui/dialog/dialog';
 
@@ -15,9 +15,28 @@ const CreatePra = () => {
   const [dialog,setdialog] = useState(null);
   const [inst, setInst] = useState("");
   const location = useLocation();
+  
   const {currentUser} = useAuth()
+  useEffect(()=>{
+    const fetchPRA = async ()=>{
+      const parts = location.state.sub.split("_");
+    const sub = parts[4];
+    const department =
+      parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
+      const res = await getPRA(sub,department)
+      if(res.deadline2){
+      setDate(new Date(res.deadline2.seconds))
+
+      }else{
+
+        setDate(new Date(res.deadline1.seconds))
+      }
+      setInst(res.instructions)
+    }
+    fetchPRA()
+  },[])
   async function handleCreate() {
-    const parts = location.state.split("_");
+    const parts = location.state.sub.split("_");
     const sub = parts[4];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
@@ -31,7 +50,7 @@ const CreatePra = () => {
         width: "100vw",
       }}
     >
-      <Navbar title="Create PRA" />
+      <Navbar title={ location.state.editPRA?"Edit PRA": " Create PRA"} />
       {
                 dialog && <Dialog message={dialog} onOK={()=>{navigate('/faculty/studentlist',{state:location.state},{replace:true})}}/>
             } 
@@ -39,6 +58,7 @@ const CreatePra = () => {
         <span className="text-style">Enter instructions (if any):</span>
         <textarea
           rows={8}
+          value={inst}
           className="span-style"
           onChange={(e) => setInst(e.target.value)}
         ></textarea>
@@ -61,7 +81,7 @@ const CreatePra = () => {
           className="create-button normal"
           icon={<i class="fas fa-plus"></i>}
           onClick={handleCreate}
-          children={"Create"}
+          children={ location.state.editPRA?"Edit": "Create"}
         />
       </div>
     </div>

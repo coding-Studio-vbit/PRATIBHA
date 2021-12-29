@@ -3,11 +3,14 @@ import "./card.css";
 
 const Card = ({
   text,  
+  klass,
+  subText,
   onclick
 }) => {
   return (
-    <div className={`card-container`} onClick={()=>onclick(text)}>
-      {text && <p>{text}</p>}
+    <div className={`card-container`} onClick={()=>onclick(klass)}>
+      {text && <p>{text}</p>} 
+      <p style={{fontSize:'14px'}} >{subText? "PRA CREATED":''}</p>
     </div>
   );
 };

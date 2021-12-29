@@ -7,7 +7,6 @@ import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
 import { doc, getDoc, collection, query, getDocs } from "firebase/firestore";
 import { getStudentData } from "../../../student/services/studentServices";
-import { useIsomorphicLayoutEffect } from "@react-pdf-viewer/core";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -15,7 +14,7 @@ const ListofStudents = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
-  const [buttonText, setButtonText] = useState("CREATE PRA");
+  const [buttonText, setButtonText] = useState("EDIT PRA");
   const [student, setStudent] = useState(null);
   const location = useLocation();
   const { currentUser } = useAuth();
@@ -204,7 +203,7 @@ const ListofStudents = () => {
         {" "}
         <span
           onClick={() =>
-            navigate("/faculty/createPra", { state: location.state })
+            navigate("/faculty/createPra", { state: {sub:location.state,editPRA:true} })
           }
           style={{
             cursor: "pointer",
