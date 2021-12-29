@@ -250,6 +250,8 @@ select {
   color:white;
   padding: 0px;
 }
+
+
 @media screen and (max-width: 1220px) and (min-width:770px) {
 
   .details{

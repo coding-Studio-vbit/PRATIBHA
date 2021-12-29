@@ -293,7 +293,7 @@ async function getMarks(facultyID,className,studentID) {
 async function postMarks(facultyID,className,studentID,midNo,marks,remarks) {
   let error=null;
   console.log(`faculty/${facultyID}/${className}`);
-  const facultyRef = doc(db,"faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA","19p61a05i2");
+  const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
   console.log(marks);
   try {
     if(midNo==="1"){
@@ -345,7 +345,6 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
           subjects[alldocs.id] =[...subjects[alldocs.id],{value:data.subjects[i].subject,label:data.subjects[i].subject}]
 
         }else{
-
           subjects[alldocs.id]=[{value:data.subjects[i].subject,label:data.subjects[i].subject}]
         }
       }
@@ -369,4 +368,32 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
   }
 }
 
-export { getEnrolledCourses, enrollClasses,enrollHODClasses,postMarks,getMarks};
+async function getCoeDeadline() {
+  const adminRef = doc(db,"adminData","coeDeadline");
+  console.log("ABCD");
+  try {
+    console.log("PQRS");
+    const docSnap = await getDoc(adminRef);
+    if(docSnap.exists()){
+      console.log("XY");
+      return {
+        data:docSnap.data()["coeDeadline"],
+        error:null
+      }
+    }else{
+      console.log("EFGH");
+      return {
+        data:null,
+        error:"DEADLINE_NOT_SET"
+      }
+    }    
+  } catch (error) {
+    return {
+      data:null,
+      error:error
+    }
+    // console.log(error);    
+  }  
+}
+
+export { getEnrolledCourses, enrollClasses,enrollHODClasses,postMarks,getMarks,getCoeDeadline};
