@@ -8,6 +8,7 @@ import { useLocation,useNavigate } from "react-router-dom";
 import { getPRA, setPRA } from "../../services/facultyServices.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import Dialog from '../../../global_ui/dialog/dialog';
+import { Timestamp } from "firebase/firestore";
 
 const CreatePra = () => {
   const navigate = useNavigate();
@@ -18,21 +19,25 @@ const CreatePra = () => {
   
   const {currentUser} = useAuth()
   useEffect(()=>{
+    
     const fetchPRA = async ()=>{
       const parts = location.state.sub.split("_");
     const sub = parts[4];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
       const res = await getPRA(sub,department)
+      
       if(res.deadline2){
-      setDate(new Date(res.deadline2.seconds))
+        
+      setDate(new Timestamp(res.deadline2.seconds,res.deadline2.nanoseconds).toDate() )
 
       }else{
 
-        setDate(new Date(res.deadline1.seconds))
+        setDate(new Timestamp(res.deadline1.seconds,res.deadline1.nanoseconds ).toDate())
       }
       setInst(res.instructions)
     }
+    if(location.state.editPRA)
     fetchPRA()
   },[])
   async function handleCreate() {
@@ -40,7 +45,7 @@ const CreatePra = () => {
     const sub = parts[4];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
-    await setPRA(sub, department, date, inst,currentUser.email);
+    await setPRA(sub, department, date, inst,currentUser.email,currentUser.isMid1);
     setdialog('PRA created')
   }
 
@@ -79,7 +84,7 @@ const CreatePra = () => {
         </span>
         <Button
           className="create-button normal"
-          icon={<i class="fas fa-plus"></i>}
+          icon={<i className="fas fa-plus"></i>}
           onClick={handleCreate}
           children={ location.state.editPRA?"Edit": "Create"}
         />

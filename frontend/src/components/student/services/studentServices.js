@@ -1,4 +1,4 @@
-import { doc,setDoc,getDoc,query, collection, getDocs } from "firebase/firestore"; 
+import { doc,setDoc,getDoc,query, collection, getDocs, Timestamp } from "firebase/firestore"; 
 import {db} from '../../../firebase'
 
 async function checkEnrollment(email) {
@@ -43,6 +43,23 @@ async function getStudentData(email){
         return { document:null, error:e.code }
     }        
 }
+
+export const fetchisMid1 = async () => {
+    try {
+        const adminRef = doc(db, "adminData", "coeDeadline");
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let date = new Timestamp(adminDoc.data()["coeDeadline"]["seconds"],adminDoc.data()["coeDeadline"]["nanoseconds"]).toDate();
+      const currentdate = new Date()
+      if(date > currentdate){
+        return true
+      }
+      return false;
+    }
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 
 async function getCurriculumDetails(course_details) {

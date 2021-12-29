@@ -19,6 +19,7 @@ const ListofStudents = () => {
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  console.log(location.state.sub);
   const val = location.state.sub;
   const subjectval = val.split("_");
   const course =
@@ -54,7 +55,7 @@ const ListofStudents = () => {
 
   const Fetchdata = async () => {
     const studentref = query(
-      collection(db, `faculty/${currentUser.email}/${location.state}`)
+      collection(db, `faculty/${currentUser.email}/${location.state.sub}`)
       // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
 
@@ -199,11 +200,11 @@ const ListofStudents = () => {
   ];
   return (
     <div>
-      <Navbar title={location.state}>
-        {" "}
+      <Navbar backURL={'/faculty/classlist'} title={location.state.sub}>
+        
         <span
           onClick={() =>
-            navigate("/faculty/createPra", { state: {sub:location.state,editPRA:true} })
+            navigate("/faculty/createPra", { state: {sub:location.state.sub,editPRA:true} })
           }
           style={{
             cursor: "pointer",
@@ -270,7 +271,7 @@ const ListofStudents = () => {
             </div>
           </div>
           <div className="export_">
-            <ExportCSV csvData={data} fileName={location.state} />
+            <ExportCSV csvData={data} fileName={location.state.sub} />
           </div>
         </>
       )}

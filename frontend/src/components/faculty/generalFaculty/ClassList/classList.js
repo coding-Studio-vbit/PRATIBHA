@@ -40,9 +40,9 @@ const ClassList = () => {
 
   function handleCard(sub){
     if(subs.praSetSubs[sub]){
-      navigate('/faculty/studentlist',{state:sub})
+      navigate('/faculty/studentlist',{state:{sub:sub}})
     }else{
-      navigate('/faculty/createPRA',{state:{editPRA:true,sub:sub}})
+      navigate('/faculty/createPRA',{state:{sub:sub}})
 
     }
   }
@@ -71,6 +71,7 @@ const ClassList = () => {
                 }
                 return (
                   <Card
+                    key={newItem}
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
@@ -99,6 +100,7 @@ const ClassList = () => {
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
+                    key={newItem}
                   />
                 );
               })}
@@ -127,6 +129,7 @@ const ClassList = () => {
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
+                    key={newItem}
                   />
                 );
               })}

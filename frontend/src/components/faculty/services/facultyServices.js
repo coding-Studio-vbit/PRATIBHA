@@ -162,8 +162,8 @@ export const getPRA = async (sub,department)=>{
   }
 }
 
-export const setPRA = async (sub,department,date,inst,email)=>{
-  console.log(sub);
+export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
+  console.log(isMid1);
   try {
     const docRef = doc(db,'subjects',department)
     const docData = await getDoc(docRef)
@@ -171,13 +171,20 @@ export const setPRA = async (sub,department,date,inst,email)=>{
       let d1 = true
       const subjects = docData.data()['subjects']
       console.log(subjects);
+      
       for (let index = 0; index < subjects.length;index++){
         const ele = subjects[index]
         console.log(ele.subject);
         if(ele.subject === sub){
           d1 = false
           await updateDoc(docRef,{subjects:arrayRemove(ele)})
-          await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date,instructions:inst,subject:sub})})
+          if(isMid1){
+
+            await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
+          }else{
+            await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date, instructions:inst,subject:sub})})
+
+          }
           break
         }
       }
@@ -286,7 +293,7 @@ async function getMarks(facultyID,className,studentID) {
 async function postMarks(facultyID,className,studentID,midNo,marks,remarks) {
   let error=null;
   console.log(`faculty/${facultyID}/${className}`);
-  const facultyRef = doc(db,"faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA","19p61a05i2");
+  const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
   console.log(marks);
   try {
     if(midNo==="1"){
@@ -361,4 +368,32 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
   }
 }
 
-export { getEnrolledCourses, enrollClasses,enrollHODClasses,postMarks,getMarks};
+async function getCoeDeadline() {
+  const adminRef = doc(db,"adminData","coeDeadline");
+  console.log("ABCD");
+  try {
+    console.log("PQRS");
+    const docSnap = await getDoc(adminRef);
+    if(docSnap.exists()){
+      console.log("XY");
+      return {
+        data:docSnap.data()["coeDeadline"],
+        error:null
+      }
+    }else{
+      console.log("EFGH");
+      return {
+        data:null,
+        error:"DEADLINE_NOT_SET"
+      }
+    }    
+  } catch (error) {
+    return {
+      data:null,
+      error:error
+    }
+    // console.log(error);    
+  }  
+}
+
+export { getEnrolledCourses, enrollClasses,enrollHODClasses,postMarks,getMarks,getCoeDeadline};
