@@ -19,7 +19,7 @@ const ListofStudents = () => {
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
-  const val = location.state;
+  const val = location.state.sub;
   const subjectval = val.split("_");
   const course =
     subjectval[0] +
