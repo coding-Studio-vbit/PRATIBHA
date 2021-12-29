@@ -1,24 +1,25 @@
 import * as React from "react";
-// import { Viewer } from "@react-pdf-viewer/core";
 import "./grading.css";
-// import Button from "../../global_ui/buttons/button";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-// import { Worker } from "@react-pdf-viewer/core";
 import Docviewer from "./docviewer";
-// import Dialog from "../../global_ui/dialog/dialog";
-// import { doc, collection, getDoc, query, getDocs } from "firebase/firestore";
-// import { getUploadedFile } from "../../student/services/storageServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect} from "react";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
-
 import { getMarks,postMarks } from "../services/facultyServices";
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
+import { db } from "../../../firebase";
 
 const Grading = () => {
-   let location = useLocation();
+  //  let location = useLocation();
+  let location = {
+    state:{
+      path:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",
+      className:"BTech_1_CSB_A_Mathematics1"
+    }
+  }
+
    const {currentUser} = useAuth();
    let navigate =useNavigate();
 
@@ -39,16 +40,7 @@ const Grading = () => {
    const [preparation2 , setPreparation2] = React.useState()
    const [presentation2 , setPresentation2] = React.useState();
 
-
-   const [loading, setLoading] = React.useState(false); 
-   const [marksError,setMarksError] = React.useState(" ");
-  //  const navigate = useNavigate()
-    //  const Fetchdata = async () => {
-    //   const studentref = query(
-    //     collection(db, `faculty/cse@vbithyd.ac.in/2_CSE_D_DAA/`)
-    //   );
-    //  }
-    const [remarks, setRemarks] = useState();
+   const [remarks, setRemarks] = useState();
 
   async function updateMarks(){
     let marks={};
@@ -75,42 +67,22 @@ const Grading = () => {
     }
   }
 
+  const [userDetails, setUserDetails] = useState('')
+
   async function searchRoll() {
     console.log("Calling");
-    // const res = await getMarks();
-    // if(res.error==null){
-    //   //use Roll Number
-    //   //use Mid Value
-    //   //use 
-    // } else{
-
-    // }   
+    let value= setRollNo;
+    
+    db.collection('users').doc(value).get()
+        .then(snapshot => setUserDetails(snapshot.data()))  
   }
 
     const [midNo,setMid] = React.useState("1");
-    const [fileError,setFileError] = React.useState(null);
     const [url, setUrl] = React.useState(null);
+    
 
-    async function handleMidSelect(val) {
-      setMid(val);
-      // setLoading(true);
-      // const res = await getUploadedFileByPath(
-      //   "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
-      //   //location.state.path
-      // );
-      // console.log(res);
-      // // const midMarks = await getMarks();
-      // if(res.error==null){
-      //   setUrl(res.url);        
-      // }
-      // else{
-      //   setFileError(res.error);
-      //   setUrl(null);
-      // }
-      // // check the above condition with midMarks
-      // // make http request
-      // setLoading(false)          
-    }
+    
+   
 
 
     const [setDialog, setSetDialog] = useState();
@@ -118,17 +90,21 @@ const Grading = () => {
     async function getUserData() {
       setPageLoading(true);                
 
+      console.log("getting marks");
       const response = await getMarks(
-        'cse@vbithyd.ac.in','BTech_2_CSE_D_DAA','19p61a05i2'
+        "vsridharreddy@vbithyd.ac.in",location.state.className,rollNo
+
         // currentUser.email,location.state.className,rollNo
       );
-      console.log(response);
-      if(response.error==null){
-          setIndividuality1(response.data["mid1"]["Individuality1"]);
-          setIndividuality2(response.data["mid2"]["Individuality2"]);
 
-          setInnovation1(response.data["mid1"]["Innovation1"]);
-          setInnovation2(response.data["mid2"]["Innovation2"]);
+      console.log("got marks");
+
+      if(response.error==null){
+           setIndividuality1(response.data["mid1"]["Individuality1"]);
+           setIndividuality2(response.data["mid2"]["Individuality2"]);
+
+           setInnovation1(response.data["mid1"]["Innovation1"]);
+           setInnovation2(response.data["mid2"]["Innovation2"]);
 
           setPreparation1(response.data["mid1"]["Preparation1"]);
           setPreparation2(response.data["mid2"]["Preparation2"]);
@@ -139,12 +115,16 @@ const Grading = () => {
           setSubRel1(response.data["mid1"]["Subject_Relevance1"]);
           setSubRel2(response.data["mid2"]["Subject_Relevance2"]);
       }
-        const res = await getUploadedFileByPath(
-          "BTech/3/CSE/D/Computer Networks/1/18p61a0513"
-          //location.state.path
-          );
+
+      console.log("getting file");     
+
+      const res = await getUploadedFileByPath(
+        location.state.path
+      );
+      
+      console.log("got file");
+
       if(res.error==null){
-        //console.log(res.url);
         setUrl(res.url);     
       }
       else{
@@ -154,12 +134,14 @@ const Grading = () => {
       if(res.error!=null && response.error!=null){
         console.log(res.error,response.error);
         setPageLoadError("Error in Fetching details");
-      }
+      }       
     }
 
-    useEffect(() => {        
-      getUserData()  
-    },[])
+    const [val, setVal] = useState();
+
+  useEffect(() => {        
+    getUserData()  
+  },[])
 
   return (!pageLoading)? (         
     pageLoadError==null?
@@ -209,31 +191,61 @@ const Grading = () => {
         <div className="mid1">
             <div>
                 <span>Innovation:(2M)</span>
-                <input  className="inputStyle"  type="text" maxLength={1} 
-                value={innovation1} onChange={(e)=>{setInnovation1(e.target.value)}}
-                ></input>
+                <input  className="inputStyle" type="number" maxLength={1} 
+                value={innovation1} onChange={(e)=>{
+                  if(e.target.value<3 && e.target.value>-1){
+                    setInnovation1(e.target.value)
+                  }else{
+                    setInnovation1(2)
+                  }
+                }}
+                />
             </div>
             <div>
                 <span>Subject Relevance:(2M)</span>
-                <input  className="inputStyle"  type="text" maxLength={1} 
-                  value={subRel1} onChange={(e)=>setSubRel1(e.target.value)}
+                <input  className="inputStyle"  type="number" maxLength={1} 
+                  value={subRel1} onChange={(e)=>{
+                    if(e.target.value<3 && e.target.value>-1){
+                      setSubRel1(e.target.value)
+                    }else{
+                      setSubRel1(2)
+                    }
+                  }}
                 />
             </div>
           <div>
               <span>Individuality:(2M)</span>
-              <input  className="inputStyle"  type="text" maxLength={1} 
-              value={individuality1} onChange={(e)=>setIndividuality1(e.target.value)}/>
+              <input  className="inputStyle" type="number" maxLength={1} 
+              value={individuality1} onChange={(e)=>{
+                if(e.target.value<3 && e.target.value>-1){
+                  setIndividuality1(e.target.value)
+                }else{
+                  setIndividuality1(2)
+                }
+              }}/>
           </div>
           <div>
               <span>Preparation:(2M)</span>
-              <input  className="inputStyle"  type="text" maxLength={1}  
-              value={preparation1} onChange={(e)=>setPreparation1(e.target.value)}
+              <input  className="inputStyle" type="number" maxLength={1}  
+              value={preparation1} onChange={(e)=>{
+                if(e.target.value<3 && e.target.value>-1){
+                  setPreparation1(e.target.value)
+                }else{
+                  setPreparation1(2)
+                }
+              }}
               />
           </div>
           <div>
               <span>Presentation:(2M)</span>
-              <input className="inputStyle"  type="text" maxLength={1}  
-                value={presentation1} onChange={(e)=>setPresentation1(e.target.value)}
+              <input className="inputStyle"  type="number" maxLength={1}  
+                value={presentation1} onChange={(e)=>{
+                  if(e.target.value<3 && e.target.value>-1){
+                    setPresentation1(e.target.value)
+                  }else{
+                    setPresentation1(2)
+                  }
+                }}
               />
           </div>          
           <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
@@ -249,46 +261,66 @@ const Grading = () => {
         {
           midNo==="2" &&        
           <div className="mid2">
-              <div>
+              <div>               
                 <span>Innovation:(2M)</span>
-                <input className="inputStyle"  type="text" maxLength={1} 
-                  value={innovation2} onChange={
-                    (e)=>{
+                <input className="inputStyle" type="number" maxLength={1} 
+                  value={innovation2} onChange={(e)=>{
+                    if(e.target.value<3 && e.target.value>-1){
                       setInnovation2(e.target.value)
+                    }else{
+                      setInnovation2(2)
                     }
-                  }
+                  }}
                 />
               </div>
 
               <div>
                 <span>Subject Relevance:(2M)</span>
-                <input className="inputStyle"  type="text" maxLength={1} 
-                  value={subRel2} onChange={(e)=>setSubRel2(e.target.value)}/>
+                <input className="inputStyle"  type="number" maxLength={1} 
+                  value={subRel2} onChange={(e)=>{
+                    if(e.target.value<3 && e.target.value>-1){
+                      setSubRel2(e.target.value)
+                    }else{
+                      setSubRel2(2)
+                    }
+                  }}/>
               </div>
 
               <div>
                 <span>Individuality:(2M)</span>
-                <input className="inputStyle"  type="text" maxLength={1} 
-                  value={individuality2} onChange={(e)=>setIndividuality2(e.target.value)}
+                <input className="inputStyle"  type="number" maxLength={1} 
+                  value={individuality2} onChange={(e)=>{
+                    if(e.target.value<3 && e.target.value>-1){
+                      setIndividuality2(e.target.value)
+                    }else{
+                      setIndividuality2(2)
+                    }
+                  }}
                 />
               </div>
 
               <div>
                 <span>Preparation:(2M)</span>
-                <input className="inputStyle"  type="text" maxLength={1} 
-                  value={preparation2} onChange={(e)=>setPreparation2(e.target.value)}/>
+                <input className="inputStyle"  type="number" maxLength={1} 
+                  value={preparation2} onChange={(e)=>{
+                    if(e.target.value<3 && e.target.value>-1){
+                      setPreparation2(e.target.value)
+                    }else{
+                      setPreparation2(2)
+                    }
+                  }}/>
               </div>
 
               <div>
                 <span>Presentation:(2M)</span>
-                <input
-                  style={{
-                    width: "24px",
-                    borderRadius: "10px",
-                    textAlign: "center",
-                  }}
-                  type="text"
-                  maxLength={1} value={presentation2} onChange={(e)=>setPresentation2(e.target.value)}/>
+                <input className="inputStyle"  type="number" maxLength={1}
+                  value={presentation2} onChange={(e)=>{
+                    if(e.target.value<3 && e.target.value>-1){
+                      setPresentation2(e.target.value)
+                    }else{
+                      setPresentation2(2)
+                    }
+                  }}/>
               </div>
 
               <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
@@ -334,7 +366,7 @@ const Grading = () => {
                     }}
                     value={midNo}
                     onChange={
-                      (e)=>handleMidSelect(e.target.value)
+                      (e)=>setMid(e.target.value)
                     }
                     name="selectList"
                     id="selectList">
@@ -345,9 +377,15 @@ const Grading = () => {
 
               <div className="display">
                 {
+                  (midNo==="1") &&                   
+                    url!==null?
+                    <Docviewer extension="pdf" object={url}/>:" "
+                }
+                {
+                  (midNo==="2") &&                   
                   url!==null?
-                  <Docviewer extension="pdf" object={url}/>:"File Not Submitted"
-                }   
+                  <Docviewer extension="pptx" object={url}/>:" "
+                }                   
               </div>
 
               <div className="remarksCon">
