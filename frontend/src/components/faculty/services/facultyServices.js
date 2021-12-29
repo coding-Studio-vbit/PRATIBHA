@@ -162,8 +162,8 @@ export const getPRA = async (sub,department)=>{
   }
 }
 
-export const setPRA = async (sub,department,date,inst,email)=>{
-  console.log(sub);
+export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
+  console.log(isMid1);
   try {
     const docRef = doc(db,'subjects',department)
     const docData = await getDoc(docRef)
@@ -171,13 +171,20 @@ export const setPRA = async (sub,department,date,inst,email)=>{
       let d1 = true
       const subjects = docData.data()['subjects']
       console.log(subjects);
+      
       for (let index = 0; index < subjects.length;index++){
         const ele = subjects[index]
         console.log(ele.subject);
         if(ele.subject === sub){
           d1 = false
           await updateDoc(docRef,{subjects:arrayRemove(ele)})
-          await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date,instructions:inst,subject:sub})})
+          if(isMid1){
+
+            await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
+          }else{
+            await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date, instructions:inst,subject:sub})})
+
+          }
           break
         }
       }
