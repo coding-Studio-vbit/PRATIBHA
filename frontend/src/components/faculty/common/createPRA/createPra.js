@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import Navbar from "../../../global_ui/navbar/navbar.js";
 import "./createPra.css";
 import Button from "../../../global_ui/buttons/button.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation,useNavigate } from "react-router-dom";
-import { setPRA } from "../../services/facultyServices.js";
+import { getPRA, setPRA } from "../../services/facultyServices.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import Dialog from '../../../global_ui/dialog/dialog';
+import { Timestamp } from "firebase/firestore";
 
 const CreatePra = () => {
   const navigate = useNavigate();
@@ -15,13 +16,36 @@ const CreatePra = () => {
   const [dialog,setdialog] = useState(null);
   const [inst, setInst] = useState("");
   const location = useLocation();
+  
   const {currentUser} = useAuth()
-  async function handleCreate() {
-    const parts = location.state.split("_");
+  useEffect(()=>{
+    
+    const fetchPRA = async ()=>{
+      const parts = location.state.sub.split("_");
     const sub = parts[4];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
-    await setPRA(sub, department, date, inst,currentUser.email);
+      const res = await getPRA(sub,department)
+      
+      if(res.deadline2){
+        
+      setDate(new Timestamp(res.deadline2.seconds,res.deadline2.nanoseconds).toDate() )
+
+      }else{
+
+        setDate(new Timestamp(res.deadline1.seconds,res.deadline1.nanoseconds ).toDate())
+      }
+      setInst(res.instructions)
+    }
+    if(location.state.editPRA)
+    fetchPRA()
+  },[])
+  async function handleCreate() {
+    const parts = location.state.sub.split("_");
+    const sub = parts[4];
+    const department =
+      parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
+    await setPRA(sub, department, date, inst,currentUser.email,currentUser.isMid1);
     setdialog('PRA created')
   }
 
@@ -31,7 +55,7 @@ const CreatePra = () => {
         width: "100vw",
       }}
     >
-      <Navbar title="Create PRA" />
+      <Navbar title={ location.state.editPRA?"Edit PRA": " Create PRA"} />
       {
                 dialog && <Dialog message={dialog} onOK={()=>{navigate('/faculty/studentlist',{state:location.state},{replace:true})}}/>
             } 
@@ -39,6 +63,7 @@ const CreatePra = () => {
         <span className="text-style">Enter instructions (if any):</span>
         <textarea
           rows={8}
+          value={inst}
           className="span-style"
           onChange={(e) => setInst(e.target.value)}
         ></textarea>
@@ -59,9 +84,9 @@ const CreatePra = () => {
         </span>
         <Button
           className="create-button normal"
-          icon={<i class="fas fa-plus"></i>}
+          icon={<i className="fas fa-plus"></i>}
           onClick={handleCreate}
-          children={"Create"}
+          children={ location.state.editPRA?"Edit": "Create"}
         />
       </div>
     </div>

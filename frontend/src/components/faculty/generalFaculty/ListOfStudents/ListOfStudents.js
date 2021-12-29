@@ -7,7 +7,6 @@ import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
 import { doc, getDoc, collection, query, getDocs } from "firebase/firestore";
 import { getStudentData } from "../../../student/services/studentServices";
-import { useIsomorphicLayoutEffect } from "@react-pdf-viewer/core";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -15,12 +14,13 @@ const ListofStudents = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
-  const [buttonText, setButtonText] = useState("CREATE PRA");
+  const [buttonText, setButtonText] = useState("EDIT PRA");
   const [student, setStudent] = useState(null);
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
-  const val = location.state;
+  console.log(location.state.sub);
+  const val = location.state.sub;
   const subjectval = val.split("_");
   const course =
     subjectval[0] +
@@ -55,7 +55,7 @@ const ListofStudents = () => {
 
   const Fetchdata = async () => {
     const studentref = query(
-      collection(db, `faculty/${currentUser.email}/${location.state}`)
+      collection(db, `faculty/${currentUser.email}/${location.state.sub}`)
       // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
 
@@ -200,11 +200,11 @@ const ListofStudents = () => {
   ];
   return (
     <div>
-      <Navbar title={location.state}>
-        {" "}
+      <Navbar backURL={'/faculty/classlist'} title={location.state.sub}>
+        
         <span
           onClick={() =>
-            navigate("/faculty/createPra", { state: location.state })
+            navigate("/faculty/createPra", { state: {sub:location.state.sub,editPRA:true} })
           }
           style={{
             cursor: "pointer",
@@ -271,7 +271,7 @@ const ListofStudents = () => {
             </div>
           </div>
           <div className="export_">
-            <ExportCSV csvData={data} fileName={location.state} />
+            <ExportCSV csvData={data} fileName={location.state.sub} />
           </div>
         </>
       )}

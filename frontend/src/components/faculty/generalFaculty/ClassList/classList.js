@@ -9,26 +9,23 @@ import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 
 const ClassList = () => {
   const location = useLocation();
-  const {currentUser} = useAuth()
-  const [subs,setSubs] = useState()
-  const [loading,setLoading] = useState(true)
-  const navigate = useNavigate()
-  useEffect(()=>{
-    const fetchSubjects = async ()=>{
-
-     const res = await getSubjects(currentUser.email)
-     console.log(res);
-      if(res === -1){
+  const { currentUser } = useAuth();
+  const [subs, setSubs] = useState();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      const res = await getSubjects(currentUser.email);
+      console.log(res);
+      if (res === -1) {
         //display error
-      }else{
-        setSubs(res)
-        setLoading(false)
-
+      } else {
+        setSubs(res);
+        setLoading(false);
       }
-    }
-    fetchSubjects()
-
-  },[])
+    };
+    fetchSubjects();
+  }, []);
 
   // const BTechClasses = [
   //   "2_CSM_B_Software Engineering",
@@ -42,10 +39,17 @@ const ClassList = () => {
   // ];
 
   function handleCard(sub){
-      navigate('/faculty/studentlist',{state:sub})
+    if(subs.praSetSubs[sub]){
+      navigate('/faculty/studentlist',{state:{sub:sub}})
+    }else{
+      navigate('/faculty/createPRA',{state:{sub:sub}})
+
+    }
   }
 
-  return loading? <LoadingScreen/>: (
+  return loading ? (
+    <LoadingScreen />
+  ) : (
     <div
       style={{
         width: "100vw",
@@ -59,17 +63,20 @@ const ClassList = () => {
             <div className="card-flex">
               {subs.btechSubs.map((item) => {
                 var displayItem = item.split("_");
-                 displayItem.splice(0, 1);
-                 let newItem = displayItem[0];
-                 let len = displayItem.length;
-                 for (let i = 1; i < len; i++) {
-                   newItem = newItem + "_" + displayItem[i];
-                 }
+                displayItem.splice(0, 1);
+                let newItem = displayItem[0];
+                let len = displayItem.length;
+                for (let i = 1; i < len; i++) {
+                  newItem = newItem + "_" + displayItem[i];
+                }
                 return (
                   <Card
+                    key={newItem}
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
+                    subText={subs.praSetSubs[item]?true:false}
+                    klass = {item}
                   />
                 );
               })}
@@ -82,17 +89,18 @@ const ClassList = () => {
             <div className="card-flex">
               {subs.mtechSubs.map((item) => {
                 var displayItem = item.split("_");
-                 displayItem.splice(0, 1);
-                 let newItem = displayItem[0];
-                 let len = displayItem.length;
-                 for (let i = 1; i < len; i++) {
-                   newItem = newItem + "_" + displayItem[i];
-                 }
+                displayItem.splice(0, 1);
+                let newItem = displayItem[0];
+                let len = displayItem.length;
+                for (let i = 1; i < len; i++) {
+                  newItem = newItem + "_" + displayItem[i];
+                }
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
+                    key={newItem}
                   />
                 );
               })}
@@ -105,23 +113,23 @@ const ClassList = () => {
             <div className="card-flex">
               {subs.mbaSubs.map((item) => {
                 var displayItem = item.split("_");
-                 displayItem.splice(0, 1);
-                 let newItem = displayItem[0];
-                 let len = displayItem.length;
-                 if(displayItem[0]=='1')
-                   newItem = newItem + "_" + displayItem[2]+'_'+displayItem[3]
-                   else{
-
-                   for (let i = 1; i < len; i++) {
-                   newItem = newItem + "_" + displayItem[i];
-                 }
-                 
-                   }
+                displayItem.splice(0, 1);
+                let newItem = displayItem[0];
+                let len = displayItem.length;
+                if (displayItem[0] == "1")
+                  newItem =
+                    newItem + "_" + displayItem[2] + "_" + displayItem[3];
+                else {
+                  for (let i = 1; i < len; i++) {
+                    newItem = newItem + "_" + displayItem[i];
+                  }
+                }
                 return (
                   <Card
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
+                    key={newItem}
                   />
                 );
               })}

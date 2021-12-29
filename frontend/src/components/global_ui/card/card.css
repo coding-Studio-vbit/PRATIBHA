@@ -2,6 +2,7 @@
     height: 100px;
     width: 220px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;

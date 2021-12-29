@@ -3,6 +3,7 @@ import { auth, db } from "../../firebase";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import { fetchisMid1 } from "../student/services/studentServices";
 
 const AuthContext = React.createContext();
 
@@ -52,9 +53,13 @@ export function AuthProvider({ children }) {
       let isFirstTime = true;
       let isHOD = false;
       let roles = [];
+      let isFirstYearHOD = false
       let isCOE = false
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
+          const isMid1 = await fetchisMid1()
+
+
           if (checkStudent(user.email.split("@")[0])) {
             userType = "STUDENT";
             const docRef = doc(db, "users", user.email);
@@ -72,8 +77,12 @@ export function AuthProvider({ children }) {
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-                console.log(docSnap.data().role);
-                roles = docSnap.data().role;
+                roles = docSnap.data().role?docSnap.data().role:[];
+                console.log(docSnap.data());
+                if(docSnap.data().isFirstYearHOD){
+                  isFirstYearHOD = true
+                  console.log(docSnap.data().isFirstYearHOD);
+                }
                 if(docSnap.data().isHOD){
                   isHOD = true;
                 }
@@ -100,7 +109,9 @@ export function AuthProvider({ children }) {
             isFirstTime: isFirstTime,
             isHOD: isHOD,
             isCOE:isCOE,
+            isFirstYearHOD:isFirstYearHOD,
             roles: roles,
+            isMid1:isMid1
           });
           setLoading(false);
         } else {

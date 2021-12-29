@@ -71,7 +71,7 @@ async function enrollClasses(email, enrolled_classes) {
 }
 
 export const getDepartments = async (course,year)=>{
-  console.log(year);
+  console.log(course,year);
   if(year===0) return
   try {
     const q =  query(collection(db,'curriculum',course,year))
@@ -139,7 +139,31 @@ export const getDepartments = async (course,year)=>{
   }
 }
 
-export const setPRA = async (sub,department,date,inst,email)=>{
+export const getPRA = async (sub,department)=>{
+  try {
+    const docRef = doc(db,'subjects',department)
+    const docData = await getDoc(docRef)
+    const subjects = docData.data()['subjects']
+    console.log(subjects);
+    console.log(sub);
+    let res = {}
+    subjects.forEach((v)=>{
+      console.log(v.subject);
+      if(sub === v.subject){
+        console.log(v);
+        res = v
+        return
+      }
+
+    })
+    return res
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
+  console.log(isMid1);
   try {
     const docRef = doc(db,'subjects',department)
     const docData = await getDoc(docRef)
@@ -147,13 +171,20 @@ export const setPRA = async (sub,department,date,inst,email)=>{
       let d1 = true
       const subjects = docData.data()['subjects']
       console.log(subjects);
+      
       for (let index = 0; index < subjects.length;index++){
         const ele = subjects[index]
         console.log(ele.subject);
         if(ele.subject === sub){
           d1 = false
           await updateDoc(docRef,{subjects:arrayRemove(ele)})
-          await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date,instructions:inst,subject:sub})})
+          if(isMid1){
+
+            await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
+          }else{
+            await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date, instructions:inst,subject:sub})})
+
+          }
           break
         }
       }
@@ -177,9 +208,29 @@ export const getSubjects = async (email) => {
     let btechSubs = [];
     let mtechSubs = [];
     let mbaSubs = [];
+    let praSetSubs = {}
     for (let index = 0; index < data.length; index++) {
       const sub = data[index];
-      const klass = sub.split("_", 1)[0];
+      console.log(sub);
+      const parts = sub.split('_')
+      const idk = parts[0]+'_'+parts[1]+'_'+parts[2]+'_'+parts[3]
+      console.log(idk);
+      const subRef = await getDoc(doc(db, "subjects", idk));
+      if(subRef.exists()){
+
+        const subsData = subRef.data()['subjects']
+        console.log(subsData);
+        for(let i=0;i<subsData.length;i++){
+          if(parts[4]===subsData[i].subject){
+            praSetSubs[sub] = (subsData[i].subject)
+          }
+
+        }
+
+      }
+      
+      
+      const klass = parts[0];
       console.log(klass);
       if (klass === "BTech") {
         btechSubs.push(sub);
@@ -189,8 +240,10 @@ export const getSubjects = async (email) => {
         mbaSubs.push(sub);
       }
     }
-    return {btechSubs:btechSubs,mtechSubs:mtechSubs,mbaSubs:mbaSubs}
+    console.log(praSetSubs);
+    return {praSetSubs:praSetSubs, btechSubs:btechSubs,mtechSubs:mtechSubs,mbaSubs:mbaSubs}
   } catch (error) {
+    console.log(error);
     return -1;
   }
 };

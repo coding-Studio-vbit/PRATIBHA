@@ -60,6 +60,7 @@ const LockList = () => {
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
+    
     console.log(Course.value);
     if (Course.value === "BTech") {
       const newBTech =
@@ -103,7 +104,11 @@ const LockList = () => {
       else {
         setShowDialog("Class already added");
       }
+      
     }
+    setDepartments([{value:'Loading',label:'Loading'}])
+    setSections([{value:'Loading',label:'Loading'}])
+    setSubjects([{value:'Loading',label:'Loading'}])
   };
 
   //handle remove
@@ -206,7 +211,7 @@ const LockList = () => {
                 placeholder=""
                 options={departments}
                 className="select"
-                isDisabled={!Year}
+                isDisabled={Year.value===0}
                 onChange={(selectedDepartment) => {
                   setDepartment(selectedDepartment);
                   setSections((c) => {
