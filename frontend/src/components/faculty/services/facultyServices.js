@@ -71,7 +71,7 @@ async function enrollClasses(email, enrolled_classes) {
 }
 
 export const getDepartments = async (course,year)=>{
-  console.log(year);
+  console.log(course,year);
   if(year===0) return
   try {
     const q =  query(collection(db,'curriculum',course,year))

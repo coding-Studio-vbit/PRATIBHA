@@ -68,6 +68,7 @@ const HODClassList = () => {
       { value: "M.TECH", label: "M.Tech" },
       { value: "MBA", label: "MBA" }
     ];
+    
     const Years = [
         { value: "1", label: "1" },
         { value: "2", label: "2" },
@@ -184,7 +185,7 @@ const HODClassList = () => {
         <Select
               placeholder=""
               className="year"
-              options={Course.value[0]==='M'?MYears: Years}
+              options={Course.value[0]==='M'?MYears: (currentUser.isFirstYearHOD)?[Years[0]]:[Years[1],Years[2],Years[3]]}
               isDisabled={!Course}
               onChange={ async (selectedYear)  => {
                 setYear(selectedYear);
