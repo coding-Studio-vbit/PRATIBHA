@@ -28,9 +28,8 @@ const App = () => {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route exact path="/" element={<LoginPage />} />
-
-            
+            <Route exact path="/dummy" element={<Grading/>} />            
+            <Route exact path="/" element={<LoginPage />} />            
             <Route
               path="/student/*"
               element={
@@ -51,10 +50,10 @@ const App = () => {
                     <Route exact path="/coesearch" element={<CoeSearch />} />
                     <Route exact path="/createPra" element={<CreatePra />} />
                     <Route
-              exact
-              path="/viewsubmissions"
-              element={<ViewSubmissions/>}
-            />
+                      exact
+                      path="/viewsubmissions"
+                      element={<ViewSubmissions/>}
+                    />
                     <Route exact path="/enroll" element={<LockList />} />
                     <Route path="/classlist" element={<ClassList />} />
                     <Route path="/hodclasslist" element={<HODClassList />} />

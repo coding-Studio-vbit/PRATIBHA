@@ -338,7 +338,6 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
           subjects[alldocs.id] =[...subjects[alldocs.id],{value:data.subjects[i].subject,label:data.subjects[i].subject}]
 
         }else{
-
           subjects[alldocs.id]=[{value:data.subjects[i].subject,label:data.subjects[i].subject}]
         }
       }
