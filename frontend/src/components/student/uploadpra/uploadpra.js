@@ -236,7 +236,7 @@ const Upload = () => {
     <div>
       {pageLoadError === null ? (
         <div>
-          <Navbar title={location.state.subject} backURL={'/student/subjectslist'}></Navbar>
+          <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={true}></Navbar>
           {showDialog && (
             <Dialog message={"Upload Successful"} onOK={dialogClose} />
           )}
@@ -248,9 +248,9 @@ const Upload = () => {
                 value={mid}
                 onChange={(e) => handleSelect(e.target.value)}
               >
-                <option value="SELECT_MID">Select MID</option> 
-                <option value="1">MID-I</option> 
-                <option value="2">MID-II</option>
+                <option className="option" value="SELECT_MID">Select MID</option> 
+                <option className="option" value="1">MID-1</option> 
+                <option className="option" value="2">MID-2</option>
               </select>
               {selectError && (
                 <p className={styles.errorField}>{selectError}</p>
@@ -266,12 +266,14 @@ const Upload = () => {
                   <Spinner radius={2} />
                 </div>
               ) : existingFile != null && editPRA !== true ? (
-                <div>
-                  <p>Title : {praTitle}</p>
-                 
+                <div className={styles.editflex}>
+                {deadLineInfo != null && <p className={styles.instructions}>Instructions : {deadLineInfo.instructions}</p>}
+                  <p className={styles.pratitle}>Title : {praTitle}</p>
+                  <p className={styles.fileName}>{fileName}</p>
                   <button
                     onClick={() => seteditPRA(true)}
-                    className={styles.btn}
+                    className={styles.editbutton}
+                    
                   >
                     Edit PRA
                   </button>
@@ -288,22 +290,23 @@ const Upload = () => {
 {mid==1 ? (
 
                   <div>
-                    <p className={styles.praLabel}>PRA Title</p>
+                    <label className={styles.praLabel}>PRA Title : </label>
                     <input
+                  
                       type="text"
                       placeholder="TITLE OF THE ACTIVITY"
-                      className={styles.inputStyle}
+                      className={styles.UploadinputStyle}
                       value={praTitle}
                       onChange={(e) => handleTitle(e.target.value)}
                       maxLength={50}
                     />
                     <p className={styles.errorField}>{titleError}</p>
                   </div>
-):( <p>Title : {praTitle}</p>)}
+):( <p className={styles.pratitle}>Title : {praTitle}</p>)}
                   {deadLineInfo != null && (
                     <div>
                       {new Date() < deadLineInfo.lastDate.toDate() && (
-                        <div>
+                        <div className={styles.customflex}>
                           <div
                             className={styles.fileContainer}
                             style={{ marginBottom: "30px" }}
@@ -317,6 +320,7 @@ const Upload = () => {
                                 />
                               ) : (
                                 <input type="file" onChange={onChange} />
+                                
                               )}
                               {fileName.length > 0 ? "Change File" : "Add File"}
                             </label>
@@ -330,15 +334,14 @@ const Upload = () => {
                             )}
                           </div>
                           <Button
-                            className={{
-                              width: "20ch",
-                              alignSelf: "center",
-                              marginTop: "20px",
-                            }}
+                            className={
+                             styles.uploadbutton
+                            }
                             onClick={() => {
                               submit();
                             }}
                           >
+                          <i className="fas fa-upload"></i>
                             Upload
                           </Button>
                         </div>
