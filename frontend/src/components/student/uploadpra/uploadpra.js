@@ -196,6 +196,8 @@ const Upload = () => {
     navigate("/student/subjectslist");
   }
 
+  
+
   async function getUserData() {
     setPageLoad(true);
     // console.log("Getting User Data");
@@ -283,6 +285,7 @@ const Upload = () => {
                   >
                     {deadLineInfo != null && <p>Instructions : {deadLineInfo.instructions}</p>}
                   </div>
+{mid==1 ? (
 
                   <div>
                     <p className={styles.praLabel}>PRA Title</p>
@@ -296,6 +299,7 @@ const Upload = () => {
                     />
                     <p className={styles.errorField}>{titleError}</p>
                   </div>
+):( <p>Title : {praTitle}</p>)}
                   {deadLineInfo != null && (
                     <div>
                       {new Date() < deadLineInfo.lastDate.toDate() && (
