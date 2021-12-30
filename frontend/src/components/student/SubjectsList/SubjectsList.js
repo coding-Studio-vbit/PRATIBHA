@@ -4,7 +4,7 @@ import "../../faculty/generalFaculty/ListOfStudents/ListOfStudents.css";
 import EditIcon from "@mui/icons-material/Edit";
 import { Spinner } from "../../global_ui/spinner/spinner";
 import { db } from "../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc,Timestamp } from "firebase/firestore";
 import { getStudentData } from "../services/studentServices";
 import { useAuth } from "./../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import {LoadingScreen} from '../../global_ui/spinner/spinner'
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
+
   const location = useLocation();
   let navigate = useNavigate();
 
@@ -26,7 +27,7 @@ const SubjectsList = () => {
     const adminRef = doc(db, "adminData", "coeDeadline");
     const adminDoc = await getDoc(adminRef);
     if (adminDoc.exists()) {
-      let date = adminDoc.data()["coeDeadline"]["seconds"];
+      let date = new Timestamp(adminDoc.data()["coeDeadline"]["seconds"],adminDoc.data()["coeDeadline"]["nanoseconds"]).toDate();
       return date;
     }
   };
@@ -46,6 +47,7 @@ const SubjectsList = () => {
       setCourseTitle(course);
 
       let coedeadLine = await fetchDeadline();
+      
       await fetchsubject(document, coedeadLine, course);
     } else {
       setError(error);
@@ -54,32 +56,46 @@ const SubjectsList = () => {
   };
 
   const fetchsubject = async (document, coedeadLine, course) => {
-    let deadline, seconds, mid;
+    let deadline, date, mid;
     const subjectRef = doc(db, "subjects", course);
     await getDoc(subjectRef).then(async (subjectDoc) => {
       if (subjectDoc.exists()) {
         const res = subjectDoc.data()["subjects"];
         await res.map(async (item, index) => {
-          const seconds1 = item["deadline1"]["seconds"];
-          if (coedeadLine > seconds1) {
-            // console.log("1");
+       
+          
+          let  date1 = new Timestamp(item['deadline1'].seconds,item['deadline1'].nanoseconds).toDate();
+          console.log(date1);
+          if (coedeadLine > date1) {
+            console.log("1");
             mid = 1;
-            seconds = seconds1;
+
+            date=date1.toLocaleDateString();
           } else {
-            // console.log("2");
+          
             mid = 2;
-            seconds = item["deadline2"]["seconds"];
+            if(item["deadline2"])
+            {
+
+
+              let  date2 = new Timestamp(item['deadline2'].seconds,item['deadline2'].nanoseconds).toDate();
+               date=date2.toLocaleDateString();
+          } 
+            
+            
           }
+          
+          console.log(date);
+        // let  date = new Timestamp(deadline.seconds,deadline.nanoseconds).toDate(); 
+        //   let date = new Date(seconds * 1000);
+        //   deadline =
+        //     date.getDate().toString() +
+        //     "-" +
+        //     (date.getMonth() + 1).toString() +
+        //     "-" +
+        //     date.getFullYear().toString();
 
-          let date = new Date(seconds * 1000);
-          deadline =
-            date.getDate().toString() +
-            "-" +
-            (date.getMonth() + 1).toString() +
-            "-" +
-            date.getFullYear().toString();
-
-          await fetchusersubject(document, deadline, mid, item.subject);
+          await fetchusersubject(document, date, mid, item.subject);
         });
       } else {
         // setError("SUBJECT DOES NOT EXIST");
@@ -133,26 +149,7 @@ const SubjectsList = () => {
     fetchdata();
   }, []);
 
-  const Data = [
-    {
-      SUBJECT: "WT",
-      PRA_TOPIC: "ABCDEFGH",
-      STATUS: "Not Submitted",
-      SUBMIT_BEFORE: "30-12-21",
-    },
-    {
-      SUBJECT: "SE",
-      PRA_TOPIC: "IJKLMNOP",
-      STATUS: "Submitted for Grading",
-      SUBMIT_BEFORE: "15-12-21",
-    },
-    {
-      SUBJECT: "DAA",
-      PRA_TOPIC: "QRSTUVWX",
-      STATUS: "Graded",
-      SUBMIT_BEFORE: "3-12-21",
-    },
-  ];
+  
 
   return (
     <div>
@@ -180,8 +177,10 @@ const SubjectsList = () => {
                           });
                         }} key={dataitem.SUBJECT}>
                       <td>{dataitem.SUBJECT}</td>
+                      
                       <td>{dataitem.PRA_TOPIC}</td>
                       <td>{dataitem.STATUS}</td>
+                     
                       <td>{dataitem.SUBMIT_BEFORE}</td>
                       <td
                         onClick={() => {

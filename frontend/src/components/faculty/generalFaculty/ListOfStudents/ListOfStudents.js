@@ -112,8 +112,11 @@ const ListofStudents = () => {
                 let obj = returndata["subjects"].find(
                   (o) => o.subject === subjectval[4]
                 );
-                topic = obj.topic;
-                name = returndata.name;
+                if(obj){
+
+                  topic = obj.topic;
+                  name = returndata.name;
+                }
                 const dataobj = {
                   ROLL_NO: doc.id.toString(),
                   STUDENT_NAME: name,
@@ -224,7 +227,7 @@ const ListofStudents = () => {
         <>
           <div className="sub_body">
             <p className="bold">SUBJECT : {subjectval[4]}</p>
-            <p className="bold">Number of students enrolled: {data.length}</p>
+            <p className="bold">Number of students submitted: {data.length}</p>
             {/* <div> */}
             <table style={{ marginTop: "4.5rem" }}>
               <thead>
