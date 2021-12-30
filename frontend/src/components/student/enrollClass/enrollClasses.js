@@ -158,6 +158,11 @@ function EnrollClasses() {
 
     return (
         <div>
+{currentUser.isFirstTime ?  (
+
+
+     
+        <div>
             <Navbar back={false} title="Enrollment" logout={false}/>
             {
                 dialog && <Dialog message={dialog} onOK={()=>{navigator('/student/subjectslist',{replace:true})}}/>
@@ -289,6 +294,19 @@ function EnrollClasses() {
                     </div>                                    
                 </div>
             </div>            
+        </div>
+):(
+    <Dialog
+          message="Already Enrolled. Contact admin for making changes"
+          onOK={() => {
+            navigator(
+              "/student/subjectslist",
+              { state: currentUser },
+              { replace: true }
+            );
+          }}
+        />
+)}
         </div>
     )
 }
