@@ -187,11 +187,14 @@ const Grading = () => {
             <div style={{
                 display:'flex',
                 gap:'8px',
-                alignItems:'center'
+                alignItems:'center',
+                fontSize:'18px'
               }}>
-              <span>Roll no:</span>
+              <span>Roll No.</span>
                 <div>
-                    <input type="text" maxLength={10}  value={rollNo} onChange={(e)=>setRollNo(e.target.value)}></input>
+                    <input type="text" maxLength={10}  value={rollNo} onChange={(e)=>setRollNo(e.target.value)}
+                    className="inputField"
+                    ></input>
                     <button className="searchBtn" onClick={searchRoll} >
                         <i style={{cursor:'pointer'}} class="fa fa-search" ></i>
                     </button>
@@ -202,7 +205,8 @@ const Grading = () => {
                   display:'flex',
                   gap:8,
                   padding:'8px 8px 0px 8px',
-                }}><span>Subject:</span>
+                  fontSize:"18px"
+                }}><span>Subject </span>
               <span style={{fontWeight:'bold'}}>{subject}</span>
             </div>
 
@@ -370,7 +374,9 @@ const Grading = () => {
       </div> 
 
       <div className="right">
+
           <div className="preview" style={{ display: "grid", gridTemplateColumns: "0.3fr 0.3fr 0.3fr" }}> 
+
               <span style={{
                   marginLeft: "auto",
                   marginRight: "auto",
@@ -381,11 +387,12 @@ const Grading = () => {
               </span>
 
               <div className="dropdown" style={{
-                  alignSelf: "end",
-                  padding: "16px",
-                  justifySelf: "end",
+                alignSelf: "end",
+                padding: "16px",
+                justifySelf: "end",
                 }}>
-                  <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>                  
+                  <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>    
+
                   <select
                     style={{
                       width: "200px",
@@ -397,11 +404,13 @@ const Grading = () => {
                     onChange={
                       (e)=>setMid(e.target.value)
                     }
+                    className="selectMid"
                     name="selectList"
                     id="selectList">
-                     <option value="1">MID-I</option> 
-                    {  !currentUser.mid1 && <option value="2">MID-II</option>}                 
-                     </select>
+                     <option value="1" className="options">MID-I</option> 
+                    {  !currentUser.mid1 && <option value="2" id="options">MID-II</option>}                 
+                  </select>
+
               </div>
 
               <div className="display">

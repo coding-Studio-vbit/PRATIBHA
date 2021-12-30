@@ -1,6 +1,6 @@
 .grading {
   width: 100vw;
-  height: auto;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -10,7 +10,23 @@
   width: 24px;
   border-radius: 10px;
   text-align: center;
-  resize:none
+  outline:none;
+  background-color: #e4e4e4;
+  color: black;
+  font-size: 16px;
+  resize:none,
+}
+.inputStyle:focus{
+  box-shadow: 0 0 5px #bbe8ff;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 2px solid #bbe8ff;
+  background-color: #bbe8ff ;
+}
+
+#options *{
+  font-size: 18px;
+  background-color: red;
 }
 
 .error{
@@ -52,18 +68,7 @@
  }
 
  
-input[type=number]:focus, textarea:focus {
-  box-shadow: 0 0 5px #bbe8ff;
-  padding: 3px 0px 3px 3px;
-  margin: 5px 1px 3px 0px;
-  border: 2px solid #bbe8ff;
-  background-color: #bbe8ff ;
-}
 
-input.visited {
-  color: red;
- outline: 5px solid orange;  
-} 
 
 .mid1 {
   display: flex;
@@ -161,6 +166,12 @@ select {
   grid-area: re;
   justify-self: center;
   margin-top: auto;
+  outline: none;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 12px;
 }
 
 .remarks-title {
@@ -190,6 +201,26 @@ select {
   gap: 8px;
   flex-direction: column;
 }
+
+.selectMid{
+  width: auto;
+  outline: none;
+  border: none;
+  border-radius: 14px;
+  background-color: #e5e4e2;
+  font-size: large;
+  font-weight: 500;
+  padding: 10px;
+  
+  /* -moz-appearance:none; 
+  -webkit-appearance:none; 
+  appearance:none;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSdibGFjaycgaGVpZ2h0PScyNCcgdmlld0JveD0nMCAwIDI0IDI0JyB3aWR0aD0nMjQnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZD0nTTcgMTBsNSA1IDUtNXonLz48cGF0aCBkPSdNMCAwaDI0djI0SDB6JyBmaWxsPSdub25lJy8+PC9zdmc+); */
+  background-repeat: no-repeat;
+  background-position-x: right;
+  background-position-y: center;  
+}
+
 .footer {
   display: flex;
   justify-content: space-around;
@@ -222,10 +253,12 @@ select {
   }
   .left {
     width: auto;
+    height: auto;
     justify-content: center;
     padding: 10px;
   }
   .right {
+    height: auto;
     width: auto;
   }
   .remarksCon {
@@ -250,6 +283,17 @@ select {
   color:white;
   padding: 0px;
 }
+
+.inputField{
+  outline: none;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 6px;
+}
+
+
 
 
 @media screen and (max-width: 1220px) and (min-width:770px) {
