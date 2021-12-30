@@ -51,7 +51,7 @@ export default function LoginPage() {
     <div className="loginPage">
       {/* <button onClick={createSubCollection}>Sub Collection</button> */}
 
-      <Docviewer link="https://firebasestorage.googleapis.com/v0/b/pratibha-d4e57.appspot.com/o/BTech%2F3%2FCSE%2FD%2FComputer%20Networks%2F1%2F18p61a0513?alt=media&token=ce6fec0c-a2e6-47cf-a77a-21c2d9333d21"/>
+      {/* <Docviewer link="https://firebasestorage.googleapis.com/v0/b/pratibha-d4e57.appspot.com/o/BTech%2F3%2FCSE%2FD%2FComputer%20Networks%2F1%2F18p61a0513?alt=media&token=ce6fec0c-a2e6-47cf-a77a-21c2d9333d21"/> */}
       
       <div className="logos">
         <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
