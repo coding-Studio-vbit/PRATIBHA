@@ -10,11 +10,10 @@ import { LoadingScreen } from "../global_ui/spinner/spinner";
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
   const nav = useNavigate();
+  console.log("uui");
   useEffect(() => {
     if (currentUser) {
-      const url = sessionStorage.getItem('url')
-      if(url) nav(url,{replace:true,state:JSON.parse(localStorage.getItem('state'))})
-      else{
+      
 
       
       if (currentUser.userType === "STUDENT") {
@@ -44,7 +43,7 @@ export default function LoginPage() {
       }
     }
     
-  }
+  
   }, [currentUser, nav]);
 
   return loading === false ? (

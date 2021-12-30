@@ -4,6 +4,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { fetchisMid1 } from "../student/services/studentServices";
+import { LoadingScreen } from "../global_ui/spinner/spinner";
 
 const AuthContext = React.createContext();
 
@@ -23,7 +24,6 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     setLoading(true);
@@ -37,13 +37,10 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
-    setLoading(true);
     try {
-      await auth.signOut();
-      setCurrentUser(null);
-      setLoading(false);
+      await auth.signOut();      
     } catch (e) {
-      setLoading(false);
+      console.log(e);
     }
   }
 
@@ -138,8 +135,9 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     signOut,
   };
+  
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{ loading? <LoadingScreen/>: children}</AuthContext.Provider>;
 }
 
 // import React, { createContext, useReducer,useEffect } from "react";
