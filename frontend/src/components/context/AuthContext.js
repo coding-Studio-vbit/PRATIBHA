@@ -3,7 +3,7 @@ import { auth, db } from "../../firebase";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { fetchisMid1 } from "../student/services/studentServices";
+import { fetchisMid1, fetchisMid2 } from "../student/services/studentServices";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 
 const AuthContext = React.createContext();
@@ -55,6 +55,8 @@ export function AuthProvider({ children }) {
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           const isMid1 = await fetchisMid1()
+          const isMid2 = await fetchisMid2()
+      
 
 
           if (checkStudent(user.email.split("@")[0])) {
@@ -108,7 +110,8 @@ export function AuthProvider({ children }) {
             isCOE:isCOE,
             isFirstYearHOD:isFirstYearHOD,
             roles: roles,
-            isMid1:isMid1
+            isMid1:isMid1,
+            isMid2:isMid2
           });
           setLoading(false);
         } else {
