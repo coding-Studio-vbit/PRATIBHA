@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "../../generalFaculty/ListOfStudents/ListOfStudents.css";
 import { ExportCSV } from "../../../export/ExportCSV";
@@ -12,7 +11,6 @@ import { collection, query, getDocs } from "firebase/firestore";
 import { useAuth } from "../../../context/AuthContext";
 
 const ViewSubmissions = () => {
-  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [links, setLinks] = useState({});
   const { currentUser } = useAuth();
@@ -158,34 +156,11 @@ const ViewSubmissions = () => {
 
   useEffect(() => {
     Fetchdata();
-  }, []);
+  });
 
-  const Data = [
-    {
-      ROLL_NO: "19P6XXXXX1",
-      STUDENT_NAME: "abcdefgh",
-      TOPIC_NAME: "ABCDEFGH",
-      MID_1: "9",
-      MID_2: "10",
-    },
-    {
-      ROLL_NO: "19P6XXXXX2",
-      STUDENT_NAME: "ijklmnop",
-      TOPIC_NAME: "IJKLMNOP",
-      MID_1: "10",
-      MID_2: "9",
-    },
-    {
-      ROLL_NO: "19P6XXXXX3",
-      STUDENT_NAME: "qrstuvwx",
-      TOPIC_NAME: "QRSTUVWX",
-      MID_1: "9",
-      MID_2: "9",
-    },
-  ];
   return (
     <div>
-      <Navbar title={title} backURL={'/faculty/coesearch'} logout={true} />
+      <Navbar title={title} backURL={"/faculty/coesearch"} logout={true} />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />

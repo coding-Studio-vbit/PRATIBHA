@@ -139,7 +139,10 @@ const Grading = () => {
     setPageLoading(false);    
   }
 
-  useEffect(() => {        
+  useEffect(() => {   
+    if(currentUser.isMid1){
+      setMid("1")
+    }     
     getUserData()  
   },[])
   
@@ -156,7 +159,7 @@ const Grading = () => {
               left:'16px',
               top:'16px',
               cursor:'pointer'
-            }} className="fas fa-arrow-left"  onClick={()=>navigate('/faculty/studentlist')}>
+            }} className="fas fa-arrow-left"  onClick={()=> navigate('/faculty/studentlist')}>
         </i>
 
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
@@ -191,6 +194,7 @@ const Grading = () => {
             <div>
                 <span>Innovation:(2M)</span>
                 <input  className="inputStyle" type="number" maxLength={1} 
+                disabled={!currentUser.isMid1}
                 value={innovation1} onChange={(e)=>{
                   if(e.target.value<3 && e.target.value>-1){
                     setInnovation1(e.target.value)
@@ -203,6 +207,7 @@ const Grading = () => {
             <div>
                 <span>Subject Relevance:(2M)</span>
                 <input  className="inputStyle"  type="number" maxLength={1} 
+                  disabled={!currentUser.isMid1}
                   value={subRel1} onChange={(e)=>{
                     if(e.target.value<3 && e.target.value>-1){
                       setSubRel1(e.target.value)
@@ -215,6 +220,7 @@ const Grading = () => {
           <div>
               <span>Individuality:(2M)</span>
               <input  className="inputStyle" type="number" maxLength={1} 
+                disabled={!currentUser.isMid1}
               value={individuality1} onChange={(e)=>{
                 if(e.target.value<3 && e.target.value>-1){
                   setIndividuality1(e.target.value)
@@ -226,6 +232,7 @@ const Grading = () => {
           <div>
               <span>Preparation:(2M)</span>
               <input  className="inputStyle" type="number" maxLength={1}  
+                disabled={!currentUser.isMid1}
               value={preparation1} onChange={(e)=>{
                 if(e.target.value<3 && e.target.value>-1){
                   setPreparation1(e.target.value)
@@ -238,6 +245,7 @@ const Grading = () => {
           <div>
               <span>Presentation:(2M)</span>
               <input className="inputStyle"  type="number" maxLength={1}  
+                disabled={!currentUser.isMid1}
                 value={presentation1} onChange={(e)=>{
                   if(e.target.value<3 && e.target.value>-1){
                     setPresentation1(e.target.value)
@@ -264,6 +272,7 @@ const Grading = () => {
               <div>               
                 <span>Innovation:(2M)</span>
                 <input className="inputStyle" type="number" maxLength={1} 
+                 // disabled={!currentUser.isMid2}
                   value={innovation2} onChange={(e)=>{
                     if(e.target.value<3 && e.target.value>-1){
                       setInnovation2(e.target.value)
@@ -372,9 +381,9 @@ const Grading = () => {
                     }
                     name="selectList"
                     id="selectList">
-                    <option value="1">MID-I</option> 
-                    <option value="2">MID-II</option>
-                  </select>
+                     <option value="1">MID-I</option> 
+                    {  !currentUser.mid1 && <option value="2">MID-II</option>}                 
+                     </select>
               </div>
 
               <div className="display">
