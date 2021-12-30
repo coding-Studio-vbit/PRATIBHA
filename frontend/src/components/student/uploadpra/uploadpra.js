@@ -243,7 +243,7 @@ const Upload = () => {
           <div className={styles.main}>
             <div>
             
-                          <select
+                <select
                 className={styles.selectList}
                 value={mid}
                 onChange={(e) => handleSelect(e.target.value)}
