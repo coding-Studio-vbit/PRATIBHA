@@ -161,6 +161,9 @@ const Grading = () => {
     if (currentUser.isMid1) {
       setMid("1");
     }
+    else if(currentUser.isMid2){
+      setMid('2');
+    }
     getUserData();
   }, []);
 
@@ -349,7 +352,7 @@ const Grading = () => {
                   className="inputStyle"
                   type="number"
                   maxLength={1}
-                  // disabled={!currentUser.isMid2}
+                  disabled={!currentUser.isMid2}
                   value={innovation2}
                   onChange={(e) => {
                     if (e.target.value < 3 && e.target.value > -1) {
@@ -365,6 +368,7 @@ const Grading = () => {
                 <span>Subject Relevance:(2M)</span>
                 <input
                   className="inputStyle"
+                  disabled={!currentUser.isMid2}
                   type="number"
                   maxLength={1}
                   value={subRel2}
@@ -382,6 +386,7 @@ const Grading = () => {
                 <span>Individuality:(2M)</span>
                 <input
                   className="inputStyle"
+                  disabled={!currentUser.isMid2}
                   type="number"
                   maxLength={1}
                   value={individuality2}
@@ -399,6 +404,7 @@ const Grading = () => {
                 <span>Preparation:(2M)</span>
                 <input
                   className="inputStyle"
+                  disabled={!currentUser.isMid2}
                   type="number"
                   maxLength={1}
                   value={preparation2}
@@ -416,6 +422,7 @@ const Grading = () => {
                 <span>Presentation:(2M)</span>
                 <input
                   className="inputStyle"
+                  disabled={!currentUser.isMid2}
                   type="number"
                   maxLength={1}
                   value={presentation2}
