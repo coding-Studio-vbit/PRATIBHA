@@ -147,14 +147,36 @@ select {
 .fas fa-chevron-circle-left {
   size: 30px;
 }
+
+.savebutton{
+  text-align: center;
+  border-radius: 7px !important;
+  border: none;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  font-size: large;
+  background-color: #0e72ab;
+  color: white;
+ padding: 5px 16px !important;
+  height: auto !important;
+  width:80px;
+  align-self: center;
+ 
+}
+.savebutton:hover{
+  box-shadow: none;
+  border:1px solid #e5e4e2;
+
+}
 .display {
   grid-area: pr;
-  opacity: 0.7;
+  /* opacity: 0.7; */
   width: 85%;
+  height : 430px;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  /* height: 500px; */
 }
 
 .btngrading {
@@ -176,7 +198,7 @@ select {
 
 .remarks-title {
   grid-area: rt;
-  justify-self: start;
+  align-self: center;
 }
 
 
@@ -225,7 +247,7 @@ select {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  margin-top: 8rem;
+  margin-top: 3rem;
 }
 
 .selectList{

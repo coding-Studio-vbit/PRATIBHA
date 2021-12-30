@@ -177,6 +177,7 @@ const Grading = () => {
               left:'16px',
               top:'16px',
               cursor:'pointer'
+              
             }} className="fas fa-arrow-left"  onClick={()=> navigate('/faculty/studentlist')}>
         </i>
 
@@ -196,7 +197,7 @@ const Grading = () => {
                     className="inputField"
                     ></input>
                     <button className="searchBtn" onClick={searchRoll} >
-                        <i style={{cursor:'pointer'}} class="fa fa-search" ></i>
+                        <i style={{cursor:'pointer'}} className="fa fa-search" ></i>
                     </button>
                 </div>
             </div>
@@ -367,8 +368,8 @@ const Grading = () => {
         }
 
         <div className="footer">
-          <i class="fas fa-chevron-circle-left fa-2x" style={{ cursor: "pointer" }}></i>
-          <i class="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }}></i>
+          <i className="fas fa-chevron-circle-left fa-2x" style={{ cursor: "pointer" }}></i>
+          <i className="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }}></i>
         </div>
 
       </div> 
@@ -433,32 +434,14 @@ const Grading = () => {
                   deadline!=null?
                   (
                     new Date()<deadline?
-                    <button                    
-                      style={{
-                        backgroundColor: "#0e72ab",
-                        color: "white",      
-                        margin: "auto",
-                        padding: "8px 16px",
-                        cursor:'pointer',
-                        borderRadius: 25,
-                        textAlign: "center",
-                        border: "none",
-                      }}
+                    <button    className="savebutton"          
+                      
                       onClick={()=>updateMarks()}
                     >SAVE</button>:
                     <div style={{textAlign:'center'}}>COE Deadline exceeded, cannot update marks</div>
                   )
-                    :<button
-                      style={{
-                        backgroundColor: "#0e72ab",
-                        color: "white",      
-                        margin: "auto",
-                        padding: "8px 16px",
-                        cursor:'pointer',
-                        borderRadius: 25,
-                        textAlign: "center",
-                        border: "none",
-                      }}
+                    :<button className="savebutton"
+                     
                       onClick={()=>updateMarks()}
                     >SAVE</button>
                 }
