@@ -24,11 +24,11 @@ const ViewPPT=({object})=>{
 
 const ViewImage=({object})=>{
     return(
-        <div>
+        
             <img width="100%"
              height="510px"
              src={object} alt="Unable to Load"/>
-        </div>
+       
     );
 }
 const ViewVideo=({object})=>{
