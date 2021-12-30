@@ -13,221 +13,234 @@ import {
   getStudentData,
 } from "../services/studentServices";
 import { useAuth } from "../../context/AuthContext";
-import { useLocation } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 
 const Upload = () => {
-  let location = useLocation();
-  const [subject, setSubject] = useState("");
+    let location = useLocation();
+    const [subject, setSubject] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [showUploadModule, setShowUploadModule] = useState(false);
+    const [error, setError] = useState(null);
+    
+    //error for deadlines
+    const [praTitle, setPraTitle] = useState("");
+    const [titleError, setTitleError] = useState("");
+    const [url, setUrl] = useState(null);
+    const [fileName, setFileName] = useState("");
+    const [fileError, setFileError] = useState("");
+    const [fileUploadLoading, setfileUploadLoading] = useState(false);
+    const navigate = useNavigate();
+    // DATA FROM THE PREVIOUS SCREEN
+    console.log(location.state.rollno);
+    console.log(location.state.subject);
 
-  const [loading, setLoading] = useState(false);
-  const [showUploadModule, setShowUploadModule] = useState(false);
-  const [error, setError] = useState(null);
-  //error for deadlines
-  const [praTitle, setPraTitle] = useState("");
-  const [titleError, setTitleError] = useState("");
-  const [url, setUrl] = useState(null);
-  const [fileName, setFileName] = useState("");
-  const [fileError, setFileError] = useState("");
-  const [fileUploadLoading, setfileUploadLoading] = useState(false);
-  // DATA FROM THE PREVIOUS SCREEN
-  console.log(location.state.rollno);
-  console.log(location.state.subject);
-
-  function handleTitle(e) {
-    let value = e;
-    setPraTitle(value);
-    if (value.length < 8) {
-      setTitleError("Title must have atleast 8 characters");
-      return false;
-    } else {
-      setTitleError("");
-      return true;
+    function handleTitle(e) 
+    {
+      let value = e;
+      setPraTitle(value);
+        if (value.length < 8) 
+        {
+            setTitleError("Title must have atleast 8 characters");
+            return false;
+        } 
+        else 
+        {
+            setTitleError("");
+            return true;
+        }
     }
-  }
 
-  const onChange = (e) => {
-    let files = e.target.files[0];
-    let size = 200000;
-    if (mid === "1") {
-      size = 200000;
-    } else if (mid === "2") {
-      size = 1048576000;
-    }
-    if (files.size > size) {
-      setUrl(null);
-      setFileError("File Limit Exceeded");
-    } else {
-      setFileError("");
-      setFileName(files.name);
-      setUrl(e.target.files[0]);
-    }
-  };
+    const onChange = (e) => 
+    {
+      let files = e.target.files[0];
+      let size = 200000;
+        if (mid === "1") 
+        {
+            size = 200000;
+        } 
+        else if (mid === "2") 
+        {
+          size = 1048576000;
+        }
+        if (files.size > size)
+        {
+          setUrl(null);
+          setFileError("File Limit Exceeded");
+        } 
+        else 
+        {
+            setFileError("");
+            setFileName(files.name);
+            setUrl(e.target.files[0]);
+        }
+    };
 
-  async function submit() {
-    setfileUploadLoading(true);
-    let res;
-    if ((url != null) & handleTitle(praTitle)) {
-      res = await uploadFile(
-        url,
-        user.course,
-        user.year,
-        user.department,
-        user.section,
-        location.state.subject,
-        mid,
-        location.state.rollno,
-        praTitle
-      );
-      if (res == null) {
-        setfileUploadLoading(false);
+    async function submit()
+    {
+        setfileUploadLoading(true);
+        let res;
+          if ((url != null) & handleTitle(praTitle))
+          {
+            res = await uploadFile(
+              url,
+              user.course,
+              user.year,
+              user.department,
+              user.section,
+              location.state.subject,
+              mid,
+              location.state.rollno,
+              praTitle
+          );
+          if (res == null)
+          {
+              setfileUploadLoading(false);
+              setError(null);
+              setshowDialog(true);
+          }
+          else
+          {
+              setfileUploadLoading(false);
+              setError(res);
+              setTimeout(() => {setError(null);}, 2000);
+          }
+          }
+          else 
+          {
+              if (url == null)
+            {
+              setFileError("File not Uploaded");
+            }
+          }
+          setfileUploadLoading(false);
+    }
+
+    async function getFile(val) 
+    {
+        setloadExisting(true);
+        // console.log( user.course,user.year,user.department,
+        //     user.section,"Computer Networks","1","18p61a0513@vbithyd.ac.in");
+        try
+        {
+              // console.log("wfoifihofhirfihf");
+              const res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
+              // console.log(res,"fnowennvnenvvn");
+              // const res = await getUploadedFile(
+              //     user.course,user.year,user.department,
+              //     user.section,subject,val,"18p61a0513@vbithyd.ac.in"
+              // );
+              // console.log(res.url,10101001010);
+              // console.log(res);
+              if (res.error == null) 
+              {
+                  setPraTitle(res.data.topic);
+                  setexistingFile(res.data.link);
+                  setloadExisting(false);
+              }
+              else
+              {
+                  setexistingFile(null);
+                  setloadExisting(false);
+              }
+        }
+        catch (error)
+        {
+          setexistingFile(null);
+          setloadExisting(false);      
+        }
+    }
+
+    const [showDialog, setshowDialog] = useState(false);
+    const { currentUser } = useAuth();
+    const [pageLoad, setPageLoad] = useState();
+    const [pageLoadError, setPageLoadError] = useState();
+    const [user, setUser] = useState();
+
+    //select states
+    const [mid, setMid] = useState("SELECT_MID");
+    const [selectError, setSelectError] = useState(null);
+  
+
+    const [praError, setPraError] = useState();
+    const [deadLineInfo, setDeadLineInfo] = useState(null);
+
+    const [existingFile, setexistingFile] = useState(null);
+    const [loadExisting, setloadExisting] = useState(false);
+
+    async function handleSelect(value)
+    {
+        setShowUploadModule(false);
         setError(null);
-        setshowDialog(true);
-      } else {
-        setfileUploadLoading(false);
-        setError(res);
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
-      }
-    } else {
-      if (url == null) {
-        setFileError("File not Uploaded");
-      }
+        setMid(value);
+        if (value !== "SELECT_MID")
+        {
+            setSelectError(null);
+            setLoading(true);
+            const res = await getDeadLines(
+              user.course,
+              user.year,
+              user.department,
+              user.section,
+              location.state.subject,
+              value
+            );
+            console.log(res);
+            if (res.error == null)
+            {
+                setShowUploadModule(true);
+                setLoading(false);
+                setDeadLineInfo(res.data);
+                await getFile(value);
+            } 
+            else 
+            {
+                setLoading(false);
+                setPraError(res.error.toString());
+            }      
+        }
+        else
+        {
+            setLoading(false);
+            setSelectError("select mid number to continue");
+        }
     }
-    setfileUploadLoading(false);
-  }
 
-  async function getFile(val) {
-    setloadExisting(true);
-    // console.log( user.course,user.year,user.department,
-    //     user.section,"Computer Networks","1","18p61a0513@vbithyd.ac.in");
-    try {
-      // console.log("wfoifihofhirfihf");
-      const res = await getFileUploadDetails(
-        location.state.rollno,
-        location.state.subject,
-        val
-      );
-      // console.log(res,"fnowennvnenvvn");
-      // const res = await getUploadedFile(
-      //     user.course,user.year,user.department,
-      //     user.section,subject,val,"18p61a0513@vbithyd.ac.in"
-      // );
-      // console.log(res.url,10101001010);
-      // console.log(res);
-      if (res.error == null) {
-        setPraTitle(res.data.topic);
-        console.log("Iron Man");
-        setexistingFile(res.data.link);
-        setloadExisting(false);
-      } else {
-        setexistingFile(null);
-        setloadExisting(false);
-      }
-    } catch (error) {
-      setexistingFile(null);
-      setloadExisting(false);
-      console.log(error);
+    function dialogClose(x)
+    {
+        setshowDialog(false);
+        navigate("/student/subjectslist");
     }
-  }
 
-  const [showDialog, setshowDialog] = useState(false);
-  const { currentUser } = useAuth();
-  let navigate = useNavigate();
-
-  const [pageLoad, setPageLoad] = useState();
-  const [pageLoadError, setPageLoadError] = useState();
-  const [user, setUser] = useState();
-
-  //select states
-  const [mid, setMid] = useState("SELECT_MID");
-  const [selectError, setSelectError] = useState(null);
+    async function getUserData() 
+    {
+        setPageLoad(true);
+        // console.log("Getting User Data");
+        const res = await getStudentData(location.state.rollno);
+        // console.log("Got Response");
+        if (res.error == null) {
+        // console.log("If");
+        console.log(res.document);
+        setUser({
+            course: res.document["course"],
+            year: res.document["year"],
+            department: res.document["department"],
+            section: res.document["section"],
+        });
+        setPageLoad(false);
+        setPageLoadError(null);
+        // console.log("Ending");
+    } 
+    else
+    {
+        // console.log("Else");
+        setPageLoadError(res.error);
+        setPageLoad(false);
+    }
   
-
-  const [praError, setPraError] = useState();
-  const [deadLineInfo, setDeadLineInfo] = useState(null);
-
-  const [existingFile, setexistingFile] = useState(null);
-  const [loadExisting, setloadExisting] = useState(false);
-
-
-
-
-  async function handleSelect(value) {
-    setShowUploadModule(false);
-    setError(null);
-    setMid(value);
-    if (value !== "SELECT_MID") {
-      setSelectError(null);
-      setLoading(true);
-      const res = await getDeadLines(
-        user.course,
-        user.year,
-        user.department,
-        user.section,
-        location.state.subject,
-        value
-      );
-      console.log(res);
-      if (res.error == null) {
-        console.log("If");
-        setShowUploadModule(true);
-        setLoading(false);
-        setDeadLineInfo(res.data);
-        console.log("Abcd");
-        await getFile(value);
-        console.log("dhdh");
-        //dead line logic
-        console.log(res.data);
-      } else {
-        console.log("Else");
-        setLoading(false);
-        setPraError(res.error.toString());
-      }
-      console.log("Ended");
-    } else {
-      setLoading(false);
-      setSelectError("select mid number to continue");
-    }
-  }
-
-  function dialogClose(x) {
-    setshowDialog(false);
-    navigate("/student/subjectslist");
-  }
-
-  
-
-  async function getUserData() {
-    setPageLoad(true);
-    // console.log("Getting User Data");
-    const res = await getStudentData(location.state.rollno);
-    // console.log("Got Response");
-    if (res.error == null) {
-      // console.log("If");
-      console.log(res.document);
-
-      setUser({
-        course: res.document["course"],
-        year: res.document["year"],
-        department: res.document["department"],
-        section: res.document["section"],
-      });
-      setPageLoad(false);
-      setPageLoadError(null);
-      // console.log("Ending");
-    } else {
-      // console.log("Else");
-      setPageLoadError(res.error);
-      setPageLoad(false);
-    }
-    console.log("Intialized");
   }
 
   const [editPRA, seteditPRA] = useState(false);
-
-  useEffect(() => {
-    getUserData();
+  useEffect(() => {getUserData();
   }, []);
 
   return pageLoad ? (
@@ -287,7 +300,7 @@ const Upload = () => {
                   >
                     {deadLineInfo != null && <p>Instructions : {deadLineInfo.instructions}</p>}
                   </div>
-{mid==1 ? (
+              {mid==1 ? (
 
                   <div>
                     <label className={styles.praLabel}>PRA Title : </label>
