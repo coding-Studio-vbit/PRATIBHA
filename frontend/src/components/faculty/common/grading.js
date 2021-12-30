@@ -160,9 +160,8 @@ const Grading = () => {
   useEffect(() => {
     if (currentUser.isMid1) {
       setMid("1");
-    }
-    else if(currentUser.isMid2){
-      setMid('2');
+    } else if (currentUser.isMid2) {
+      setMid("2");
     }
     getUserData();
   }, []);
@@ -182,7 +181,11 @@ const Grading = () => {
               cursor: "pointer",
             }}
             className="fas fa-arrow-left"
-            onClick={() => navigate("/faculty/studentlist")}
+            onClick={() => {
+              navigate("/faculty/studentlist", {
+                state: { sub: location.state.className },
+              });
+            }}
           ></i>
 
           <h3 style={{ textAlign: "center" }}>Student Details</h3>
