@@ -361,7 +361,7 @@ const LockList = () => {
         </div>
       ) : (
         <Dialog
-          message="Already Enrolled"
+          message="Already Enrolled. Contact admin for making changes"
           onOK={() => {
             nav(
               "/faculty/classlist",

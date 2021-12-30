@@ -201,7 +201,7 @@ const Upload = () => {
         else
         {
             setLoading(false);
-            setSelectError("select mid number to continue");
+            setSelectError("select mid to continue");
         }
     }
 
@@ -262,8 +262,8 @@ const Upload = () => {
                 onChange={(e) => handleSelect(e.target.value)}
               >
                 <option className="option" value="SELECT_MID">Select MID</option> 
-                <option className="option" value="1">MID-1</option> 
-                <option className="option" value="2">MID-2</option>
+                <option className="option" disabled={!currentUser.isMid1} value="1">MID-1</option> 
+                <option className="option" disabled={!currentUser.isMid2} value="2">MID-2</option>
               </select>
               {selectError && (
                 <p className={styles.errorField}>{selectError}</p>

@@ -85,6 +85,10 @@
   display: flex;
   flex-direction: column;
 }
+.mid2{
+  display: flex;
+  flex-direction: column;
+}
 
 .mid2 > div {
   display: flex;
