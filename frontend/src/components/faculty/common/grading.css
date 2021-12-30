@@ -144,12 +144,12 @@ select {
 }
 .display {
   grid-area: pr;
-  background-color: #bbe8ff;
   opacity: 0.7;
   width: 85%;
   margin-left: auto;
   margin-right: auto;
-  height: 500px;
+  align-items: center;
+  /* height: 500px; */
 }
 
 .btngrading {

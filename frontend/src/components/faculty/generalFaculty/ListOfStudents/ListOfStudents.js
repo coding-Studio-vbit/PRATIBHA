@@ -248,7 +248,7 @@ const ListofStudents = () => {
                         key={dataitem.ROLL_NO}
                         onClick={() => {
                           navigate("/faculty/grading", {
-                            state: dataitem.ROLL_NO + "@vbithyd.ac.in",
+                            state:{studentmail: dataitem.ROLL_NO + "@vbithyd.ac.in",className: location.state.sub,path :  subjectval[0] +"/" +subjectval[1] +"/" +subjectval[2] +"/" +subjectval[3]+'/'+subjectval[4]+'/'+'1'+'/'+dataitem.ROLL_NO },
                           });
                         }}
                       >
