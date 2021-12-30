@@ -6,15 +6,15 @@ import { useNavigate ,useLocation} from "react-router-dom";
 import { useState, useEffect} from "react";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
-import { getCoeDeadline, getMarks,postMarks } from "../services/facultyServices";
+import { getAllStudentsData, getCoeDeadline, getMarks,postMarks } from "../services/facultyServices";
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
 // import { db } from "../../../firebase";
 
 const Grading = () => {
   let location = useLocation();
-  console.log(location.state.className)
-  console.log(location.state)
+  // console.log(location.state.className)
+  // console.log(location.state)
   
    const {currentUser} = useAuth();
   // let location = {
@@ -37,7 +37,8 @@ const Grading = () => {
   let navigate = useNavigate();
   const [setDialog, setSetDialog] = useState();
   const [url, setUrl] = React.useState(null);   
-  const [remarks, setRemarks] = useState("");
+  const [remarks1, setRemarks1] = useState("");
+  const [remarks2, setRemarks2] = useState('')
 
   const [pageLoading, setPageLoading] = React.useState();
   const [pageLoadError, setPageLoadError] = React.useState();
@@ -55,9 +56,10 @@ const Grading = () => {
 
   const [deadline, setdeadline] = useState();
 
+  const [allStudents, setAllStudents] = useState();
+
   async function updateMarks(){
     let marks={};
-
     if(midNo==="1"){
       marks.Individuality1=parseInt(individuality1);
       marks.Innovation1=parseInt(innovation1);
@@ -70,12 +72,14 @@ const Grading = () => {
       marks.Preparation2=parseInt(preparation2);
       marks.Presentation2=parseInt(presentation2);
       marks.Subject_Relevance2=parseInt(subRel2);
-    }
-    
-    const res = await postMarks(currentUser.email,location.state.className,rollNo,midNo,marks,remarks); 
+    }    
+    const res = await postMarks(
+      currentUser.email,location.state.className,rollNo,midNo,marks,
+      midNo==="1"?remarks1:remarks2
+    ); 
 
     if(res==null){
-      // setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
+      setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
     }else{
       setSetDialog(null);
     }
@@ -83,39 +87,78 @@ const Grading = () => {
 
   async function searchRoll(){
     if(rollNo!=null || rollNo!==""){
-      console.log("Fetch");
+      let x=allStudents.find(element=>element.id===rollNo)
+      if(x==null){
+        alert("Student Not Found")
+      }else{
+        console.log(x);
+        setRollNo(x.id);
+        if(x.data["mid1"]!=null){
+          setIndividuality1(x.data["mid1"]["Individuality1"]);
+          setInnovation1(x.data["mid1"]["Innovation1"]);
+          setPreparation1(x.data["mid1"]["Preparation1"]);
+          setPresentation1(x.data["mid1"]["Presentation1"]);
+          setSubRel1(x.data["mid1"]["Subject_Relevance1"]);          
+        }else{
+          setIndividuality1();
+          setInnovation1();
+          setPreparation1();
+          setPresentation1();
+          setSubRel1(); 
+        }
+        if(x.data["mid2"]!=null){
+          setIndividuality2(x.data["mid2"]["Individuality2"]);
+          setInnovation2(x.data["mid2"]["Innovation2"]);
+          setPreparation2(x.data["mid2"]["Preparation2"]);
+          setPresentation2(x.data["mid2"]["Presentation2"]);
+          setSubRel2(x.data["mid2"]["Subject_Relevance2"]);          
+        }
+        else{
+          console.log("fjf");
+          setIndividuality2();
+          setInnovation2();
+          setPreparation2();
+          setPresentation2();
+          setSubRel2();
+        }
+        if(x.data["remarks1"]!=null){
+          setRemarks1(x.data["remarks1"]);
+        }else{
+          setRemarks1("")
+        }
+        if(x.data["remarks2"]!=null ){
+          setRemarks2(x.data["remarks2"])
+        }else{
+          setRemarks2("")
+        }
+        const res = await getUploadedFileByPath(
+          location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+rollNo    
+        );    
+        if(res.error==null){
+          setUrl(res.url);     
+        }
+        else{
+          setUrl(null);
+        }   
+      }
     }else{
       console.log("Show Error");
     }
-    console.log("Calling");
   }   
 
   async function getUserData() {
     setPageLoading(true);   
-
-    console.log("Fetching Marks");
     const response = await getMarks(
-      currentUser.email,location.state.className,'19p61a05i2'
+      currentUser.email,location.state.className,
+      location.state.path.split("/")[location.state.path.split("/").length-1]
     );
-    console.log("Fetched Marks");
-
     if(response.error==null){
       if(response.data['mid1']){
-
         setIndividuality1(response.data["mid1"]["Individuality1"]);
-       
-
         setInnovation1(response.data["mid1"]["Innovation1"]);
-   
-
         setPreparation1(response.data["mid1"]["Preparation1"]);
-       
-
         setPresentation1(response.data["mid1"]["Presentation1"]);
-       
-
         setSubRel1(response.data["mid1"]["Subject_Relevance1"]);
-        
       }
       if(response.data['mid2']){
         setIndividuality2(response.data["mid2"]["Individuality2"]);
@@ -124,33 +167,42 @@ const Grading = () => {
         setPresentation2(response.data["mid2"]["Presentation2"]);
         setSubRel2(response.data["mid2"]["Subject_Relevance2"]);
       }
+      if(response.data["remarks1"]!=null){
+        setRemarks1(response.data["remarks1"]);
+      }
+      if(response.data["remarks2"]!=null){
+        setRemarks2(response.data["remarks2"])
+      }      
     }
-
-   
-
-    console.log("Getting File");    
     const res = await getUploadedFileByPath(
-      location.state.path
+      location.state.path  
     );    
-    console.log("Got file");
-
     if(res.error==null){
       setUrl(res.url);     
     }
     else{
       setUrl(null);
     }
-
     const coeDeadLine = await getCoeDeadline();
-    console.log(coeDeadLine.data.toDate());
-    
     if(coeDeadLine.error==null){
       setdeadline(coeDeadLine.data.toDate());
     }else{
       setdeadline(null);
     }
-
-    if(res.error!=null && response.error!=null){
+    const data = await getAllStudentsData(currentUser.email,location.state.className);
+    if(data.error==null){
+      let students=[];
+      data.data.forEach(element => {
+        let s={};
+        s.id = element.id;
+        s.data=element.data();              
+        students.push(s);      
+      });
+      setAllStudents(students);      
+    }else{
+      setAllStudents(null);
+    }
+    if(res.error!=null && response.error!=null && data.error!=null){
       console.log(res.error,response.error);
       setPageLoadError("Error in Fetching details");
     }
@@ -167,11 +219,10 @@ const Grading = () => {
   return (!pageLoading)? (         
     pageLoadError==null?
     <div className="grading">
-      {
-        setDialog!=null && <Dialog message={setDialog} onOK={()=>navigate('/')}/>
-      }
+      {/* {
+        setDialog!=null && <Dialog message={setDialog} onOK={()=>setDialog(null)}/>
+      } */}
       <div className="left">
-
         <i style={{
               position:'absolute',
               left:'16px',
@@ -180,6 +231,8 @@ const Grading = () => {
               
             }} className="fas fa-arrow-left"  onClick={()=> navigate('/faculty/studentlist')}>
         </i>
+
+        <p>{location.state.path}</p>
 
         <h3 style={{ textAlign: "center" }}>Student Details</h3>
 
@@ -217,7 +270,7 @@ const Grading = () => {
             <div>
                 <span>Innovation:(2M)</span>
                 <input  className="inputStyle" type="number" maxLength={1} 
-                disabled={!currentUser.isMid1}
+               // disabled={!currentUser.isMid1}
                 value={innovation1} onChange={(e)=>{
                   if(e.target.value<3 && e.target.value>-1){
                     setInnovation1(e.target.value)
@@ -230,7 +283,7 @@ const Grading = () => {
             <div>
                 <span>Subject Relevance:(2M)</span>
                 <input  className="inputStyle"  type="number" maxLength={1} 
-                  disabled={!currentUser.isMid1}
+                 // disabled={!currentUser.isMid1}
                   value={subRel1} onChange={(e)=>{
                     if(e.target.value<3 && e.target.value>-1){
                       setSubRel1(e.target.value)
@@ -243,7 +296,7 @@ const Grading = () => {
           <div>
               <span>Individuality:(2M)</span>
               <input  className="inputStyle" type="number" maxLength={1} 
-                disabled={!currentUser.isMid1}
+               // disabled={!currentUser.isMid1}
               value={individuality1} onChange={(e)=>{
                 if(e.target.value<3 && e.target.value>-1){
                   setIndividuality1(e.target.value)
@@ -255,7 +308,7 @@ const Grading = () => {
           <div>
               <span>Preparation:(2M)</span>
               <input  className="inputStyle" type="number" maxLength={1}  
-                disabled={!currentUser.isMid1}
+                // disabled={!currentUser.isMid1}
               value={preparation1} onChange={(e)=>{
                 if(e.target.value<3 && e.target.value>-1){
                   setPreparation1(e.target.value)
@@ -268,7 +321,7 @@ const Grading = () => {
           <div>
               <span>Presentation:(2M)</span>
               <input className="inputStyle"  type="number" maxLength={1}  
-                disabled={!currentUser.isMid1}
+                // disabled={!currentUser.isMid1}
                 value={presentation1} onChange={(e)=>{
                   if(e.target.value<3 && e.target.value>-1){
                     setPresentation1(e.target.value)
@@ -427,8 +480,10 @@ const Grading = () => {
               <div className="remarksCon">
                 <span className="remarks-title">REMARKS</span>
                 <textarea 
-                value={remarks}
-                onChange={(e)=>setRemarks(e.target.value)}
+                value={midNo==="1"?remarks1:remarks2}
+                onChange={
+                  (e)=>midNo==="1"?setRemarks1(e.target.value):setRemarks2(e.target.value)
+                }
                 rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
                 {
                   deadline!=null?

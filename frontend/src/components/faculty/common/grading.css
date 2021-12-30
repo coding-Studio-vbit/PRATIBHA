@@ -6,36 +6,55 @@
   overflow: hidden;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
+.left {
+  width: 25%;
+  display: flex;
+  gap: 4px;
+  flex-direction: column;
+  background-color: rgba(14, 114, 171, 1);
+  color: #e4e4e4;
+  height: auto;
+}
+
+.right {
+  width: 75%;
+  background-color: #ffffff;
+  padding-top: 20px;
+}
+
+.fas fa-arrow-left {
+  position: fixed;
+  top: 8px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
 .inputStyle{
   width: 24px;
   border-radius: 10px;
   text-align: center;
   outline:none;
+  border: none;
+  padding: 6px;
   background-color: #e4e4e4;
   color: black;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 600;
   resize:none,
 }
-.inputStyle:focus{
-  box-shadow: 0 0 5px #bbe8ff;
-  padding: 3px 0px 3px 3px;
-  margin: 5px 1px 3px 0px;
-  border: 2px solid #bbe8ff;
-  background-color: #bbe8ff ;
-}
 
-#options *{
-  font-size: 18px;
-  background-color: red;
-}
+/* .inputStyle:focus{
+  
+} */
 
 .error{
   background-color: #e76c6c;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
 .details {
   display: flex;
   margin-left: auto;
@@ -47,8 +66,7 @@
   padding-left: 8px;
 }
 
-.details i{
-  
+.details i{  
   margin: 0px;
   padding: 0px;
   padding-left: 12px;
@@ -61,13 +79,6 @@
   margin-left: 8px;
   margin-right: 8px;
 }
- .input{
-  width: 8px;
-    border-radius:10px;
-    text-align: center;
- }
-
- 
 
 
 .mid1 {
@@ -91,28 +102,7 @@
   align-items: center;
   margin-bottom: 10px;
 }
-.left {
-  width: 25%;
-  display: flex;
-  gap: 4px;
-  flex-direction: column;
-  background-color: rgba(14, 114, 171, 1);
 
-  color: #e4e4e4;
-  height: auto;
-}
-
-.fas fa-arrow-left {
-  position: fixed;
-  top: 8px;
-  margin-left: 5px;
-  cursor: pointer;
-}
-.right {
-  width: 75%;
-  background-color: #ffffff;
-  padding-top: 20px;
-}
 .leftnav {
   padding: 24px;
   gap: 16px;
@@ -260,6 +250,26 @@ select {
 
 
 
+.searchBtn{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color:white;
+  padding: 0px;
+}
+
+.inputField{
+  outline: none;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 6px;
+}
+
+
+
+
 @media screen and (max-width: 770px) {
   .grading {
     flex-direction: column-reverse;
@@ -298,28 +308,9 @@ select {
   }
 }
 
-.searchBtn{
-  background-color: transparent;
-  border: none;
-  outline: none;
-  color:white;
-  padding: 0px;
-}
-
-.inputField{
-  outline: none;
-  background-color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  padding: 6px;
-}
-
-
 
 
 @media screen and (max-width: 1220px) and (min-width:770px) {
-
   .details{
     flex-direction: column;
 
@@ -335,3 +326,4 @@ select {
     margin: auto;
   }
 }
+
