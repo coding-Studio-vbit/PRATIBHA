@@ -133,6 +133,7 @@ function EnrollClasses() {
                         section:section.value                       
                     });
                     const res = await enrollCourse(currentUser.email,{
+                        name:currentUser.username,
                         course:course.value,
                         year:year.value,
                         department:department.value,

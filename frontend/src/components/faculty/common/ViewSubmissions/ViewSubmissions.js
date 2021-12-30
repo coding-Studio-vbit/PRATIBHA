@@ -43,13 +43,13 @@ const ViewSubmissions = () => {
     var dict = {};
     dict["rollno"] = rollnum;
     const res = await getUploadedFile(
-      courseName,
-      passedData.Year,
-      passedData.Dept,
-      passedData.Section,
-      passedData.Subject,
-      "2",
-      rollnum + "@vbithyd.ac.in"
+      courseName+'/'+
+      passedData.Year+'/'+
+      passedData.Dept+'/'+
+      passedData.Section+'/'+
+      passedData.Subject+'/'+
+      "2"+'/'+
+      rollnum 
     );
     links[rollnum] = res.url;
 

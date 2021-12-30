@@ -2,29 +2,35 @@ import * as React from "react";
 import "./grading.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import Docviewer from "./docviewer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import { useState, useEffect} from "react";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getCoeDeadline, getMarks,postMarks } from "../services/facultyServices";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
 // import { db } from "../../../firebase";
 
 const Grading = () => {
-  //  let location = useLocation();
-  //  const {currentUser} = useAuth();
-  let location = {
-    state:{
-      path:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",
-      className:"BTech_1_CSE_A_Engineering Chemistry"
-    }
-  }
-  let currentUser ={
-    email:"vsridharreddy@vbithyd.ac.in"
-  }
-  const [subject, setSubject] = useState("Computer Networks");
-  const [rollNo, setRollNo] = React.useState('18p61a0513');
+  let location = useLocation();
+  console.log(location.state.className)
+  console.log(location.state)
+  
+   const {currentUser} = useAuth();
+  // let location = {
+  //   state:{
+  //     path:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",
+  //     className:"BTech_1_CSE_A_Engineering Chemistry"
+  //   }
+  // }
+  
+  const [subject, setSubject] = useState(
+    location.state.path.split("/")[location.state.path.split("/").length-3]
+    
+    );
+  const [rollNo, setRollNo] = React.useState(
+    location.state.path.split("/")[location.state.path.split("/").length-1]
+  );
   const [midNo,setMid] = React.useState("1");
 
 
@@ -69,7 +75,7 @@ const Grading = () => {
     const res = await postMarks(currentUser.email,location.state.className,rollNo,midNo,marks,remarks); 
 
     if(res==null){
-      setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
+      // setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
     }else{
       setSetDialog(null);
     }
@@ -89,26 +95,38 @@ const Grading = () => {
 
     console.log("Fetching Marks");
     const response = await getMarks(
-      currentUser.email,location.state.className,rollNo
+      currentUser.email,location.state.className,'19p61a05i2'
     );
     console.log("Fetched Marks");
 
     if(response.error==null){
+      if(response.data['mid1']){
+
         setIndividuality1(response.data["mid1"]["Individuality1"]);
-        setIndividuality2(response.data["mid2"]["Individuality2"]);
+       
 
         setInnovation1(response.data["mid1"]["Innovation1"]);
-        setInnovation2(response.data["mid2"]["Innovation2"]);
+   
 
         setPreparation1(response.data["mid1"]["Preparation1"]);
-        setPreparation2(response.data["mid2"]["Preparation2"]);
+       
 
         setPresentation1(response.data["mid1"]["Presentation1"]);
-        setPresentation2(response.data["mid2"]["Presentation2"]);
+       
 
         setSubRel1(response.data["mid1"]["Subject_Relevance1"]);
+        
+      }
+      if(response.data['mid2']){
+        setIndividuality2(response.data["mid2"]["Individuality2"]);
+        setInnovation2(response.data["mid2"]["Innovation2"]);
+        setPreparation2(response.data["mid2"]["Preparation2"]);
+        setPresentation2(response.data["mid2"]["Presentation2"]);
         setSubRel2(response.data["mid2"]["Subject_Relevance2"]);
+      }
     }
+
+   
 
     console.log("Getting File");    
     const res = await getUploadedFileByPath(
@@ -389,7 +407,7 @@ const Grading = () => {
               <div className="display">
                 {
                     url!==null?
-                    <Docviewer extension="pdf" object={url}/>:
+                    <Docviewer link={url}/>:
                     <div>
                       Unknown Error Occured
                     </div>

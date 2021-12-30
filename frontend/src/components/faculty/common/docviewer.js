@@ -26,8 +26,8 @@ const ViewImage=({object})=>{
     return(
         <div>
             <img width="100%"
-             height="500px"
-             src="https://static.toiimg.com/photo/msid-72954933/72954933.jpg" alt="Unable to Load"/>
+             height="510px"
+             src={object} alt="Unable to Load"/>
         </div>
     );
 }

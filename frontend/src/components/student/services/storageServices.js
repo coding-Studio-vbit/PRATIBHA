@@ -36,22 +36,27 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                         subjects:subs,                        
                     });
                     let faculty=null;
+                    console.log(`${course}_${year}_${department}_${section}`);
                     const subRef = doc(db,"subjects",`${course}_${year}_${department}_${section}`);
                     const docSnap = await getDoc(subRef);
                     if(docSnap.exists()){
+                        console.log("AB");
                         subs = docSnap.data()["subjects"];
                         for(var j=0;j<subs.length;j++){
                             if(subs[j].subject===subject){
-                                faculty = subs[j].faculty;
+                                console.log("CD");
+                                faculty = subs[j].facultyID;
                                 break;                                
                             }                
                         }                        
                     }else{
                         return "Unknown Error Occured, Try Reuploading the file";
                     }
+                    console.log(faculty);
                     if(faculty!=null){
+                        console.log(`${course}_${year}_${department}_${section}_${subject}`);
                         const facultyRef = doc(
-                            db,`faculty/${course}_${year}_${department}_${section}_${subject}`,faculty);
+                            db,`faculty/${faculty}/${course}_${year}_${department}_${section}_${subject}`,email.split('@')[0]);
                         await setDoc(facultyRef,{
                             isSubmitted:true,
                         })
