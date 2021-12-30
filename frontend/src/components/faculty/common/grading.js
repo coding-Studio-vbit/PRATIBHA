@@ -210,6 +210,7 @@ const Grading = () => {
         </div>         
        
         <div className="mid1">
+        <span className="mid1title">MID-I</span>
             <div>
                 <span>Innovation:(2M)</span>
                 <input  className="inputStyle" type="number" maxLength={1} 
@@ -275,7 +276,7 @@ const Grading = () => {
               />
           </div>          
           <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
-              <span>MID-I: 10M</span>
+              <span>TOTAL:(10M)</span>
               <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', height:'20px', textAlign:'center', borderRadius:'10px'}}>
                 {(parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1))?
                 (parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1)):" "
@@ -288,6 +289,8 @@ const Grading = () => {
           midNo==="2" &&        
           <div className="mid2">
 
+
+              <span className="mid1title">MID-II</span>
               <div>               
                 <span>Innovation:(2M)</span>
                 <input className="inputStyle" type="number" maxLength={1} 
@@ -315,6 +318,7 @@ const Grading = () => {
               </div>
 
               <div>
+             
                 <span>Individuality:(2M)</span>
                 <input className="inputStyle"  type="number" maxLength={1} 
                   value={individuality2} onChange={(e)=>{
@@ -352,7 +356,7 @@ const Grading = () => {
               </div>
 
               <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
-                <span >MID-II:(10M)</span>
+                <span >Total:(10M)</span>
                 <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px',height:'20px', textAlign:'center', borderRadius:'10px'}}> 
                 {(parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2))?
                   (parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2)):" "
