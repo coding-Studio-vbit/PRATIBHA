@@ -1,6 +1,6 @@
 import { db, storage } from "../../../firebase";
 import { ref,uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, getDoc,updateDoc } from "firebase/firestore"; 
+import { doc, getDoc,setDoc,updateDoc } from "firebase/firestore"; 
 
 async function uploadFile(fileObj,course,year,department,section,subject,midNo,email,title){
     let error=null;
@@ -19,7 +19,6 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                 for(var i=0;i<subs.length;i++){
                     if(subs[i].subject===subject){
                         let s=subs[i];
-
                         if(midNo==="1"){
                             s.topic=title
                             s.mid_1=snapshot.ref.fullPath;
@@ -29,13 +28,36 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                             s.mid_2=snapshot.ref.fullPath;
                             subs[i]=s;
                         }
-                        
+                        break;                        
                     }                
                 }
                 try {
                     await updateDoc(docRef,{
                         subjects:subs,                        
                     });
+                    let faculty=null;
+                    const subRef = doc(db,"subjects",`${course}_${year}_${department}_${section}`);
+                    const docSnap = await getDoc(subRef);
+                    if(docSnap.exists()){
+                        subs = docSnap.data()["subjects"];
+                        for(var j=0;j<subs.length;j++){
+                            if(subs[j].subject===subject){
+                                faculty = subs[j].faculty;
+                                break;                                
+                            }                
+                        }                        
+                    }else{
+                        return "Unknown Error Occured, Try Reuploading the file";
+                    }
+                    if(faculty!=null){
+                        const facultyRef = doc(
+                            db,`faculty/${course}_${year}_${department}_${section}_${subject}`,faculty);
+                        await setDoc(facultyRef,{
+                            isSubmitted:true,
+                        })
+                    }else{
+                        return "Unknown Error Occured, Try Reuploading the file";
+                    }
                 } catch (error) {
                     return error.code;                
                 }
