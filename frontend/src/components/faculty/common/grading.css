@@ -1,6 +1,6 @@
 .grading {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -15,6 +15,7 @@
   display: flex;
   gap: 4px;
   flex-direction: column;
+  justify-content: start;
   background-color: rgba(14, 114, 171, 1);
   color: #e4e4e4;
   height: auto;
@@ -61,6 +62,7 @@
   margin-bottom: 24px;
   margin-right: auto; 
   flex-direction: column;
+  /* height:60vh; */
 }
 .details div:first-child{
   padding-left: 8px;
@@ -219,12 +221,18 @@ select {
   grid-area: rt;
   align-self: center;
 }
-
+/* .head{
+  height:15vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+} */
 
 .preview {
   width: auto;
   display: grid;
-  gap:40px;
+  /* gap:40px; */
   justify-content: center;
 
   grid-template-areas:
@@ -237,11 +245,12 @@ select {
   background-color: rgb(4, 43, 116);
 }
 .remarksCon {
-  margin-top: 30px;
+  /* margin-top: 8px; */
   grid-area: rt;
   display: flex;
   gap: 8px;
   flex-direction: column;
+  height : 20vh;
 }
 
 .selectMid{

@@ -545,7 +545,8 @@ const Grading = () => {
               gridTemplateColumns: "0.3fr 0.3fr 0.3fr",
             }}
           >
-            <span
+        
+          <span
               style={{
                 marginLeft: "auto",
                 marginRight: "auto",
@@ -582,6 +583,8 @@ const Grading = () => {
                 {!currentUser.mid1 && <option value="2">MID-II</option>}
               </select>
             </div>
+
+            
 
             <div className="display">
               {url !== null ? (
