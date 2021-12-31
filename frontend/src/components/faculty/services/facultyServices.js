@@ -162,7 +162,7 @@ export const getPRA = async (sub,department)=>{
   }
 }
 
-export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
+export const setPRA = async (sub,department,date,inst,email,isMid1,isMid2)=>{
   console.log(isMid1);
   try {
     const docRef = doc(db,'subjects',department)
@@ -177,11 +177,12 @@ export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
         console.log(ele.subject);
         if(ele.subject === sub){
           d1 = false
+
           await updateDoc(docRef,{subjects:arrayRemove(ele)})
           if(isMid1){
-
+           
             await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
-          }else{
+          }else if(isMid2){
             await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date, instructions:inst,subject:sub})})
 
           }
@@ -190,9 +191,10 @@ export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
       }
       if(d1){
 
+        // await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
         await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
-      }
-    }else{
+      }}
+    else{
       await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
     }
   } catch (error) {

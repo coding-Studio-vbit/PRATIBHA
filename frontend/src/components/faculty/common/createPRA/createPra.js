@@ -45,7 +45,7 @@ const CreatePra = () => {
     const sub = parts[4];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
-    await setPRA(sub, department, date, inst,currentUser.email,currentUser.isMid1);
+    await setPRA(sub, department, date, inst,currentUser.email,currentUser.isMid1,currentUser.isMid2);
     setdialog('PRA created')
   }
 
