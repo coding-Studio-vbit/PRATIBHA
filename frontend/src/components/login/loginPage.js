@@ -12,9 +12,7 @@ export default function LoginPage() {
   const nav = useNavigate();
   useEffect(() => {
     if (currentUser) {
-      const url = sessionStorage.getItem('url')
-      if(url) nav(url,{replace:true,state:JSON.parse(localStorage.getItem('state'))})
-      else{
+      
 
       
       if (currentUser.userType === "STUDENT") {
@@ -44,7 +42,7 @@ export default function LoginPage() {
       }
     }
     
-  }
+  
   }, [currentUser, nav]);
 
   return loading === false ? (

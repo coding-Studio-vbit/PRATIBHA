@@ -2,37 +2,35 @@ import * as React from "react";
 import "./grading.css";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import Docviewer from "./docviewer";
-import { useNavigate ,useLocation} from "react-router-dom";
-import { useState, useEffect} from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
-import { getAllStudentsData, getCoeDeadline, getMarks,postMarks } from "../services/facultyServices";
+import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
+
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
 // import { db } from "../../../firebase";
 
 const Grading = () => {
   let location = useLocation();
-  // console.log(location.state.className)
-  // console.log(location.state)
-  
-   const {currentUser} = useAuth();
+
+
+  const { currentUser } = useAuth();
   // let location = {
   //   state:{
   //     path:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",
   //     className:"BTech_1_CSE_A_Engineering Chemistry"
   //   }
   // }
-  
-  const [subject, setSubject] = useState(
-    location.state.path.split("/")[location.state.path.split("/").length-3]
-    
-    );
-  const [rollNo, setRollNo] = React.useState(
-    location.state.path.split("/")[location.state.path.split("/").length-1]
-  );
-  const [midNo,setMid] = React.useState("1");
 
+  const [subject, setSubject] = useState(
+    location.state.path.split("/")[location.state.path.split("/").length - 3]
+  );
+  const [rollNo, setRollNo] = React.useState(
+    location.state.path.split("/")[location.state.path.split("/").length - 1]
+  );
+  const [midNo, setMid] = React.useState("1");
 
   let navigate = useNavigate();
   const [setDialog, setSetDialog] = useState();
@@ -42,17 +40,17 @@ const Grading = () => {
 
   const [pageLoading, setPageLoading] = React.useState();
   const [pageLoadError, setPageLoadError] = React.useState();
-  
-  const [innovation1 , setInnovation1] = React.useState()
-  const [subRel1 , setSubRel1] = React.useState()
-  const [individuality1 , setIndividuality1] = React.useState()
-  const [preparation1 , setPreparation1] = React.useState()
-  const [presentation1 , setPresentation1] = React.useState()
-  const [innovation2 , setInnovation2] = React.useState()
-  const [subRel2 , setSubRel2] = React.useState()
-  const [individuality2 , setIndividuality2] = React.useState()
-  const [preparation2 , setPreparation2] = React.useState()
-  const [presentation2 , setPresentation2] = React.useState();
+
+  const [innovation1, setInnovation1] = React.useState();
+  const [subRel1, setSubRel1] = React.useState();
+  const [individuality1, setIndividuality1] = React.useState();
+  const [preparation1, setPreparation1] = React.useState();
+  const [presentation1, setPresentation1] = React.useState();
+  const [innovation2, setInnovation2] = React.useState();
+  const [subRel2, setSubRel2] = React.useState();
+  const [individuality2, setIndividuality2] = React.useState();
+  const [preparation2, setPreparation2] = React.useState();
+  const [presentation2, setPresentation2] = React.useState();
 
   const [deadline, setdeadline] = useState();
 
@@ -160,7 +158,7 @@ const Grading = () => {
         setPresentation1(response.data["mid1"]["Presentation1"]);
         setSubRel1(response.data["mid1"]["Subject_Relevance1"]);
       }
-      if(response.data['mid2']){
+      if (response.data["mid2"]) {
         setIndividuality2(response.data["mid2"]["Individuality2"]);
         setInnovation2(response.data["mid2"]["Innovation2"]);
         setPreparation2(response.data["mid2"]["Preparation2"]);
@@ -186,7 +184,7 @@ const Grading = () => {
     const coeDeadLine = await getCoeDeadline();
     if(coeDeadLine.error==null){
       setdeadline(coeDeadLine.data.toDate());
-    }else{
+    } else {
       setdeadline(null);
     }
     const data = await getAllStudentsData(currentUser.email,location.state.className);
@@ -206,154 +204,214 @@ const Grading = () => {
       console.log(res.error,response.error);
       setPageLoadError("Error in Fetching details");
     }
-    setPageLoading(false);    
+    setPageLoading(false);
   }
 
-  useEffect(() => {   
-    if(currentUser.isMid1){
-      setMid("1")
-    }     
-    getUserData()  
-  },[])
-  
-  return (!pageLoading)? (         
-    pageLoadError==null?
-    <div className="grading">
-      {/* {
-        setDialog!=null && <Dialog message={setDialog} onOK={()=>setDialog(null)}/>
-      } */}
-      <div className="left">
-        <i style={{
-              position:'absolute',
-              left:'16px',
-              top:'16px',
-              cursor:'pointer'
-              
-            }} className="fas fa-arrow-left"  onClick={()=> navigate('/faculty/studentlist')}>
-        </i>
+  useEffect(() => {
+    if (currentUser.isMid1) {
+      setMid("1");
+    } else if (currentUser.isMid2) {
+      setMid("2");
+    }
+    getUserData();
+  }, []);
 
-        <p>{location.state.path}</p>
+  return !pageLoading ? (
+    pageLoadError == null ? (
+      <div className="grading">
+        {setDialog != null && (
+          <Dialog message={setDialog} onOK={() => navigate("/")} />
+        )}
+        <div className="left">
+          <i
+            style={{
+              position: "absolute",
+              left: "16px",
+              top: "16px",
+              cursor: "pointer",
+            }}
+            className="fas fa-arrow-left"
+            onClick={() => {
+              navigate("/faculty/studentlist", {
+                state: { sub: location.state.className },
+              });
+            }}
+          ></i>
 
-        <h3 style={{ textAlign: "center" }}>Student Details</h3>
+          <h3 style={{ textAlign: "center" }}>Student Details</h3>
 
-        <div className="details">
-
-            <div style={{
-                display:'flex',
-                gap:'8px',
-                alignItems:'center',
-                fontSize:'18px'
-              }}>
-              <span>Roll No.</span>
-                <div>
-                    <input type="text" maxLength={10}  value={rollNo} onChange={(e)=>setRollNo(e.target.value)}
-                    className="inputField"
-                    ></input>
-                    <button className="searchBtn" onClick={searchRoll} >
-                        <i style={{cursor:'pointer'}} className="fa fa-search" ></i>
-                    </button>
-                </div>
-            </div>
-          
-            <div style={{
-                  display:'flex',
-                  gap:8,
-                  padding:'8px 8px 0px 8px',
-                  fontSize:"18px"
-                }}><span>Subject </span>
-              <span style={{fontWeight:'bold'}}>{subject}</span>
-            </div>
-
-        </div>         
-       
-        <div className="mid1">
-            <div>
-                <span>Innovation:(2M)</span>
-                <input  className="inputStyle" type="number" maxLength={1} 
-               // disabled={!currentUser.isMid1}
-                value={innovation1} onChange={(e)=>{
-                  if(e.target.value<3 && e.target.value>-1){
-                    setInnovation1(e.target.value)
-                  }else{
-                    setInnovation1(2)
-                  }
-                }}
-                />
-            </div>
-            <div>
-                <span>Subject Relevance:(2M)</span>
-                <input  className="inputStyle"  type="number" maxLength={1} 
-                 // disabled={!currentUser.isMid1}
-                  value={subRel1} onChange={(e)=>{
-                    if(e.target.value<3 && e.target.value>-1){
-                      setSubRel1(e.target.value)
-                    }else{
-                      setSubRel1(2)
-                    }
-                  }}
-                />
-            </div>
-          <div>
-              <span>Individuality:(2M)</span>
-              <input  className="inputStyle" type="number" maxLength={1} 
-               // disabled={!currentUser.isMid1}
-              value={individuality1} onChange={(e)=>{
-                if(e.target.value<3 && e.target.value>-1){
-                  setIndividuality1(e.target.value)
-                }else{
-                  setIndividuality1(2)
-                }
-              }}/>
-          </div>
-          <div>
-              <span>Preparation:(2M)</span>
-              <input  className="inputStyle" type="number" maxLength={1}  
-                // disabled={!currentUser.isMid1}
-              value={preparation1} onChange={(e)=>{
-                if(e.target.value<3 && e.target.value>-1){
-                  setPreparation1(e.target.value)
-                }else{
-                  setPreparation1(2)
-                }
+          <div className="details">
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
               }}
-              />
+            >
+              <span>Roll no:</span>
+              <div>
+                <input
+                  type="text"
+                  maxLength={10}
+                  value={rollNo}
+                  onChange={(e) => setRollNo(e.target.value)}
+                ></input>
+                <button className="searchBtn" onClick={searchRoll}>
+                  <i style={{ cursor: "pointer" }} className="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                padding: "8px 8px 0px 8px",
+              }}
+            >
+              <span>Subject:</span>
+              <span style={{ fontWeight: "bold" }}>{subject}</span>
+            </div>
           </div>
-          <div>
-              <span>Presentation:(2M)</span>
-              <input className="inputStyle"  type="number" maxLength={1}  
-                // disabled={!currentUser.isMid1}
-                value={presentation1} onChange={(e)=>{
-                  if(e.target.value<3 && e.target.value>-1){
-                    setPresentation1(e.target.value)
-                  }else{
-                    setPresentation1(2)
+
+          <div className="mid1">
+            <span className="mid1title">MID-I</span>
+            <div>
+              <span>Innovation:(2M)</span>
+              <input
+                className="inputStyle"
+                type="number"
+                maxLength={1}
+                disabled={!currentUser.isMid1}
+                value={innovation1}
+                onChange={(e) => {
+                  if (e.target.value < 3 && e.target.value > -1) {
+                    setInnovation1(e.target.value);
+                  } else {
+                    setInnovation1(2);
                   }
                 }}
               />
-          </div>          
-          <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
-              <span>MID-I: 10M</span>
-              <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px', height:'20px', textAlign:'center', borderRadius:'10px'}}>
-                {(parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1))?
-                (parseInt(individuality1)+parseInt(subRel1)+parseInt(innovation1)+parseInt(preparation1)+parseInt(presentation1)):" "
-                }
+            </div>
+            <div>
+              <span>Subject Relevance:(2M)</span>
+              <input
+                className="inputStyle"
+                type="number"
+                maxLength={1}
+                disabled={!currentUser.isMid1}
+                value={subRel1}
+                onChange={(e) => {
+                  if (e.target.value < 3 && e.target.value > -1) {
+                    setSubRel1(e.target.value);
+                  } else {
+                    setSubRel1(2);
+                  }
+                }}
+              />
+            </div>
+            <div>
+              <span>Individuality:(2M)</span>
+              <input
+                className="inputStyle"
+                type="number"
+                maxLength={1}
+                disabled={!currentUser.isMid1}
+                value={individuality1}
+                onChange={(e) => {
+                  if (e.target.value < 3 && e.target.value > -1) {
+                    setIndividuality1(e.target.value);
+                  } else {
+                    setIndividuality1(2);
+                  }
+                }}
+              />
+            </div>
+            <div>
+              <span>Preparation:(2M)</span>
+              <input
+                className="inputStyle"
+                type="number"
+                maxLength={1}
+                disabled={!currentUser.isMid1}
+                value={preparation1}
+                onChange={(e) => {
+                  if (e.target.value < 3 && e.target.value > -1) {
+                    setPreparation1(e.target.value);
+                  } else {
+                    setPreparation1(2);
+                  }
+                }}
+              />
+            </div>
+            <div>
+              <span>Presentation:(2M)</span>
+              <input
+                className="inputStyle"
+                type="number"
+                maxLength={1}
+                disabled={!currentUser.isMid1}
+                value={presentation1}
+                onChange={(e) => {
+                  if (e.target.value < 3 && e.target.value > -1) {
+                    setPresentation1(e.target.value);
+                  } else {
+                    setPresentation1(2);
+                  }
+                }}
+              />
+            </div>
+            <div
+              style={{
+                marginTop: "4%",
+                justifyContent: "space-between",
+                marginRight: "3px",
+                fontWeight: "bolder",
+              }}
+            >
+              <span>TOTAL:(10M)</span>
+              <span
+                style={{
+                  backgroundColor: "#E5E4E2",
+                  color: "black",
+                  width: "40px",
+                  padding: "3px",
+                  height: "20px",
+                  textAlign: "center",
+                  borderRadius: "10px",
+                }}
+              >
+                {parseInt(individuality1) +
+                parseInt(subRel1) +
+                parseInt(innovation1) +
+                parseInt(preparation1) +
+                parseInt(presentation1)
+                  ? parseInt(individuality1) +
+                    parseInt(subRel1) +
+                    parseInt(innovation1) +
+                    parseInt(preparation1) +
+                    parseInt(presentation1)
+                  : " "}
               </span>
+            </div>
           </div>
-        </div>
 
-        {
-          midNo==="2" &&        
-          <div className="mid2">
-
-              <div>               
+          {midNo === "2" && (
+            <div className="mid2">
+              <span className="mid1title">MID-II</span>
+              <div>
                 <span>Innovation:(2M)</span>
-                <input className="inputStyle" type="number" maxLength={1} 
-                 // disabled={!currentUser.isMid2}
-                  value={innovation2} onChange={(e)=>{
-                    if(e.target.value<3 && e.target.value>-1){
-                      setInnovation2(e.target.value)
-                    }else{
-                      setInnovation2(2)
+                <input
+                  className="inputStyle"
+                  type="number"
+                  maxLength={1}
+                  disabled={!currentUser.isMid2}
+                  value={innovation2}
+                  onChange={(e) => {
+                    if (e.target.value < 3 && e.target.value > -1) {
+                      setInnovation2(e.target.value);
+                    } else {
+                      setInnovation2(2);
                     }
                   }}
                 />
@@ -361,24 +419,35 @@ const Grading = () => {
 
               <div>
                 <span>Subject Relevance:(2M)</span>
-                <input className="inputStyle"  type="number" maxLength={1} 
-                  value={subRel2} onChange={(e)=>{
-                    if(e.target.value<3 && e.target.value>-1){
-                      setSubRel2(e.target.value)
-                    }else{
-                      setSubRel2(2)
+                <input
+                  className="inputStyle"
+                  disabled={!currentUser.isMid2}
+                  type="number"
+                  maxLength={1}
+                  value={subRel2}
+                  onChange={(e) => {
+                    if (e.target.value < 3 && e.target.value > -1) {
+                      setSubRel2(e.target.value);
+                    } else {
+                      setSubRel2(2);
                     }
-                  }}/>
+                  }}
+                />
               </div>
 
               <div>
                 <span>Individuality:(2M)</span>
-                <input className="inputStyle"  type="number" maxLength={1} 
-                  value={individuality2} onChange={(e)=>{
-                    if(e.target.value<3 && e.target.value>-1){
-                      setIndividuality2(e.target.value)
-                    }else{
-                      setIndividuality2(2)
+                <input
+                  className="inputStyle"
+                  disabled={!currentUser.isMid2}
+                  type="number"
+                  maxLength={1}
+                  value={individuality2}
+                  onChange={(e) => {
+                    if (e.target.value < 3 && e.target.value > -1) {
+                      setIndividuality2(e.target.value);
+                    } else {
+                      setIndividuality2(2);
                     }
                   }}
                 />
@@ -386,96 +455,141 @@ const Grading = () => {
 
               <div>
                 <span>Preparation:(2M)</span>
-                <input className="inputStyle"  type="number" maxLength={1} 
-                  value={preparation2} onChange={(e)=>{
-                    if(e.target.value<3 && e.target.value>-1){
-                      setPreparation2(e.target.value)
-                    }else{
-                      setPreparation2(2)
+                <input
+                  className="inputStyle"
+                  disabled={!currentUser.isMid2}
+                  type="number"
+                  maxLength={1}
+                  value={preparation2}
+                  onChange={(e) => {
+                    if (e.target.value < 3 && e.target.value > -1) {
+                      setPreparation2(e.target.value);
+                    } else {
+                      setPreparation2(2);
                     }
-                  }}/>
+                  }}
+                />
               </div>
 
               <div>
                 <span>Presentation:(2M)</span>
-                <input className="inputStyle"  type="number" maxLength={1}
-                  value={presentation2} onChange={(e)=>{
-                    if(e.target.value<3 && e.target.value>-1){
-                      setPresentation2(e.target.value)
-                    }else{
-                      setPresentation2(2)
+                <input
+                  className="inputStyle"
+                  disabled={!currentUser.isMid2}
+                  type="number"
+                  maxLength={1}
+                  value={presentation2}
+                  onChange={(e) => {
+                    if (e.target.value < 3 && e.target.value > -1) {
+                      setPresentation2(e.target.value);
+                    } else {
+                      setPresentation2(2);
                     }
-                  }}/>
+                  }}
+                />
               </div>
 
-              <div style={{marginTop:'4%', justifyContent: "space-between", marginRight:'3px', fontWeight:'bolder'}}>
-                <span >MID-II:(10M)</span>
-                <span style={{backgroundColor:'#E5E4E2', color:'black', width:'40px', padding:'3px',height:'20px', textAlign:'center', borderRadius:'10px'}}> 
-                {(parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2))?
-                  (parseInt(individuality2)+parseInt(subRel2)+parseInt(innovation2)+parseInt(preparation2)+parseInt(presentation2)):" "
-                  }
+              <div
+                style={{
+                  marginTop: "4%",
+                  justifyContent: "space-between",
+                  marginRight: "3px",
+                  fontWeight: "bolder",
+                }}
+              >
+                <span>Total:(10M)</span>
+                <span
+                  style={{
+                    backgroundColor: "#E5E4E2",
+                    color: "black",
+                    width: "40px",
+                    padding: "3px",
+                    height: "20px",
+                    textAlign: "center",
+                    borderRadius: "10px",
+                  }}
+                >
+                  {parseInt(individuality2) +
+                  parseInt(subRel2) +
+                  parseInt(innovation2) +
+                  parseInt(preparation2) +
+                  parseInt(presentation2)
+                    ? parseInt(individuality2) +
+                      parseInt(subRel2) +
+                      parseInt(innovation2) +
+                      parseInt(preparation2) +
+                      parseInt(presentation2)
+                    : " "}
                 </span>
               </div>
+            </div>
+          )}
 
+          <div className="footer">
+            <i
+              className="fas fa-chevron-circle-left fa-2x"
+              style={{ cursor: "pointer" }}
+            ></i>
+            <i
+              className="fas fa-chevron-circle-right fa-2x"
+              style={{ cursor: "pointer" }}
+            ></i>
           </div>
-        }
-
-        <div className="footer">
-          <i className="fas fa-chevron-circle-left fa-2x" style={{ cursor: "pointer" }}></i>
-          <i className="fas fa-chevron-circle-right fa-2x" style={{ cursor: "pointer" }}></i>
         </div>
 
-      </div> 
+        <div className="right">
+          <div
+            className="preview"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "0.3fr 0.3fr 0.3fr",
+            }}
+          >
+            <span
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                padding: "16px",
+                gridArea: "title",
+                alignSelf: "center",
+              }}
+            >
+              PREVIEW
+            </span>
 
-      <div className="right">
-
-          <div className="preview" style={{ display: "grid", gridTemplateColumns: "0.3fr 0.3fr 0.3fr" }}> 
-
-              <span style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  padding: "16px",
-                  gridArea: "title",
-                  alignSelf: "center",
-                }}>PREVIEW
-              </span>
-
-              <div className="dropdown" style={{
+            <div
+              className="dropdown"
+              style={{
                 alignSelf: "end",
                 padding: "16px",
                 justifySelf: "end",
-                }}>
-                  <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>    
+              }}
+            >
+              <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>
+              <select
+                style={{
+                  width: "200px",
+                  padding: "8px",
+                  borderRadius: "24px",
+                  marginRight: "12px",
+                }}
+                value={midNo}
+                onChange={(e) => setMid(e.target.value)}
+                name="selectList"
+                id="selectList"
+              >
+                <option value="1">MID-I</option> 
+                {!currentUser.mid1 && <option value="2">MID-II</option>}
+              </select>
+            </div>
 
-                  <select
-                    style={{
-                      width: "200px",
-                      padding: "8px",
-                      borderRadius: "24px",
-                      marginRight: "12px",
-                    }}
-                    value={midNo}
-                    onChange={
-                      (e)=>setMid(e.target.value)
-                    }
-                    className="selectMid"
-                    name="selectList"
-                    id="selectList">
-                     <option value="1" className="options">MID-I</option> 
-                    {  !currentUser.mid1 && <option value="2" id="options">MID-II</option>}                 
-                  </select>
-
-              </div>
-
-              <div className="display">
-                {
-                    url!==null?
-                    <Docviewer link={url}/>:
-                    <div>
-                      Unknown Error Occured
-                    </div>
-                }                                  
-              </div>
+            <div className="display">
+              {url !== null ? (
+                <Docviewer link={url} />
+              ) : (
+                <div>Unknown Error Occured</div>
+              )}
+            </div>
 
               <div className="remarksCon">
                 <span className="remarks-title">REMARKS</span>
@@ -502,11 +616,14 @@ const Grading = () => {
                 }
               </div>
           </div>
+        </div>
       </div>
-    </div>: 
-    <div>{pageLoadError}</div>
-  ): 
-  <LoadingScreen />
+    ) : (
+      <div>{pageLoadError}</div>
+    )
+  ) : (
+    <LoadingScreen />
+  );
 };
 
 export default Grading;

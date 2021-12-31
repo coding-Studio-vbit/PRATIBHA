@@ -112,8 +112,7 @@ const ListofStudents = () => {
                 let obj = returndata["subjects"].find(
                   (o) => o.subject === subjectval[4]
                 );
-                if(obj){
-
+                if (obj) {
                   topic = obj.topic;
                   name = returndata.name;
                 }
@@ -178,36 +177,14 @@ const ListofStudents = () => {
     Fetchnumber();
   }, []);
 
-  const Data = [
-    {
-      ROLL_NO: "19P6XXXXX1",
-      STUDENT_NAME: "ABCDEFGH",
-      TOPIC_NAME: "abcdefgh",
-      MID_1: "9",
-      MID_2: "10",
-    },
-    {
-      ROLL_NO: "19P6XXXXX2",
-      STUDENT_NAME: "IJKLMNOP",
-      TOPIC_NAME: "ijklmnop",
-      MID_1: "10",
-      MID_2: " ",
-    },
-    {
-      ROLL_NO: "19P6XXXXX3",
-      STUDENT_NAME: "QRSTUVWX",
-      TOPIC_NAME: "qrstuvwx",
-      MID_1: "9",
-      MID_2: "9",
-    },
-  ];
   return (
     <div>
-      <Navbar backURL={'/faculty/classlist'} title={location.state.sub}>
-        
+      <Navbar backURL={"/faculty/classlist"} title={location.state.sub}>
         <span
           onClick={() =>
-            navigate("/faculty/createPra", { state: {sub:location.state.sub,editPRA:true} })
+            navigate("/faculty/createPra", {
+              state: { sub: location.state.sub, editPRA: true },
+            })
           }
           style={{
             cursor: "pointer",
@@ -248,7 +225,25 @@ const ListofStudents = () => {
                         key={dataitem.ROLL_NO}
                         onClick={() => {
                           navigate("/faculty/grading", {
-                            state:{studentmail: dataitem.ROLL_NO + "@vbithyd.ac.in",className: location.state.sub,path :  subjectval[0] +"/" +subjectval[1] +"/" +subjectval[2] +"/" +subjectval[3]+'/'+subjectval[4]+'/'+'1'+'/'+dataitem.ROLL_NO },
+                            state: {
+                              studentmail: dataitem.ROLL_NO + "@vbithyd.ac.in",
+                              className: location.state.sub,
+                              path:
+                                subjectval[0] +
+                                "/" +
+                                subjectval[1] +
+                                "/" +
+                                subjectval[2] +
+                                "/" +
+                                subjectval[3] +
+                                "/" +
+                                subjectval[4] +
+                                "/" +
+                                "1" +
+                                "/" +
+                                dataitem.ROLL_NO,
+                                topicname : dataitem.TOPIC_NAME
+                            },
                           });
                         }}
                       >

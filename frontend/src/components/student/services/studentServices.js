@@ -61,6 +61,25 @@ export const fetchisMid1 = async () => {
     }
 };
 
+export const fetchisMid2 = async () => {
+    try {
+        const adminRef = doc(db, "adminData","coeDeadline");
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+        let date1 = new Timestamp(adminDoc.data()["coeDeadline"]["seconds"],adminDoc.data()["coeDeadline"]["nanoseconds"]).toDate();
+      let date2 = new Timestamp(adminDoc.data()["coeDeadline2"]["seconds"],adminDoc.data()["coeDeadline2"]["nanoseconds"]).toDate();
+      const currentdate = new Date()
+      if(date1 < currentdate&& date2 >currentdate){
+        return true
+        
+      }
+      return false;
+    }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 
 async function getCurriculumDetails(course_details) {
     const curriculumRef=query(
@@ -235,6 +254,7 @@ async function getFileUploadDetails(email,subject,midNo){
                             }
                         }                  
                     }else if(midNo==="2"){
+                     
                         if(subs[i].topic!=null && subs[i].mid_2!=null){
                             return {
                                 data:{ link:subs[i].mid_1,topic:subs[i].topic},
@@ -242,7 +262,7 @@ async function getFileUploadDetails(email,subject,midNo){
                             }
                         }else{
                             return {
-                                data:null,
+                                data:{topic:subs[i].topic},
                                 error:"PRA not submitted"
                             }
                         }                
