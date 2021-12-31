@@ -396,4 +396,53 @@ async function getCoeDeadline() {
   }  
 }
 
-export { getEnrolledCourses, enrollClasses,enrollHODClasses,postMarks,getMarks,getCoeDeadline};
+// async function getDataByRollNumber(facultyID,className,studentID,) {
+//   const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
+
+//   try {
+//     const res = await getDoc(facultyRef);
+//     if(res.exists()){
+//       return {
+//         data:res.data(),
+//         error:null,
+//       }
+//     }else{
+//       return {
+//         data:null,
+//         error:"Student Not Found"
+//       }
+//     }
+//   } catch (error) {
+//     return {
+//       data:null,
+//       error:error.toString()
+//     }    
+//   }
+// }
+
+async function getAllStudentsData(facultyID,className) {
+  const facultyRef = collection(db,`faculty/${facultyID}/${className}`);
+
+  try {
+    const res = await getDocs(facultyRef);    
+    if(res.docs.length!==0){
+      return {
+        data:res.docs,
+        error:null,
+      }
+    }else{
+      return {
+        data:null,
+        error:"Data Not Found"
+      }
+    }
+  } catch (error) {
+    return {
+      data:null,
+      error:error.toString()
+    }    
+  }
+}
+
+export {getEnrolledCourses,enrollClasses,enrollHODClasses,
+  postMarks,getMarks,getCoeDeadline,getAllStudentsData};
