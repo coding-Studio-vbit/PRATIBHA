@@ -40,7 +40,7 @@ const ViewVideo=({object})=>{
 }
 
 const ViewPdf=({object})=>{
-    console.log(object);
+    // console.log(object);
     return(
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
             <div className="mt4" style={{ height: '520px', padding:'0px',width:'100%', margin:'0px' }}>
@@ -83,16 +83,16 @@ function Docviewer({link}){
     const [loading, setloading] = useState(true);
 
     useEffect(() => {
-        console.log(link);
-        console.log("ABCD");
+        // console.log(link);
+        // console.log("ABCD");
         getMetadata(forestRef)
         .then((metadata) => {
-            console.log(metadata.contentType.split("/")[1]);
+            // console.log(metadata.contentType.split("/")[1]);
             setextension(metadata.contentType.split("/")[1]);
             setloading(false);
         })
         .catch((error) => {
-            console.log(error,1010);
+            // console.log(error,1010);
             setextension(null)
             setloading(false);
         });
