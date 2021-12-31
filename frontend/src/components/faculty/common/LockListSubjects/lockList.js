@@ -175,11 +175,15 @@ const LockList = () => {
               message={showDialog}
               onOK={() => {
                 isSuccess
-                  ? nav(
+                  ? currentUser.isHOD? nav( 
+                      "/faculty/hodclasslist",
+                      { state: currentUser },
+                      { replace: true }
+                    ): (nav( 
                       "/faculty/classlist",
                       { state: currentUser },
                       { replace: true }
-                    )
+                    ))
                   : setShowDialog(false);
               }}
             />
@@ -363,6 +367,7 @@ const LockList = () => {
         <Dialog
           message="Already Enrolled. Contact admin for making changes"
           onOK={() => {
+
             nav(
               "/faculty/classlist",
               { state: currentUser },

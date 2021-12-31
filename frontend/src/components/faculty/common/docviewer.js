@@ -99,14 +99,19 @@ function Docviewer({link}){
     }, [])
 
     return (
-        extension!=null?
-        <Module extension={extension} object={link}/>:
-        <div>
-            {
-                loading?<Spinner radius={2}/>:
-                <div>Unknown Error Occured</div>
-            }                    
-        </div>               
+    
+            
+                extension!=null?
+                <Module extension={extension} object={link}/>:
+                <div>
+                    {
+                        loading?<Spinner radius={2}/>:
+                        <div>Unknown Error Occured</div>
+                    }                    
+      
+                
+            
+        </div>
     )      
 }
 
