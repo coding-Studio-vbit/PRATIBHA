@@ -14,6 +14,7 @@ import {
 } from "../services/studentServices";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation} from "react-router-dom";
+import { Timestamp } from "firebase/firestore";
 
 const Upload = () => {
     let location = useLocation();
@@ -79,8 +80,11 @@ const Upload = () => {
     {
         setfileUploadLoading(true);
         let res;
+        
           if ((url != null) & handleTitle(praTitle))
           {
+            
+
             res = await uploadFile(
               url,
               user.course,
@@ -92,6 +96,7 @@ const Upload = () => {
               location.state.rollno,
               praTitle
           );
+      
           if (res == null)
           {
               setfileUploadLoading(false);
@@ -124,6 +129,8 @@ const Upload = () => {
         {
               // console.log("wfoifihofhirfihf");
               const res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
+        
+              
               // console.log(res,"fnowennvnenvvn");
               // const res = await getUploadedFile(
               //     user.course,user.year,user.department,
@@ -133,12 +140,17 @@ const Upload = () => {
               // console.log(res);
               if (res.error == null) 
               {
+                
                   setPraTitle(res.data.topic);
+                 
+                  
                   setexistingFile(res.data.link);
+                 
                   setloadExisting(false);
               }
               else
               {
+                setPraTitle(res.data.topic)
                   setexistingFile(null);
                   setloadExisting(false);
               }
@@ -174,6 +186,7 @@ const Upload = () => {
         setMid(value);
         if (value !== "SELECT_MID")
         {
+          
             setSelectError(null);
             setLoading(true);
             const res = await getDeadLines(
@@ -184,16 +197,20 @@ const Upload = () => {
               location.state.subject,
               value
             );
-            console.log(res);
             if (res.error == null)
             {
+
                 setShowUploadModule(true);
                 setLoading(false);
+               
                 setDeadLineInfo(res.data);
-                await getFile(value);
+               await getFile(value);
+
+              
             } 
             else 
             {
+           
                 setLoading(false);
                 setPraError(res.error.toString());
             }      

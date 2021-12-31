@@ -254,6 +254,7 @@ async function getFileUploadDetails(email,subject,midNo){
                             }
                         }                  
                     }else if(midNo==="2"){
+                     
                         if(subs[i].topic!=null && subs[i].mid_2!=null){
                             return {
                                 data:{ link:subs[i].mid_1,topic:subs[i].topic},
@@ -261,7 +262,7 @@ async function getFileUploadDetails(email,subject,midNo){
                             }
                         }else{
                             return {
-                                data:null,
+                                data:{topic:subs[i].topic},
                                 error:"PRA not submitted"
                             }
                         }                

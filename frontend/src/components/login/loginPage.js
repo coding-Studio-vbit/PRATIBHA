@@ -10,7 +10,6 @@ import { LoadingScreen } from "../global_ui/spinner/spinner";
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
   const nav = useNavigate();
-  console.log("uui");
   useEffect(() => {
     if (currentUser) {
       

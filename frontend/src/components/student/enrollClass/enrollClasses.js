@@ -141,7 +141,7 @@ function EnrollClasses() {
                         section:section.value                       
                     })
                     if(res==null){
-                        console.log("Enrolled");
+                 
                         setLoading(false);
                         setdialog("Enrolled Successfully")
                     }
