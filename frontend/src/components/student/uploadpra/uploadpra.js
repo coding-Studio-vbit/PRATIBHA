@@ -345,7 +345,7 @@ const Upload = () => {
                               {mid === 1 ? (
                                 <input
                                   type="file"
-                                  accept=".pdf"
+                                  accept="application/pdf"
                                   onChange={onChange}
                                 />
                               ) : (

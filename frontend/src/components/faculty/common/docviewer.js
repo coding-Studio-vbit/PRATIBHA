@@ -43,7 +43,7 @@ const ViewPdf=({object})=>{
     // console.log(object);
     return(
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-            <div className="mt4" style={{ height: '520px', padding:'0px',width:'100%', margin:'0px' }}>
+            <div className="mt4" style={{  padding:'0px',width:'100%', margin:'0px' }}>
                 {object ? (
                     <div
                         style={{

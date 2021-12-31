@@ -79,6 +79,23 @@
   margin-left: 8px;
   margin-right: 8px;
 }
+.mid1title{
+  text-align: center;
+}
+ .input{
+  width: 8px;
+    border-radius:10px;
+    text-align: center;
+ }
+
+ 
+input[type=number]:focus, textarea:focus {
+  box-shadow: 0 0 5px #bbe8ff;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 2px solid #bbe8ff;
+  background-color: #bbe8ff ;
+}
 
 
 .mid1 {
@@ -172,12 +189,13 @@ select {
   grid-area: pr;
   /* opacity: 0.7; */
   width: 85%;
-  height : 430px;
+  /* height : 430px; */
+  /* height: 50vh; */
   margin-left: auto;
   margin-right: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items:flex-start;
 }
 
 .btngrading {
@@ -188,7 +206,6 @@ select {
 .remarks {
   grid-area: re;
   justify-self: center;
-  margin-top: auto;
   outline: none;
   background-color: white;
   border: none;
@@ -198,6 +215,7 @@ select {
 }
 
 .remarks-title {
+  margin-top: auto;
   grid-area: rt;
   align-self: center;
 }
@@ -206,7 +224,7 @@ select {
 .preview {
   width: auto;
   display: grid;
-  gap: 16px;
+  gap:40px;
   justify-content: center;
 
   grid-template-areas:
@@ -219,6 +237,7 @@ select {
   background-color: rgb(4, 43, 116);
 }
 .remarksCon {
+  margin-top: 30px;
   grid-area: rt;
   display: flex;
   gap: 8px;
@@ -255,11 +274,7 @@ select {
   background-color: #e5e4e2;
   width: "200px";
   padding: 8px,
-
 }
-
-
-
 
 .searchBtn{
   background-color: transparent;
