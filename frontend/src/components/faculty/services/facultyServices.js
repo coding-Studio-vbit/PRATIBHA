@@ -294,6 +294,8 @@ async function postMarks(facultyID,className,studentID,midNo,marks,remarks) {
   let error=null;
   console.log(`faculty/${facultyID}/${className}`);
   const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
+
+  const userRef = doc(db,`users`,studentID+"@vbithyd.ac.in");
   console.log(marks);
   try {
     if(midNo==="1"){
@@ -301,12 +303,40 @@ async function postMarks(facultyID,className,studentID,midNo,marks,remarks) {
         mid1:marks,
         remarks1:remarks,
       });
+      const userDoc = await getDoc(userRef);
+      if(userDoc.exists()){
+        let subs=userDoc.data()["subjects"];
+        subs.find(e=>{
+          if(e.subject==className.split('_')[4]){
+            e.gradeStatus1="GRADED"
+          }
+        })
+        await updateDoc(userRef,{
+          subjects:subs
+        })
+      }else{
+        error="Unknown Error Occured"
+      }
       
     }else if(midNo==="2"){
       await updateDoc(facultyRef,{
         mid2:marks,
         remarks2:remarks,
       });
+      const userDoc = await getDoc(userRef);
+      if(userDoc.exists()){
+        let subs=userDoc.data()["subjects"];
+        subs.find(e=>{
+          if(e.subject==className.split('_')[4]){
+            e.gradeStatus2="GRADED"
+          }
+        })
+        await updateDoc(userRef,{
+          subjects:subs
+        })
+      }else{
+        error="Unknown Error Occured"
+      }
     }    
   } catch (e) {
     console.log(e);

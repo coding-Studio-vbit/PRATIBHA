@@ -111,17 +111,19 @@ const SubjectsList = () => {
           let gradetype;
           if (date !== undefined) {
             if (mid === 1) {
-              if (item.isgraded_1 && item.mid_1) {
+              
+              if (item.gradeStatus1 && item.mid_1) {
+               
                 gradetype = "Graded";
-              } else if (!item.isgraded_1 && item.mid_1) {
+              } else if (!item.gradeStatus1 && item.mid_1) {
                 gradetype = "Submitted for Grading";
               } else {
                 gradetype = "Not Submitted";
               }
             } else {
-              if (item.isgraded_2 && item.mid_2) {
+              if (item.gradeStatus2 && item.mid_2) {
                 gradetype = "Graded";
-              } else if (!item.isgraded_2 && item.mid_2) {
+              } else if (!item.gradeStatus2 && item.mid_2) {
                 gradetype = "Submitted for Grading";
               } else {
                 gradetype = "Not Submitted";
