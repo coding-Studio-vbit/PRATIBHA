@@ -84,7 +84,7 @@ const Grading = () => {
     );
 
     if (res == null) {
-      // setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
+      setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
     } else {
       setSetDialog(null);
     }
@@ -170,7 +170,7 @@ const Grading = () => {
     pageLoadError == null ? (
       <div className="grading">
         {setDialog != null && (
-          <Dialog message={setDialog} onOK={() => navigate("/")} />
+          <Dialog message={setDialog} onOK={()=>{navigate('/faculty/studentlist',{state:{sub:location.state.className}},{replace:true})}}/>
         )}
         <div className="left">
           <i
