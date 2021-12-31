@@ -62,7 +62,6 @@ const HODClassList = () => {
     ];
   
     const[button,setButton]=useState(true);
-    const dept = Course.value;
     const Courses = [
       { value: "B.TECH", label: "B.Tech" },
       { value: "M.TECH", label: "M.Tech" },
@@ -114,7 +113,7 @@ const HODClassList = () => {
   }
     return (  
         <div className='root-hod'>
-        <Navbar style={{marginBottom:'30px'}} title={dept!==undefined ?dept+" HOD":"HOD"} logout={true} />
+        <Navbar style={{marginBottom:'30px'}} title={"HOD"} logout={true} />
         <p className="dep-title">Your Classes</p>
         <div className="div-container-classesHOD">
        

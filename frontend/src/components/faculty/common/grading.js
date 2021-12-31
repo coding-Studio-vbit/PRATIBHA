@@ -599,7 +599,7 @@ const Grading = () => {
                   (e)=>midNo==="1"?setRemarks1(e.target.value):setRemarks2(e.target.value)
                 }
                 rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
-                {
+                {/* {
                   deadline!=null?
                   (
                     new Date()<deadline?
@@ -613,6 +613,11 @@ const Grading = () => {
                      
                       onClick={()=>updateMarks()}
                     >SAVE</button>
+                } */}
+                {
+                  <button className="savebutton"
+                  onClick={()=>updateMarks()}
+                  disabled={!currentUser.isMid1 && !currentUser.isMid2}>{!currentUser.isMid1 && !currentUser.isMid2}SAVE</button>
                 }
               </div>
           </div>

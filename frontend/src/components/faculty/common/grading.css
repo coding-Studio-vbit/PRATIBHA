@@ -154,12 +154,19 @@ select {
   height: auto !important;
   width:80px;
   align-self: center;
+  cursor: pointer;
  
 }
 .savebutton:hover{
   box-shadow: none;
   border:1px solid #e5e4e2;
 
+}
+.savebutton:disabled{
+  background-color: grey;
+  cursor:not-allowed;
+  box-shadow: none;
+  
 }
 .display {
   grid-area: pr;

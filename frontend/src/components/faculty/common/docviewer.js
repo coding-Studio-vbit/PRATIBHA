@@ -99,8 +99,8 @@ function Docviewer({link}){
     }, [])
 
     return (
-        <div>
-            {
+    
+            
                 extension!=null?
                 <Module extension={extension} object={link}/>:
                 <div>
@@ -108,9 +108,9 @@ function Docviewer({link}){
                         loading?<Spinner radius={2}/>:
                         <div>Unknown Error Occured</div>
                     }                    
-                </div>
+      
                 
-            }
+            
         </div>
     )      
 }
