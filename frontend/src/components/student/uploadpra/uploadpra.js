@@ -320,6 +320,7 @@ const Upload = () => {
               {mid==1 ? (
 
                   <div>
+                  <p>Upload an abstract for your PRA</p>
                     <label className={styles.praLabel}>PRA Title : </label>
                     <input
                   
@@ -332,7 +333,7 @@ const Upload = () => {
                     />
                     <p className={styles.errorField}>{titleError}</p>
                   </div>
-):( <p className={styles.pratitle}>Title : {praTitle}</p>)}
+):( <div> <p className={styles.pratitle}>Title : {praTitle}</p> <p>Upload proof of PRA </p> </div>)}
                   {deadLineInfo != null && (
                     <div>
                       {new Date() < deadLineInfo.lastDate.toDate() && (
