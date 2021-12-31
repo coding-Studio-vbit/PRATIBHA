@@ -70,7 +70,7 @@ const SubjectsList = () => {
             console.log("1");
             mid = 1;
 
-            date=date1.toLocaleDateString();
+            date=date1.toLocaleDateString('en-GB');
           } else {
           
             mid = 2;
@@ -79,7 +79,7 @@ const SubjectsList = () => {
 
 
               let  date2 = new Timestamp(item['deadline2'].seconds,item['deadline2'].nanoseconds).toDate();
-               date=date2.toLocaleDateString();
+               date=date2.toLocaleDateString('en-GB');
           } 
             
             
