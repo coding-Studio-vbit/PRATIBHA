@@ -5,10 +5,11 @@ import Button from "../../../global_ui/buttons/button.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation,useNavigate } from "react-router-dom";
-import { getPRA, setPRA } from "../../services/facultyServices.js";
+import { getPRA, setPRA,getCoeDeadline} from "../../services/facultyServices.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import Dialog from '../../../global_ui/dialog/dialog';
 import { Timestamp } from "firebase/firestore";
+
 
 const CreatePra = () => {
   const navigate = useNavigate();
@@ -16,6 +17,15 @@ const CreatePra = () => {
   const [dialog,setdialog] = useState(null);
   const [inst, setInst] = useState("");
   const location = useLocation();
+  const [DeadLine,setDeadLine] = useState('')
+  
+  const deadline = async () => {
+    const coeDeadline = await getCoeDeadline();
+    setDeadLine(coeDeadline.data.seconds)
+  }
+  deadline();
+  var CoeDate = new Date(DeadLine*1000);
+  console.log(CoeDate);
   
   const {currentUser} = useAuth()
   useEffect(()=>{
@@ -37,7 +47,7 @@ const CreatePra = () => {
       }
       setInst(res.instructions)
     }
-    if(location.state.editPRA)
+    if(location.state)
     fetchPRA()
   },[])
   async function handleCreate() {
@@ -55,7 +65,7 @@ const CreatePra = () => {
         width: "100vw",
       }}
     >
-      <Navbar title={ location.state.editPRA?"Edit PRA": " Create PRA"} />
+      <Navbar />
       {
                 dialog && <Dialog message={dialog} onOK={()=>{navigate('/faculty/studentlist',{state:location.state},{replace:true})}}/>
             } 
@@ -75,6 +85,7 @@ const CreatePra = () => {
               selected={date}
               value={date}
               minDate={new Date()}
+              maxDate= {CoeDate}
               onChange={(newVal) => {
                 setDate(newVal);
               }}
@@ -86,7 +97,7 @@ const CreatePra = () => {
           className="create-button normal"
           icon={<i className="fas fa-plus"></i>}
           onClick={handleCreate}
-          children={ location.state.editPRA?"Edit": "Create"}
+          
         />
       </div>
     </div>
