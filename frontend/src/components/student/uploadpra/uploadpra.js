@@ -129,15 +129,6 @@ const Upload = () => {
         {
               // console.log("wfoifihofhirfihf");
               const res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
-        
-              
-              // console.log(res,"fnowennvnenvvn");
-              // const res = await getUploadedFile(
-              //     user.course,user.year,user.department,
-              //     user.section,subject,val,"18p61a0513@vbithyd.ac.in"
-              // );
-              // console.log(res.url,10101001010);
-              // console.log(res);
               if (res.error == null) 
               {
                 

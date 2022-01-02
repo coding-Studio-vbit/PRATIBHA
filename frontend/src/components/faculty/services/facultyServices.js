@@ -98,22 +98,22 @@ export const getDepartments = async (course,year)=>{
       for (let index = 0; index < e.data()['OEs'].length; index++) {
         const ele = e.data()['OEs'][index];
         if(subjects[e.id]){
-          subjects[e.id]=[...subjects[e.id],{value:ele.subject + ' (OE)',label:ele.subject}]
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject ,label:ele.subject}]
 
         }else{
 
-          subjects[e.id]=[{value:ele.subject + ' (OE)',label:ele.subject}]
+          subjects[e.id]=[{value:ele.subject ,label:ele.subject}]
         }
       }
       if(e.data()['PEs'])
       for (let index = 0; index < e.data()['PEs'].length; index++) {
         const ele = e.data()['PEs'][index];
         if(subjects[e.id]){
-          subjects[e.id]=[...subjects[e.id],{value:ele.subject + ' (PE)',label:ele.subject}]
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject ,label:ele.subject}]
 
         }else{
 
-          subjects[e.id]=[{value:ele.subject + ' (PE)',label:ele.subject}]
+          subjects[e.id]=[{value:ele.subject ,label:ele.subject}]
         }
       }
       console.log(e.data());
