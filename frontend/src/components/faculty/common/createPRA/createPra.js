@@ -26,7 +26,7 @@ const CreatePra = () => {
   deadline();
   var CoeDate = new Date(DeadLine*1000);
   console.log(CoeDate);
-  
+
   const {currentUser} = useAuth()
   useEffect(()=>{
     
@@ -47,7 +47,7 @@ const CreatePra = () => {
       }
       setInst(res.instructions)
     }
-    if(location.state)
+    if(location.state.editPRA)
     fetchPRA()
   },[])
   async function handleCreate() {
@@ -57,7 +57,9 @@ const CreatePra = () => {
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
     await setPRA(sub, department, date, inst,currentUser.email,currentUser.isMid1,currentUser.isMid2);
     setdialog('PRA created')
+    navigate("/faculty/studentlist",{state:{sub:location.state.sub}});
   }
+  console.log(location)
 
   return (
     <div
@@ -65,13 +67,14 @@ const CreatePra = () => {
         width: "100vw",
       }}
     >
-      <Navbar />
+      <Navbar back={true} backURL={"/faculty/studentlist"} location={{state:{sub:location.state.sub}}} title={ location.state.editPRA?"Edit PRA": " Create PRA"} />
       {
                 dialog && <Dialog message={dialog} onOK={()=>{navigate('/faculty/studentlist',{state:location.state},{replace:true})}}/>
             } 
       <div className="div-container">
         <span className="text-style">Enter instructions (if any):</span>
         <textarea
+          style={{ resize: "none"}}
           rows={8}
           value={inst}
           className="span-style"
@@ -94,9 +97,11 @@ const CreatePra = () => {
           </span>
         </span>
         <Button
+        style={{padding:'5px'}}
           className="create-button normal"
-          icon={<i className="fas fa-plus"></i>}
+          icon={location.state.editPRA?false:<i className="fas fa-plus"></i>}
           onClick={handleCreate}
+          children={ location.state.editPRA?"Done": "Create"}
           
         />
       </div>
