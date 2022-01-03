@@ -19,6 +19,7 @@
   background-color: rgba(14, 114, 171, 1);
   color: #e4e4e4;
   height: auto;
+  padding: 6px;
 }
 
 .right {
@@ -83,19 +84,22 @@
 }
 .mid1title{
   text-align: center;
+  font-size: larger;
+  font-weight: 700;
+  letter-spacing: 1.5pt;
 }
- .input{
-  width: 8px;
-    border-radius:10px;
-    text-align: center;
- }
 
+.marksType{
+  text-align: center;
+  font-size:large;
+  font-weight: 400;
+  letter-spacing: 1pt;
+
+}
+ 
  
 input[type=number]:focus, textarea:focus {
   box-shadow: 0 0 5px #bbe8ff;
-  padding: 3px 0px 3px 3px;
-  margin: 5px 1px 3px 0px;
-  border: 2px solid #bbe8ff;
   background-color: #bbe8ff ;
 }
 
@@ -282,7 +286,18 @@ select {
 .selectList{
   background-color: #e5e4e2;
   width: "200px";
-  padding: 8px,
+  font-size: x-large;
+  border: none;
+  font-weight: 400;
+  outline: none;
+  height: 50px;
+  text-indent: 8px;
+  /* -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none; 
+  background: transparent url(http:cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat 100% center; */
+
 }
 
 .searchBtn{
@@ -291,6 +306,14 @@ select {
   outline: none;
   color:white;
   padding: 0px;
+  cursor: pointer;
+}
+.searchBtn:hover{
+box-shadow: none;
+}
+
+.searchBtn:disabled{
+  cursor:no-drop;
 }
 
 .inputField{
@@ -343,6 +366,16 @@ select {
   }
 }
 
+
+
+.rollNo{
+  outline: none;
+  border: none;
+  /* background-color: #c5c5c5; */
+  font-size: large;
+  border-radius: 6px;
+  padding: 6px;
+}
 
 
 @media screen and (max-width: 1220px) and (min-width:770px) {
