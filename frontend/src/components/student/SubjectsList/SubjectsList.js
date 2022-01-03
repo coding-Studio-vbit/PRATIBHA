@@ -109,6 +109,7 @@ const SubjectsList = () => {
       await subjectsdata.map(async (item, index) => {
         if (item.subject === subject) {
           let gradetype;
+
           if (date !== undefined) {
             if (mid === 1) {
               
@@ -155,7 +156,7 @@ const SubjectsList = () => {
 
   return (
     <div>
-      <Navbar title={courseTitle} logout={true} />
+      <Navbar title={courseTitle} logout={true} back={false} />
       {!loading ? (
         error == null ? (
           <div className="sub_body">
@@ -172,7 +173,7 @@ const SubjectsList = () => {
               <tbody>
                 {data &&
                   data.map((dataitem) => (
-                    <tr className="single-row" onClick={() => {
+                    <tr className="single-row" style={(dataitem.STATUS==="Graded")?{cursor:'no-drop'}:{cursor:'pointer'}} onClick={() => {
                           navigate("/student/uploadPRA", { state:
                            {rollno :`${currentUser.email}`,
                            subject: dataitem.SUBJECT}
@@ -184,7 +185,7 @@ const SubjectsList = () => {
                       <td>{dataitem.STATUS}</td>
                      
                       <td>{dataitem.SUBMIT_BEFORE}</td>
-                      <td
+                      <td 
                         onClick={() => {
                           navigate("/student/uploadPRA", { state:
                            {rollno :`${currentUser.email}`,

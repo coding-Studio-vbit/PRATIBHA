@@ -219,7 +219,7 @@ const ListofStudents = () => {
               <tbody>
                 {data &&
                   data
-                    .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
+                    .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
                     .map((dataitem) => (
                       <tr
                         key={dataitem.ROLL_NO}
