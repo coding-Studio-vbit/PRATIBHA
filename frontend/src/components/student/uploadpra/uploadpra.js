@@ -262,7 +262,7 @@ const Upload = () => {
     <div>
       {pageLoadError === null ? (
         <div>
-          <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={true}></Navbar>
+          <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={false}></Navbar>
           {showDialog && (
             <Dialog message={"Upload Successful"} onOK={dialogClose} />
           )}

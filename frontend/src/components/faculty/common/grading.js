@@ -44,21 +44,49 @@ const Grading = () => {
   const [deadline, setdeadline] = useState();
   const [allStudents, setAllStudents] = useState();
 
+  function validateMarks(x) {
+    if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===3)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }    
+  }
+
   async function updateMarks(){
     let marks={};
     if(midNo==="1"){
-      marks.Individuality1=parseInt(individuality1);
-      marks.Innovation1=parseInt(innovation1);
-      marks.Preparation1=parseInt(preparation1);
-      marks.Presentation1=parseInt(presentation1);
-      marks.Subject_Relevance1=parseInt(subRel1);
-    }else{
+      if(validateMarks(individuality1) && validateMarks(innovation1) && validateMarks(preparation1) &&
+      validateMarks(presentation1) && validateMarks(subRel1)){
+        marks.Individuality1=parseInt(individuality1);
+        marks.Innovation1=parseInt(innovation1);
+        marks.Preparation1=parseInt(preparation1);
+        marks.Presentation1=parseInt(presentation1);
+        marks.Subject_Relevance1=parseInt(subRel1);
+      }else{
+        marks=null;
+      }
+     
+    }
+    else{
+      if(validateMarks(individuality2) && validateMarks(innovation2) && validateMarks(preparation2) &&
+      validateMarks(presentation2) && validateMarks(subRel2))
+      {
       marks.Individuality2=parseInt(individuality2);
       marks.Innovation2=parseInt(innovation2);
       marks.Preparation2=parseInt(preparation2);
       marks.Presentation2=parseInt(presentation2);
       marks.Subject_Relevance2=parseInt(subRel2);
-    }    
+    } 
+    else {
+      marks=null;
+    }
+  }   
+
+  if(marks!=null)
+  {
     const res = await postMarks(
       currentUser.email,location.state.className,rollNo,midNo,marks,
       midNo==="1"?remarks1:remarks2
@@ -68,8 +96,9 @@ const Grading = () => {
       setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
     }else{
       setSetDialog(null);
-    }
+        }
   }
+}
 
   async function searchRoll(){
     if(rollNo!=null || rollNo!==""){
@@ -130,7 +159,7 @@ const Grading = () => {
     }else{
       console.log("Show Error");
     }
-  }   
+  }    
 
   async function getUserData() {
     setPageLoading(true);   
@@ -138,8 +167,8 @@ const Grading = () => {
       currentUser.email,location.state.className,
       location.state.path.split("/")[location.state.path.split("/").length-1]
     );
-    if(response.error==null){
-      if(response.data['mid1']){
+    if(response.error==null){  
+        if(response.data['mid1']){  
         setIndividuality1(response.data["mid1"]["Individuality1"]);
         setInnovation1(response.data["mid1"]["Innovation1"]);
         setPreparation1(response.data["mid1"]["Preparation1"]);
@@ -169,14 +198,15 @@ const Grading = () => {
     else{
       setUrl(null);
     }
-    const coeDeadLine = await getCoeDeadline();
+    const coeDeadLine = await getCoeDeadline(midNo);
     if(coeDeadLine.error==null){
       setdeadline(coeDeadLine.data.toDate());
     } else {
       setdeadline(null);
     }
     const data = await getAllStudentsData(currentUser.email,location.state.className);
-    if(data.error==null){
+    if(data.error==null)
+    {
       let students=[];
       data.data.forEach(element => {
         let s={};
@@ -185,7 +215,8 @@ const Grading = () => {
         students.push(s);      
       });
       setAllStudents(students);      
-    }else{
+    }
+    else{
       setAllStudents(null);
     }
     if(res.error!=null && response.error!=null && data.error!=null){
@@ -208,7 +239,7 @@ const Grading = () => {
     pageLoadError == null ? (
       <div className="grading">
         {setDialog != null && (
-          <Dialog message={setDialog} onOK={() => navigate("/")} />
+          <Dialog message={setDialog} onOK={() => setSetDialog(null)} />
         )}
         <div className="left">
           <i
@@ -239,6 +270,7 @@ const Grading = () => {
               <span>Roll no:</span>
               <div>
                 <input
+                className="rollNo"
                   type="text"
                   maxLength={10}
                   value={rollNo}
