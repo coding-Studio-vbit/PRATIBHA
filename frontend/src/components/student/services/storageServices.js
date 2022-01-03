@@ -58,6 +58,7 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                         const facultyRef = doc(
                             db,`faculty/${faculty}/${course}_${year}_${department}_${section}_${subject}`,email.split('@')[0]);
                         if(midNo=="1"){
+                            //TODO if mid1 is not submitted then setdoc in mid2
                             await setDoc(facultyRef,{
                                 isSubmitted:true,
                             })
