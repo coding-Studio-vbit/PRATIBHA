@@ -2,17 +2,39 @@ import * as React from "react";
 import { Spinner, Viewer } from "@react-pdf-viewer/core";
 import { Worker } from "@react-pdf-viewer/core";
 import { getStorage, ref, getMetadata } from "firebase/storage";
-
 import { storage } from "../../../firebase";
 import { useEffect,useState } from "react";
 
+import { Component } from 'react';
+// import logger from 'logging-library';
+import FileViewer from 'react-file-viewer';
+// import { CustomErrorComponent } from 'custom-error';
+
+class MyComponent extends Component {
+  render() {
+    return (
+      <FileViewer
+        fileType={this.props.type} 
+        filePath={this.props.object}
+        errorComponent={<h1>fuhhgueihg</h1>}
+        onError={this.onError}/>
+    );
+  }
+}
+
+
+
 const ViewPPT=({object})=>{
+    useEffect(() => {
+        console.log(object);
+    }, [])
+    
     const linkToPPTFile =
       "https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx";
     return (
         <>
           <iframe
-            src={`https://view.officeapps.live.com/op/embed.aspx?src=${linkToPPTFile}`}
+            src={linkToPPTFile}
              width="100%"
              height="500px"
             frameBorder="0"
@@ -83,11 +105,11 @@ function Docviewer({link}){
     const [loading, setloading] = useState(true);
 
     useEffect(() => {
-        // console.log(link);
-        // console.log("ABCD");
+        console.log(link);
+        console.log("XYZ");
         getMetadata(forestRef)
         .then((metadata) => {
-            // console.log(metadata.contentType.split("/")[1]);
+            console.log(metadata.contentType.split("/")[1]);
             setextension(metadata.contentType.split("/")[1]);
             setloading(false);
         })
@@ -96,30 +118,30 @@ function Docviewer({link}){
             setextension(null)
             setloading(false);
         });
-    }, [])
+    }, [link])
 
     return (
-    
-            
-                extension!=null?
-                <Module extension={extension} object={link}/>:
-                <div>
-                    {
-                        loading?<Spinner radius={2}/>:
-                        <div>Unknown Error Occured</div>
-                    }                    
-      
-                
-            
-        </div>
+        extension!=null?
+        <Module extension={extension} object={link}/>:
+        <div>
+            {
+                loading?<Spinner radius={2}/>:
+                <div>Unknown Error Occured</div>
+            }                                  
+        </div>        
     )      
 }
 
 function Module({extension,object}) {
+    console.log(extension,1010);
     switch(extension){
         case 'pdf':
-            return <ViewPdf object={object}/>
-        case 'pptx':
+            return <ViewPdf object={object} />
+        // case 'vnd.openxmlformats-officedocument.presentationml.presentation':
+        //     return <div style={{height:'60vh'}}> <MyComponent object={object} type="ppt"/></div>
+        case "vnd.openxmlformats-officedocument.wordprocessingml.document":
+            return <div style={{height:'60vh'}}> <MyComponent object={object} type="docx"/></div>
+        case 'vnd.openxmlformats-officedocument.presentationml.presentation':
             return <ViewPPT object={object}/>
         case 'jpeg':
             return <img src={object} alt="Done" height={80} width={80}/>

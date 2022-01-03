@@ -10,20 +10,10 @@ import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../servic
 
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
-// import { db } from "../../../firebase";
 
 const Grading = () => {
   let location = useLocation();
-
-
   const { currentUser } = useAuth();
-  // let location = {
-  //   state:{
-  //     path:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",
-  //     className:"BTech_1_CSE_A_Engineering Chemistry"
-  //   }
-  // }
-
   const [subject, setSubject] = useState(
     location.state.path.split("/")[location.state.path.split("/").length - 3]
   );
@@ -51,9 +41,7 @@ const Grading = () => {
   const [individuality2, setIndividuality2] = React.useState();
   const [preparation2, setPreparation2] = React.useState();
   const [presentation2, setPresentation2] = React.useState();
-
   const [deadline, setdeadline] = useState();
-
   const [allStudents, setAllStudents] = useState();
 
   async function updateMarks(){

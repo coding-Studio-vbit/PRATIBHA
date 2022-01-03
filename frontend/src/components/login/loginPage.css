@@ -1,4 +1,9 @@
-.loginPage {
+.page{
+  display: flex;
+  flex-direction:column;
+}
+
+.loginComponent {
   height: 100vh;
   display: flex;
   flex-direction: column;
