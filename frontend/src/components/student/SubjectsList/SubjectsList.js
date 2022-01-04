@@ -10,9 +10,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import Card_ from "../../global_ui/card/card_";
 import "./SubjectlistStyles.css";
+import Dialog from "../../global_ui/dialog/dialog";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
+  const [showDialog, setShowDialog] = useState(null);
 
   const location = useLocation();
   let navigate = useNavigate();
@@ -168,6 +170,14 @@ const SubjectsList = () => {
       {!loading ? (
         error == null ? (
           <div className="subBody">
+          {showDialog && (
+        <Dialog
+          message={showDialog}
+          onOK={() => {
+            setShowDialog(false);
+          }}
+        />
+      )}
             {/* <table style={{ marginTop: "4.5rem" }}>
               <thead>
                 <tr>
@@ -210,13 +220,19 @@ const SubjectsList = () => {
             <div className="list-grid">
               {data &&
                 data.map((dataitem) => (
-                  <div onClick={()=>{
+                  <div onClick={()=>{ if(dataitem.STATUS!='Graded'){
+
                     navigate("/student/uploadPRA", {
                         state: {
                           rollno: `${currentUser.email}`,
                           subject: dataitem.SUBJECT,
                         },
                       });
+                  }
+                  else{
+                    setShowDialog('Cannot edit PRA after grading')
+    
+                  }
                   }}>
                   <Card_
                     key={dataitem.SUBJECT}
