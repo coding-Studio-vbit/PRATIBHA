@@ -1,0 +1,27 @@
+.subBody{
+    margin:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    
+}
+
+.list-grid{
+    align-self: flex-start;
+    display:grid;
+    grid-column-gap: 50px;
+    grid-row-gap: 50px;
+    grid-template-columns: auto auto auto;
+}
+
+@media screen and (max-width: 1100px) {
+    .list-grid{
+        grid-template-columns: auto auto;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .list-grid{
+        grid-template-columns: auto;
+    }
+}
