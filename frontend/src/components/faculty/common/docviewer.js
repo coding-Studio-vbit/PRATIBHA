@@ -30,11 +30,11 @@ const ViewPPT=({object})=>{
     }, [])
     
     const linkToPPTFile =
-      "https://scholar.harvard.edu/files/torman_personal/files/samplepptx.pptx";
+      "https://storage.googleapis.com/slidescarnival_powerpoints/Paulina%20%C2%B7%20SlidesCarnival.pptx";
     return (
         <>
           <iframe
-            src={linkToPPTFile}
+            src={`https://view.officeapps.live.com/op/embed.aspx?src=${linkToPPTFile}`}
              width="100%"
              height="500px"
             frameBorder="0"
@@ -46,18 +46,15 @@ const ViewPPT=({object})=>{
 
 const ViewImage=({object})=>{
     return(
-        
-            <img width="100%"
-             height="510px"
-             src={object} alt="Unable to Load"/>
-       
+        <img height="510"
+        style={{backgroundSize:'contain'}} src={object} alt="Unable to Load"/>
     );
 }
 const ViewVideo=({object})=>{
     return(
         <video width="100%" height="500px" controls >
-      <source src="https://vod-progressive.akamaized.net/exp=1640442433~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F714%2F14%2F353573670%2F1436889546.mp4~hmac=37216186eae76a1428c2235043ed6e4f4cea5e9e7b4d5b53b0eb83e0333c1860/vimeo-prod-skyfire-std-us/01/714/14/353573670/1436889546.mp4" type="video/mp4"/>
-</video>
+            <source src="https://vod-progressive.akamaized.net/exp=1640442433~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F714%2F14%2F353573670%2F1436889546.mp4~hmac=37216186eae76a1428c2235043ed6e4f4cea5e9e7b4d5b53b0eb83e0333c1860/vimeo-prod-skyfire-std-us/01/714/14/353573670/1436889546.mp4" type="video/mp4"/>
+        </video>
     );
 }
 
@@ -137,12 +134,10 @@ function Module({extension,object}) {
     switch(extension){
         case 'pdf':
             return <ViewPdf object={object} />
-        // case 'vnd.openxmlformats-officedocument.presentationml.presentation':
-        //     return <div style={{height:'60vh'}}> <MyComponent object={object} type="ppt"/></div>
-        case "vnd.openxmlformats-officedocument.wordprocessingml.document":
-            return <div style={{height:'60vh'}}> <MyComponent object={object} type="docx"/></div>
         case 'vnd.openxmlformats-officedocument.presentationml.presentation':
             return <ViewPPT object={object}/>
+        case "vnd.openxmlformats-officedocument.wordprocessingml.document":
+            return <div style={{height:'60vh'}}><MyComponent object={object} type="docx"/></div>
         case 'jpeg':
             return <img src={object} alt="Done" height={80} width={80}/>
         case 'jpg':
