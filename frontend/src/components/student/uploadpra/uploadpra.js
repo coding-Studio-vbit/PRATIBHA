@@ -32,20 +32,25 @@ const Upload = () => {
     const [fileUploadLoading, setfileUploadLoading] = useState(false);
     const navigate = useNavigate();
     // DATA FROM THE PREVIOUS SCREEN
-    console.log(location.state.rollno);
-    console.log(location.state.subject);
+    // console.log(location.state.rollno);
+    // console.log(location.state.subject);
 
     function handleTitle(e) 
     {
       let value = e;
       setPraTitle(value);
-        if (value.length < 8) 
-        {
+        // if(mid==="2"){
+        //   return true;
+        // }
+        if(value==null){
+            setTitleError("Title must have atleast 8 characters");
+            return false;
+        }
+        else if (value.length < 8) {
             setTitleError("Title must have atleast 8 characters");
             return false;
         } 
-        else 
-        {
+        else{
             setTitleError("");
             return true;
         }
@@ -66,7 +71,10 @@ const Upload = () => {
         if (files.size > size)
         {
           setUrl(null);
-          setFileError("File Limit Exceeded");
+          if(mid==="1")
+          setFileError(`File Limit Exceeded, Upload a file of size less than ${size/1000}KB `);
+          else
+          setFileError(`File Limit Exceeded, Upload a file of size less than 1 GB`);
         } 
         else 
         {
@@ -126,15 +134,12 @@ const Upload = () => {
         // console.log( user.course,user.year,user.department,
         //     user.section,"Computer Networks","1","18p61a0513@vbithyd.ac.in");
         try
-        {
-              // console.log("wfoifihofhirfihf");
+        {// console.log("wfoifihofhirfihf");
               const res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
               if (res.error == null) 
               {
                 
-                  setPraTitle(res.data.topic);
-                 
-                  
+                  setPraTitle(res.data.topic);   
                   setexistingFile(res.data.link);
                  
                   setloadExisting(false);
@@ -257,7 +262,7 @@ const Upload = () => {
     <div>
       {pageLoadError === null ? (
         <div>
-          <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={true}></Navbar>
+          <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={false}></Navbar>
           {showDialog && (
             <Dialog message={"Upload Successful"} onOK={dialogClose} />
           )}
@@ -306,25 +311,42 @@ const Upload = () => {
                     className={styles.instructions}
                     style={{ alignSelf: "center" }}
                   >
-                    {deadLineInfo != null && <p>Instructions : {deadLineInfo.instructions}</p>}
+                    
+                    {
+                      deadLineInfo != null && 
+                      <p>Instructions : {deadLineInfo.instructions}</p>}
                   </div>
               {mid==1 ? (
 
                   <div>
-                  <p>Upload an abstract for your PRA</p>
-                    <label className={styles.praLabel}>PRA Title : </label>
-                    <input
-                  
-                      type="text"
-                      placeholder="TITLE OF THE ACTIVITY"
-                      className={styles.UploadinputStyle}
-                      value={praTitle}
-                      onChange={(e) => handleTitle(e.target.value)}
-                      maxLength={50}
-                    />
+                    <p className="praInfo">Upload an abstract for your PRA</p>
+                      <label className={styles.praLabel}>PRA Title </label>
+                      <input
+                    
+                        type="text"
+                        placeholder="TITLE OF THE ACTIVITY"
+                        className={styles.UploadinputStyle}
+                        value={praTitle}
+                        onChange={(e) => handleTitle(e.target.value)}
+                        maxLength={50}
+                      />
                     <p className={styles.errorField}>{titleError}</p>
                   </div>
-):( <div> <p className={styles.pratitle}>Title : {praTitle}</p> <p>Upload proof of PRA </p> </div>)}
+                  ):
+                  ( 
+                  <div> 
+                    <p className={styles.pratitle}>Title
+                        <input
+                        type="text"
+                        style={{marginLeft:'4px'}}
+                        placeholder="TITLE OF THE ACTIVITY"
+                        className={styles.UploadinputStyle}
+                        value={praTitle}
+                        onChange={(e) => handleTitle(e.target.value)}
+                        maxLength={50}
+                      />
+                    </p>
+                    <p>Upload proof of PRA </p> </div>)}
                   {deadLineInfo != null && (
                     <div>
                       {new Date() < deadLineInfo.lastDate.toDate() && (

@@ -34,10 +34,11 @@ input[type="file"] {
    width:70px;
    align-self: center;
  }
+
  .customFileUpload:hover{
   
       box-shadow: none;
-      border:1px solid #e5e4e2;
+      /* border:1px solid #e5e4e2; */
     
  }
  .customflex{
@@ -94,15 +95,20 @@ label{
 .errorField{
    color:red;
    padding-left: 15px;
-   font-size:12px;
+   font-size:16px;
    font-weight: 450;
 }
 
 .instructions{
-   color:#0E72AB;
+   color:darkslategrey;
    font-size:16px;
-   font-weight: bold;
+   font-weight: normal;
    margin: 0px;
+}
+
+.praInfo{
+   font-size: 16px;
+   text-align: center;
 }
 
 .fileName{
@@ -113,6 +119,8 @@ label{
 
 .selectList{
    width: auto;
+   min-width:200px;
+   padding: 5px 2px;
    outline: none;
    border: none;
    border-radius: 14px;

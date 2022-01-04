@@ -10,9 +10,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import Card_ from "../../global_ui/card/card_";
 import "./SubjectlistStyles.css";
+import Dialog from "../../global_ui/dialog/dialog";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
+  const [showDialog, setShowDialog] = useState(null);
 
   const location = useLocation();
   let navigate = useNavigate();
@@ -179,10 +181,18 @@ const SubjectsList = () => {
 
   return (
     <div>
-      <Navbar title={courseTitle} logout={true} />
+      <Navbar title={courseTitle} logout={true} back={false} />
       {!loading ? (
         error == null ? (
           <div className="subBody">
+            {showDialog && (
+              <Dialog
+                message={showDialog}
+                onOK={() => {
+                  setShowDialog(false);
+                }}
+              />
+            )}
             {/* <table style={{ marginTop: "4.5rem" }}>
               <thead>
                 <tr>
@@ -196,7 +206,7 @@ const SubjectsList = () => {
               <tbody>
                 {data &&
                   data.map((dataitem) => (
-                    <tr className="single-row" onClick={() => {
+                    <tr className="single-row" style={(dataitem.STATUS==="Graded")?{cursor:'no-drop'}:{cursor:'pointer'}} onClick={() => {
                           navigate("/student/uploadPRA", { state:
                            {rollno :`${currentUser.email}`,
                            subject: dataitem.SUBJECT}
@@ -208,7 +218,7 @@ const SubjectsList = () => {
                       <td>{dataitem.STATUS}</td>
                      
                       <td>{dataitem.SUBMIT_BEFORE}</td>
-                      <td
+                      <td 
                         onClick={() => {
                           navigate("/student/uploadPRA", { state:
                            {rollno :`${currentUser.email}`,
@@ -227,12 +237,16 @@ const SubjectsList = () => {
                 data.map((dataitem) => (
                   <div
                     onClick={() => {
-                      navigate("/student/uploadPRA", {
-                        state: {
-                          rollno: `${currentUser.email}`,
-                          subject: dataitem.SUBJECT,
-                        },
-                      });
+                      if (dataitem.STATUS != "Graded") {
+                        navigate("/student/uploadPRA", {
+                          state: {
+                            rollno: `${currentUser.email}`,
+                            subject: dataitem.SUBJECT,
+                          },
+                        });
+                      } else {
+                        setShowDialog("Cannot edit PRA after grading");
+                      }
                     }}
                   >
                     <Card_
