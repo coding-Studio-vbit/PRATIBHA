@@ -7,12 +7,14 @@ const Card_ = ({
   pra,
   status,
   date,
+  isWeek,
+  isSubmitted,
 //   klass,
 }) => {
     let navigate = useNavigate();
     const location = useLocation();
   return (
-    <div className={`CardContainer`} 
+    <div className={isWeek ? `CardContainer red`: isSubmitted ? `CardContainer green`:`CardContainer`} 
     // onClick={({currentuser, subject}) => {
     //     navigate("/student/uploadPRA", {
     //         state: {

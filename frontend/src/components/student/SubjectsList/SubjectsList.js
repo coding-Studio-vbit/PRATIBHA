@@ -91,12 +91,21 @@ const SubjectsList = () => {
             }
           }
 
-          console.log(date);
-          console.log(currentDate);
+          // console.log(date);
+          // console.log(currentDate);
 
-          // var Difference_In_Time = date.getTime() - currentDate.getTime();
-          // var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+          var dateint = new Date(date).getTime();
+          var currdate = new Date(currentDate).getTime();
+          // console.log(dateint);
+          // console.log(currdate);
+
+          var Difference_In_Time = dateint - currdate;
+          var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
           // console.log(Difference_In_Days);
+          var isWeek = false;
+          if (Difference_In_Days <= 7) {
+            isWeek = true;
+          }
 
           // let  date = new Timestamp(deadline.seconds,deadline.nanoseconds).toDate();
           //   let date = new Date(seconds * 1000);
@@ -107,7 +116,7 @@ const SubjectsList = () => {
           //     "-" +
           //     date.getFullYear().toString();
 
-          await fetchusersubject(document, date, mid, item.subject);
+          await fetchusersubject(document, date, mid, item.subject, isWeek);
         });
       } else {
         // setError("SUBJECT DOES NOT EXIST");
@@ -115,26 +124,31 @@ const SubjectsList = () => {
     });
   };
 
-  const fetchusersubject = async (document, date, mid, subject) => {
+  const fetchusersubject = async (document, date, mid, subject, isWeek) => {
     try {
       const subjectsdata = document["subjects"];
       await subjectsdata.map(async (item, index) => {
         if (item.subject === subject) {
-          let gradetype;
+          let gradetype,
+            isSubmitted = false;
           if (date !== undefined) {
             if (mid === 1) {
               if (item.gradeStatus1 && item.mid_1) {
                 gradetype = "Graded";
+                isSubmitted = true;
               } else if (!item.gradeStatus1 && item.mid_1) {
                 gradetype = "Submitted for Grading";
+                isSubmitted = true;
               } else {
                 gradetype = "Not Submitted";
               }
             } else {
               if (item.gradeStatus2 && item.mid_2) {
                 gradetype = "Graded";
+                isSubmitted = true;
               } else if (!item.gradeStatus2 && item.mid_2) {
                 gradetype = "Submitted for Grading";
+                isSubmitted = true;
               } else {
                 gradetype = "Not Submitted";
               }
@@ -148,6 +162,8 @@ const SubjectsList = () => {
             PRA_TOPIC: item.topic ? item.topic : " ",
             STATUS: gradetype,
             SUBMIT_BEFORE: date,
+            IS_WEEK: isWeek,
+            IS_SUBMITTED: isSubmitted,
           };
           setData((data) => [...data, resdata]);
         }
@@ -156,7 +172,6 @@ const SubjectsList = () => {
       setError("ERROR OCCURED");
     }
   };
-
 
   useEffect(() => {
     fetchdata();
@@ -210,21 +225,25 @@ const SubjectsList = () => {
             <div className="list-grid">
               {data &&
                 data.map((dataitem) => (
-                  <div onClick={()=>{
-                    navigate("/student/uploadPRA", {
+                  <div
+                    onClick={() => {
+                      navigate("/student/uploadPRA", {
                         state: {
                           rollno: `${currentUser.email}`,
                           subject: dataitem.SUBJECT,
                         },
                       });
-                  }}>
-                  <Card_
-                    key={dataitem.SUBJECT}
-                    subject={dataitem.SUBJECT}
-                    pra={dataitem.PRA_TOPIC}
-                    status={dataitem.STATUS}
-                    date={dataitem.SUBMIT_BEFORE}
-                  />
+                    }}
+                  >
+                    <Card_
+                      key={dataitem.SUBJECT}
+                      subject={dataitem.SUBJECT}
+                      pra={dataitem.PRA_TOPIC}
+                      status={dataitem.STATUS}
+                      date={dataitem.SUBMIT_BEFORE}
+                      isWeek={dataitem.IS_WEEK}
+                      isSubmitted={dataitem.IS_SUBMITTED}
+                    />
                   </div>
                 ))}
             </div>

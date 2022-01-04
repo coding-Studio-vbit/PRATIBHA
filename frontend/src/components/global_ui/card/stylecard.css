@@ -15,14 +15,20 @@
   /* font-size: x-large; */
 }
 
+.red{
+  background-color: #fdcbc9;
+}
+
+.green{
+  background-color: #daffb0;
+}
+
 p {
-    margin:0.5rem;
+  margin: 0.5rem;
 }
 
 @media screen and (max-width: 700px) {
-
-    .CardContainer{
-        width: 200px;
-    }
-
+  .CardContainer {
+    width: 200px;
+  }
 }
