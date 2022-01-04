@@ -19,9 +19,13 @@ const Navbar = ({children,backURL,title,location,back=true,logout=false,pra = fa
             flexGrow:1
         }} ></div>
         <span className='title' >{title}</span>
-        {(logout===true && <button  className="btn">
-        <i onClick={()=>signOut()} className="fas fa-power-off"></i>
-        </button>)}
+        {
+            logout===true && 
+            <button className="btn">
+                <i onClick={()=>signOut()} className="fas fa-sign-out-alt"></i>
+                <span class="tooltiptext">logout</span>
+            </button>
+        }
         
             <div className='createPRA' style={{
                 display:'flex',

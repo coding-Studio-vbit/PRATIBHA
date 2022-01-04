@@ -400,7 +400,7 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
   }
 }
 
-async function getCoeDeadline() {
+async function getCoeDeadline(midNo) {
   const adminRef = doc(db,"adminData","coeDeadline");
   console.log("ABCD");
   try {
@@ -408,11 +408,22 @@ async function getCoeDeadline() {
     const docSnap = await getDoc(adminRef);
     if(docSnap.exists()){
       console.log("XY");
+      if(midNo==="1")
+      {
       return {
         data:docSnap.data()["coeDeadline"],
         error:null
+          }         
       }
-    }else{
+      else if(midNo==="2")
+      {
+        return {
+          data:docSnap.data()["coeDeadline2"],
+          error:null
+            }     
+      }
+    }
+    else{
       console.log("EFGH");
       return {
         data:null,
