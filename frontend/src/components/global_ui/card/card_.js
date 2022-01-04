@@ -22,10 +22,10 @@ const Card_ = ({
     //       });
     // }}
     >
-      {subject && <p>{subject}</p>} 
-      {pra && <p><b>Topic: </b>{pra}</p>} 
-      {status && <p><b>Status: </b>{status}</p>} 
-      {date && <p><b>Submit Before: </b>{date}</p>} 
+      {subject && <p className="newcard" style={{color: "#0E72AB", fontWeight:'bold'}}>{subject}</p>} 
+      {pra && <p className="newcard"><b>Topic: </b>{pra}</p>} 
+      {status && <p className="newcard"><b>Status: </b>{status}</p>} 
+      {date && <p className="newcard"><b>Submit Before: </b>{date}</p>} 
     </div>
   );
 };
