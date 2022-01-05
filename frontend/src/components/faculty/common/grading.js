@@ -284,7 +284,7 @@ const Grading = () => {
               }}
             ></i>
 
-            <h3 style={{ textAlign: "center" }}>Student Details {switchIndex}</h3>
+            <h3 style={{ textAlign: "center" }}>Student Details </h3>
 
             <div className="details">
                 <div style={{display: "flex",gap: "8px",alignItems: "center"}}>

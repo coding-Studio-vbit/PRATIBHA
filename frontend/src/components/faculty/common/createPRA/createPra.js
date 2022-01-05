@@ -18,6 +18,8 @@ const CreatePra = () => {
   const location = useLocation();
   
   const {currentUser} = useAuth()
+  console.log(currentUser)
+  console.log(currentUser.isMid2)
   useEffect(()=>{
     
     const fetchPRA = async ()=>{
