@@ -284,7 +284,7 @@ const Grading = () => {
               }}
             ></i>
 
-            <h3 style={{ textAlign: "center" }}>Student Details {switchIndex}</h3>
+            <h3 style={{ textAlign: "center" }}>Student Details </h3>
 
             <div className="details">
                 <div style={{display: "flex",gap: "8px",alignItems: "center"}}>
@@ -610,7 +610,7 @@ const Grading = () => {
                         className="selectList"
                         id="selectList">
                         <option value="1">MID I</option> 
-                        {!currentUser.mid1 && <option value="2">MID II</option>}
+                        {currentUser.isMid2 && <option value="2">MID II</option>}
                       </select>
                   </div>
 

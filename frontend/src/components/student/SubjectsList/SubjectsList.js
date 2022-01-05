@@ -178,58 +178,20 @@ const SubjectsList = () => {
   }, []);
 
   return (
-    <div>
+    <div className="main-body-subjects">
       <Navbar title={courseTitle} logout={true} back={false} />
       {!loading ? (
         error == null ? (
           <div className="subBody">
-            {showDialog && (
-              <Dialog
-                message={showDialog}
-                onOK={() => {
-                  setShowDialog(false);
-                }}
-              />
-            )}
-            {/* <table style={{ marginTop: "4.5rem" }}>
-              <thead>
-                <tr>
-                  <th>SUBJECT</th>
-                  <th>PRA TOPIC</th>
-                  <th>STATUS</th>
-                  <th>SUBMIT BEFORE</th>
-                  <th>EDIT</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data &&
-                  data.map((dataitem) => (
-                    <tr className="single-row" style={(dataitem.STATUS==="Graded")?{cursor:'no-drop'}:{cursor:'pointer'}} onClick={() => {
-                          navigate("/student/uploadPRA", { state:
-                           {rollno :`${currentUser.email}`,
-                           subject: dataitem.SUBJECT}
-                          });
-                        }} key={dataitem.SUBJECT}>
-                      <td>{dataitem.SUBJECT}</td>
-                      
-                      <td>{dataitem.PRA_TOPIC}</td>
-                      <td>{dataitem.STATUS}</td>
-                     
-                      <td>{dataitem.SUBMIT_BEFORE}</td>
-                      <td 
-                        onClick={() => {
-                          navigate("/student/uploadPRA", { state:
-                           {rollno :`${currentUser.email}`,
-                           subject: dataitem.SUBJECT}
-                          });
-                        }}
-                      >
-                        <EditIcon style={{ color: "rgba(11, 91, 138, 1)" }} />
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table> */}
+          {showDialog && (
+        <Dialog
+          message={showDialog}
+          onOK={() => {
+            setShowDialog(false);
+          }}
+        />
+      )}
+           
             <div className="list-grid">
               {data &&
                 data.map((dataitem) => (
