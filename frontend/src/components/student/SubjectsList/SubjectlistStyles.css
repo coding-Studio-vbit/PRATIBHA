@@ -1,5 +1,13 @@
+.main-body-subjects{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .subBody{
-    margin:20px;
+    margin-top:20px;
     display:flex;
     align-items:center;
     justify-content:center;
