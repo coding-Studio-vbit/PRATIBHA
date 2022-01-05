@@ -156,18 +156,19 @@ const ListofStudents = () => {
     if (data) {
       for (var student = 0; student < data.length; student++) {
         if (data[student]["MID_1"] == " ") {
-          std1 = data[student]["ROLL_NO"].toString() + "@vbithyd.ac.in";
+          std1 = data[student];
           break;
         }
       }
       for (var student = 0; student < data.length; student++) {
         if (data[student]["MID_2"] == " ") {
-          std2 = data[student]["ROLL_NO"].toString() + "@vbithyd.ac.in";
+          std2 = data[student];
         }
       }
     }
     var std = std1 ? std1 : std2;
     setStudent(std);
+    console.log(std);
     return std;
   };
 
@@ -262,6 +263,29 @@ const ListofStudents = () => {
                 children="GRADE"
                 onClick={() => {
                   navigate("/faculty/grading", { state: student });
+                }}
+                onClick={() => {
+                  navigate("/faculty/grading", {
+                    state: {
+                      studentmail: student.ROLL_NO + "@vbithyd.ac.in",
+                      className: location.state.sub,
+                      path:
+                        subjectval[0] +
+                        "/" +
+                        subjectval[1] +
+                        "/" +
+                        subjectval[2] +
+                        "/" +
+                        subjectval[3] +
+                        "/" +
+                        subjectval[4] +
+                        "/" +
+                        "1" +
+                        "/" +
+                        student.ROLL_NO,
+                        topicname : student.TOPIC_NAME
+                    },
+                  });
                 }}
                 width="200"
                 className="rare"

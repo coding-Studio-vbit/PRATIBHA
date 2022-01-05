@@ -72,8 +72,6 @@ const SubjectsList = () => {
             item["deadline1"].seconds,
             item["deadline1"].nanoseconds
           ).toDate();
-          console.log(date1);
-          console.log(coedeadLine);
           let newDate = new Date();
           let currentDate = newDate.toLocaleDateString("en-GB");
 
