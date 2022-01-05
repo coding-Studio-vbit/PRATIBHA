@@ -15,21 +15,22 @@ const CreatePra = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const [dialog,setdialog] = useState(null);
+  const [isNewPra,setisNewPra] = useState(true)
   const [inst, setInst] = useState("");
   const location = useLocation();
   const [DeadLine,setDeadLine] = useState('')
+  const {currentUser} = useAuth()
   
   const deadline = async () => {
-    const coeDeadline = await getCoeDeadline();
+    const coeDeadline = await getCoeDeadline(currentUser.isMid1?"1":"2");
     setDeadLine(coeDeadline.data.seconds)
   }
   deadline();
   var CoeDate = new Date(DeadLine*1000);
   console.log(CoeDate);
 
-  const {currentUser} = useAuth()
-  console.log(currentUser)
-  console.log(currentUser.isMid2)
+  
+  
   useEffect(()=>{
     
     const fetchPRA = async ()=>{
@@ -49,8 +50,10 @@ const CreatePra = () => {
       }
       setInst(res.instructions)
     }
-    if(location.state.editPRA)
-    fetchPRA()
+    if(location.state.editPRA){
+      fetchPRA();
+      setisNewPra(false);
+    }
   },[])
   async function handleCreate() {
     const parts = location.state.sub.split("_");
@@ -59,9 +62,7 @@ const CreatePra = () => {
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
     await setPRA(sub, department, date, inst,currentUser.email,currentUser.isMid1,currentUser.isMid2);
     setdialog('PRA created')
-    navigate("/faculty/studentlist",{state:{sub:location.state.sub}});
   }
-  console.log(location)
 
   return (
     <div
@@ -69,9 +70,9 @@ const CreatePra = () => {
         width: "100vw",
       }}
     >
-      <Navbar back={true} backURL={"/faculty/studentlist"} location={{state:{sub:location.state.sub}}} title={ location.state.editPRA?"Edit PRA": " Create PRA"} />
+      <Navbar backURL={isNewPra?"/faculty/classlist":'/faculty/studentlist'} props={isNewPra?false:{state:{sub:location.state.sub}}} title={ location.state.editPRA?"Edit PRA": " Create PRA"} />
       {
-                dialog && <Dialog message={dialog} onOK={()=>{navigate('/faculty/studentlist',{state:location.state},{replace:true})}}/>
+                dialog && <Dialog message={dialog} onOK={()=>{navigate('/faculty/studentlist',{state:{sub:location.state.sub}})}}/>
             } 
       <div className="div-container">
         <span className="text-style">Enter instructions (if any):</span>
