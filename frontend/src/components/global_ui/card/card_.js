@@ -22,7 +22,7 @@ const Card_ = ({
     //       });
     // }}
     >
-      {subject && <p className="newcard" style={{color: "#0E72AB", fontWeight:'bold'}}>{subject}</p>} 
+      {subject && <p className="newcardtitle" style={{color: "#0E72AB", fontWeight:'bold'}}>{subject}</p>} 
       {pra && <p className="newcard"><b>Topic: </b>{pra}</p>} 
       {status && <p className="newcard"><b>Status: </b>{status}</p>} 
       {date && <p className="newcard"><b>Submit Before: </b>{date}</p>} 
