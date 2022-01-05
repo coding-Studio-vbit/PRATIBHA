@@ -610,7 +610,7 @@ const Grading = () => {
                         className="selectList"
                         id="selectList">
                         <option value="1">MID I</option> 
-                        {!currentUser.mid1 && <option value="2">MID II</option>}
+                        {currentUser.mid2 && <option value="2">MID II</option>}
                       </select>
                   </div>
 
