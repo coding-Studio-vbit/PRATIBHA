@@ -22,8 +22,15 @@ const CreatePra = () => {
   const {currentUser} = useAuth()
   
   const deadline = async () => {
-    const coeDeadline = await getCoeDeadline(currentUser.isMid1?"1":"2");
-    setDeadLine(coeDeadline.data.seconds)
+    const coeDeadline = await getCoeDeadline(currentUser.isMid1?"1":currentUser.isMid2?"2":false);
+    if(coeDeadline){
+
+      setDeadLine(coeDeadline.data.seconds)
+    }
+    else{
+
+      setDeadLine(false)
+    }
   }
   deadline();
   var CoeDate = new Date(DeadLine*1000);
@@ -32,7 +39,7 @@ const CreatePra = () => {
   
   
   useEffect(()=>{
-    
+    // deadline();
     const fetchPRA = async ()=>{
       const parts = location.state.sub.split("_");
     const sub = parts[4];
@@ -86,6 +93,7 @@ const CreatePra = () => {
         <span className="text-style2">
           Set PRA Deadline:
           <span>
+          {console.log(date)}
             <DatePicker
               dateFormat="dd/MM/yyyy"
               selected={date}
