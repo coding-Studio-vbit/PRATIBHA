@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./loginPage.css";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 
@@ -18,16 +18,14 @@ export default function LoginPage() {
       } else if (currentUser.userType === "FACULTY") {
         if (currentUser.isFirstTime) {
           nav("/faculty/enroll", { replace: true });
-        }else if(currentUser.isHOD){
+        } else if (currentUser.isHOD) {
           nav("/faculty/hodclasslist", { replace: true });
-
-        }else if(currentUser.isCOE){
+        } else if (currentUser.isCOE) {
           nav("/faculty/coesearch", { replace: true });
-          
         } else {
           nav("/faculty/classlist", { replace: true });
         }
-      }else {
+      } else {
         //COE
         nav("/coesearch", { replace: true });
       }
@@ -37,7 +35,6 @@ export default function LoginPage() {
   return loading === false ? (
     <div className="page">
       <div className="loginComponent">
-
         <div className="logos">
           <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
           <img alt="loading" className="vbit" src="/vbit.png" />
@@ -46,13 +43,13 @@ export default function LoginPage() {
 
         <div className="row">
           <div className="button-and-icon">
-            <i className="fas fa-user-circle icons"></i>
+            <i className="fas fa-graduation-cap icons "></i>
             <button className="loginBtn" onClick={signInWithGoogle}>
               Login as Student
             </button>
           </div>
           <div className="button-and-icon">
-            <i className="fas fa-graduation-cap icons "></i>
+            <i className="fas fa-user-circle icons"></i>
 
             <button className="loginBtn" onClick={signInWithGoogle}>
               Login as Faculty
@@ -61,7 +58,7 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-    ):(
+  ) : (
     <LoadingScreen />
   );
 }

@@ -100,7 +100,8 @@ const HODClassList = () => {
       ];
     function handleClick(){
       console.log(Course.value+'_'+Year.value+'_'+Section.value+'_'+Subject.value);
-      nav('/viewsubmissions',{state:{
+      nav('/faculty/viewsubmissions',{state:{
+        Course:Course.value,
         Year:Year.value,
         Dept:dep.value,
         Section:Section.value,

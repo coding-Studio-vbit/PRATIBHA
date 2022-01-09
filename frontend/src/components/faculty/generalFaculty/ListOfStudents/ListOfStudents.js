@@ -19,7 +19,6 @@ const ListofStudents = () => {
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
-  console.log(location.state.sub);
   const val = location.state.sub;
   const subjectval = val.split("_");
   const course =

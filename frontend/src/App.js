@@ -60,13 +60,16 @@ const AllRoutes = () => {
                 {currentUser.isCOE && (
                   <>
                     <Route exact path="/coesearch" element={<CoeSearch />} />
-                    <Route
+                  </>
+                )}
+                 {currentUser.isCOE || currentUser.isHOD && (
+                  <Route
                       exact
                       path="/viewsubmissions"
                       element={<ViewSubmissions />}
                     />
-                  </>
-                )}
+
+                 )}   
 
                 <Route exact path="/createPra" element={<CreatePra />} />
 
