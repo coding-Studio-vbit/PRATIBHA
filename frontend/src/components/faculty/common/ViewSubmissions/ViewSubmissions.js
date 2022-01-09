@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import { getStudentData } from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
 import { useAuth } from "../../../context/AuthContext";
+import { getPRA } from "../../services/facultyServices";
 
 const ViewSubmissions = () => {
   const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ const ViewSubmissions = () => {
   const { currentUser } = useAuth();
   const location = useLocation();
   const passedData = location.state;
+  console.log(passedData)
   let title =
     passedData.Year +
     "_" +
@@ -26,15 +28,22 @@ const ViewSubmissions = () => {
     passedData.Subject;
 
   let course, courseName;
-  if (passedData.Course === "B.Tech") {
+  if (passedData.Course === "BTech") {
     course = "BTech";
-  } else if (passedData.Course === "M.Tech") {
+  } else if (passedData.Course === "MTech") {
     course = "MTech";
   }
 
   courseName = course;
 
   course = course + "_" + title;
+  console.log(course)
+  const DepartmentForFaculty = passedData.Course + '_' +passedData.Year +
+  "_" +
+  passedData.Dept +
+  "_" +
+  passedData.Section;
+  console.log(DepartmentForFaculty)
 
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
@@ -57,8 +66,13 @@ const ViewSubmissions = () => {
   };
 
   const Fetchdata = async () => {
+    
+
+   const result = await getPRA(passedData.Subject, DepartmentForFaculty)
+   const facultyID = result.facultyID;
+
     const studentref = query(
-      collection(db, `faculty/${currentUser.email}/${course}`)
+      collection(db, `faculty/${facultyID}/${course}`)
       // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
 
@@ -151,6 +165,9 @@ const ViewSubmissions = () => {
       }
     });
 
+ 
+
+
     setloading(false);
   };
 
@@ -160,7 +177,7 @@ const ViewSubmissions = () => {
 
   return (
     <div>
-      <Navbar title={title} backURL={"/faculty/coesearch"} logout={true} />
+      <Navbar title={title} logout={true} />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
@@ -183,7 +200,7 @@ const ViewSubmissions = () => {
             <tbody>
               {data &&
                 data
-                  .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
+                .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
                   .map((dataitem) => (
                     <tr key={dataitem.ROLL_NO}>
                       <td>{dataitem.ROLL_NO}</td>
