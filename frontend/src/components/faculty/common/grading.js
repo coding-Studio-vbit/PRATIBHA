@@ -4,7 +4,7 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import Docviewer from "./docviewer";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { LoadingScreen } from "../../global_ui/spinner/spinner";
+import { LoadingScreen, OverlayLoader } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
 
@@ -47,6 +47,9 @@ const Grading = () => {
   const [switchIndex, setSwitchIndex] = useState();
 
   const [isSwitchDisabled, setIsSwitchDisabled] = useState(false);
+
+
+  const [changeLoader, setChangeLoader] = useState(false);
 
   function validateMarks(x) {
     if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===3){
@@ -102,6 +105,7 @@ const Grading = () => {
 }
 
   async function searchRoll(val){
+    setPageLoading(true);
     if(val!=null || val!==""){
       let x=allStudents.find(element=>element.id===val)
       if(x==null){
@@ -160,6 +164,7 @@ const Grading = () => {
     }else{
       console.log("Show Error");
     }
+    setPageLoading(false)
   }    
 
   async function getUserData() {
@@ -268,6 +273,9 @@ const Grading = () => {
           {
               setDialog != null && 
               <Dialog message={setDialog} onOK={() => setSetDialog(null)} />
+          }
+          {
+            changeLoader && <LoadingScreen isTransparent={true}/>
           }
           <div className="left">
             <i style={{
@@ -665,7 +673,7 @@ const Grading = () => {
       <div>{pageLoadError}</div>
     )
   ) : (
-    <LoadingScreen />
+    <LoadingScreen isTransparent={true} />
   );
 };
 

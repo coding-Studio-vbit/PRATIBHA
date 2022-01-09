@@ -63,9 +63,16 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                                 isSubmitted:true,
                             })
                         }else if(midNo=="2"){
-                            await updateDoc(facultyRef,{
-                                isSubmitted:true,
-                            })
+                            const doc =await getDoc(facultyRef);
+                            if(doc.exists()){
+                                await updateDoc(facultyRef,{
+                                    isSubmitted:true,
+                                })
+                            }else{
+                                await setDoc(facultyRef,{
+                                    isSubmitted:true,
+                                })
+                            }                            
                         }
                     }else{
                         return "Unknown Error Occured, Try Reuploading the file";
