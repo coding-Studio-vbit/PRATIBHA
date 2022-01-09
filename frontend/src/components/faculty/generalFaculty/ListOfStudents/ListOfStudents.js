@@ -15,7 +15,7 @@ const ListofStudents = () => {
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
   const [buttonText, setButtonText] = useState("EDIT PRA");
-  const [student, setStudent] = useState(null);
+  const [student, setStudent] = useState({});
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -156,6 +156,7 @@ const ListofStudents = () => {
     if (data) {
       for (var student = 0; student < data.length; student++) {
         if (data[student]["MID_1"] == " ") {
+          console.log(data[student]);
           std1 = data[student];
           break;
         }
@@ -220,7 +221,7 @@ const ListofStudents = () => {
               <tbody>
                 {data &&
                   data
-                    .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
+                    // .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
                     .map((dataitem) => (
                       <tr
                         key={dataitem.ROLL_NO}
@@ -261,13 +262,13 @@ const ListofStudents = () => {
             <div className="LOF_buttons">
               <Button
                 children="GRADE"
-                onClick={() => {
-                  navigate("/faculty/grading", { state: student });
-                }}
-                onClick={() => {
+                // onClick={() => {
+                //   navigate("/faculty/grading", { state: student });
+                // }}
+                onClick={async() => {
                   navigate("/faculty/grading", {
                     state: {
-                      studentmail: student.ROLL_NO + "@vbithyd.ac.in",
+                      studentmail: data[0].ROLL_NO + "@vbithyd.ac.in",
                       className: location.state.sub,
                       path:
                         subjectval[0] +
@@ -283,7 +284,7 @@ const ListofStudents = () => {
                         "1" +
                         "/" +
                         student.ROLL_NO,
-                        topicname : student.TOPIC_NAME
+                        topicname : data[0].TOPIC_NAME
                     },
                   });
                 }}
