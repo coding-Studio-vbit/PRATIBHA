@@ -19,16 +19,19 @@ const LockList = () => {
   const [Department, setDepartment] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
+
   const [BTechList, setBTechList] = useState([]);
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
-  const [disabledep,setdisabledep]=useState(true);
-  const [disablesec,setdisablesec]=useState(true);
-  const [disablesub,setdisablesub]=useState(true);
+
+  const [disabledep, setdisabledep] = useState(true);
+  const [disablesec, setdisablesec] = useState(true);
+  const [disablesub, setdisablesub] = useState(true);
 
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
   const [subjects, setSubjects] = useState([
     { value: "loading", label: "Loading..." },
   ]);
@@ -38,6 +41,8 @@ const LockList = () => {
   const [sections, setSections] = useState([
     { value: "loading", label: "Loading..." },
   ]);
+
+
   const { currentUser } = useAuth();
   const nav = useNavigate();
   useEffect(() => {
@@ -52,9 +57,8 @@ const LockList = () => {
   }, [Course, Year]);
 
   function handleDone() {
-    //store this list of mtech btech and mba for this respective faculty and then show "../../generalFaculty/ClassList/classList" screen for that faculty
+    //store this list of mtech btech and mba for this respective faculty and then show classlist screen for that faculty
     var finalList = BTechList.concat(MTechList, MBAList);
-    console.log(finalList);
     if (finalList.length === 0) {
       setShowDialog("Add your classes for this semester");
     } else {
@@ -63,8 +67,6 @@ const LockList = () => {
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
-    
-    console.log(Course.value);
     if (Course.value === "BTech") {
       const newBTech =
         "BTech_" +
@@ -107,14 +109,13 @@ const LockList = () => {
       else {
         setShowDialog("Class already added");
       }
-      
     }
-    setDepartments([{value:'Loading',label:'Loading'}])
-    setSections([{value:'Loading',label:'Loading'}])
-    setSubjects([{value:'Loading',label:'Loading'}])
-    setdisabledep(true)
-    setdisablesec(true)
-    setdisablesub(true)
+    setDepartments([{ value: "Loading", label: "Loading" }]);
+    setSections([{ value: "Loading", label: "Loading" }]);
+    setSubjects([{ value: "Loading", label: "Loading" }]);
+    setdisabledep(true);
+    setdisablesec(true);
+    setdisablesub(true);
   };
 
   //handle remove
@@ -144,8 +145,6 @@ const LockList = () => {
 
   async function enroll(list) {
     if (currentUser.isHOD) {
-      console.log("hodcalled");
-      console.log(currentUser.isHOD);
       setIsLoading(true);
       const res = await enrollHODClasses(currentUser.email, list);
       if (res == null) {
@@ -156,8 +155,6 @@ const LockList = () => {
         setShowDialog(res);
       }
     } else {
-      console.log("normalcalled");
-      console.log(currentUser.isHOD);
       setIsLoading(true);
       const res = await enrollClasses(currentUser.email, list);
       if (res == null) {
@@ -181,15 +178,17 @@ const LockList = () => {
               message={showDialog}
               onOK={() => {
                 isSuccess
-                  ? currentUser.isHOD? nav( 
-                      "/faculty/hodclasslist",
-                      { state: currentUser },
-                      { replace: true }
-                    ): (nav( 
-                      "/faculty/classlist",
-                      { state: currentUser },
-                      { replace: true }
-                    ))
+                  ? currentUser.isHOD
+                    ? nav(
+                        "/faculty/hodclasslist",
+                        { state: currentUser },
+                        { replace: true }
+                      )
+                    : nav(
+                        "/faculty/classlist",
+                        { state: currentUser },
+                        { replace: true }
+                      )
                   : setShowDialog(false);
               }}
             />
@@ -204,7 +203,6 @@ const LockList = () => {
                 options={Courses}
                 onChange={(selectedCourse) => {
                   setCourse(selectedCourse);
-                  
                 }}
               />
               <p className="locklist-dropdown-title">Year</p>
@@ -215,7 +213,7 @@ const LockList = () => {
                 isDisabled={!Course}
                 onChange={(selectedYear) => {
                   setYear(selectedYear);
-                  setdisabledep(false)
+                  setdisabledep(false);
                 }}
               />
               <p className="locklist-dropdown-title">Department</p>
@@ -240,7 +238,7 @@ const LockList = () => {
                 isDisabled={disablesec}
                 onChange={(selectedSection) => {
                   setSection(selectedSection);
-                  setdisablesub(false)
+                  setdisablesub(false);
                 }}
               />
               <p className="locklist-dropdown-title">Subject</p>
@@ -333,7 +331,7 @@ const LockList = () => {
                         displayItem.splice(0, 1);
                         let newItem = displayItem[0];
                         let len = displayItem.length;
-                        if (displayItem[0] == "1")
+                        if (displayItem[0] === "1")
                           newItem =
                             newItem +
                             "_" +
@@ -377,7 +375,6 @@ const LockList = () => {
         <Dialog
           message="Already Enrolled. Contact admin for making changes"
           onOK={() => {
-
             nav(
               "/faculty/classlist",
               { state: currentUser },
