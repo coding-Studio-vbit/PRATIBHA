@@ -204,7 +204,10 @@ const Grading = () => {
     else{
       setUrl(null);
     }
-    const coeDeadLine = await getCoeDeadline(midNo);
+    let course = location.state.className.split("_")[0];
+    let year = location.state.className.split("_")[1]
+
+    const coeDeadLine = await getCoeDeadline(midNo,course,year);
     if(coeDeadLine.error==null){
       setdeadline(coeDeadLine.data.toDate());
     } else {
