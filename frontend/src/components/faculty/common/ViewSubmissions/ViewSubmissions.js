@@ -4,7 +4,7 @@ import "../../generalFaculty/ListOfStudents/ListOfStudents.css";
 import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
-import { getUploadedFile } from "../../../student/services/storageServices";
+import { getUploadedFileByPath } from "../../../student/services/storageServices";
 import { useLocation } from "react-router-dom";
 import { getStudentData } from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
@@ -17,7 +17,7 @@ const ViewSubmissions = () => {
   const { currentUser } = useAuth();
   const location = useLocation();
   const passedData = location.state;
-  console.log(passedData)
+  console.log(passedData);
   let title =
     passedData.Year +
     "_" +
@@ -37,28 +37,38 @@ const ViewSubmissions = () => {
   courseName = course;
 
   course = course + "_" + title;
-  console.log(course)
-  const DepartmentForFaculty = passedData.Course + '_' +passedData.Year +
-  "_" +
-  passedData.Dept +
-  "_" +
-  passedData.Section;
-  console.log(DepartmentForFaculty)
+  console.log(course);
+  const DepartmentForFaculty =
+    passedData.Course +
+    "_" +
+    passedData.Year +
+    "_" +
+    passedData.Dept +
+    "_" +
+    passedData.Section;
+  console.log(DepartmentForFaculty);
 
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
 
-  const Fetchlink = async (rollnum) => {
+  const Fetchlink = async (email) => {
     var dict = {};
+    let rollnum = email.split("@")[0];
     dict["rollno"] = rollnum;
-    const res = await getUploadedFile(
-      courseName+'/'+
-      passedData.Year+'/'+
-      passedData.Dept+'/'+
-      passedData.Section+'/'+
-      passedData.Subject+'/'+
-      "2"+'/'+
-      rollnum 
+    const res = await getUploadedFileByPath(
+      courseName +
+        "/" +
+        passedData.Year +
+        "/" +
+        passedData.Dept +
+        "/" +
+        passedData.Section +
+        "/" +
+        passedData.Subject +
+        "/" +
+        "1" +
+        "/" +
+        email.split("@")[0]
     );
     links[rollnum] = res.url;
 
@@ -66,114 +76,115 @@ const ViewSubmissions = () => {
   };
 
   const Fetchdata = async () => {
-    
+    const result = await getPRA(passedData.Subject, DepartmentForFaculty);
+    const facultyID = result.facultyID;
 
-   const result = await getPRA(passedData.Subject, DepartmentForFaculty)
-   const facultyID = result.facultyID;
+    if (facultyID) {
+      const studentref = query(
+        collection(db, `faculty/${facultyID}/${course}`)
+        // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
+      );
 
-    const studentref = query(
-      collection(db, `faculty/${facultyID}/${course}`)
-      // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
-    );
+      await getDocs(studentref).then((querySnapshot) => {
+        if (querySnapshot) {
+          querySnapshot.forEach(async (doc) => {
+            const email = doc.id.toString() + "@vbithyd.ac.in";
+            await Fetchlink(email);
+            const docData = doc.data();
+            let Innovation1 = "",
+              Innovation2 = "",
+              Subject_Relevance1 = "",
+              Subject_Relevance2 = "",
+              Individuality1 = "",
+              Individuality2 = "",
+              Preparation1 = "",
+              Preparation2 = "",
+              Presentation1 = "",
+              Presentation2 = "";
+            if (docData["mid1"]) {
+              Innovation1 = docData["mid1"]["Innovation1"];
+              Subject_Relevance1 = docData["mid1"]["Subject_Relevance1"];
+              Individuality1 = docData["mid1"]["Individuality1"];
+              Preparation1 = docData["mid1"]["Preparation1"];
+              Presentation1 = docData["mid1"]["Presentation1"];
+            }
+            if (docData["mid2"]) {
+              Innovation2 = docData["mid2"]["Innovation2"];
+              Subject_Relevance2 = docData["mid2"]["Subject_Relevance2"];
+              Individuality2 = docData["mid2"]["Individuality2"];
+              Preparation2 = docData["mid2"]["Preparation2"];
+              Presentation2 = docData["mid2"]["Presentation2"];
+            }
+            const mid1 = docData["mid1"]
+              ? Innovation1 +
+                Subject_Relevance1 +
+                Individuality1 +
+                Preparation1 +
+                Presentation1
+              : " ";
+            const mid2 = docData["mid2"]
+              ? Innovation2 +
+                Subject_Relevance2 +
+                Individuality2 +
+                Preparation2 +
+                Presentation2
+              : " ";
 
-    await getDocs(studentref).then((querySnapshot) => {
-      if (querySnapshot) {
-        querySnapshot.forEach(async (doc) => {
-          const email = doc.id.toString() + "@vbithyd.ac.in";
-          Fetchlink(doc.id.toString());
-          const docData = doc.data();
-          let Innovation1 = "",
-            Innovation2 = "",
-            Subject_Relevance1 = "",
-            Subject_Relevance2 = "",
-            Individuality1 = "",
-            Individuality2 = "",
-            Preparation1 = "",
-            Preparation2 = "",
-            Presentation1 = "",
-            Presentation2 = "";
-          if (docData["mid1"]) {
-            Innovation1 = docData["mid1"]["Innovation1"];
-            Subject_Relevance1 = docData["mid1"]["Subject_Relevance1"];
-            Individuality1 = docData["mid1"]["Individuality1"];
-            Preparation1 = docData["mid1"]["Preparation1"];
-            Presentation1 = docData["mid1"]["Presentation1"];
-          }
-          if (docData["mid2"]) {
-            Innovation2 = docData["mid2"]["Innovation2"];
-            Subject_Relevance2 = docData["mid2"]["Subject_Relevance2"];
-            Individuality2 = docData["mid2"]["Individuality2"];
-            Preparation2 = docData["mid2"]["Preparation2"];
-            Presentation2 = docData["mid2"]["Presentation2"];
-          }
-          const mid1 = docData["mid1"]
-            ? Innovation1 +
-              Subject_Relevance1 +
-              Individuality1 +
-              Preparation1 +
-              Presentation1
-            : " ";
-          const mid2 = docData["mid2"]
-            ? Innovation2 +
-              Subject_Relevance2 +
-              Individuality2 +
-              Preparation2 +
-              Presentation2
-            : " ";
+            await getStudentData(email)
+              .then(({ document, error }) => {
+                let returndata = document;
+                let topic, name;
 
-          await getStudentData(email)
-            .then(({ document, error }) => {
-              let returndata = document;
-              let topic, name;
+                if (error == null) {
+                  // Fetchlink(email);
+                  let obj = returndata["subjects"].find(
+                    (o) => o.subject === passedData.Subject //"DAA"
+                  );
+                  topic = obj.topic;
+                  name = returndata.name;
+                  const dataobj = {
+                    ROLL_NO: doc.id.toString(),
+                    STUDENT_NAME: name,
+                    TOPIC_NAME: topic,
+                    Innovation1: Innovation1,
+                    Subject_Relevance1: Subject_Relevance1,
+                    Individuality1: Individuality1,
+                    Preparation1: Preparation1,
+                    Presentation1: Presentation1,
+                    MID_1: mid1,
+                    Innovation2: Innovation2,
+                    Subject_Relevance2: Subject_Relevance2,
+                    Individuality2: Individuality2,
+                    Preparation2: Preparation2,
+                    Presentation2: Presentation2,
+                    MID_2: mid2,
+                  };
+                  return dataobj;
+                } else {
+                  return null;
+                }
+              })
+              .then((dataobj) => {
+                if (dataobj) {
+                  setData((data) => [...data, dataobj]);
+                }
+              });
+          });
+        } else {
+          setError("NO ONE ENROLLED THIS SUBJECT");
+        }
+      });
 
-              if (error == null) {
-                let obj = returndata["subjects"].find(
-                  (o) => o.subject === passedData.Subject //"DAA"
-                );
-                topic = obj.topic;
-                name = returndata.name;
-                const dataobj = {
-                  ROLL_NO: doc.id.toString(),
-                  STUDENT_NAME: name,
-                  TOPIC_NAME: topic,
-                  Innovation1: Innovation1,
-                  Subject_Relevance1: Subject_Relevance1,
-                  Individuality1: Individuality1,
-                  Preparation1: Preparation1,
-                  Presentation1: Presentation1,
-                  MID_1: mid1,
-                  Innovation2: Innovation2,
-                  Subject_Relevance2: Subject_Relevance2,
-                  Individuality2: Individuality2,
-                  Preparation2: Preparation2,
-                  Presentation2: Presentation2,
-                  MID_2: mid2,
-                };
-                return dataobj;
-              } else {
-                return null;
-              }
-            })
-            .then((dataobj) => {
-              if (dataobj) {
-                setData((data) => [...data, dataobj]);
-              }
-            });
-        });
-      } else {
-        setError("NO ONE ENROLLED THIS SUBJECT");
-      }
-    });
-
- 
-
-
-    setloading(false);
+      setloading(false);
+    }
+    else{
+      setloading(false);
+    }
   };
 
   useEffect(() => {
     Fetchdata();
-  });
+  }, []);
 
   return (
     <div>
@@ -200,7 +211,7 @@ const ViewSubmissions = () => {
             <tbody>
               {data &&
                 data
-                .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
+                  .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
                   .map((dataitem) => (
                     <tr key={dataitem.ROLL_NO}>
                       <td>{dataitem.ROLL_NO}</td>
@@ -211,6 +222,7 @@ const ViewSubmissions = () => {
                       <td>
                         <a
                           href={links[dataitem.ROLL_NO]}
+                          target="_blank"
                           style={{ textDecoration: "none" }}
                         >
                           <i

@@ -23,8 +23,8 @@ const SubjectsList = () => {
   const [error, setError] = useState(null);
   const [userDoc, setuserDoc] = useState(null);
   const [courseTitle, setCourseTitle] = useState(" ");
-  const[course,setcourse]=useState('');
-  const [year,setyear]=useState('')
+  const [course, setcourse] = useState("");
+  const [year, setyear] = useState("");
 
   const { currentUser } = useAuth();
 
@@ -45,7 +45,7 @@ const SubjectsList = () => {
     if (error == null) {
       setuserDoc(document);
       setcourse(document.course);
-      setyear(document.year)
+      setyear(document.year);
       let course =
         document.course +
         "_" +
@@ -66,7 +66,8 @@ const SubjectsList = () => {
   };
 
   const fetchsubject = async (document, coedeadLine, course) => {
-    let deadline, date, mid;
+    let deadline, mid;
+    let date, dateConv;
     const subjectRef = doc(db, "subjects", course);
     await getDoc(subjectRef).then(async (subjectDoc) => {
       if (subjectDoc.exists()) {
@@ -78,12 +79,14 @@ const SubjectsList = () => {
           ).toDate();
           let newDate = new Date();
           let currentDate = newDate.toLocaleDateString("en-GB");
+          let currentDateConv = newDate.toLocaleDateString('en-US');
 
           if (coedeadLine > date1) {
             console.log("1");
             mid = 1;
 
             date = date1.toLocaleDateString("en-GB");
+            dateConv = date1.toLocaleDateString('en-US');
           } else {
             mid = 2;
             if (item["deadline2"]) {
@@ -92,14 +95,15 @@ const SubjectsList = () => {
                 item["deadline2"].nanoseconds
               ).toDate();
               date = date2.toLocaleDateString("en-GB");
+              dateConv = date2.toLocaleDateString('en-US');
             }
           }
 
           // console.log(date);
           // console.log(currentDate);
 
-          var dateint = new Date(date).getTime();
-          var currdate = new Date(currentDate).getTime();
+          var dateint = new Date(dateConv).getTime();
+          var currdate = new Date(currentDateConv).getTime();
           // console.log(dateint);
           // console.log(currdate);
 
@@ -181,21 +185,23 @@ const SubjectsList = () => {
     fetchdata();
   }, []);
 
+  console.log(data);
+
   return (
     <div className="main-body-subjects">
       <Navbar title={courseTitle} logout={true} back={false} />
       {!loading ? (
         error == null ? (
           <div className="subBody">
-          {showDialog && (
-        <Dialog
-          message={showDialog}
-          onOK={() => {
-            setShowDialog(false);
-          }}
-        />
-      )}
-           
+            {showDialog && (
+              <Dialog
+                message={showDialog}
+                onOK={() => {
+                  setShowDialog(false);
+                }}
+              />
+            )}
+
             <div className="list-grid">
               {data &&
                 data.map((dataitem) => (
