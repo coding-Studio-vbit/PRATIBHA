@@ -89,7 +89,7 @@ const ViewSubmissions = () => {
         if (querySnapshot) {
           querySnapshot.forEach(async (doc) => {
             const email = doc.id.toString() + "@vbithyd.ac.in";
-            await Fetchlink(email);
+            // await Fetchlink(email);
             const docData = doc.data();
             let Innovation1 = "",
               Innovation2 = "",
@@ -131,12 +131,12 @@ const ViewSubmissions = () => {
               : " ";
 
             await getStudentData(email)
-              .then(({ document, error }) => {
+              .then(async({ document, error }) => {
                 let returndata = document;
                 let topic, name;
 
                 if (error == null) {
-                  // Fetchlink(email);
+                  await Fetchlink(email);
                   let obj = returndata["subjects"].find(
                     (o) => o.subject === passedData.Subject //"DAA"
                   );
@@ -211,7 +211,7 @@ const ViewSubmissions = () => {
             <tbody>
               {data &&
                 data
-                  .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
+                  // .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
                   .map((dataitem) => (
                     <tr key={dataitem.ROLL_NO}>
                       <td>{dataitem.ROLL_NO}</td>
