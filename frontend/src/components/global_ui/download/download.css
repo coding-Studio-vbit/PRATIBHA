@@ -1,21 +1,16 @@
 .download{
-    text-decoration: none;
-    background-color:#0E72AB;
-    color: white;
+    color: #0E72AB;
     font-size: x-large;
-    letter-spacing: 1pt;
     text-transform: capitalize;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border: 1px;
     padding:6px 14px;
-    border-radius: 4px;
     font-weight: 400;
     cursor: pointer;
     outline: none;
-    border: none;
 }
-.download:hover{
-    background-color: white;
-    color: #0E72AB;
-    box-shadow: none;
-    border: 1px solid #0E72AB;
+
+.downloadIcon{
+    outline: #0E72AB;
+    padding: 2px;
+    filter: invert(100%);
 }
