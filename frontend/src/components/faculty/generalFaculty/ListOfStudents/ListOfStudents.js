@@ -243,7 +243,7 @@ const ListofStudents = () => {
                                 "1" +
                                 "/" +
                                 dataitem.ROLL_NO,
-                                topicname : dataitem.TOPIC_NAME
+                              topicname: dataitem.TOPIC_NAME,
                             },
                           });
                         }}
@@ -264,7 +264,7 @@ const ListofStudents = () => {
                 // onClick={() => {
                 //   navigate("/faculty/grading", { state: student });
                 // }}
-                onClick={async() => {
+                onClick={async () => {
                   navigate("/faculty/grading", {
                     state: {
                       studentmail: data[0].ROLL_NO + "@vbithyd.ac.in",
@@ -283,7 +283,7 @@ const ListofStudents = () => {
                         "1" +
                         "/" +
                         student.ROLL_NO,
-                        topicname : data[0].TOPIC_NAME
+                      topicname: data[0].TOPIC_NAME,
                     },
                   });
                 }}

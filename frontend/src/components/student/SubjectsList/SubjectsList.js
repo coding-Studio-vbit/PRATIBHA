@@ -189,7 +189,11 @@ const SubjectsList = () => {
 
   return (
     <div className="main-body-subjects">
-      <Navbar title={courseTitle.split("_").join(" ")} logout={true} back={false} />
+      <Navbar
+        title={courseTitle.split("_").join(" ")}
+        logout={true}
+        back={false}
+      />
       {!loading ? (
         error == null ? (
           <div className="subBody">

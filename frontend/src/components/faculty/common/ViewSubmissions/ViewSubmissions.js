@@ -211,7 +211,7 @@ const ViewSubmissions = () => {
             <tbody>
               {data &&
                 data
-                  // .sort((a, b) => (a.ROLL_NO > b.ROLL_NO ? -1 : 1))
+                  .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
                   .map((dataitem) => (
                     <tr key={dataitem.ROLL_NO}>
                       <td>{dataitem.ROLL_NO}</td>
@@ -220,7 +220,10 @@ const ViewSubmissions = () => {
                       <td>{dataitem.MID_1}</td>
                       <td>{dataitem.MID_2}</td>
                       <td>
-                        <Download url={links[dataitem.ROLL_NO]} />
+                        <Download
+                          url={links[dataitem.ROLL_NO]}
+                          userID={dataitem.ROLL_NO}
+                        />
                         {/* <a
                           href={links[dataitem.ROLL_NO]}
                           target="_blank"
