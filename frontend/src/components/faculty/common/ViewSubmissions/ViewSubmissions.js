@@ -8,14 +8,12 @@ import { getUploadedFileByPath } from "../../../student/services/storageServices
 import { useLocation } from "react-router-dom";
 import { getStudentData } from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
-import { useAuth } from "../../../context/AuthContext";
 import { getPRA } from "../../services/facultyServices";
 import Download from "../../../global_ui/download/download";
 
 const ViewSubmissions = () => {
   const [data, setData] = useState([]);
   const [links, setLinks] = useState({});
-  const { currentUser } = useAuth();
   const location = useLocation();
   const passedData = location.state;
   console.log(passedData);

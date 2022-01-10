@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import "./stylecard.css";
 
 const Card_ = ({
@@ -11,8 +10,7 @@ const Card_ = ({
   isSubmitted,
   //   klass,
 }) => {
-  let navigate = useNavigate();
-  const location = useLocation();
+
   return (
     <div
       className={
