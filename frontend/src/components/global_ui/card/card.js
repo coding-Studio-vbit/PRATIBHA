@@ -2,13 +2,13 @@ import React from "react";
 import "./card.css";
 
 const Card = ({
-  text,  
+  text, 
   klass,
   subText,
   onclick
 }) => {
   return (
-    <div className={`card-container`} onClick={()=>onclick(klass)}>
+    <div className="card-container"  onClick={()=>onclick(klass)}>
       {text && <p>{text}</p>} 
       <p style={{fontSize:'14px'}} >{subText? "PRA CREATED":''}</p>
     </div>
