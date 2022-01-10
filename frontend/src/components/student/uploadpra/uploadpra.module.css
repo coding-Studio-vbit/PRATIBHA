@@ -100,14 +100,15 @@ label{
 }
 
 .instructions{
-   color:darkslategrey;
-   font-size:16px;
+   color:black;
+   font-size:22px;
    font-weight: normal;
    margin: 0px;
+   text-align: center;
 }
 
 .praInfo{
-   font-size: 16px;
+   font-size: 22px;
    text-align: center;
 }
 

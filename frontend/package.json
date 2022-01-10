@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.24.0",
     "file-saver": "^2.0.5",
     "firebase": "^9.6.1",
     "pdfjs-dist": "^2.6.347",
