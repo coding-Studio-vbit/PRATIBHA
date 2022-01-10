@@ -79,14 +79,14 @@ const SubjectsList = () => {
           ).toDate();
           let newDate = new Date();
           let currentDate = newDate.toLocaleDateString("en-GB");
-          let currentDateConv = newDate.toLocaleDateString('en-US');
+          let currentDateConv = newDate.toLocaleDateString("en-US");
 
           if (coedeadLine > date1) {
             console.log("1");
             mid = 1;
 
             date = date1.toLocaleDateString("en-GB");
-            dateConv = date1.toLocaleDateString('en-US');
+            dateConv = date1.toLocaleDateString("en-US");
           } else {
             mid = 2;
             if (item["deadline2"]) {
@@ -95,7 +95,7 @@ const SubjectsList = () => {
                 item["deadline2"].nanoseconds
               ).toDate();
               date = date2.toLocaleDateString("en-GB");
-              dateConv = date2.toLocaleDateString('en-US');
+              dateConv = date2.toLocaleDateString("en-US");
             }
           }
 
@@ -212,6 +212,8 @@ const SubjectsList = () => {
                           state: {
                             rollno: `${currentUser.email}`,
                             subject: dataitem.SUBJECT,
+                            course: course,
+                            year: year,
                           },
                         });
                       } else {
