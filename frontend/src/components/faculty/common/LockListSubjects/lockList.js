@@ -22,6 +22,9 @@ const LockList = () => {
   const [BTechList, setBTechList] = useState([]);
   const [MTechList, setMTechList] = useState([]);
   const [MBAList, setMBAList] = useState([]);
+  const [disabledep,setdisabledep]=useState(true);
+  const [disablesec,setdisablesec]=useState(true);
+  const [disablesub,setdisablesub]=useState(true);
 
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -109,6 +112,9 @@ const LockList = () => {
     setDepartments([{value:'Loading',label:'Loading'}])
     setSections([{value:'Loading',label:'Loading'}])
     setSubjects([{value:'Loading',label:'Loading'}])
+    setdisabledep(true)
+    setdisablesec(true)
+    setdisablesub(true)
   };
 
   //handle remove
@@ -198,6 +204,7 @@ const LockList = () => {
                 options={Courses}
                 onChange={(selectedCourse) => {
                   setCourse(selectedCourse);
+                  
                 }}
               />
               <p className="locklist-dropdown-title">Year</p>
@@ -208,6 +215,7 @@ const LockList = () => {
                 isDisabled={!Course}
                 onChange={(selectedYear) => {
                   setYear(selectedYear);
+                  setdisabledep(false)
                 }}
               />
               <p className="locklist-dropdown-title">Department</p>
@@ -215,9 +223,10 @@ const LockList = () => {
                 placeholder=""
                 options={departments}
                 className="select"
-                isDisabled={Year.value===0}
+                isDisabled={disabledep}
                 onChange={(selectedDepartment) => {
                   setDepartment(selectedDepartment);
+                  setdisablesec(false);
                   setSections((c) => {
                     return { ...c };
                   });
@@ -228,9 +237,10 @@ const LockList = () => {
                 placeholder=""
                 options={sections[Department.value]}
                 className="select"
-                isDisabled={!Department}
+                isDisabled={disablesec}
                 onChange={(selectedSection) => {
                   setSection(selectedSection);
+                  setdisablesub(false)
                 }}
               />
               <p className="locklist-dropdown-title">Subject</p>
@@ -238,7 +248,7 @@ const LockList = () => {
                 placeholder=""
                 options={subjects[Department.value]}
                 className="select"
-                isDisabled={!Section}
+                isDisabled={disablesub}
                 onChange={(selectedSubject) => {
                   setSubject(selectedSubject);
                 }}
