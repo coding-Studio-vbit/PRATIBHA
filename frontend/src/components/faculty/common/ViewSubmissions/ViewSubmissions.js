@@ -10,6 +10,7 @@ import { getStudentData } from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
 import { useAuth } from "../../../context/AuthContext";
 import { getPRA } from "../../services/facultyServices";
+import Download from "../../../global_ui/download/download";
 
 const ViewSubmissions = () => {
   const [data, setData] = useState([]);
@@ -131,7 +132,7 @@ const ViewSubmissions = () => {
               : " ";
 
             await getStudentData(email)
-              .then(async({ document, error }) => {
+              .then(async ({ document, error }) => {
                 let returndata = document;
                 let topic, name;
 
@@ -176,8 +177,7 @@ const ViewSubmissions = () => {
       });
 
       setloading(false);
-    }
-    else{
+    } else {
       setloading(false);
     }
   };
@@ -220,7 +220,8 @@ const ViewSubmissions = () => {
                       <td>{dataitem.MID_1}</td>
                       <td>{dataitem.MID_2}</td>
                       <td>
-                        <a
+                        <Download url={links[dataitem.ROLL_NO]} />
+                        {/* <a
                           href={links[dataitem.ROLL_NO]}
                           target="_blank"
                           style={{ textDecoration: "none" }}
@@ -230,7 +231,7 @@ const ViewSubmissions = () => {
                             aria-hidden="true"
                             style={{ color: "rgba(11, 91, 138, 1)" }}
                           ></i>
-                        </a>
+                        </a> */}
                       </td>
                     </tr>
                   ))}
