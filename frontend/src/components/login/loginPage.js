@@ -36,9 +36,13 @@ export default function LoginPage() {
     <div className="page">
       <div className="loginComponent">
         <div className="logos">
+          <div className="pratibha">
+              <img alt="Pratibha" height={70} src="/pratibha.png"/>
+              <span className="titleStyle" >PRATIBHA</span>
+          </div>
           <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
-          <img alt="loading" className="vbit" src="/vbit.png" />
-          <img alt="loading" className="cs_logo" src="/cs_logo.png" />
+          <img alt="vbit" className="vbit" src="/vbit.png" />
+          <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
         </div>
 
         <div className="row">
