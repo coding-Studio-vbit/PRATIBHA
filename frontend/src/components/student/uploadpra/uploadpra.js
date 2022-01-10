@@ -14,11 +14,14 @@ import {
 } from "../services/studentServices";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation} from "react-router-dom";
+import { fetchisMid1,fetchisMid2 } from "../services/studentServices";
 import { Timestamp } from "firebase/firestore";
 
 const Upload = () => {
     let location = useLocation();
     const [subject, setSubject] = useState("");
+    const [isMid1,setisMid1]=useState(false);
+    const [isMid2,setisMid2]=useState(false);
     const [loading, setLoading] = useState(false);
     const [showUploadModule, setShowUploadModule] = useState(false);
     const [error, setError] = useState(null);
@@ -55,6 +58,7 @@ const Upload = () => {
             return true;
         }
     }
+ 
 
     const onChange = (e) => 
     {
@@ -175,6 +179,15 @@ const Upload = () => {
     const [existingFile, setexistingFile] = useState(null);
     const [loadExisting, setloadExisting] = useState(false);
 
+    async function midboolean (){
+      const isMid1 = await fetchisMid1(location.state.course, location.state.year);
+    const isMid2 = await fetchisMid2(location.state.course,location.state.year);
+    console.log(location.state);
+    setisMid1(isMid1);
+    setisMid2(isMid2);
+
+    }
+
     async function handleSelect(value)
     {
         setShowUploadModule(false);
@@ -254,6 +267,7 @@ const Upload = () => {
 
   const [editPRA, seteditPRA] = useState(false);
   useEffect(() => {getUserData();
+    midboolean();
   }, []);
 
   return pageLoad ? (
@@ -275,8 +289,8 @@ const Upload = () => {
                 onChange={(e) => handleSelect(e.target.value)}
               >
                 <option className="option" value="SELECT_MID">Select MID</option> 
-                <option className="option" disabled={!currentUser.isMid1} value="1">MID-1</option> 
-                <option className="option" disabled={!currentUser.isMid2} value="2">MID-2</option>
+                <option className="option" disabled={!isMid1} value="1">MID-1</option> 
+                <option className="option" disabled={!isMid2} value="2">MID-2</option>
               </select>
               {selectError && (
                 <p className={styles.errorField}>{selectError}</p>

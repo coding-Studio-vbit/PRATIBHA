@@ -400,25 +400,26 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
   }
 }
 
-async function getCoeDeadline(midNo) {
-  const adminRef = doc(db,"adminData","coeDeadline");
+async function getCoeDeadline(midNo,course,year) {
+  const adminRef = doc(db,`adminData/coeDeadline/${course}`,`${year}`);
   console.log("ABCD");
   try {
     console.log("PQRS");
     const docSnap = await getDoc(adminRef);
     if(docSnap.exists()){
       console.log("XY");
+      console.log(docSnap.data())
       if(midNo==="1")
       {
       return {
-        data:docSnap.data()["coeDeadline"],
+        data:docSnap.data()["mid1"],
         error:null
           }         
       }
       else if(midNo==="2")
       {
         return {
-          data:docSnap.data()["coeDeadline2"],
+          data:docSnap.data()["mid2"],
           error:null
             }     
       }

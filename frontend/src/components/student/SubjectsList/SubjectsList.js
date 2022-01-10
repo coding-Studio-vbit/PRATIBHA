@@ -23,6 +23,8 @@ const SubjectsList = () => {
   const [error, setError] = useState(null);
   const [userDoc, setuserDoc] = useState(null);
   const [courseTitle, setCourseTitle] = useState(" ");
+  const[course,setcourse]=useState('');
+  const [year,setyear]=useState('')
 
   const { currentUser } = useAuth();
 
@@ -42,6 +44,8 @@ const SubjectsList = () => {
     const { document, error } = await getStudentData(`${currentUser.email}`);
     if (error == null) {
       setuserDoc(document);
+      setcourse(document.course);
+      setyear(document.year)
       let course =
         document.course +
         "_" +
