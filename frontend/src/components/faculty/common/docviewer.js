@@ -34,7 +34,7 @@ const ViewPPT=({object})=>{
     return (
         <>
           <iframe
-            src={`https://view.officeapps.live.com/op/embed.aspx?src=${linkToPPTFile}`}
+            src={`https://view.officeapps.live.com/op/embed.aspx?src=${object}`}
              width="100%"
              height="500px"
             frameBorder="0"
@@ -106,7 +106,7 @@ function Docviewer({link}){
         console.log("XYZ");
         getMetadata(forestRef)
         .then((metadata) => {
-            console.log(metadata.contentType.split("/")[1]);
+            console.log(metadata.contentType);
             setextension(metadata.contentType.split("/")[1]);
             setloading(false);
         })
@@ -135,6 +135,8 @@ function Module({extension,object}) {
         case 'pdf':
             return <ViewPdf object={object} />
         case 'vnd.openxmlformats-officedocument.presentationml.presentation':
+            return <ViewPPT object={object}/>
+        case 'vnd.ms-powerpoint':
             return <ViewPPT object={object}/>
         case "vnd.openxmlformats-officedocument.wordprocessingml.document":
             return <div style={{height:'60vh'}}><MyComponent object={object} type="docx"/></div>

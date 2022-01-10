@@ -93,11 +93,8 @@ const Upload = () => {
     {
         setfileUploadLoading(true);
         let res;
-        
           if ((url != null) & handleTitle(praTitle))
           {
-            
-
             res = await uploadFile(
               url,
               user.course,
