@@ -14,7 +14,6 @@ import Dialog from "../../global_ui/dialog/dialog";
 
 const Grading = () => {
   let location = useLocation();
-  console.log(location.state)
   const { currentUser } = useAuth();
   const [subject, setSubject] = useState(
     location.state.path.split("/")[location.state.path.split("/").length - 3]
@@ -61,8 +60,6 @@ const Grading = () => {
     let year = parts[1]
     const isMid1 = await fetchisMid1(course,year);
     const isMid2 = await fetchisMid2(course,year);
-    console.log(course,year)
-    console.log(location.state);
     setisMid1(isMid1);
     setisMid2(isMid2);
   }
