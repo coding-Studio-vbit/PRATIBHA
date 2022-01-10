@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../global_ui/navbar/navbar";
-import EditIcon from "@mui/icons-material/Edit";
 import { Spinner } from "../../global_ui/spinner/spinner";
 import { db } from "../../../firebase";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { getStudentData } from "../services/studentServices";
 import { useAuth } from "./../../context/AuthContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import Card_ from "../../global_ui/card/card_";
 import "./SubjectlistStyles.css";
@@ -16,7 +15,6 @@ const SubjectsList = () => {
   const [data, setData] = useState([]);
   const [showDialog, setShowDialog] = useState(null);
 
-  const location = useLocation();
   let navigate = useNavigate();
 
   const [loading, setloading] = useState(true);
@@ -66,7 +64,7 @@ const SubjectsList = () => {
   };
 
   const fetchsubject = async (document, coedeadLine, course) => {
-    let deadline, mid;
+    let  mid;
     let date, dateConv;
     const subjectRef = doc(db, "subjects", course);
     await getDoc(subjectRef).then(async (subjectDoc) => {
@@ -78,7 +76,6 @@ const SubjectsList = () => {
             item["deadline1"].nanoseconds
           ).toDate();
           let newDate = new Date();
-          let currentDate = newDate.toLocaleDateString("en-GB");
           let currentDateConv = newDate.toLocaleDateString("en-US");
 
           if (coedeadLine > date1) {
