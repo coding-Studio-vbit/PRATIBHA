@@ -13,9 +13,14 @@ const Spinner = ({radius}) => {
     );
 }
  
-const LoadingScreen = () => {
+
+
+const LoadingScreen = ({isTransparent=false}) => {
     return ( 
-        <div className="loadingScreen" >
+        <div className="loadingScreen" style={{
+            background:isTransparent?'white':'white',
+            zIndex:100,
+            }} >
             <Spinner radius={2} />
         </div>
      );

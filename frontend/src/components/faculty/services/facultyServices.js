@@ -98,22 +98,22 @@ export const getDepartments = async (course,year)=>{
       for (let index = 0; index < e.data()['OEs'].length; index++) {
         const ele = e.data()['OEs'][index];
         if(subjects[e.id]){
-          subjects[e.id]=[...subjects[e.id],{value:ele.subject + ' (OE)',label:ele.subject}]
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject ,label:ele.subject}]
 
         }else{
 
-          subjects[e.id]=[{value:ele.subject + ' (OE)',label:ele.subject}]
+          subjects[e.id]=[{value:ele.subject ,label:ele.subject}]
         }
       }
       if(e.data()['PEs'])
       for (let index = 0; index < e.data()['PEs'].length; index++) {
         const ele = e.data()['PEs'][index];
         if(subjects[e.id]){
-          subjects[e.id]=[...subjects[e.id],{value:ele.subject + ' (PE)',label:ele.subject}]
+          subjects[e.id]=[...subjects[e.id],{value:ele.subject ,label:ele.subject}]
 
         }else{
 
-          subjects[e.id]=[{value:ele.subject + ' (PE)',label:ele.subject}]
+          subjects[e.id]=[{value:ele.subject ,label:ele.subject}]
         }
       }
       console.log(e.data());
@@ -162,7 +162,7 @@ export const getPRA = async (sub,department)=>{
   }
 }
 
-export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
+export const setPRA = async (sub,department,date,inst,email,isMid1,isMid2)=>{
   console.log(isMid1);
   try {
     const docRef = doc(db,'subjects',department)
@@ -177,11 +177,12 @@ export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
         console.log(ele.subject);
         if(ele.subject === sub){
           d1 = false
+
           await updateDoc(docRef,{subjects:arrayRemove(ele)})
           if(isMid1){
-
+           
             await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
-          }else{
+          }else if(isMid2){
             await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:ele.deadline1,deadline2:date, instructions:inst,subject:sub})})
 
           }
@@ -190,9 +191,10 @@ export const setPRA = async (sub,department,date,inst,email,isMid1)=>{
       }
       if(d1){
 
+        // await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
         await updateDoc(docRef,{subjects:arrayUnion({facultyID:email,deadline1:date,instructions:inst,subject:sub})})
-      }
-    }else{
+      }}
+    else{
       await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
     }
   } catch (error) {
@@ -398,25 +400,26 @@ export const fetchSectionsAndSubs= async (course,year,departments)=>{
   }
 }
 
-async function getCoeDeadline(midNo) {
-  const adminRef = doc(db,"adminData","coeDeadline");
+async function getCoeDeadline(midNo,course,year) {
+  const adminRef = doc(db,`adminData/coeDeadline/${course}`,`${year}`);
   console.log("ABCD");
   try {
     console.log("PQRS");
     const docSnap = await getDoc(adminRef);
     if(docSnap.exists()){
       console.log("XY");
+      console.log(docSnap.data())
       if(midNo==="1")
       {
       return {
-        data:docSnap.data()["coeDeadline"],
+        data:docSnap.data()["mid1"],
         error:null
           }         
       }
       else if(midNo==="2")
       {
         return {
-          data:docSnap.data()["coeDeadline2"],
+          data:docSnap.data()["mid2"],
           error:null
             }     
       }

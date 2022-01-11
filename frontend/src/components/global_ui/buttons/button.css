@@ -24,7 +24,7 @@ i {
 
 .root:hover {
   box-shadow: none;
-  border:1px solid #e5e4e2;
+  /* border:1px solid #e5e4e2; */
 }
 
 /* @media screen and (max-width: 500px) {

@@ -44,12 +44,13 @@ async function getStudentData(email){
     }        
 }
 
-export const fetchisMid1 = async () => {
+async function  fetchisMid1 (course,year) {
     try {
-        const adminRef = doc(db, "adminData", "coeDeadline");
+        const adminRef = doc(db,`adminData/coeDeadline/${course}`,`${year}`);
     const adminDoc = await getDoc(adminRef);
+    console.log(adminDoc.data())
     if (adminDoc.exists()) {
-      let date = new Timestamp(adminDoc.data()["coeDeadline"]["seconds"],adminDoc.data()["coeDeadline"]["nanoseconds"]).toDate();
+      let date = new Timestamp(adminDoc.data()["mid1"]["seconds"],adminDoc.data()["mid1"]["nanoseconds"]).toDate();
       const currentdate = new Date()
       if(date > currentdate){
         return true
@@ -61,13 +62,13 @@ export const fetchisMid1 = async () => {
     }
 };
 
-export const fetchisMid2 = async () => {
+async function  fetchisMid2 (course,year) {
     try {
-        const adminRef = doc(db, "adminData","coeDeadline");
+        const adminRef = doc(db,`adminData/coeDeadline/${course}`,`${year}`);
     const adminDoc = await getDoc(adminRef);
     if (adminDoc.exists()) {
-        let date1 = new Timestamp(adminDoc.data()["coeDeadline"]["seconds"],adminDoc.data()["coeDeadline"]["nanoseconds"]).toDate();
-      let date2 = new Timestamp(adminDoc.data()["coeDeadline2"]["seconds"],adminDoc.data()["coeDeadline2"]["nanoseconds"]).toDate();
+        let date1 = new Timestamp(adminDoc.data()["mid1"]["seconds"],adminDoc.data()["mid1"]["nanoseconds"]).toDate();
+      let date2 = new Timestamp(adminDoc.data()["mid2"]["seconds"],adminDoc.data()["mid2"]["nanoseconds"]).toDate();
       const currentdate = new Date()
       if(date1 < currentdate&& date2 >currentdate){
         return true
@@ -286,4 +287,4 @@ async function getFileUploadDetails(email,subject,midNo){
 }
 
 export {enrollCourse,checkEnrollment,getStudentData,
-    getCurriculumDetails,getSubjectsList,fetchDepartments,getDeadLines,getFileUploadDetails};
+    getCurriculumDetails,getSubjectsList,fetchDepartments,getDeadLines,getFileUploadDetails,fetchisMid1,fetchisMid2};

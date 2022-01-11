@@ -13,20 +13,23 @@
     border-radius: 7px;
     width: min(700px,90%);
     font-size: 15px;
+ 
 }
 
 .text-style{
-    font-size:15px;
+    font-size:20px;
     justify-self: center;
+    font-weight: 500;
 }
 
 
 .text-style2{
     display:flex;
-    font-size:15px;
+    font-size:20px;
     justify-content: center;
     text-align: start;
     align-items: center;
+    font-weight: 500;
 }
 
 .btn-style{

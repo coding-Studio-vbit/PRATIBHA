@@ -100,7 +100,8 @@ const HODClassList = () => {
       ];
     function handleClick(){
       console.log(Course.value+'_'+Year.value+'_'+Section.value+'_'+Subject.value);
-      nav('/viewsubmissions',{state:{
+      nav('/faculty/viewsubmissions',{state:{
+        Course:Course.value,
         Year:Year.value,
         Dept:dep.value,
         Section:Section.value,
@@ -113,7 +114,7 @@ const HODClassList = () => {
   }
     return (  
         <div className='root-hod'>
-        <Navbar style={{marginBottom:'30px'}} title={"HOD"} logout={true} />
+        <Navbar style={{marginBottom:'30px'}} title={"HOD"} back = {false} logout={true} />
         <p className="dep-title">Your Classes</p>
         <div className="div-container-classesHOD">
        

@@ -14,11 +14,18 @@ import {
 } from "../services/studentServices";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation} from "react-router-dom";
-import { Timestamp } from "firebase/firestore";
+import { fetchisMid1,fetchisMid2 } from "../services/studentServices";
+import Download from "../../global_ui/download/download";
+// import { Timestamp } from "firebase/firestore";
 
 const Upload = () => {
+    // DATA FROM THE PREVIOUS SCREEN
+    // console.log(location.state.rollno);
+    // console.log(location.state.subject);
     let location = useLocation();
     const [subject, setSubject] = useState("");
+    const [isMid1,setisMid1]=useState(false);
+    const [isMid2,setisMid2]=useState(false);
     const [loading, setLoading] = useState(false);
     const [showUploadModule, setShowUploadModule] = useState(false);
     const [error, setError] = useState(null);
@@ -31,26 +38,29 @@ const Upload = () => {
     const [fileError, setFileError] = useState("");
     const [fileUploadLoading, setfileUploadLoading] = useState(false);
     const navigate = useNavigate();
-    // DATA FROM THE PREVIOUS SCREEN
-    console.log(location.state.rollno);
-    console.log(location.state.subject);
+  
 
     function handleTitle(e) 
     {
       let value = e;
       setPraTitle(value);
-        if (value.length < 8) 
-        {
+        // if(mid==="2"){
+        //   return true;
+        // }
+        if(value==null){
+            setTitleError("Title must have atleast 8 characters");
+            return false;
+        }
+        else if (value.length < 8) {
             setTitleError("Title must have atleast 8 characters");
             return false;
         } 
-        else 
-        {
+        else{
             setTitleError("");
             return true;
         }
     }
-
+ 
     const onChange = (e) => 
     {
       let files = e.target.files[0];
@@ -93,20 +103,25 @@ const Upload = () => {
           }
         }
         else
-        {
           setUrl(null);
-          setFileError("File not uploaded");
-        }
+          if(mid==="1")
+          setFileError(`File Limit Exceeded, Upload a file of size less than ${size/1000}KB `);
+          else
+          setFileError(`File Limit Exceeded, Upload a file of size less than 1 GB`);
+      // } 
+      //   else 
+      //   {
+      //     setUrl(null);
+      //     setFileError("File not uploaded");
+      //   }
     };
 
     async function submit()
     {
         setfileUploadLoading(true);
         let res;
-        
           if ((url != null) & handleTitle(praTitle))
-          {          
-
+          {
             res = await uploadFile(
               url,
               user.course,
@@ -149,23 +164,11 @@ const Upload = () => {
         //     user.section,"Computer Networks","1","18p61a0513@vbithyd.ac.in");
         try
         {
-              // console.log("wfoifihofhirfihf");
               const res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
-        
-              
-              // console.log(res,"fnowennvnenvvn");
-              // const res = await getUploadedFile(
-              //     user.course,user.year,user.department,
-              //     user.section,subject,val,"18p61a0513@vbithyd.ac.in"
-              // );
-              // console.log(res.url,10101001010);
-              // console.log(res);
               if (res.error == null) 
               {
                 
-                  setPraTitle(res.data.topic);
-                 
-                  
+                  setPraTitle(res.data.topic);   
                   setexistingFile(res.data.link);
                  
                   setloadExisting(false);
@@ -194,12 +197,19 @@ const Upload = () => {
     const [mid, setMid] = useState("SELECT_MID");
     const [selectError, setSelectError] = useState(null);
   
-
     const [praError, setPraError] = useState();
     const [deadLineInfo, setDeadLineInfo] = useState(null);
 
     const [existingFile, setexistingFile] = useState(null);
     const [loadExisting, setloadExisting] = useState(false);
+
+    async function midboolean (){
+      const isMid1 = await fetchisMid1(location.state.course, location.state.year);
+      const isMid2 = await fetchisMid2(location.state.course,location.state.year);
+      console.log(location.state);
+      setisMid1(isMid1);
+      setisMid2(isMid2);
+    }
 
     async function handleSelect(value)
     {
@@ -208,7 +218,6 @@ const Upload = () => {
         setMid(value);
         if (value !== "SELECT_MID")
         {
-          
             setSelectError(null);
             setLoading(true);
             const res = await getDeadLines(
@@ -243,14 +252,12 @@ const Upload = () => {
         }
     }
 
-    function dialogClose(x)
-    {
+    function dialogClose(x){
         setshowDialog(false);
         navigate("/student/subjectslist");
     }
 
-    async function getUserData() 
-    {
+    async function getUserData() {
         setPageLoad(true);
         // console.log("Getting User Data");
         const res = await getStudentData(location.state.rollno);
@@ -279,131 +286,171 @@ const Upload = () => {
 
   const [editPRA, seteditPRA] = useState(false);
   useEffect(() => {getUserData();
+    midboolean();
   }, []);
 
   return pageLoad ? (
     <LoadingScreen />
   ) : (
     <div>
-      {pageLoadError === null ? (
+      {
+        pageLoadError === null ? (
         <div>
-          <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={false}></Navbar>
-          {showDialog && (
-            <Dialog message={"Upload Successful"} onOK={dialogClose} />
-          )}
-          <div className={styles.main}>
-            <div>
-            
-                <select
-                className={styles.selectList}
-                value={mid}
-                onChange={(e) => handleSelect(e.target.value)}
-              >
-                <option className="option" value="SELECT_MID">Select MID</option> 
-                <option className="option" disabled={!currentUser.isMid1} value="1">MID-1</option> 
-                <option className="option" disabled={!currentUser.isMid2} value="2">MID-2</option>
-              </select>
-              {selectError && (
-                <p className={styles.errorField}>{selectError}</p>
-              )}
-            </div>
-            <div style={{ marginTop: "18px" }}>
-              {loading && <Spinner radius={2} />}
-            </div>
+            <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={false}></Navbar>
+            {
+              showDialog && <Dialog message={"Upload Successful"} onOK={dialogClose} />
+            }
+            {/* <Download url={"https://images.pexels.com/photos/10757932/pexels-photo-10757932.png?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"} text="Download"/> */}
+            <div className={styles.main}>
+              <div id="selectMid">            
+                  <select
+                    className={styles.selectList}
+                    value={mid}
+                    onChange={(e) => handleSelect(e.target.value)}
+                  >
+                    <option className="option" value="SELECT_MID">Select MID</option> 
+                    <option className="option" disabled={!isMid1} value="1">MID-1</option> 
+                    <option className="option" disabled={!isMid2} value="2">MID-2</option>
+                  </select>
+                  {selectError && (
+                    <p className={styles.errorField}>{selectError}</p>
+                  )}
+              </div>
 
-            {showUploadModule ? (
-              loadExisting ? (
-                <div style={{ marginTop: "20px" }}>
-                  <Spinner radius={2} />
-                </div>
-              ) : existingFile != null && editPRA !== true ? (
-                <div className={styles.editflex}>
-                {deadLineInfo != null && <p className={styles.instructions}>Instructions : {deadLineInfo.instructions}</p>}
-                  <p className={styles.pratitle}>Title : {praTitle}</p>
-                  <p className={styles.fileName}>{fileName}</p>
-                  <button
-                    onClick={() => seteditPRA(true)}
-                    className={styles.editbutton}                    
-                  >
-                    Edit PRA
-                  </button>
-                </div>
-              ) : (
-                <div className={styles.fileUploadModule}>
-                
-                  <div
-                    className={styles.instructions}
-                    style={{ alignSelf: "center" }}
-                  >
-                    {deadLineInfo != null && <p>Instructions : {deadLineInfo.instructions}</p>}
+              <div style={{ marginTop: "18px" }}>
+                {loading && <Spinner radius={2} />}
+              </div>
+
+              {
+                showUploadModule ? 
+                (
+                  loadExisting ? (
+                    <div style={{ marginTop: "20px" }}>
+                      <Spinner radius={2} />
+                    </div>
+                  ): 
+                  existingFile != null && editPRA !== true ? (
+                  <div className={styles.editflex}>
+                  {
+                    deadLineInfo != null && 
+                    <p className={styles.instructions}>Instructions : {deadLineInfo.instructions}</p>}
+                    <p className={styles.pratitle}>Title : {praTitle}</p>
+                    <p className={styles.fileName}>{fileName}</p>
+                    <button
+                      onClick={() => seteditPRA(true)}
+                      className={styles.editbutton}>
+                      Edit PRA
+                    </button>
                   </div>
-              {mid==1 ? (            
-                  <div style={{width:"600px", placeContent:"center" , margin:"auto"}}>
-                  <p style={{margin:"5%", fontSize:"14px"}}>Upload an abstract for your PRA. <strong>(Maximum file size limit is 200KB.)</strong></p>                  
-                    <label className={styles.praLabel}>PRA Title : </label>
-                    <input
+                ) : (
+                  <div className={styles.fileUploadModule}>
                   
-                      type="text"
-                      placeholder="TITLE OF THE ACTIVITY"
-                      className={styles.UploadinputStyle}
-                      value={praTitle}
-                      onChange={(e) => handleTitle(e.target.value)}
-                      maxLength={50}
-                    />
-                    <p className={styles.titleErrorField}>{titleError}</p>
-                  </div>
-                    ):( <div> <p className={styles.pratitle}>Title : {praTitle}</p> <p>Upload proof of PRA </p> </div>)}
-                  {deadLineInfo != null && (
-                    <div>
-                      {new Date() < deadLineInfo.lastDate.toDate() && (
-                        <div className={styles.customflex}>
-                          <div
-                            className={styles.fileContainer}
-                            style={{ marginBottom: "30px" }}
-                          >
-                            <label className={styles.customFileUpload}>                           
-                              <input type="file" onChange={onChange}/>                              
-                              {fileName.length > 0 ? "Change File" : "Add File"}
-                            </label>
-                            {(fileError.length > 0 || fileName.length > 0) && 
-                               (<div style={{ width: "20px" }}></div> )}
-                               {
-                                  fileError.length > 0 ? (
-                                  <p className={styles.errorField}>{fileError}</p>
-                                   ) : (
-                                  <p className={styles.fileName}>{fileName}</p>
-                                )}
-                          </div>
-                          <Button
-                            className={styles.uploadbutton}
-                            onClick={() => {submit(); }}
-                          >
-                          <i className="fas fa-upload"></i>
-                            Upload
-                          </Button>
-                        </div>
-                      )}
+                    <div
+                      className={styles.instructions}
+                      style={{ alignSelf: "center" }}
+                    >
+                      
+                      {
+                        deadLineInfo != null && 
+                        <p>Instructions : {deadLineInfo.instructions}</p>}
                     </div>
-                  )}
-                  {error && (
-                    <div>
-                      <p className={styles.errorField}>{error}</p>
-                    </div>
-                  )}
-                </div>
-              )
-            ) : praError ? (
-              <div>{praError}</div>
-            ) : null}
+                {mid==1 ? (
 
-            <div style={{ marginTop: "18px" }}>
-              {fileUploadLoading && <Spinner radius={2} />}
+                    <div style={{width:"600px", margin:"auto"}}>
+                      <p style={{margin:'5%', fontSize:'14px'}}className="praInfo">Upload an abstract for your PRA</p>
+                        <label className={styles.praLabel}>PRA Title </label>
+                        <input
+                      
+                          type="text"
+                          placeholder="TITLE OF THE ACTIVITY"
+                          className={styles.UploadinputStyle}
+                          value={praTitle}
+                          onChange={(e) => handleTitle(e.target.value)}
+                          maxLength={50}
+                        />
+                      <p className={styles.titleErrorField}>{titleError}</p>
+                    </div>
+                    ):
+                    ( 
+                    <div> 
+                      <p className={styles.pratitle}>Title
+                          <input
+                          type="text"
+                          style={{marginLeft:'4px'}}
+                          placeholder="TITLE OF THE ACTIVITY"
+                          className={styles.UploadinputStyle}
+                          value={praTitle}
+                          onChange={(e) => handleTitle(e.target.value)}
+                          maxLength={50}
+                        />
+                      </p>
+                      <p>Upload proof of PRA </p> </div>)}
+                    {deadLineInfo != null && (
+                      <div>
+                        {new Date() < deadLineInfo.lastDate.toDate() && (
+                          <div className={styles.customflex}>
+                            <div
+                              className={styles.fileContainer}
+                              style={{ marginBottom: "30px" }}
+                            >
+                              <label className={styles.customFileUpload}>
+                                {mid === 1 ? (
+                                  <input
+                                    type="file"
+                                    accept="application/pdf"
+                                    onChange={onChange}
+                                  />
+                                ) : (
+                                  <input type="file" onChange={onChange} />
+                                  
+                                )}
+                                {fileName.length > 0 ? "Change File" : "Add File"}
+                              </label>
+                              {(fileError.length > 0 || fileName.length > 0) && (
+                                <div style={{ width: "30px" }}></div>
+                              )}
+                              {fileError.length > 0 ? (
+                                <p className={styles.errorField}>{fileError}</p>
+                              ) : (
+                                <p className={styles.fileName}>{fileName}</p>
+                              )}
+                            </div>
+                            <Button
+                              className={
+                              styles.uploadbutton
+                              }
+                              onClick={() => {
+                                submit();
+                              }}
+                            >
+                            <i className="fas fa-upload"></i>
+                              Upload
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {error && (
+                      <div>
+                        <p className={styles.errorField}>{error}</p>
+                      </div>
+                    )}
+                  </div>
+                )
+              ) 
+                :praError?(<div>{praError}</div>):null
+              }
+
+              <div style={{ marginTop: "18px" }}>
+                {fileUploadLoading && <Spinner radius={2} />}
+              </div>
+
             </div>
           </div>
-        </div>
-      ) : (
-        <div>{pageLoadError}</div>
-      )}
+          ) 
+          : 
+          <div>{pageLoadError}</div>
+      }
     </div>
   );
 };

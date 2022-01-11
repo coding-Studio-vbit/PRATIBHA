@@ -57,9 +57,23 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                         console.log(`${course}_${year}_${department}_${section}_${subject}`);
                         const facultyRef = doc(
                             db,`faculty/${faculty}/${course}_${year}_${department}_${section}_${subject}`,email.split('@')[0]);
-                        await setDoc(facultyRef,{
-                            isSubmitted:true,
-                        })
+                        if(midNo=="1"){
+                            //TODO if mid1 is not submitted then setdoc in mid2
+                            await setDoc(facultyRef,{
+                                isSubmitted:true,
+                            })
+                        }else if(midNo=="2"){
+                            const doc =await getDoc(facultyRef);
+                            if(doc.exists()){
+                                await updateDoc(facultyRef,{
+                                    isSubmitted:true,
+                                })
+                            }else{
+                                await setDoc(facultyRef,{
+                                    isSubmitted:true,
+                                })
+                            }                            
+                        }
                     }else{
                         return "Unknown Error Occured, Try Reuploading the file";
                     }

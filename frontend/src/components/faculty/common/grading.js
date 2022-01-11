@@ -4,26 +4,17 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import Docviewer from "./docviewer";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { LoadingScreen } from "../../global_ui/spinner/spinner";
+import { LoadingScreen, OverlayLoader } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
+import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
 
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
-// import { db } from "../../../firebase";
 
 const Grading = () => {
   let location = useLocation();
-
-
   const { currentUser } = useAuth();
-  // let location = {
-  //   state:{
-  //     path:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",
-  //     className:"BTech_1_CSE_A_Engineering Chemistry"
-  //   }
-  // }
-
   const [subject, setSubject] = useState(
     location.state.path.split("/")[location.state.path.split("/").length - 3]
   );
@@ -31,6 +22,8 @@ const Grading = () => {
     location.state.path.split("/")[location.state.path.split("/").length - 1]
   );
   const [midNo, setMid] = React.useState("1");
+  const [isMid1,setisMid1]=useState(false);
+  const [isMid2,setisMid2]=useState(false);
 
   let navigate = useNavigate();
   const [setDialog, setSetDialog] = useState();
@@ -51,18 +44,31 @@ const Grading = () => {
   const [individuality2, setIndividuality2] = React.useState();
   const [preparation2, setPreparation2] = React.useState();
   const [presentation2, setPresentation2] = React.useState();
-
   const [deadline, setdeadline] = useState();
-
   const [allStudents, setAllStudents] = useState();
 
+  const [switchIndex, setSwitchIndex] = useState();
+
+  const [isSwitchDisabled, setIsSwitchDisabled] = useState(false);
+
+
+  const [changeLoader, setChangeLoader] = useState(false);
+
+  async function midboolean (){
+    const parts = location.state.className.split('_');
+    let course = parts[0]
+    let year = parts[1]
+    const isMid1 = await fetchisMid1(course,year);
+    const isMid2 = await fetchisMid2(course,year);
+    setisMid1(isMid1);
+    setisMid2(isMid2);
+  }
+
   function validateMarks(x) {
-    if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===3)
-    {
+    if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===3){
       return true;
     }
-    else
-    {
+    else{
       return false;
     }    
   }
@@ -79,8 +85,7 @@ const Grading = () => {
         marks.Subject_Relevance1=parseInt(subRel1);
       }else{
         marks=null;
-      }
-     
+      } 
     }
     else{
       if(validateMarks(individuality2) && validateMarks(innovation2) && validateMarks(preparation2) &&
@@ -112,9 +117,10 @@ const Grading = () => {
   }
 }
 
-  async function searchRoll(){
-    if(rollNo!=null || rollNo!==""){
-      let x=allStudents.find(element=>element.id===rollNo)
+  async function searchRoll(val){
+    setPageLoading(true);
+    if(val!=null || val!==""){
+      let x=allStudents.find(element=>element.id===val)
       if(x==null){
         alert("Student Not Found")
       }else{
@@ -159,7 +165,7 @@ const Grading = () => {
           setRemarks2("")
         }
         const res = await getUploadedFileByPath(
-          location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+rollNo    
+          location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+val    
         );    
         if(res.error==null){
           setUrl(res.url);     
@@ -171,6 +177,7 @@ const Grading = () => {
     }else{
       console.log("Show Error");
     }
+    setPageLoading(false)
   }    
 
   async function getUserData() {
@@ -210,7 +217,10 @@ const Grading = () => {
     else{
       setUrl(null);
     }
-    const coeDeadLine = await getCoeDeadline(midNo);
+    let course = location.state.className.split("_")[0];
+    let year = location.state.className.split("_")[1]
+
+    const coeDeadLine = await getCoeDeadline(midNo,course,year);
     if(coeDeadLine.error==null){
       setdeadline(coeDeadLine.data.toDate());
     } else {
@@ -221,12 +231,19 @@ const Grading = () => {
     {
       let students=[];
       data.data.forEach(element => {
-        let s={};
-        s.id = element.id;
-        s.data=element.data();              
-        students.push(s);      
+        if(element.id!==currentUser.email){
+          let s={};
+          s.id = element.id;
+          if(element.id===location.state.path.split("/")[location.state.path.split("/").length-1]){
+            console.log(students.length);
+            setSwitchIndex(students.length);
+          }
+          s.data=element.data();              
+          students.push(s); 
+        }             
       });
-      setAllStudents(students);      
+      setAllStudents(students);  
+
     }
     else{
       setAllStudents(null);
@@ -238,431 +255,443 @@ const Grading = () => {
     setPageLoading(false);
   }
 
+  async function switchStudent(isLeft){
+    setIsSwitchDisabled(true);
+    if(isLeft){
+      setRollNo(allStudents[switchIndex-1].id); 
+      setSwitchIndex(switchIndex-1);
+      console.log(rollNo); 
+      await searchRoll(allStudents[switchIndex-1].id);           
+    }else{
+      console.log(allStudents[switchIndex+1].id);
+      console.log(switchIndex+1);
+      setRollNo(allStudents[switchIndex+1].id);
+      setSwitchIndex(switchIndex+1);
+      console.log(rollNo);
+      await searchRoll(allStudents[switchIndex+1].id);           
+    }
+    setIsSwitchDisabled(false);       
+  }
+
   useEffect(() => {
-    if (currentUser.isMid1) {
+    midboolean();
+    if (isMid1) {
       setMid("1");
-    } else if (currentUser.isMid2) {
+    } else if (isMid2) {
       setMid("2");
     }
     getUserData();
+    
   }, []);
 
   return !pageLoading ? (
     pageLoadError == null ? (
       <div className="grading">
-        {setDialog != null && (
-          <Dialog message={setDialog} onOK={() => setSetDialog(null)} />
-        )}
-        <div className="left">
-          <i
-            style={{
-              position: "absolute",
-              left: "16px",
-              top: "16px",
-              cursor: "pointer",
-            }}
-            className="fas fa-arrow-left"
-            onClick={() => {
-              navigate("/faculty/studentlist", {
-                state: { sub: location.state.className },
-              });
-            }}
-          ></i>
-
-          <h3 style={{ textAlign: "center" }}>Student Details</h3>
-
-          <div className="details">
-            <div
-              style={{
-                display: "flex",
-                gap: "8px",
-                alignItems: "center",
+          {/* Dialog Confirming Marks Updation */}
+          {
+              setDialog != null && 
+              <Dialog message={setDialog} onOK={() => setSetDialog(null)} />
+          }
+          {
+            changeLoader && <LoadingScreen isTransparent={true}/>
+          }
+          <div className="left">
+            <i style={{
+                position: "absolute",
+                left: "16px",
+                top: "16px",
+                cursor: "pointer",
               }}
-            >
-              <span>Roll no:</span>
-              <div>
-                <input
-                className="rollNo"
-                  type="text"
-                  maxLength={10}
-                  value={rollNo}
-                  onChange={(e) => setRollNo(e.target.value)}
-                ></input>
-                <button className="searchBtn" onClick={searchRoll}>
-                  <i style={{ cursor: "pointer" }} className="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                gap: 8,
-                padding: "8px 8px 0px 8px",
+              className="fas fa-arrow-left"
+              onClick={() => {
+                navigate("/faculty/studentlist", {
+                  state: { sub: location.state.className },
+                });
               }}
-            >
-              <span>Subject:</span>
-              <span style={{ fontWeight: "bold" }}>{subject}</span>
-            </div>
-          </div>
+            ></i>
 
-          <div className="mid1">
-            <span className="mid1title">MID-I</span>
-            <div>
-              <span>Innovation:(2M)</span>
-              <input
-                className="inputStyle"
-                type="number"
-                maxLength={1}
-                disabled={!currentUser.isMid1}
-                value={innovation1}
-                onChange={(e) => {
-                  if (e.target.value < 3 && e.target.value > -1) {
-                    setInnovation1(e.target.value);
-                  } else {
-                    setInnovation1(2);
-                  }
-                }}
-              />
-            </div>
-            <div>
-              <span>Subject Relevance:(2M)</span>
-              <input
-                className="inputStyle"
-                type="number"
-                maxLength={1}
-                disabled={!currentUser.isMid1}
-                value={subRel1}
-                onChange={(e) => {
-                  if (e.target.value < 3 && e.target.value > -1) {
-                    setSubRel1(e.target.value);
-                  } else {
-                    setSubRel1(2);
-                  }
-                }}
-              />
-            </div>
-            <div>
-              <span>Individuality:(2M)</span>
-              <input
-                className="inputStyle"
-                type="number"
-                maxLength={1}
-                disabled={!currentUser.isMid1}
-                value={individuality1}
-                onChange={(e) => {
-                  if (e.target.value < 3 && e.target.value > -1) {
-                    setIndividuality1(e.target.value);
-                  } else {
-                    setIndividuality1(2);
-                  }
-                }}
-              />
-            </div>
-            <div>
-              <span>Preparation:(2M)</span>
-              <input
-                className="inputStyle"
-                type="number"
-                maxLength={1}
-                disabled={!currentUser.isMid1}
-                value={preparation1}
-                onChange={(e) => {
-                  if (e.target.value < 3 && e.target.value > -1) {
-                    setPreparation1(e.target.value);
-                  } else {
-                    setPreparation1(2);
-                  }
-                }}
-              />
-            </div>
-            <div>
-              <span>Presentation:(2M)</span>
-              <input
-                className="inputStyle"
-                type="number"
-                maxLength={1}
-                disabled={!currentUser.isMid1}
-                value={presentation1}
-                onChange={(e) => {
-                  if (e.target.value < 3 && e.target.value > -1) {
-                    setPresentation1(e.target.value);
-                  } else {
-                    setPresentation1(2);
-                  }
-                }}
-              />
-            </div>
-            <div
-              style={{
-                marginTop: "4%",
-                justifyContent: "space-between",
-                marginRight: "3px",
-                fontWeight: "bolder",
-              }}
-            >
-              <span>TOTAL:(10M)</span>
-              <span
-                style={{
-                  backgroundColor: "#E5E4E2",
-                  color: "black",
-                  width: "40px",
-                  padding: "3px",
-                  height: "20px",
-                  textAlign: "center",
-                  borderRadius: "10px",
-                }}
-              >
-                {parseInt(individuality1) +
-                parseInt(subRel1) +
-                parseInt(innovation1) +
-                parseInt(preparation1) +
-                parseInt(presentation1)
-                  ? parseInt(individuality1) +
-                    parseInt(subRel1) +
-                    parseInt(innovation1) +
-                    parseInt(preparation1) +
-                    parseInt(presentation1)
-                  : " "}
-              </span>
-            </div>
-          </div>
+            <h3 style={{ textAlign: "center" }}>Student Details </h3>
 
-          {midNo === "2" && (
-            <div className="mid2">
-              <span className="mid1title">MID-II</span>
-              <div>
-                <span>Innovation:(2M)</span>
-                <input
-                  className="inputStyle"
-                  type="number"
-                  maxLength={1}
-                  disabled={!currentUser.isMid2}
-                  value={innovation2}
-                  onChange={(e) => {
-                    if (e.target.value < 3 && e.target.value > -1) {
-                      setInnovation2(e.target.value);
-                    } else {
-                      setInnovation2(2);
-                    }
-                  }}
-                />
-              </div>
+            <div className="details">
+                <div style={{display: "flex",gap: "8px",alignItems: "center"}}>
+                    <span>Roll Number</span>
+                    <div>
+                      <input className="rollNo"
+                        type="text"
+                        maxLength={10}
+                        value={rollNo}
+                        onChange={(e) => setRollNo(e.target.value)}
+                      ></input>
+                      <button className="searchBtn" onClick={()=>searchRoll(rollNo)}>
+                        <i className="fa fa-search"></i>
+                      </button>
+                    </div>
+                </div>
 
-              <div>
-                <span>Subject Relevance:(2M)</span>
-                <input
-                  className="inputStyle"
-                  disabled={!currentUser.isMid2}
-                  type="number"
-                  maxLength={1}
-                  value={subRel2}
-                  onChange={(e) => {
-                    if (e.target.value < 3 && e.target.value > -1) {
-                      setSubRel2(e.target.value);
-                    } else {
-                      setSubRel2(2);
-                    }
-                  }}
-                />
-              </div>
+                <div style={{
+                    display: "flex",
+                    gap: '20px',
+                    padding: "8px 8px 0px 8px",
+                  }}>
+                  <span>Subject </span>
+                  <span style={{ fontWeight: "bold" }}>{subject}</span>
+                </div>
+            </div>
 
-              <div>
-                <span>Individuality:(2M)</span>
-                <input
-                  className="inputStyle"
-                  disabled={!currentUser.isMid2}
-                  type="number"
-                  maxLength={1}
-                  value={individuality2}
-                  onChange={(e) => {
-                    if (e.target.value < 3 && e.target.value > -1) {
-                      setIndividuality2(e.target.value);
-                    } else {
-                      setIndividuality2(2);
-                    }
-                  }}
-                />
-              </div>
+            <div className="mid1">
+                <span className="mid1title" style={{marginTop:"10px"}}>MID-I</span>
+                <div>
+                  <span className="marksType">Innovation (2M)</span>
+                  <input
+                    className="inputStyle"
+                    type="number"
+                    maxLength={1}
+                    disabled={!isMid1}
+                    value={innovation1}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setInnovation1(e.target.value);
+                      } else {
+                        setInnovation1(2);
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <span className="marksType">Subject Relevance (2M)</span>
+                  <input
+                    className="inputStyle"
+                    type="number"
+                    maxLength={1}
+                    disabled={!isMid1}
+                    value={subRel1}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setSubRel1(e.target.value);
+                      } else {
+                        setSubRel1(2);
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <span className="marksType">Individuality (2M)</span>
+                  <input
+                    className="inputStyle"
+                    type="number"
+                    maxLength={1}
+                    disabled={!isMid1}
+                    value={individuality1}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setIndividuality1(e.target.value);
+                      } else {
+                        setIndividuality1(2);
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <span className="marksType">Preparation (2M)</span>
+                  <input
+                    className="inputStyle"
+                    type="number"
+                    maxLength={1}
+                    disabled={!isMid1}
+                    value={preparation1}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setPreparation1(e.target.value);
+                      } else {
+                        setPreparation1(2);
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <span className="marksType">Presentation (2M)</span>
+                  <input
+                    className="inputStyle"
+                    type="number"
+                    maxLength={1}
+                    disabled={!isMid1}
+                    value={presentation1}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setPresentation1(e.target.value);
+                      } else {
+                        setPresentation1(2);
+                      }
+                    }}
+                  />
+                </div>
+                <div style={{
+                    marginTop: "4%",
+                    justifyContent: "space-between",
+                    marginRight: "3px",
+                    fontWeight: "bolder",
+                  }}>
+                    <span className="mid1title">TOTAL (10M)</span>
+                    <span
+                      style={{
+                        backgroundColor: "#E5E4E2",
+                        color: "black",
+                        width: "40px",
+                        padding: "3px",
+                        height: "20px",
+                        textAlign: "center",
+                        placeSelf:'center',
+                        borderRadius: "10px",
+                      }}>
+                      {parseInt(individuality1) +
+                      parseInt(subRel1) +
+                      parseInt(innovation1) +
+                      parseInt(preparation1) +
+                      parseInt(presentation1)
+                        ? parseInt(individuality1) +
+                          parseInt(subRel1) +
+                          parseInt(innovation1) +
+                          parseInt(preparation1) +
+                          parseInt(presentation1)
+                        : " "}
+                    </span>
+                </div>
+            </div>
 
-              <div>
-                <span>Preparation:(2M)</span>
-                <input
-                  className="inputStyle"
-                  disabled={!currentUser.isMid2}
-                  type="number"
-                  maxLength={1}
-                  value={preparation2}
-                  onChange={(e) => {
-                    if (e.target.value < 3 && e.target.value > -1) {
-                      setPreparation2(e.target.value);
-                    } else {
-                      setPreparation2(2);
-                    }
-                  }}
-                />
-              </div>
+            {midNo === "2" && (
+              <div className="mid2">
+                <span className="mid1title" style={{marginTop:"10px"}}>MID-II</span>
+                <div>
+                  <span className="marksType">Innovation (2M)</span>
+                  <input
+                    className="inputStyle"
+                    type="number"
+                    maxLength={1}
+                    disabled={!isMid2}
+                    value={innovation2}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setInnovation2(e.target.value);
+                      } else {
+                        setInnovation2(2);
+                      }
+                    }}
+                  />
+                </div>
 
-              <div>
-                <span>Presentation:(2M)</span>
-                <input
-                  className="inputStyle"
-                  disabled={!currentUser.isMid2}
-                  type="number"
-                  maxLength={1}
-                  value={presentation2}
-                  onChange={(e) => {
-                    if (e.target.value < 3 && e.target.value > -1) {
-                      setPresentation2(e.target.value);
-                    } else {
-                      setPresentation2(2);
-                    }
-                  }}
-                />
-              </div>
+                <div>
+                  <span className="marksType">Subject Relevance (2M)</span>
+                  <input
+                    className="inputStyle"
+                    disabled={!isMid2}
+                    type="number"
+                    maxLength={1}
+                    value={subRel2}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setSubRel2(e.target.value);
+                      } else {
+                        setSubRel2(2);
+                      }
+                    }}
+                  />
+                </div>
 
-              <div
-                style={{
-                  marginTop: "4%",
-                  justifyContent: "space-between",
-                  marginRight: "3px",
-                  fontWeight: "bolder",
-                }}
-              >
-                <span>Total:(10M)</span>
-                <span
+                <div>
+                  <span className="marksType">Individuality (2M)</span>
+                  <input
+                    className="inputStyle"
+                    disabled={!isMid2}
+                    type="number"
+                    maxLength={1}
+                    value={individuality2}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setIndividuality2(e.target.value);
+                      } else {
+                        setIndividuality2(2);
+                      }
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <span className="marksType">Preparation (2M)</span>
+                  <input
+                    className="inputStyle"
+                    disabled={!isMid2}
+                    type="number"
+                    maxLength={1}
+                    value={preparation2}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setPreparation2(e.target.value);
+                      } else {
+                        setPreparation2(2);
+                      }
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <span className="marksType">Presentation (2M)</span>
+                  <input
+                    className="inputStyle"
+                    disabled={!isMid2}
+                    type="number"
+                    maxLength={1}
+                    value={presentation2}
+                    onChange={(e) => {
+                      if (e.target.value < 3 && e.target.value > -1) {
+                        setPresentation2(e.target.value);
+                      } else {
+                        setPresentation2(2);
+                      }
+                    }}
+                  />
+                </div>
+
+                <div
                   style={{
-                    backgroundColor: "#E5E4E2",
-                    color: "black",
-                    width: "40px",
-                    padding: "3px",
-                    height: "20px",
-                    textAlign: "center",
-                    borderRadius: "10px",
+                    marginTop: "4%",
+                    justifyContent: "space-between",
+                    marginRight: "3px",
+                    fontWeight: "bolder",
                   }}
                 >
-                  {parseInt(individuality2) +
-                  parseInt(subRel2) +
-                  parseInt(innovation2) +
-                  parseInt(preparation2) +
-                  parseInt(presentation2)
-                    ? parseInt(individuality2) +
-                      parseInt(subRel2) +
-                      parseInt(innovation2) +
-                      parseInt(preparation2) +
-                      parseInt(presentation2)
-                    : " "}
-                </span>
+                  <span className="mid1title">TOTAL (10M)</span>
+                  <span
+                    style={{
+                      backgroundColor: "#E5E4E2",
+                      color: "black",
+                      width: "40px",
+                      padding: "3px",
+                      height: "20px",
+                      textAlign: "center",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    {parseInt(individuality2) +
+                    parseInt(subRel2) +
+                    parseInt(innovation2) +
+                    parseInt(preparation2) +
+                    parseInt(presentation2)
+                      ? parseInt(individuality2) +
+                        parseInt(subRel2) +
+                        parseInt(innovation2) +
+                        parseInt(preparation2) +
+                        parseInt(presentation2)
+                      : " "}
+                  </span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          <div className="footer">
-            <i
-              className="fas fa-chevron-circle-left fa-2x"
-              style={{ cursor: "pointer" }}
-            ></i>
-            <i
-              className="fas fa-chevron-circle-right fa-2x"
-              style={{ cursor: "pointer" }}
-            ></i>
+            {
+              (allStudents!=null && allStudents.length>1)
+              &&
+              <div className="footer">
+                <button disabled={isSwitchDisabled || switchIndex===0} className="searchBtn" onClick={()=>switchStudent(true)}>
+                    <i className="fas fa-chevron-circle-left fa-2x" style={{cursor:"pointer" }}></i>
+                </button>
+                <button disabled={isSwitchDisabled || switchIndex===allStudents.length-1} className="searchBtn" onClick={()=>switchStudent(false)}>
+                    <i className="fas fa-chevron-circle-right fa-2x" style={{cursor:"pointer"}}></i>
+                </button>             
+              </div>
+            }            
           </div>
-        </div>
 
-        <div className="right">
-          <div
-            className="preview"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "0.3fr 0.3fr 0.3fr",
-            }}
-          >
-        
-          <span
-              style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                padding: "16px",
-                gridArea: "title",
-                alignSelf: "center",
-              }}
-            >
-              PREVIEW
-            </span>
-
-            <div
-              className="dropdown"
-              style={{
-                alignSelf: "end",
-                padding: "16px",
-                justifySelf: "end",
-              }}
-            >
-              <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>
-              <select
+          <div className="right">
+              <div className="preview"
                 style={{
-                  width: "200px",
-                  padding: "8px",
-                  borderRadius: "24px",
-                  marginRight: "12px",
-                }}
-                value={midNo}
-                onChange={(e) => setMid(e.target.value)}
-                name="selectList"
-                id="selectList"
-              >
-                <option value="1">MID-I</option> 
-                {!currentUser.mid1 && <option value="2">MID-II</option>}
-              </select>
-            </div>
+                  display: "grid",
+                  gridTemplateColumns: "0.3fr 0.3fr 0.3fr",
+                }}>
+          
+                  <span style={{
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        padding: "16px",
+                        fontSize:'x-large',
+                        gridArea: "title",
+                        alignSelf: "center",
+                  }}>PREVIEW</span>
 
-            
+                  <div className="dropdown"
+                      style={{
+                        alignSelf: "end",
+                        padding: "16px",
+                        justifySelf: "end",
+                      }}>
+                      <i className="fa fa-angle-down dropdown-i" aria-hidden="true"></i>
+                      <select
+                        style={{
+                          width: "200px",
+                          padding: "8px",
+                          borderRadius: "24px",
+                          marginRight: "12px",
+                        }}
+                        value={midNo}
+                        onChange={(e) => setMid(e.target.value)}
+                        className="selectList"
+                        id="selectList">
+                        <option value="1">MID I</option> 
+                        {isMid2 && <option value="2">MID II</option>}
+                      </select>
+                  </div>
 
-            <div className="display">
-              {url !== null ? (
-                <Docviewer link={url} />
-              ) : (
-                <div>Unknown Error Occured</div>
-              )}
-            </div>
+              
 
-              <div className="remarksCon">
-                <span className="remarks-title">REMARKS</span>
-                <textarea 
-                value={midNo==="1"?remarks1:remarks2}
-                onChange={
-                  (e)=>midNo==="1"?setRemarks1(e.target.value):setRemarks2(e.target.value)
-                }
-                rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
-                {/* {
-                  deadline!=null?
-                  (
-                    new Date()<deadline?
-                    <button    className="savebutton"          
-                      
-                      onClick={()=>updateMarks()}
-                    >SAVE</button>:
-                    <div style={{textAlign:'center'}}>COE Deadline exceeded, cannot update marks</div>
-                  )
-                    :<button className="savebutton"
-                     
-                      onClick={()=>updateMarks()}
-                    >SAVE</button>
-                } */}
-                {
-                  <button className="savebutton"
-                  onClick={()=>updateMarks()}
-                  disabled={!currentUser.isMid1 && !currentUser.isMid2}>{!currentUser.isMid1 && !currentUser.isMid2}SAVE</button>
-                }
+              <div className="display">
+                {url !== null ? (
+                  <Docviewer link={url} />
+                ) : (
+                  <div>Unknown Error Occured</div>
+                )}
               </div>
+
+                <div className="remarksCon">
+                  <span className="remarks-title">REMARKS</span>
+                  <textarea 
+                  value={midNo==="1"?remarks1:remarks2}
+                  onChange={
+                    (e)=>midNo==="1"?setRemarks1(e.target.value):setRemarks2(e.target.value)
+                  }
+                  rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
+                  {/* {
+                    deadline!=null?
+                    (
+                      new Date()<deadline?
+                      <button    className="savebutton"          
+                        
+                        onClick={()=>updateMarks()}
+                      >SAVE</button>:
+                      <div style={{textAlign:'center'}}>COE Deadline exceeded, cannot update marks</div>
+                    )
+                      :<button className="savebutton"
+                      
+                        onClick={()=>updateMarks()}
+                      >SAVE</button>
+                  } */}
+                  {
+                    <button className="savebutton"
+                    onClick={()=>updateMarks()}
+                    disabled={!isMid1 && !isMid2}>{!isMid1 && !isMid2}SAVE</button>
+                  }
+                  {/* {
+                    allStudents && allStudents.map(e=>{
+                      return <p>{e.id}</p>
+                    })
+                  } */}
+                </div>
+            </div>
           </div>
-        </div>
       </div>
     ) : (
       <div>{pageLoadError}</div>
     )
   ) : (
-    <LoadingScreen />
+    <LoadingScreen isTransparent={true} />
   );
 };
 

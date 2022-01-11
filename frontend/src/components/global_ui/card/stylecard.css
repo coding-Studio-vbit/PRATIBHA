@@ -1,0 +1,43 @@
+.CardContainer {
+  height: 180px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* font-size: 20px; */
+  /* padding: 5px; */
+  background: rgba(176, 196, 222, 0.43);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.red {
+  background-color: #fdcbc9;
+}
+.newcard {
+  margin: 0.5rem;
+  font-size: 15px;
+}
+.newcardtitle {
+  margin: 0.5rem;
+  font-size: 20px;
+}
+
+.green {
+  background-color: #daffb0;
+}
+
+p {
+  margin: 0.5rem;
+}
+.CardContainer {
+  width: 220px;
+}
+
+@media screen and (max-width: 700px) {
+  .CardContainer {
+    width: 200px;
+  }
+}

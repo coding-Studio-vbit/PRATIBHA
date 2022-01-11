@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "./ListOfStudents.css";
 import Button from "../../../global_ui/buttons/button";
@@ -9,6 +9,10 @@ import { doc, getDoc, collection, query, getDocs } from "firebase/firestore";
 import { getStudentData } from "../../../student/services/studentServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
+import {
+  fetchisMid1,
+  fetchisMid2,
+} from "../../../student/services/studentServices";
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);
@@ -16,10 +20,10 @@ const ListofStudents = () => {
   const [loading, setloading] = useState(true);
   const [buttonText, setButtonText] = useState("EDIT PRA");
   const [student, setStudent] = useState(null);
+  const [studentTopic, setStudentTopic] = useState(null);
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
-  console.log(location.state.sub);
   const val = location.state.sub;
   const subjectval = val.split("_");
   const course =
@@ -58,6 +62,9 @@ const ListofStudents = () => {
       collection(db, `faculty/${currentUser.email}/${location.state.sub}`)
       // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
+    let stddd = null;
+    let ismid1 = await fetchisMid1(subjectval[0], subjectval[1]);
+    let ismid2 = await fetchisMid2(subjectval[0], subjectval[1]);
 
     await getDocs(studentref).then((querySnapshot) => {
       if (querySnapshot) {
@@ -80,6 +87,13 @@ const ListofStudents = () => {
             Individuality1 = docData["mid1"]["Individuality1"];
             Preparation1 = docData["mid1"]["Preparation1"];
             Presentation1 = docData["mid1"]["Presentation1"];
+          } else {
+            if (stddd === null && ismid1) {
+              if (doc.id.toString() !== currentUser.email) {
+                setStudent(doc.id.toString());
+                stddd = doc.id.toString();
+              }
+            }
           }
           if (docData["mid2"]) {
             Innovation2 = docData["mid2"]["Innovation2"];
@@ -87,6 +101,13 @@ const ListofStudents = () => {
             Individuality2 = docData["mid2"]["Individuality2"];
             Preparation2 = docData["mid2"]["Preparation2"];
             Presentation2 = docData["mid2"]["Presentation2"];
+          } else {
+            if (stddd === null && ismid2) {
+              if (doc.id.toString() !== currentUser.email) {
+                setStudent(doc.id.toString());
+                stddd = doc.id.toString();
+              }
+            }
           }
           const mid1 = docData["mid1"]
             ? Innovation1 +
@@ -115,6 +136,9 @@ const ListofStudents = () => {
                 if (obj) {
                   topic = obj.topic;
                   name = returndata.name;
+                  if (stddd === doc.id.toString()) {
+                    setStudentTopic(topic);
+                  }
                 }
                 const dataobj = {
                   ROLL_NO: doc.id.toString(),
@@ -151,30 +175,9 @@ const ListofStudents = () => {
     setloading(false);
   };
 
-  const Fetchnumber = () => {
-    var std1, std2;
-    if (data) {
-      for (var student = 0; student < data.length; student++) {
-        if (data[student]["MID_1"] == " ") {
-          std1 = data[student]["ROLL_NO"].toString() + "@vbithyd.ac.in";
-          break;
-        }
-      }
-      for (var student = 0; student < data.length; student++) {
-        if (data[student]["MID_2"] == " ") {
-          std2 = data[student]["ROLL_NO"].toString() + "@vbithyd.ac.in";
-        }
-      }
-    }
-    var std = std1 ? std1 : std2;
-    setStudent(std);
-    return std;
-  };
-
   useEffect(() => {
     Fetchdata();
     Fetchsubject();
-    Fetchnumber();
   }, []);
 
   return (
@@ -242,7 +245,7 @@ const ListofStudents = () => {
                                 "1" +
                                 "/" +
                                 dataitem.ROLL_NO,
-                                topicname : dataitem.TOPIC_NAME
+                              topicname: dataitem.TOPIC_NAME,
                             },
                           });
                         }}
@@ -261,7 +264,27 @@ const ListofStudents = () => {
               <Button
                 children="GRADE"
                 onClick={() => {
-                  navigate("/faculty/grading", { state: student });
+                  navigate("/faculty/grading", {
+                    state: {
+                      studentmail: student + "@vbithyd.ac.in",
+                      className: location.state.sub,
+                      path:
+                        subjectval[0] +
+                        "/" +
+                        subjectval[1] +
+                        "/" +
+                        subjectval[2] +
+                        "/" +
+                        subjectval[3] +
+                        "/" +
+                        subjectval[4] +
+                        "/" +
+                        "1" +
+                        "/" +
+                        student,
+                      topicname: studentTopic,
+                    },
+                  });
                 }}
                 width="200"
                 className="rare"
