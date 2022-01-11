@@ -13,19 +13,31 @@
   cursor: pointer;
 }
 
-.newcard {
-    margin:0.5rem;
-    font-size: 15px;
+.red {
+  background-color: #fdcbc9;
 }
-.newcardtitle{
-    margin:0.5rem;
-    font-size: 20px;
+.newcard {
+  margin: 0.5rem;
+  font-size: 15px;
+}
+.newcardtitle {
+  margin: 0.5rem;
+  font-size: 20px;
+}
+
+.green {
+  background-color: #daffb0;
+}
+
+p {
+  margin: 0.5rem;
+}
+.CardContainer {
+  width: 220px;
 }
 
 @media screen and (max-width: 700px) {
-
-    .CardContainer{
-        width: 220px;
-    }
-
+  .CardContainer {
+    width: 200px;
+  }
 }

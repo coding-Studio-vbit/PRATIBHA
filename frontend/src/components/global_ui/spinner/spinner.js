@@ -1,6 +1,5 @@
 import React from 'react';
 import './spinner.css';
-import styles from "../dialog/dialog.module.css"
 
 /**
  * 

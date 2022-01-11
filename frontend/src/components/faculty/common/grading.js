@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { LoadingScreen, OverlayLoader } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
+import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
 
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
@@ -21,6 +22,8 @@ const Grading = () => {
     location.state.path.split("/")[location.state.path.split("/").length - 1]
   );
   const [midNo, setMid] = React.useState("1");
+  const [isMid1,setisMid1]=useState(false);
+  const [isMid2,setisMid2]=useState(false);
 
   let navigate = useNavigate();
   const [setDialog, setSetDialog] = useState();
@@ -50,6 +53,16 @@ const Grading = () => {
 
 
   const [changeLoader, setChangeLoader] = useState(false);
+
+  async function midboolean (){
+    const parts = location.state.className.split('_');
+    let course = parts[0]
+    let year = parts[1]
+    const isMid1 = await fetchisMid1(course,year);
+    const isMid2 = await fetchisMid2(course,year);
+    setisMid1(isMid1);
+    setisMid2(isMid2);
+  }
 
   function validateMarks(x) {
     if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===3){
@@ -261,12 +274,14 @@ const Grading = () => {
   }
 
   useEffect(() => {
-    if (currentUser.isMid1) {
+    midboolean();
+    if (isMid1) {
       setMid("1");
-    } else if (currentUser.isMid2) {
+    } else if (isMid2) {
       setMid("2");
     }
     getUserData();
+    
   }, []);
 
   return !pageLoading ? (
@@ -331,7 +346,7 @@ const Grading = () => {
                     className="inputStyle"
                     type="number"
                     maxLength={1}
-                    disabled={!currentUser.isMid1}
+                    disabled={!isMid1}
                     value={innovation1}
                     onChange={(e) => {
                       if (e.target.value < 3 && e.target.value > -1) {
@@ -348,7 +363,7 @@ const Grading = () => {
                     className="inputStyle"
                     type="number"
                     maxLength={1}
-                    disabled={!currentUser.isMid1}
+                    disabled={!isMid1}
                     value={subRel1}
                     onChange={(e) => {
                       if (e.target.value < 3 && e.target.value > -1) {
@@ -365,7 +380,7 @@ const Grading = () => {
                     className="inputStyle"
                     type="number"
                     maxLength={1}
-                    disabled={!currentUser.isMid1}
+                    disabled={!isMid1}
                     value={individuality1}
                     onChange={(e) => {
                       if (e.target.value < 3 && e.target.value > -1) {
@@ -382,7 +397,7 @@ const Grading = () => {
                     className="inputStyle"
                     type="number"
                     maxLength={1}
-                    disabled={!currentUser.isMid1}
+                    disabled={!isMid1}
                     value={preparation1}
                     onChange={(e) => {
                       if (e.target.value < 3 && e.target.value > -1) {
@@ -399,7 +414,7 @@ const Grading = () => {
                     className="inputStyle"
                     type="number"
                     maxLength={1}
-                    disabled={!currentUser.isMid1}
+                    disabled={!isMid1}
                     value={presentation1}
                     onChange={(e) => {
                       if (e.target.value < 3 && e.target.value > -1) {
@@ -452,7 +467,7 @@ const Grading = () => {
                     className="inputStyle"
                     type="number"
                     maxLength={1}
-                    disabled={!currentUser.isMid2}
+                    disabled={!isMid2}
                     value={innovation2}
                     onChange={(e) => {
                       if (e.target.value < 3 && e.target.value > -1) {
@@ -468,7 +483,7 @@ const Grading = () => {
                   <span className="marksType">Subject Relevance (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!currentUser.isMid2}
+                    disabled={!isMid2}
                     type="number"
                     maxLength={1}
                     value={subRel2}
@@ -486,7 +501,7 @@ const Grading = () => {
                   <span className="marksType">Individuality (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!currentUser.isMid2}
+                    disabled={!isMid2}
                     type="number"
                     maxLength={1}
                     value={individuality2}
@@ -504,7 +519,7 @@ const Grading = () => {
                   <span className="marksType">Preparation (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!currentUser.isMid2}
+                    disabled={!isMid2}
                     type="number"
                     maxLength={1}
                     value={preparation2}
@@ -522,7 +537,7 @@ const Grading = () => {
                   <span className="marksType">Presentation (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!currentUser.isMid2}
+                    disabled={!isMid2}
                     type="number"
                     maxLength={1}
                     value={presentation2}
@@ -621,7 +636,7 @@ const Grading = () => {
                         className="selectList"
                         id="selectList">
                         <option value="1">MID I</option> 
-                        {currentUser.isMid2 && <option value="2">MID II</option>}
+                        {isMid2 && <option value="2">MID II</option>}
                       </select>
                   </div>
 
@@ -661,7 +676,7 @@ const Grading = () => {
                   {
                     <button className="savebutton"
                     onClick={()=>updateMarks()}
-                    disabled={!currentUser.isMid1 && !currentUser.isMid2}>{!currentUser.isMid1 && !currentUser.isMid2}SAVE</button>
+                    disabled={!isMid1 && !isMid2}>{!isMid1 && !isMid2}SAVE</button>
                   }
                   {/* {
                     allStudents && allStudents.map(e=>{
