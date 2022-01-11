@@ -62,7 +62,7 @@ const AllRoutes = () => {
                     <Route exact path="/coesearch" element={<CoeSearch />} />
                   </>
                 )}
-                 {currentUser.isCOE || currentUser.isHOD && (
+                 {(currentUser.isCOE || currentUser.isHOD) && (
                   <Route
                       exact
                       path="/viewsubmissions"
