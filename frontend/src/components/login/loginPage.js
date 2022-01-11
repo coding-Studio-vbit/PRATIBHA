@@ -3,6 +3,7 @@ import "./loginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
+import ContactPage from "./contactPage/contactPage";
 
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
@@ -35,14 +36,21 @@ export default function LoginPage() {
   return loading === false ? (
     <div className="page">
       <div className="loginComponent">
+        
         <div className="logos">
           <div className="pratibha">
               <img alt="Pratibha" height={70} src="/pratibha.png"/>
               <span className="titleStyle" >PRATIBHA</span>
           </div>
-          <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
-          <img alt="vbit" className="vbit" src="/vbit.png" />
-          <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
+
+         
+            <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
+            <img alt="vbit" className="vbit" src="/vbit.png" />
+         
+
+          {/* <div>
+            <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
+          </div>          */}
         </div>
 
         <div className="row">
@@ -59,8 +67,13 @@ export default function LoginPage() {
               Login as Faculty
             </button>
           </div>
-        </div>
+        </div>        
       </div>
+
+      <div className="pratibhaDescription">
+          Pratibha
+      </div>
+      <ContactPage/>
     </div>
   ) : (
     <LoadingScreen />

@@ -1,0 +1,54 @@
+.contactComponent{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg clip-path='url(%26quot%3b%23SvgjsClipPath1029%26quot%3b)' fill='none'%3e%3ccircle r='93.335' cx='36.33' cy='-29.91' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='93.335' cx='414.45' cy='337.54' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='93.335' cx='828.28' cy='672.35' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='80.125' cx='1175.99' cy='352.91' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='100.995' cx='211.22' cy='126.77' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='56.78' cx='914.21' cy='217.91' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='184.44' cx='984.3' cy='75.62' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='55.885' cx='1260.21' cy='526.11' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='167.375' cx='555.33' cy='493.59' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3ccircle r='166.73' cx='1.5' cy='439.53' stroke='%23566799' stroke-opacity='0.28' stroke-width='2'%3e%3c/circle%3e%3c/g%3e%3cdefs%3e%3cclipPath id='SvgjsClipPath1029'%3e%3crect width='1440' height='560' x='0' y='0'%3e%3c/rect%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e");
+}
+
+.formComponent{
+    background: red;
+    width: min(90%,500px);
+}
+
+.contactTitle{
+    font-size: x-large;
+    text-align: center;
+}
+
+.field{
+    margin: 20px auto;
+    width: 600px;
+}
+
+.inputFieldStyle{
+    width:100%;
+    outline: none;
+    border:none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: large;
+    background-color:#e2e2e2;
+    width: auto;
+}
+
+.textareaStyle{
+    width: 100%;
+    outline: none;
+    border:none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: large;
+    background-color:#e2e2e2;
+    width: auto;
+}
+
+.contactButton{
+    outline: none;
+    border: none;
+    font-size: large;
+    background-color: #0e72ab;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
