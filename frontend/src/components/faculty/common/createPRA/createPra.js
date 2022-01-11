@@ -137,6 +137,7 @@ const CreatePra = () => {
           className="span-style"
           onChange={(e) => setInst(e.target.value)}
         ></textarea>
+        <span className="coe-deadline"><span>COE Deadline: </span>{CoeDate.toLocaleDateString("en-IN")}</span>
         <span className="text-style2">
           Set PRA Deadline:
           <span>
