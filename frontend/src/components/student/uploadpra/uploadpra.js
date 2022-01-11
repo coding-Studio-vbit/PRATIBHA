@@ -54,25 +54,48 @@ const Upload = () => {
     const onChange = (e) => 
     {
       let files = e.target.files[0];
-      let size = 200000;
-        if (mid === "1") 
-        {
-            size = 200000;
-        } 
-        else if (mid === "2") 
+      let size=200000;
+        if (mid === "2") 
         {
           size = 1048576000;
         }
-        if (files.size > size)
+        if(files!=null)
+        {
+          if (files.size > size )
+          {
+            setUrl(null);
+            setFileError("File Limit Exceeded");
+          } 
+          else 
+          {
+            let ext;
+            ext=files.name.split('.').pop();
+            if(mid==1)
+            {
+              if(ext=="pdf")
+              {
+                setFileError("");
+                setFileName(files.name);
+                setUrl(e.target.files[0]);
+              }
+              else
+              {
+                setUrl(null);
+                setFileError("File in PDF format");
+              }
+            }
+            else
+            { 
+              setFileError("");
+              setFileName(files.name);
+              setUrl(e.target.files[0]);
+            }
+          }
+        }
+        else
         {
           setUrl(null);
-          setFileError("File Limit Exceeded");
-        } 
-        else 
-        {
-            setFileError("");
-            setFileName(files.name);
-            setUrl(e.target.files[0]);
+          setFileError("File not uploaded");
         }
     };
 
@@ -82,8 +105,7 @@ const Upload = () => {
         let res;
         
           if ((url != null) & handleTitle(praTitle))
-          {
-            
+          {          
 
             res = await uploadFile(
               url,
@@ -205,7 +227,6 @@ const Upload = () => {
                
                 setDeadLineInfo(res.data);
                await getFile(value);
-
               
             } 
             else 
@@ -302,8 +323,7 @@ const Upload = () => {
                   <p className={styles.fileName}>{fileName}</p>
                   <button
                     onClick={() => seteditPRA(true)}
-                    className={styles.editbutton}
-                    
+                    className={styles.editbutton}                    
                   >
                     Edit PRA
                   </button>
@@ -317,10 +337,9 @@ const Upload = () => {
                   >
                     {deadLineInfo != null && <p>Instructions : {deadLineInfo.instructions}</p>}
                   </div>
-              {mid==1 ? (
-
-                  <div>
-                  <p>Upload an abstract for your PRA</p>
+              {mid==1 ? (            
+                  <div style={{width:"600px", placeContent:"center" , margin:"auto"}}>
+                  <p style={{margin:"5%", fontSize:"14px"}}>Upload an abstract for your PRA. <strong>(Maximum file size limit is 200KB.)</strong></p>                  
                     <label className={styles.praLabel}>PRA Title : </label>
                     <input
                   
@@ -331,9 +350,9 @@ const Upload = () => {
                       onChange={(e) => handleTitle(e.target.value)}
                       maxLength={50}
                     />
-                    <p className={styles.errorField}>{titleError}</p>
+                    <p className={styles.titleErrorField}>{titleError}</p>
                   </div>
-):( <div> <p className={styles.pratitle}>Title : {praTitle}</p> <p>Upload proof of PRA </p> </div>)}
+                    ):( <div> <p className={styles.pratitle}>Title : {praTitle}</p> <p>Upload proof of PRA </p> </div>)}
                   {deadLineInfo != null && (
                     <div>
                       {new Date() < deadLineInfo.lastDate.toDate() && (
@@ -342,35 +361,22 @@ const Upload = () => {
                             className={styles.fileContainer}
                             style={{ marginBottom: "30px" }}
                           >
-                            <label className={styles.customFileUpload}>
-                              {mid === 1 ? (
-                                <input
-                                  type="file"
-                                  accept="application/pdf"
-                                  onChange={onChange}
-                                />
-                              ) : (
-                                <input type="file" onChange={onChange} />
-                                
-                              )}
+                            <label className={styles.customFileUpload}>                           
+                              <input type="file" onChange={onChange}/>                              
                               {fileName.length > 0 ? "Change File" : "Add File"}
                             </label>
-                            {(fileError.length > 0 || fileName.length > 0) && (
-                              <div style={{ width: "30px" }}></div>
-                            )}
-                            {fileError.length > 0 ? (
-                              <p className={styles.errorField}>{fileError}</p>
-                            ) : (
-                              <p className={styles.fileName}>{fileName}</p>
-                            )}
+                            {(fileError.length > 0 || fileName.length > 0) && 
+                               (<div style={{ width: "20px" }}></div> )}
+                               {
+                                  fileError.length > 0 ? (
+                                  <p className={styles.errorField}>{fileError}</p>
+                                   ) : (
+                                  <p className={styles.fileName}>{fileName}</p>
+                                )}
                           </div>
                           <Button
-                            className={
-                             styles.uploadbutton
-                            }
-                            onClick={() => {
-                              submit();
-                            }}
+                            className={styles.uploadbutton}
+                            onClick={() => {submit(); }}
                           >
                           <i className="fas fa-upload"></i>
                             Upload

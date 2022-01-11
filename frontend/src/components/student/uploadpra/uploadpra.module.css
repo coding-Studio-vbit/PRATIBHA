@@ -61,11 +61,11 @@ input[type="file"] {
    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
    font-size: large;
    background-color: #0e72ab;
-  color: white;
-  width:100px;
- height: auto;
- padding: 5px 10px !important;
- align-self: center;
+   color: white;
+   width:100px;
+   height: auto;
+   padding: 5px 10px !important;
+   align-self: center;
 }
 
 .praLabel{
@@ -73,9 +73,12 @@ input[type="file"] {
    font-size: 17px;
    padding-left: 15px;
    align-self: center;
+   margin-left: 5%;
+   
 }
 label{
    font-weight: medium;
+
 }
 .uploadbutton{
   background-color: #0E72AB;
@@ -86,15 +89,25 @@ label{
 .fileContainer{
    margin-bottom: 25px;
    display: flex;
-   flex-direction: row;
-   justify-content: space-between;
+   flex-direction:column-reverse;
+   /* justify-content: space-between; */
    align-items: center;
 }
-
+.titleErrorField{
+   display:flex;
+   padding-left: 140px;
+   color: red;
+   font-size: 12px;
+   font-style:normal;
+   font-weight: 450;
+   margin-top: 0%;
+}
 .errorField{
+   display: flex;
+   flex-direction: column;
    color:red;
-   padding-left: 15px;
-   font-size:12px;
+   /* padding-left: 75px;  */
+   font-size:16px;
    font-weight: 450;
 }
 
@@ -107,7 +120,7 @@ label{
 
 .fileName{
    color:darkslategrey;
-   font-size:14x;
+   font-size:20px;
    font-weight: 450;
 }
 
