@@ -378,7 +378,7 @@ const Upload = () => {
                     ):
                     ( 
                     <div> 
-                      <p className={styles.pratitle}>Title
+                      <p className={styles.pratitle}>PRA Title:
                           <input
                           type="text"
                           size={30}
