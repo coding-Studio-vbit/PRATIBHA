@@ -15,7 +15,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useLocation} from "react-router-dom";
 import { fetchisMid1,fetchisMid2 } from "../services/studentServices";
-import Download from "../../global_ui/download/download";
+// import Download from "../../global_ui/download/download";
 // import { Timestamp } from "firebase/firestore";
 
 const Upload = () => {
@@ -74,7 +74,7 @@ const Upload = () => {
           if (files.size > size )
           {
             setUrl(null);
-            setFileError("File Limit Exceeded");
+            setFileError("File Limit Exceeded. Maximum file size is 200KB.");
           } 
           else 
           {
@@ -91,7 +91,7 @@ const Upload = () => {
               else
               {
                 setUrl(null);
-                setFileError("File in PDF format");
+                setFileError("File not in PDF format");
               }
             }
             else
@@ -102,18 +102,18 @@ const Upload = () => {
             }
           }
         }
-        else
-          setUrl(null);
-          if(mid==="1")
-          setFileError(`File Limit Exceeded, Upload a file of size less than ${size/1000}KB `);
-          else
-          setFileError(`File Limit Exceeded, Upload a file of size less than 1 GB`);
-      // } 
-      //   else 
-      //   {
+      //   else
       //     setUrl(null);
-      //     setFileError("File not uploaded");
-      //   }
+      //     if(mid==="1")
+      //     setFileError(`File Limit Exceeded, Upload a file of size less than ${size/1000}KB `);
+      //     else
+      //     setFileError(`File Limit Exceeded, Upload a file of size less than 1 GB`);
+      // // } 
+        else 
+        {
+          setUrl(null);
+          setFileError("File not uploaded");
+        }
     };
 
     async function submit()
@@ -252,6 +252,8 @@ const Upload = () => {
         }
     }
 
+    
+
     function dialogClose(x){
         setshowDialog(false);
         navigate("/student/subjectslist");
@@ -292,13 +294,13 @@ const Upload = () => {
   return pageLoad ? (
     <LoadingScreen />
   ) : (
-    <div>
+    <div >
       {
         pageLoadError === null ? (
-        <div>
-            <Navbar title={location.state.subject} backURL={'/student/subjectslist'} logout={false}></Navbar>
+        <div className={styles.uploadScreen}>
+            <Navbar title={location.state.subject} backURL={'/student/subjectslist'}logout={false}></Navbar>
             {
-              showDialog && <Dialog message={"Upload Successful"} onOK={dialogClose} />
+              showDialog && <Dialog message={"Uploaded Successfully"} onOK={dialogClose} />
             }
             {/* <Download url={"https://images.pexels.com/photos/10757932/pexels-photo-10757932.png?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"} text="Download"/> */}
             <div className={styles.main}>
@@ -330,11 +332,13 @@ const Upload = () => {
                     </div>
                   ): 
                   existingFile != null && editPRA !== true ? (
-                  <div className={styles.editflex}>
+                  <div className={styles.editflex}>                    
                   {
                     deadLineInfo != null && 
-                    <p className={styles.instructions}>Instructions : {deadLineInfo.instructions}</p>}
-                    <p className={styles.pratitle}>Title : {praTitle}</p>
+                    <div  className={styles.instructions}><strong><u>INSTRUCTIONS:</u></strong>
+                        <div>{deadLineInfo.instructions}</div>
+                    </div>}
+                    <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
                     <p className={styles.fileName}>{fileName}</p>
                     <button
                       onClick={() => seteditPRA(true)}
@@ -345,30 +349,31 @@ const Upload = () => {
                 ) : (
                   <div className={styles.fileUploadModule}>
                   
-                    <div
-                      className={styles.instructions}
-                      style={{ alignSelf: "center" }}
-                    >
-                      
+                    <div className={styles.instructions}>
+                     <strong><u>INSTRUCTIONS:</u></strong>
                       {
                         deadLineInfo != null && 
-                        <p>Instructions : {deadLineInfo.instructions}</p>}
+                        <div>{deadLineInfo.instructions}</div>
+                      }
                     </div>
                 {mid==1 ? (
 
-                    <div style={{width:"600px", margin:"auto"}}>
-                      <p style={{margin:'5%', fontSize:'14px'}}className="praInfo">Upload an abstract for your PRA</p>
-                        <label className={styles.praLabel}>PRA Title </label>
+                    <div >                      
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(in <strong><u>PDF</u></strong> format only)</p>
+                      <div>
+                        <label className={styles.praLabel}>PRA Title:</label>
                         <input
-                      
+                          size={30}
                           type="text"
                           placeholder="TITLE OF THE ACTIVITY"
                           className={styles.UploadinputStyle}
                           value={praTitle}
                           onChange={(e) => handleTitle(e.target.value)}
-                          maxLength={50}
+                          maxLength={50}                          
                         />
+                        </div>
                       <p className={styles.titleErrorField}>{titleError}</p>
+                      
                     </div>
                     ):
                     ( 
@@ -376,6 +381,7 @@ const Upload = () => {
                       <p className={styles.pratitle}>Title
                           <input
                           type="text"
+                          size={30}
                           style={{marginLeft:'4px'}}
                           placeholder="TITLE OF THE ACTIVITY"
                           className={styles.UploadinputStyle}
@@ -384,14 +390,15 @@ const Upload = () => {
                           maxLength={50}
                         />
                       </p>
-                      <p>Upload proof of PRA </p> </div>)}
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignItems:'center'}}>Upload proof of PRA </p> 
+                    </div>)}
                     {deadLineInfo != null && (
                       <div>
                         {new Date() < deadLineInfo.lastDate.toDate() && (
                           <div className={styles.customflex}>
                             <div
                               className={styles.fileContainer}
-                              style={{ marginBottom: "30px" }}
+                              style={{ marginBottom: "30px"}}
                             >
                               <label className={styles.customFileUpload}>
                                 {mid === 1 ? (
@@ -419,9 +426,8 @@ const Upload = () => {
                               className={
                               styles.uploadbutton
                               }
-                              onClick={() => {
-                                submit();
-                              }}
+                              onClick={() => {submit();}}
+                              disabled={fileError || titleError||fileName==null||praTitle==null}
                             >
                             <i className="fas fa-upload"></i>
                               Upload

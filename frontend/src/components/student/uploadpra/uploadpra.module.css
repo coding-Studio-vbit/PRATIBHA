@@ -1,9 +1,16 @@
-
+.uploadScreen{
+   display: flex;
+  flex-direction: column;
+  width: 100vw;  
+  margin-right: auto;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
 .main{
    display: flex;
-   width: 100vw;
+   
    flex-direction: column;
-   justify-content:center;
+   /* justify-content:center; */
    align-items:center;
    /* font-weight: bold; */
    margin-top: 50px;
@@ -31,8 +38,9 @@ input[type="file"] {
    text-decoration: none;
    cursor: pointer;
    margin-top: 10px;
-   width:70px;
+   width:100px;
    align-self: center;
+   
  }
 
  .customFileUpload:hover{
@@ -47,6 +55,7 @@ input[type="file"] {
  }
 
 .UploadinputStyle{
+   display: inline-flexbox;
    font-size: 20px;
    outline: none;
    background-color: #e5e4e2;
@@ -54,27 +63,33 @@ input[type="file"] {
    border: none;
    border-radius: 7px;
    font-weight: normal;
+   align-items: center;
+   
 }
+
+
 .editbutton{
    text-align: center;
-   border-radius: 7px !important;
+   border-radius: 500px !important;
    border: none;
    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
    font-size: large;
    background-color: #0e72ab;
    color: white;
-   width:100px;
+   width:120px;
    height: auto;
-   padding: 5px 10px !important;
+   padding: 15px 10px !important;
    align-self: center;
+   cursor: pointer;
 }
 
 .praLabel{
-   font-weight:medium !important ;
-   font-size: 17px;
-   padding-left: 15px;
+   font-weight:800 ;
+   font-size: 16px;
+   color:#0e72ab ;
    align-self: center;
-   margin-left: 5%;
+   justify-content: space-between;
+   margin-right: 5px;
    
 }
 label{
@@ -86,22 +101,30 @@ label{
   color:white;
   align-self: center;
   justify-self: center;
+  cursor: pointer;
 }
+
+.uploadbutton:disabled{
+   background-color: grey;
+   cursor:auto;
+   box-shadow: none;
+   
+ }
 .fileContainer{
    margin-bottom: 25px;
    display: flex;
    flex-direction:column-reverse;
-   /* justify-content: space-between; */
+   justify-content: space-between; 
    align-items: center;
 }
 .titleErrorField{
-   display:flex;
-   padding-left: 140px;
+   display:inline-block;
    color: red;
    font-size: 12px;
    font-style:normal;
    font-weight: 450;
    margin-top: 0%;
+   margin-left: 80px;
 }
 .errorField{
    display: flex;
@@ -114,20 +137,26 @@ label{
 
 .instructions{
    color:black;
-   font-size:22px;
-   font-weight: normal;
-   margin: 0px;
-   text-align: center;
+   float: left;
+   font-size:16px;
+   font-weight: 500;
+   margin-left: auto;
+   margin-right: auto;
+   margin-bottom: 30px;
+   align-items: center;
+   line-height: 1.4;
+   
 }
 
 .praInfo{
-   font-size: 22px;
+   font-size: 16px;
    text-align: center;
+  
 }
 
 .fileName{
    color:darkslategrey;
-   font-size:20px;
+   font-size:16px;
    font-weight: 450;
 }
 
@@ -161,14 +190,58 @@ label{
 
 .fileUploadModule{
    display: flex;
+   width: 100vw;
    flex-direction: column;
+   margin-left: auto;
+   margin-right: auto;
    justify-content: center;
    align-items: center;
 }
 .editflex{
    display: flex;
    flex-direction: column;
+   width: 100vw;
+   
 }
+
+@media only screen and (max-width: 600px) {
+   .UploadinputStyle {
+   width: 80%;
+   width: calc(96% - 3rem);   
+   margin-left: 5%;
+    } 
+
+    .praLabel{
+      font-weight:800 ;
+      font-size: 16px;
+      color:#0e72ab ;
+      align-self: center;
+      margin-left: 5%;
+      margin-top: 10px;
+      
+   }
+   .titleErrorField{
+      display:inline-block;
+      color: red;
+      font-size: 12px;
+      font-style:normal;
+      font-weight: 450;
+      margin-top: 0%;
+      margin-left: 18px;
+      
+   }
+
+    .instructions{
+      color:black;
+      font-size:16px;
+      font-weight: 600px;
+      font: bolder;
+      margin: 4%;
+      margin-bottom: 25px;
+      align-items: center;
+      line-height: 1.4;
+    }
+   }
 /* 
 .btn{
    background-color: rgba(14, 114, 171, 1);
