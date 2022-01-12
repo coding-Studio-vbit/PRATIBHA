@@ -73,10 +73,8 @@ export function AuthProvider({ children }) {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
                 roles = docSnap.data().role?docSnap.data().role:[];
-                console.log(docSnap.data());
                 if(docSnap.data().isFirstYearHOD){
-                  isFirstYearHOD = true
-                  console.log(docSnap.data().isFirstYearHOD);
+                  isFirstYearHOD = true               
                 }
                 if(docSnap.data().isHOD){
                   isHOD = true;

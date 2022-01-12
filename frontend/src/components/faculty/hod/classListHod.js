@@ -5,7 +5,6 @@ import Card from '../../global_ui/card/card.js'
 import Button from '../../global_ui/buttons/button'
 import './classListHod.css';
 import { useAuth } from '../../context/AuthContext.js';
-import { fetchDepartments } from '../../student/services/studentServices.js';
 import { fetchSectionsAndSubs } from '../services/facultyServices.js';
 import { useNavigate } from 'react-router-dom';
 
@@ -62,11 +61,7 @@ const HODClassList = () => {
     ];
   
     const[button,setButton]=useState(true);
-    const Courses = [
-      { value: "B.TECH", label: "B.Tech" },
-      { value: "M.TECH", label: "M.Tech" },
-      { value: "MBA", label: "MBA" }
-    ];
+ 
     
     const Years = [
         { value: "1", label: "1" },
@@ -79,25 +74,7 @@ const HODClassList = () => {
         { value: "2", label: "2" },
 
       ];
-      const Sections = [
-        { value: "A", label: "A" },
-        { value: "B", label: "B" },
-        { value: "C", label: "C" },
-        { value: "D", label: "D" },
-      ];
-      const Subjects = [
-        { value: "PPS", label: "PPS", link: "CSE" },
-        {
-          value: "Software Engineering",
-          label: "Software Engineering",
-          link: "CSE",
-        },
-        { value: "Compiler Design", label: "Compiler Design" },
-        {
-          value: "Engineering Mechanics",
-          label: "Engineering Mechanics",
-        },
-      ];
+
     function handleClick(){
       console.log(Course.value+'_'+Year.value+'_'+Section.value+'_'+Subject.value);
       nav('/faculty/viewsubmissions',{state:{

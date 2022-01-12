@@ -47,11 +47,16 @@ const LockList = () => {
   const nav = useNavigate();
   useEffect(() => {
     const getLables = async () => {
-      const res = await getDepartments(Course.value, Year.value);
-      if (!res) return;
-      setSubjects(res.subjects);
-      setDepartments(res.departments);
-      setSections(res.sections);
+      try{
+        const res = await getDepartments(Course.value, Year.value);
+        if (!res) return;
+        setSubjects(res.subjects);
+        setDepartments(res.departments);
+        setSections(res.sections);
+      }
+      catch(error){
+        console.log(error)
+      }
     };
     getLables();
   }, [Course, Year]);
@@ -62,7 +67,14 @@ const LockList = () => {
     if (finalList.length === 0) {
       setShowDialog("Add your classes for this semester");
     } else {
-      enroll(finalList);
+      try{
+
+        enroll(finalList);
+      }
+      catch(e){
+        console.log(e)
+
+      }
     }
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
@@ -146,23 +158,34 @@ const LockList = () => {
   async function enroll(list) {
     if (currentUser.isHOD) {
       setIsLoading(true);
-      const res = await enrollHODClasses(currentUser.email, list);
-      if (res == null) {
-        setIsLoading(false);
-        setShowDialog("Course Enrolled Successfully");
-        setIsSuccess(true);
-      } else {
-        setShowDialog(res);
+      try{
+        const res = await enrollHODClasses(currentUser.email, list);
+        if (res == null) {
+          setIsLoading(false);
+          setShowDialog("Course Enrolled Successfully");
+          setIsSuccess(true);
+        } else {
+          setShowDialog(res);
+        }
+      }
+      catch(e){
+        console.log(e)
       }
     } else {
       setIsLoading(true);
-      const res = await enrollClasses(currentUser.email, list);
-      if (res == null) {
-        setIsLoading(false);
-        setShowDialog("Classes Enrolled Successfully");
-        setIsSuccess(true);
-      } else {
-        setShowDialog(res);
+      try{
+
+        const res = await enrollClasses(currentUser.email, list);
+        if (res == null) {
+          setIsLoading(false);
+          setShowDialog("Classes Enrolled Successfully");
+          setIsSuccess(true);
+        } else {
+          setShowDialog(res);
+        }
+      }
+      catch(e){
+        console.log(e)
       }
     }
   }
