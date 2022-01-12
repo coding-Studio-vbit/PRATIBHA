@@ -33,6 +33,7 @@
 
 .abhyas{
   height: 40px;
+  display: none;
 }
 
 .titleStyle{
@@ -81,7 +82,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 12vw;
     align-items: center;
     margin-top: 20vh;
 }

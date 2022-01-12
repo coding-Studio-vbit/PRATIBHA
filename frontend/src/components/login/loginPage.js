@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 import ContactPage from "./contactPage/contactPage";
+import Footer from "./footer/footer";
 
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
@@ -42,26 +43,19 @@ export default function LoginPage() {
               <img alt="Pratibha" height={70} src="/pratibha.png"/>
               <span className="titleStyle" >PRATIBHA</span>
           </div>
-
-         
-            <img alt="abhyas" className="abhyas" src="/abhyasLogo.jpg" />
-            <img alt="vbit" className="vbit" src="/vbit.png" />
-         
-
-          {/* <div>
-            <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
-          </div>          */}
+          <img alt="vbit" className="vbit" src="/vbit.png" />       
+          <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
         </div>
 
         <div className="row">
           <div className="button-and-icon">
-            <i className="fas fa-graduation-cap icons "></i>
-            <button className="loginBtn" onClick={signInWithGoogle}>
+          <i class="fas fa-user-graduate icons"></i>            
+          <button className="loginBtn" onClick={signInWithGoogle}>
               Login as Student
             </button>
           </div>
           <div className="button-and-icon">
-            <i className="fas fa-user-circle icons"></i>
+          <i className="fas fa-users icons"></i>
 
             <button className="loginBtn" onClick={signInWithGoogle}>
               Login as Faculty
@@ -70,10 +64,10 @@ export default function LoginPage() {
         </div>        
       </div>
 
-      <div className="pratibhaDescription">
+      {/* <div className="pratibhaDescription">
           Pratibha
-      </div>
-      <ContactPage/>
+      </div> */}
+      <Footer/>
     </div>
   ) : (
     <LoadingScreen />

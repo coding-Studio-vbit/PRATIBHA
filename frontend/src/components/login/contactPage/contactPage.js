@@ -51,10 +51,9 @@ function ContactPage() {
     return (
         <div className="contactComponent">
             <div className='formComponent'>
-                <p className='contactTitle'>For queries Contact Us</p>
+                <p className='contactTitle'>Contact Us</p>
                 <div className='field'>
-                    <label className='labelStyle'>Name</label>
-                    <br/>
+                    <p className='labelStyle'>Name</p>
                     <input 
                     className={errors.nameError==null?"inputFieldStyle":"errorFieldStyle"} type="text" 
                     onChange={(e)=>setName(e.target.value)} placeholder='Name'
@@ -65,9 +64,8 @@ function ContactPage() {
                 </div>
 
                 <div className='field'>
-                    <label className='labelStyle'>Email</label>
-                    <br/>
-
+                    <p className='labelStyle'>Email</p>
+        
                     <input className={errors.emailError==null?"inputFieldStyle":"errorFieldStyle"} type="email" onChange={(e)=>setEmail(e.target.value)} placeholder='Email'></input>
                     {/* {
                         errors.nameError && <p className='errorField'>{errors.emailError}</p>
@@ -75,9 +73,8 @@ function ContactPage() {
                 </div>
 
                 <div className='field'>
-                    <label className='labelStyle'>Query</label>
-                    <br></br>
-
+                    <p className='labelStyle'>Query</p>
+                    
                     <textarea className={errors.queryError==null?"inputFieldStyle":"errorFieldStyle"} onChange={(e)=>setQuery(e.target.value)} placeholder='Query'></textarea>
                     {/* {
                         errors.nameError && <p className='errorField'>{errors.queryError}</p>
