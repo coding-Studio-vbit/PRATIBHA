@@ -10,6 +10,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 0;
+    margin: 0;
 }
 
 .contactTitle{
@@ -25,15 +27,15 @@
     outline: none;
     border:none;
     border-radius: 6px;
-    padding: 10px 20px;
     font-size: large;
     color: whitesmoke;
     background-color:#375C86;
     width: 420px;
+    padding: 10px 20px;
 }
 
 .labelStyle{
-  margin-bottom: 6px;
+    margin-bottom: 6px;
 }
 
 .errorFieldStyle{
@@ -41,12 +43,12 @@
     box-shadow:red  0px 2px 8px 0px;
     border:none;
     border-radius: 6px;
-    padding: 10px 20px;
     font-size: large;
     background-color:#e2e2e2;
-    width: 420px;
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-  transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    width: 420px;
+    padding: 10px 20px;
 }
 
 
@@ -86,6 +88,15 @@
     font-size: large;
     font-weight: 700;
     padding: 4px auto; 
+}
+
+@media screen and (max-width:600px) {
+  .inputFieldStyle{
+    width: 75vw;
+  }
+  .textareaStyle{
+    max-width: 75vw;
+  }
 }
 
 

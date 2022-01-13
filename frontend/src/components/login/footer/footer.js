@@ -16,8 +16,8 @@ function Footer() {
 
             <hr/>
 
-            <div className="content1">
-                <p>Copyright © {new Date().getFullYear()}  Vignana Bharathi Institute Of Technology All Rights Reserved</p>
+            <div className="content1" style={{alignItems:"center"}}>
+                <p className='txt'>Copyright © {new Date().getFullYear()}  Vignana Bharathi Institute Of Technology All Rights Reserved</p>
                 <div className='links'>
                     <span>Follow us on</span>
                     <i className="fab fa-instagram"></i>

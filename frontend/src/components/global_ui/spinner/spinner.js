@@ -9,7 +9,9 @@ import './spinner.css';
 
 const Spinner = ({radius}) => {
     return ( 
-        <div className="spinner" style={{width:radius+'em',height:radius+'em'}}></div>
+        <div class="spinner-block">
+            <div class="spinner spinner-1"></div>
+        </div>
     );
 }
  
@@ -21,7 +23,7 @@ const LoadingScreen = ({isTransparent=false}) => {
             background:isTransparent?'white':'white',
             zIndex:100,
             }} >
-            <Spinner radius={2} />
+            <Spinner/>
         </div>
      );
 }

@@ -25,6 +25,7 @@
     justify-content: space-between;
 }
 
+
 hr{
     border-top: 1px;
     border-color:grey;
@@ -74,10 +75,30 @@ hr{
     .content1{
         flex-direction: column;
         justify-content: center;
+        align-items: center;
     }
+    .footerLogo{
+        margin: auto;
+        margin-top: 5vw;
+    }
+   
+
     /* .footerLogo{
         align-items: center;
         justify-content: center;
     }     */
 }
+
+@media screen and (max-width:600px) {
+    .footerLogo{
+        padding:auto 10px;
+        min-width: 90%;
+        margin: 30px;
+        width: 90%;
+    }   
+    .txt{
+        text-align: center;
+    } 
+}
+
 

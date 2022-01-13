@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import "./loginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { LoadingScreen } from "../global_ui/spinner/spinner";
+import { LoadingScreen, Spinner } from "../global_ui/spinner/spinner";
 import ContactPage from "./contactPage/contactPage";
 import Footer from "./footer/footer";
+import PratibhaInfo from "./pratibhaInfo/pratibhaInfo";
 
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
@@ -64,12 +65,16 @@ export default function LoginPage() {
         </div>        
       </div>
 
-      {/* <div className="pratibhaDescription">
-          Pratibha
-      </div> */}
+      <div>
+        <Spinner radius={3}/>
+      </div>
+
+  
+      {/* <PratibhaInfo/> */}
+
       <Footer/>
     </div>
   ) : (
-    <LoadingScreen />
+    <LoadingScreen/>
   );
 }
