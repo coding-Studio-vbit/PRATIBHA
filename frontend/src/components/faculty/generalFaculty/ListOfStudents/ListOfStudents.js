@@ -194,7 +194,7 @@ const ListofStudents = () => {
 
   return (
     <div>
-      <Navbar backURL={"/faculty/classlist"} title={location.state.sub}>
+      <Navbar backURL={currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist"} title={location.state.sub}>
         <span
           onClick={() =>
             navigate("/faculty/createPra", {
