@@ -15,10 +15,23 @@ function Download({ url, text = "DOWNLOAD", userID = "random" }) {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute(
-        "download",
-        userID + "." + response.data.type.split("/").pop()
-      );
+      if(response.data.type.split("/").pop()=="vnd.openxmlformats-officedocument.presentationml.presentation"){
+        link.setAttribute(
+          "download",
+          userID + ".pptx" 
+        );
+      }else if(response.data.type.split("/").pop()=="vnd.ms-powerpoint"){
+        link.setAttribute(
+          "download",
+          userID + ".ppt" 
+        );
+      }      
+      else{
+        link.setAttribute(
+          "download",
+          userID + "." + response.data.type.split("/").pop()
+        );
+      }      
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
