@@ -7,20 +7,18 @@ import './spinner.css';
  * @returns Spinner component
  */
 
-const Spinner = ({radius}) => {
+const Spinner = ({radius,isDark=false}) => {
     return ( 
-        <div class="spinner-block">
-            <div class="spinner spinner-1"></div>
+        <div class="spinner-block" >
+            <div className={`${!isDark?"spinner spinner-1":"spinnerDark spinnerDark-1"}`}  ></div>
         </div>
     );
 }
- 
-
 
 const LoadingScreen = ({isTransparent=false}) => {
     return ( 
         <div className="loadingScreen" style={{
-            background:isTransparent?'white':'white',
+            background:isTransparent?'transparent':'white',
             zIndex:100,
             }} >
             <Spinner/>
