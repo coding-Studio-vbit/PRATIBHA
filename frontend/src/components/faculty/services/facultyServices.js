@@ -277,6 +277,7 @@ export const getSubjects = async (email) => {
       }
     }
     console.log(praSetSubs);
+    console.log(praSetSubs)
     return {
       praSetSubs: praSetSubs,
       btechSubs: btechSubs,
@@ -430,6 +431,30 @@ export const fetchSectionsAndSubs = async (course, year, departments) => {
           ];
         }
       }
+      if (alldocs.data()["OEs"])
+        for (let index = 0; index < alldocs.data()["OEs"].length; index++) {
+          const ele = alldocs.data()["OEs"][index];
+          if (subjects[alldocs.id]) {
+            subjects[alldocs.id] = [
+              ...subjects[alldocs.id],
+              { value: ele.subject, label: ele.subject },
+            ];
+          } else {
+            subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
+          }
+        }
+        if (alldocs.data()["PEs"])
+        for (let index = 0; index < alldocs.data()["PEs"].length; index++) {
+          const ele = alldocs.data()["PEs"][index];
+          if (subjects[alldocs.id]) {
+            subjects[alldocs.id] = [
+              ...subjects[alldocs.id],
+              { value: ele.subject, label: ele.subject },
+            ];
+          } else {
+            subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
+          }
+        }
       const sectionsDoc = data["sections"];
 
       for (let index = 0; index < sectionsDoc.length; index++) {

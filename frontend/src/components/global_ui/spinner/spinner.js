@@ -7,21 +7,21 @@ import './spinner.css';
  * @returns Spinner component
  */
 
-const Spinner = ({radius}) => {
+const Spinner = ({radius,isDark=false}) => {
     return ( 
-        <div className="spinner" style={{width:radius+'em',height:radius+'em'}}></div>
+        <div class="spinner-block" >
+            <div className={`${!isDark?"spinner spinner-1":"spinnerDark spinnerDark-1"}`}  ></div>
+        </div>
     );
 }
- 
-
 
 const LoadingScreen = ({isTransparent=false}) => {
     return ( 
         <div className="loadingScreen" style={{
-            background:isTransparent?'white':'white',
+            background:isTransparent?'transparent':'white',
             zIndex:100,
             }} >
-            <Spinner radius={2} />
+            <Spinner/>
         </div>
      );
 }
