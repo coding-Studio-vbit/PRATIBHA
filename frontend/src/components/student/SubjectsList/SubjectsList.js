@@ -3,13 +3,18 @@ import Navbar from "../../global_ui/navbar/navbar";
 import { Spinner } from "../../global_ui/spinner/spinner";
 import { db } from "../../../firebase";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
-import { getStudentData } from "../services/studentServices";
+import {
+  getStudentData,
+  fetchisMid1,
+  fetchisMid2,
+} from "../services/studentServices";
 import { useAuth } from "./../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import Card_ from "../../global_ui/card/card_";
 import "./SubjectlistStyles.css";
 import Dialog from "../../global_ui/dialog/dialog";
+import { getCoeDeadline } from "../../faculty/services/facultyServices";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
@@ -25,18 +30,6 @@ const SubjectsList = () => {
   const [year, setyear] = useState("");
 
   const { currentUser } = useAuth();
-
-  const fetchDeadline = async () => {
-    const adminRef = doc(db, "adminData", "coeDeadline");
-    const adminDoc = await getDoc(adminRef);
-    if (adminDoc.exists()) {
-      let date = new Timestamp(
-        adminDoc.data()["coeDeadline"]["seconds"],
-        adminDoc.data()["coeDeadline"]["nanoseconds"]
-      ).toDate();
-      return date;
-    }
-  };
 
   const fetchdata = async () => {
     const { document, error } = await getStudentData(`${currentUser.email}`);
@@ -54,9 +47,22 @@ const SubjectsList = () => {
         document.section;
       setCourseTitle(course);
 
-      let coedeadLine = await fetchDeadline();
+      let ismid1 = await fetchisMid1(document.course, document.year);
+      let ismid2 = await fetchisMid2(document.course, document.year);
+      let coeDeadLine, dlDate;
 
-      await fetchsubject(document, coedeadLine, course);
+      if (ismid1) {
+        dlDate = await getCoeDeadline("1", document.course, document.year);
+      }
+      if (ismid2) {
+        dlDate = await getCoeDeadline("2", document.course, document.year);
+      }
+      coeDeadLine = new Timestamp(
+        dlDate.data["seconds"],
+        dlDate.data["nanoseconds"]
+      ).toDate();
+
+      await fetchsubject(document, coeDeadLine, course);
     } else {
       setError(error);
     }
@@ -64,7 +70,7 @@ const SubjectsList = () => {
   };
 
   const fetchsubject = async (document, coedeadLine, course) => {
-    let  mid;
+    let mid;
     let date, dateConv;
     const subjectRef = doc(db, "subjects", course);
     await getDoc(subjectRef).then(async (subjectDoc) => {
@@ -78,13 +84,14 @@ const SubjectsList = () => {
           let newDate = new Date();
           let currentDateConv = newDate.toLocaleDateString("en-US");
 
-          if (coedeadLine > date1) {
+          if (coedeadLine >= date1) {
             console.log("1");
             mid = 1;
 
             date = date1.toLocaleDateString("en-GB");
             dateConv = date1.toLocaleDateString("en-US");
           } else {
+            console.log("2");
             mid = 2;
             if (item["deadline2"]) {
               let date2 = new Timestamp(
@@ -111,20 +118,10 @@ const SubjectsList = () => {
           if (Difference_In_Days <= 7) {
             isWeek = true;
           }
-
-          // let  date = new Timestamp(deadline.seconds,deadline.nanoseconds).toDate();
-          //   let date = new Date(seconds * 1000);
-          //   deadline =
-          //     date.getDate().toString() +
-          //     "-" +
-          //     (date.getMonth() + 1).toString() +
-          //     "-" +
-          //     date.getFullYear().toString();
-
           await fetchusersubject(document, date, mid, item.subject, isWeek);
         });
       } else {
-        // setError("SUBJECT DOES NOT EXIST");
+        setError("SUBJECTS DOES NOT EXIST");
       }
     });
   };
@@ -181,8 +178,6 @@ const SubjectsList = () => {
   useEffect(() => {
     fetchdata();
   }, []);
-
-  console.log(data);
 
   return (
     <div className="main-body-subjects">
