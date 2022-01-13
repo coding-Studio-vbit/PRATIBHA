@@ -218,7 +218,7 @@ const LockList = () => {
           )}
           {isLoading && <LoadingScreen />}
           <div className="flex-container">
-            <div className="dropdown">
+            <div className="enroll-dropdown">
               <p className="locklist-dropdown-title">Course</p>
               <Select
                 placeholder=""
