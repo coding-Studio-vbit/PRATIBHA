@@ -356,7 +356,7 @@ const Upload = () => {
                 {mid==1 ? (
 
                     <div >                      
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(in <strong><u>PDF</u></strong> format only)</p>
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract of your PRA (in <strong>PDF</strong> format only)</p>
                       <div>
                         <label className={styles.praLabel}>PRA Title:</label>
                         <input

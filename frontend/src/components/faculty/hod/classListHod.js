@@ -40,6 +40,8 @@ const HODClassList = () => {
       [{ value: "Loading", label: "Loading" }],
 
     )
+
+    const navigate = useNavigate();
     useEffect(() => {
       const fetchSubjects = async () => {
         const res = await getSubjects(currentUser.email);
@@ -108,9 +110,15 @@ const HODClassList = () => {
       }})
     }
 
-  function handleCard(){
-    
-  }
+    function handleCard(sub) {
+      console.log(sub)
+      if (subs.praSetSubs[sub]) {
+        navigate("/faculty/studentlist", { state: { sub: sub } });
+      } else {
+        navigate("/faculty/createPRA", { state: { sub: sub } });
+      }
+      
+    }
     return (loading?
         <LoadingScreen />:(  
           <div className='root-hod'>
@@ -125,10 +133,12 @@ const HODClassList = () => {
                 {subs.btechSubs.map((item) => {
                   return (
                     <Card
+                      key={item.split('BTech_')}
                       classname="card-container"
                       onclick={handleCard}
                       text={item.split('BTech_')}
                       subText={subs.praSetSubs[item]?true:false}
+                      klass={item}
                     />
                   );
                 })}
@@ -142,10 +152,12 @@ const HODClassList = () => {
                 {subs.mtechSubs.map((item) => {
                   return (
                     <Card
+                      key={item.split('MTech_')}
                       classname="card-container"
                       onclick={handleCard}
                       text={item.split('MTech_')}
                       subText={subs.praSetSubs[item]?true:false}
+                      klass={item}
                     />
                   );
                 })}
@@ -159,10 +171,12 @@ const HODClassList = () => {
                 {subs.mbaSubs.map((item) => {
                   return (
                     <Card
+                      key={item.split('MBA_')}
                       classname="card-container"
                       onclick={handleCard}
                       text={item.split('MBA_')}
                       subText={subs.praSetSubs[item]?true:false}
+                      klass={item}
                     />
                   );
                 })}
