@@ -49,6 +49,14 @@ tr {
 
 }
 
+.err_Display{
+  margin:20px;
+  color:red;
+  font-weight:bold;
+  text-align:center;
+  
+}
+
 tbody tr:nth-child(odd) {
   background-color: rgba(176, 196, 222, 0.43);
 }
