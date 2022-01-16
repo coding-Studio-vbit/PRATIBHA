@@ -6,10 +6,6 @@
   overflow: hidden;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .left {
   width: 25%;
   display: flex;
@@ -26,7 +22,32 @@
   width: 75%;
   background-color: #ffffff;
   padding-top: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-bottom: 25px;
 }
+
+.right::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+.right::-webkit-scrollbar-track {
+  background: #f1f1f1;
+
+}
+
+/* Handle */
+.right::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius:6px;
+}
+
+/* Handle on hover */
+.right::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 
 .fas fa-arrow-left {
   position: fixed;

@@ -386,7 +386,7 @@ const Upload = () => {
                       { (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?                    
                       (
                         <div>
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(in <strong><u>PDF</u></strong> format only)</p>
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract of your PRA (in <strong>PDF</strong> format only).</p>
 
                       <div>
                         <label className={styles.praLabel}>PRA Title:</label>
@@ -416,7 +416,7 @@ const Upload = () => {
                     ):
                     ( 
                     <div> 
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size limit 1GB).</p>
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
                       
                         { (praTitle==""||praTitle==null||praTitle==undefined) ?
                         (<div>

@@ -17,7 +17,7 @@ import Download from "../../../global_ui/download/download";
 import { useAuth } from "../../../context/AuthContext";
 
 const ViewSubmissions = () => {
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
   const [data, setData] = useState([]);
   const [links, setLinks] = useState({});
   const [sem, setSem] = useState("");
@@ -229,14 +229,24 @@ const ViewSubmissions = () => {
 
   return (
     <div>
-      <Navbar title={title} backURL = {currentUser.isHOD ? "/faculty/hodclasslist":currentUser.isCOE ? "/faculty/coesearch":""} logout={true} />
+      <Navbar
+        title={title}
+        backURL={
+          currentUser.isHOD
+            ? "/faculty/hodclasslist"
+            : currentUser.isCOE
+            ? "/faculty/coesearch"
+            : ""
+        }
+        logout={true}
+      />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
         </div>
       ) : error ? (
-        <div>{error}</div>
-      ) : (
+        <div className="err_Display">{error}</div>
+      ) : data ? (
         <div className="sub_body">
           <table style={{ marginTop: "4.5rem" }}>
             <thead>
@@ -288,6 +298,8 @@ const ViewSubmissions = () => {
             />
           </div>
         </div>
+      ) : (
+        <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
       )}
     </div>
   );

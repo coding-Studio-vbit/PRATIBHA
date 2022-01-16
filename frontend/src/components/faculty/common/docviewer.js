@@ -45,9 +45,12 @@ const ViewPPT=({object})=>{
 }
 
 const ViewImage=({object})=>{
+    useEffect(() => {
+        console.log("vamos mahitha");
+    }, [])
     return(
         <img height="510"
-        style={{backgroundSize:'contain'}} src={object} alt="Unable to Load"/>
+        style={{backgroundSize:'contain',height:'100%',width:'100%'}} src={object} alt="Unable to Load"/>
     );
 }
 const ViewVideo=({object})=>{
@@ -141,9 +144,9 @@ function Module({extension,object}) {
         case "vnd.openxmlformats-officedocument.wordprocessingml.document":
             return <div style={{height:'60vh'}}><MyComponent object={object} type="docx"/></div>
         case 'jpeg':
-            return <img src={object} alt="Done" height={80} width={80}/>
+            return <img src={object} alt="Done" style={{width:'100%',backgroundSize:'contain'}}/>
         case 'jpg':
-            return <img src={object} alt="Done" height={80} width={80}/>
+            return <img src={object} alt="Done" style={{width:'100%',backgroundSize:'contain'}}/>
         case 'png':
             return <ViewImage object={object}/>
         case 'mp4':
