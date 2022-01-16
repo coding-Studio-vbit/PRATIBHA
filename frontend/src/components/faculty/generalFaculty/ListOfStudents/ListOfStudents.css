@@ -14,6 +14,7 @@
 }
 .subject{
   color:#0E72AB;
+  text-align: center;
   font-size:large;
 }
 
@@ -46,6 +47,14 @@ th {
 tr {
   margin: 10px;
 
+}
+
+.err_Display{
+  margin:20px;
+  color:red;
+  font-weight:bold;
+  text-align:center;
+  
 }
 
 tbody tr:nth-child(odd) {

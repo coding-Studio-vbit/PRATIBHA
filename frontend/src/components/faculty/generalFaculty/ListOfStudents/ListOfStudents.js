@@ -194,7 +194,12 @@ const ListofStudents = () => {
 
   return (
     <div>
-      <Navbar backURL={currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist"} title={location.state.sub}>
+      <Navbar
+        backURL={
+          currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist"
+        }
+        title={location.state.sub}
+      >
         <span
           onClick={() =>
             navigate("/faculty/createPra", {
@@ -214,8 +219,8 @@ const ListofStudents = () => {
           <Spinner radius={2} />
         </div>
       ) : error ? (
-        <div>{error}</div>
-      ) : (
+        <div className="err_Display">{error}</div>
+      ) : data ? (
         <>
           <div className="sub_body">
             <p className="bold subject">SUBJECT : {subjectval[4]}</p>
@@ -314,6 +319,8 @@ const ListofStudents = () => {
             />
           </div>
         </>
+      ) : (
+        <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
       )}
     </div>
   );
