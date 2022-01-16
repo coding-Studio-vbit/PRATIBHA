@@ -359,8 +359,8 @@ const Upload = () => {
                     <div  className={styles.instructions}><strong><u>INSTRUCTIONS:</u></strong>
                         <div>{deadLineInfo.instructions}</div>
                     </div>}
-                    <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                    <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                    <p className={styles.pratitle} style={{color:'#0E72AB'}}>Title : {praTitle}</p>
+                    <p className={styles.fileName} style={{color:'#0E72AB'}}>File Uploaded : <u>{fileName} </u></p>
                    <button
                       onClick={() => seteditPRA(true)}
                       className={styles.editbutton}>
@@ -386,7 +386,7 @@ const Upload = () => {
                       { (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?                    
                       (
                         <div>
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(in <strong><u>PDF</u></strong> format only)</p>
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract of your PRA (in <strong>PDF</strong> format only).</p>
 
                       <div>
                         <label className={styles.praLabel}>PRA Title:</label>
@@ -403,7 +403,7 @@ const Upload = () => {
                       <p className={styles.titleErrorField}>{titleError}</p> </div> ):(
                        <div> 
                          <ul>
-                        <li className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
+                        <li className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size : 200KB)</li>
                         <li className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>
                         </ul>
                         <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
@@ -415,7 +415,7 @@ const Upload = () => {
                     ):
                     ( 
                     <div> 
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size limit 1GB).</p>
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
                       
                         { (praTitle==="") ?
                         (<div>
