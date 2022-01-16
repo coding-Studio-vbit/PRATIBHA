@@ -121,7 +121,7 @@ const SubjectsList = () => {
           await fetchusersubject(document, date, mid, item.subject, isWeek);
         });
       } else {
-        setError("SUBJECTS DOES NOT EXIST");
+        setError("Submissions are not open for any subject.");
       }
     });
   };
@@ -231,7 +231,7 @@ const SubjectsList = () => {
             </div>
           </div>
         ) : (
-          <div>{error}</div>
+          <div className="listerror">{error}</div>
         )
       ) : (
         <div>
