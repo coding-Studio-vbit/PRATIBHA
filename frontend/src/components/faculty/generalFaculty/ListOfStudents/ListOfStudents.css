@@ -12,6 +12,10 @@
   justify-content: center;
   flex-direction: column;
 }
+.subject{
+  color:#0E72AB;
+  font-size:large;
+}
 
 table {
   width: 100%;
