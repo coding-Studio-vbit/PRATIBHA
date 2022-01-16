@@ -133,6 +133,7 @@ label{
    /* padding-left: 75px;  */
    font-size:16px;
    font-weight: 450;
+   align-self: center;
 }
 
 .instructions{
@@ -140,6 +141,7 @@ label{
    float: left;
    font-size:16px;
    font-weight: 500;
+   width: min(90%,850px);
    margin-left: auto;
    margin-right: auto;
    margin-bottom: 30px;
@@ -156,8 +158,10 @@ label{
 
 .fileName{
    color:darkslategrey;
-   font-size:16px;
+   font-size:20px;
+   margin-bottom: 20px;
    font-weight: 450;
+   align-self: center;
 }
 
 .selectList{
@@ -186,6 +190,8 @@ label{
    font-size: 20px;
    letter-spacing: 0.2px;
    align-self: center;
+   color: #0E72AB;
+   font-weight: bold;
 }
 
 .fileUploadModule{
@@ -229,6 +235,14 @@ label{
       margin-top: 0%;
       margin-left: 18px;
       
+   }
+
+   .praInfo{
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 35px;
+      margin-left: 4%;
+     
    }
 
     .instructions{
