@@ -245,7 +245,7 @@ async function getFileUploadDetails(email,subject,midNo){
                     if(midNo==="1"){
                         if(subs[i].topic!=null && subs[i].mid_1!=null){
                             return {
-                                data:{ link:subs[i].mid_1,topic:subs[i].topic},
+                                data:{ link:subs[i].mid_1,topic:subs[i].topic, fileName:subs[i].fileName1},
                                 error:null
                             }
                         }else{
@@ -258,7 +258,7 @@ async function getFileUploadDetails(email,subject,midNo){
                      
                         if(subs[i].topic!=null && subs[i].mid_2!=null){
                             return {
-                                data:{ link:subs[i].mid_1,topic:subs[i].topic},
+                                data:{ link:subs[i].mid_2,topic:subs[i].topic, fileName:subs[i].fileName2},
                                 error:null
                             }
                         }else{
