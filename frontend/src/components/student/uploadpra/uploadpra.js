@@ -29,6 +29,7 @@ const Upload = () => {
     const [loading, setLoading] = useState(false);
     const [showUploadModule, setShowUploadModule] = useState(false);
     const [error, setError] = useState(null);
+    const [mid1NotSubmitted, setMid1NotSubmitted] = useState(false);
     
     //error for deadlines
     const [praTitle, setPraTitle] = useState("");
@@ -94,14 +95,36 @@ const Upload = () => {
                 setFileError("File not in PDF format");
               }
             }
+
+            else if(mid==2)
+            {
+              if(ext=="pptx")
+              {
+                setUrl(null);
+                setFileError("Convert the PPT file to PDF format and upload for submission.");
+              }
+              else
+              {
+                setFileError("");
+                setFileName(files.name);
+                setUrl(e.target.files[0]);
+              }
+            }
+
             else
             { 
               setFileError("");
               setFileName(files.name);
               setUrl(e.target.files[0]);
+            }            
             }
           }
+          else 
+        {
+          setUrl(null);
+          setFileError("File not uploaded");
         }
+    };
       //   else
       //     setUrl(null);
       //     if(mid==="1")
@@ -109,12 +132,7 @@ const Upload = () => {
       //     else
       //     setFileError(`File Limit Exceeded, Upload a file of size less than 1 GB`);
       // // } 
-        else 
-        {
-          setUrl(null);
-          setFileError("File not uploaded");
-        }
-    };
+        
 
     async function submit()
     {
@@ -131,7 +149,8 @@ const Upload = () => {
               location.state.subject,
               mid,
               location.state.rollno,
-              praTitle
+              praTitle,
+              fileName
           );
       
           if (res == null)
@@ -139,6 +158,7 @@ const Upload = () => {
               setfileUploadLoading(false);
               setError(null);
               setshowDialog(true);
+              setMid1NotSubmitted(true);
           }
           else
           {
@@ -164,11 +184,14 @@ const Upload = () => {
         //     user.section,"Computer Networks","1","18p61a0513@vbithyd.ac.in");
         try
         {
+          console.log(val);
               const res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
               if (res.error == null) 
               {
-                
-                  setPraTitle(res.data.topic);   
+                console.log(res.data.fileName, 10);
+                  
+                  setPraTitle(res.data.topic);  
+                  setFileName(res.data.fileName) ;
                   setexistingFile(res.data.link);
                  
                   setloadExisting(false);
@@ -178,6 +201,7 @@ const Upload = () => {
                 setPraTitle(res.data.topic)
                   setexistingFile(null);
                   setloadExisting(false);
+                  setFileName(" ");
               }
         }
         catch (error)
@@ -233,7 +257,7 @@ const Upload = () => {
 
                 setShowUploadModule(true);
                 setLoading(false);
-               
+                console.log(res.data);
                 setDeadLineInfo(res.data);
                await getFile(value);
               
@@ -311,7 +335,7 @@ const Upload = () => {
                     onChange={(e) => handleSelect(e.target.value)}
                   >
                     <option className="option" value="SELECT_MID">Select MID</option> 
-                    <option className="option" disabled={!isMid1} value="1">MID-1</option> 
+                    <option className="option" value="1">MID-1</option> 
                     <option className="option" disabled={!isMid2} value="2">MID-2</option>
                   </select>
                   {selectError && (
@@ -331,7 +355,7 @@ const Upload = () => {
                       <Spinner radius={2} />
                     </div>
                   ): 
-                  existingFile != null && editPRA !== true ? (
+                  existingFile != null && editPRA !== true && !isMid2 ? (
                   <div className={styles.editflex}>                    
                   {
                     deadLineInfo != null && 
@@ -339,14 +363,15 @@ const Upload = () => {
                         <div>{deadLineInfo.instructions}</div>
                     </div>}
                     <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                    <p className={styles.fileName}>{fileName}</p>
-                    <button
+                    <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                   <button
                       onClick={() => seteditPRA(true)}
                       className={styles.editbutton}>
                       Edit PRA
                     </button>
-                  </div>
-                ) : (
+                  </div>) :
+                   (                  
+
                   <div className={styles.fileUploadModule}>
                   
                     <div className={styles.instructions}>
@@ -358,7 +383,11 @@ const Upload = () => {
                     </div>
                 {mid==1 ? (
 
-                    <div >                      
+                    <div >
+                      
+                      { (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?                    
+                      (
+                        <div>
                       <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(in <strong><u>PDF</u></strong> format only)</p>
                       <div>
                         <label className={styles.praLabel}>PRA Title:</label>
@@ -372,26 +401,42 @@ const Upload = () => {
                           maxLength={50}                          
                         />
                         </div>
-                      <p className={styles.titleErrorField}>{titleError}</p>
-                      
-                    </div>
+                      <p className={styles.titleErrorField}>{titleError}</p> </div> ):(
+                       <div> 
+                         <ul>
+                        <li className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
+                        <li className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>
+                        </ul>
+                        <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                        <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                        <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes.</p>
+                      </div>)
+                      }
+                    </div> 
                     ):
                     ( 
                     <div> 
-                      <p className={styles.pratitle}>Title
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size limit 1GB).</p>
+                      
+                        { (praTitle==="") ?
+                        (<div>
+                          console.log(praTitle);
+                          <label className={styles.praLabel}>PRA Title:</label>
                           <input
-                          type="text"
-                          size={30}
-                          style={{marginLeft:'4px'}}
-                          placeholder="TITLE OF THE ACTIVITY"
-                          className={styles.UploadinputStyle}
-                          value={praTitle}
-                          onChange={(e) => handleTitle(e.target.value)}
-                          maxLength={50}
-                        />
-                      </p>
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignItems:'center'}}>Upload proof of PRA </p> 
-                    </div>)}
+                            size={30}
+                            type="text"
+                            placeholder="TITLE OF THE ACTIVITY"
+                            className={styles.UploadinputStyle}
+                            value={praTitle}
+                            onChange={(e) => handleTitle(e.target.value)}
+                            maxLength={50}                          
+                          /> </div>
+                        ):(
+                          <div>
+                             <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                          </div>
+                        ) }                        
+                      </div>)}
                     {deadLineInfo != null && (
                       <div>
                         {new Date() < deadLineInfo.lastDate.toDate() && (
@@ -419,7 +464,7 @@ const Upload = () => {
                               {fileError.length > 0 ? (
                                 <p className={styles.errorField}>{fileError}</p>
                               ) : (
-                                <p className={styles.fileName}>{fileName}</p>
+                                <p className={styles.praTitle}><strong style={{color:'#0E72AB'}}>File :</strong> {fileName}</p>
                               )}
                             </div>
                             <Button

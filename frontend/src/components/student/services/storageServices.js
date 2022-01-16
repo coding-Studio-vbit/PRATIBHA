@@ -2,7 +2,7 @@ import { db, storage } from "../../../firebase";
 import { ref,uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, getDoc,setDoc,updateDoc } from "firebase/firestore"; 
 
-async function uploadFile(fileObj,course,year,department,section,subject,midNo,email,title){
+async function uploadFile(fileObj,course,year,department,section,subject,midNo,email,title,fileName){
     let error=null;
     const pra_ref = ref(
         storage,
@@ -20,10 +20,12 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                     if(subs[i].subject===subject){
                         let s=subs[i];
                         if(midNo==="1"){
+                            s.fileName1=fileName
                             s.topic=title
                             s.mid_1=snapshot.ref.fullPath;
                             subs[i]=s;
                         }else if(midNo==="2"){
+                            s.fileName2=fileName
                             s.topic=title
                             s.mid_2=snapshot.ref.fullPath;
                             subs[i]=s;
