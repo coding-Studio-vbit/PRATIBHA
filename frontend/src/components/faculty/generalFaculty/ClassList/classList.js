@@ -87,10 +87,11 @@ const ClassList = () => {
                 }
                 return (
                   <Card
-                    classname="card-container"
+                    key={newItem}
                     onclick={handleCard}
                     text={newItem}
-                    key={newItem}
+                    subText={subs.praSetSubs[item] ? true : false}
+                    klass={item}
                   />
                 );
               })}
@@ -116,10 +117,11 @@ const ClassList = () => {
                 }
                 return (
                   <Card
-                    classname="card-container"
+                    key={newItem}
                     onclick={handleCard}
                     text={newItem}
-                    key={newItem}
+                    subText={subs.praSetSubs[item] ? true : false}
+                    klass={item}
                   />
                 );
               })}
