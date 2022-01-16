@@ -9,7 +9,7 @@
     font-size:25px;
     align-items: center;
     font-weight:200;
-    width:100%
+    width:100vw;
 }
 .nav > *{
     flex: 1;
@@ -95,5 +95,8 @@
 {
     #hide{
         display:none;
+    }
+    .title{
+        font-size: 18px;
     }
 }
