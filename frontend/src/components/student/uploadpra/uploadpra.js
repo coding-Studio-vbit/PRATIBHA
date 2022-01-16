@@ -359,7 +359,7 @@ const Upload = () => {
                     <div  className={styles.instructions}><strong><u>INSTRUCTIONS:</u></strong>
                         <div>{deadLineInfo.instructions}</div>
                     </div>}
-                    <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                    <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
                     <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
                    <button
                       onClick={() => seteditPRA(true)}
@@ -402,12 +402,13 @@ const Upload = () => {
                         </div>
                       <p className={styles.titleErrorField}>{titleError}</p> </div> ):(
                        <div> 
-                         <ul>
-                        <li className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
-                        <li className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>
+                         
+                         <ul className="praInfo">
+                        <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
+                        <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>                        
                         </ul>
-                        <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                        <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                        <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                        <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
                         <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes.</p>
                       </div>)
                       }
@@ -417,9 +418,8 @@ const Upload = () => {
                     <div> 
                       <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size limit 1GB).</p>
                       
-                        { (praTitle==="") ?
+                        { (praTitle==""||praTitle==null||praTitle==undefined) ?
                         (<div>
-                          console.log(praTitle);
                           <label className={styles.praLabel}>PRA Title:</label>
                           <input
                             size={30}
@@ -463,19 +463,19 @@ const Upload = () => {
                               {fileError.length > 0 ? (
                                 <p className={styles.errorField}>{fileError}</p>
                               ) : (
-                                <p className={styles.praTitle}><strong style={{color:'#0E72AB'}}>File :</strong> {fileName}</p>
+                                <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File :</strong> {fileName}</p>
                               )}
                             </div>
-                            <Button
+                            <button
                               className={
                               styles.uploadbutton
                               }
                               onClick={() => {submit();}}
                               disabled={fileError || titleError||fileName==null||praTitle==null}
-                            >
-                            <i className="fas fa-upload"></i>
+                            >                            
                               Upload
-                            </Button>
+                              <i className="fas fa-upload"></i>
+                            </button>
                           </div>
                         )}
                       </div>
