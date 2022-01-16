@@ -10,7 +10,7 @@ const Card = ({
   return (
     <div className="card-container"  onClick={()=>onclick(klass)}>
       {text && <p>{text}</p>} 
-      <p style={{fontSize:'14px'}} >{subText? "PRA CREATED":''}</p>
+      <p style={{fontSize:'14px',fontWeight:'bold'}} >{subText? "PRA CREATED":''}</p>
     </div>
   );
 };

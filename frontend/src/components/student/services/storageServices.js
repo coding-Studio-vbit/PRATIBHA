@@ -4,10 +4,26 @@ import { doc, getDoc,setDoc,updateDoc } from "firebase/firestore";
 
 async function uploadFile(fileObj,course,year,department,section,subject,midNo,email,title,fileName){
     let error=null;
-    const pra_ref = ref(
+    console.log(fileObj.type);
+
+    const pra_ref= ref(
         storage,
         `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
     );
+    
+    // let pra_ref;
+    // if(fileObj.type=="application/vnd.openxmlformats-officedocument.presentationml.presentation"){
+    //     pra_ref = ref(
+    //         storage,
+    //         `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}.pptx`
+    //     );
+    // }else{
+    //     pra_ref = ref(
+    //         storage,
+    //         `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
+    //     );
+    // }
+
     await uploadBytes(pra_ref,fileObj)
     .then(async(snapshot) => {
         try {
@@ -49,12 +65,12 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                                 console.log("CD");
                                 faculty = subs[j].facultyID;
                                 break;                                
-                            }                
+                            }              
                         }                        
                     }else{
                         return "Unknown Error Occured, Try Reuploading the file";
                     }
-                    console.log(faculty);
+                    console.log(faculty); 
                     if(faculty!=null){
                         console.log(`${course}_${year}_${department}_${section}_${subject}`);
                         const facultyRef = doc(

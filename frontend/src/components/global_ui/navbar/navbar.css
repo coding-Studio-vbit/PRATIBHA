@@ -6,10 +6,8 @@
     background-color:#0E72AB;
     align-items: center;
     color:white;
-    font-size:25px;
     align-items: center;
-    font-weight:200;
-    width:100%
+    width:100vw;
 }
 .nav > *{
     flex: 1;
@@ -22,7 +20,7 @@
     text-align: center;
 }
 .createPRA > *{
-    margin-right: 2rem;
+    margin-right: 5px;
 }
 .btn{
     position:absolute;
@@ -95,5 +93,8 @@
 {
     #hide{
         display:none;
+    }
+    .title{
+        font-size: 18px;
     }
 }

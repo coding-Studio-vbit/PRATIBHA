@@ -1,0 +1,119 @@
+.contactComponent{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.formComponent{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.contactTitle{
+    font-size: x-large;
+    text-align: left;
+}
+
+.field{
+    margin: 8px auto;
+}
+
+.inputFieldStyle{
+    outline: none;
+    border:none;
+    border-radius: 6px;
+    font-size: large;
+    color: whitesmoke;
+    background-color:#375C86;
+    width: 420px;
+    padding: 10px 20px;
+}
+
+.labelStyle{
+    margin-bottom: 6px;
+}
+
+.errorFieldStyle{
+    outline: none;
+    box-shadow:red  0px 2px 8px 0px;
+    border:none;
+    border-radius: 6px;
+    font-size: large;
+    background-color:#e2e2e2;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    width: 420px;
+    padding: 10px 20px;
+}
+
+
+.textareaStyle{
+    max-width: 420px;
+    width: 420px;
+    outline: none;
+    border:none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: large;
+    color: whitesmoke;
+    background-color:#375C86;
+}
+
+.textareaStyle:active:focus{
+  color: whitesmoke;
+  background-color:#375C86;
+}
+
+.contactButton{
+    margin-top: 20px;
+    outline: none;
+    border: none;
+    font-size: small;
+    background-color: white;
+    color: black;
+    padding:15px 20px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    border-radius: 8px;
+    width: 150px;
+    cursor: pointer;
+}
+
+.labelStyle{
+    font-size: large;
+    font-weight: 700;
+    padding: 4px auto; 
+}
+
+@media screen and (max-width:600px) {
+  .inputFieldStyle{
+    width: 75vw;
+  }
+  .textareaStyle{
+    max-width: 75vw;
+  }
+}
+
+
+@keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }

@@ -11,19 +11,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .list-grid {
-  align-self: flex-start;
+  /* align-self: flex-start; */
+  justify-self: center;
+  align-self: center;
   display: grid;
   grid-column-gap: 50px;
   grid-row-gap: 50px;
   grid-template-columns: auto auto auto;
 }
+.listerror{
+  align-self: center;
+  font-size: 20px;
+  font-weight: medium;
+  margin-top: 30px;
+
+}
 
 @media screen and (max-width: 1100px) {
   .list-grid {
     grid-template-columns: auto auto;
+    margin-right: auto;
+    margin-left: auto;
   }
 }
 

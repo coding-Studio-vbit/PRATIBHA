@@ -42,16 +42,19 @@ const LockList = () => {
     { value: "loading", label: "Loading..." },
   ]);
 
-
   const { currentUser } = useAuth();
   const nav = useNavigate();
   useEffect(() => {
     const getLables = async () => {
-      const res = await getDepartments(Course.value, Year.value);
-      if (!res) return;
-      setSubjects(res.subjects);
-      setDepartments(res.departments);
-      setSections(res.sections);
+      try {
+        const res = await getDepartments(Course.value, Year.value);
+        if (!res) return;
+        setSubjects(res.subjects);
+        setDepartments(res.departments);
+        setSections(res.sections);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getLables();
   }, [Course, Year]);
@@ -62,11 +65,24 @@ const LockList = () => {
     if (finalList.length === 0) {
       setShowDialog("Add your classes for this semester");
     } else {
-      enroll(finalList);
+      try {
+        enroll(finalList);
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
   //handleAddButton displays their selected course in groups of mtech btech and mba , repititions are handled
   const handleAddButton = () => {
+    function checkSubject(array, item) {
+      for (let i = 0; i < array.length; i++) {
+        console.log(array[i].value);
+        if (array[i].value == item) {
+          return true;
+        }
+      }
+      return false;
+    }
     if (Course.value === "BTech") {
       const newBTech =
         "BTech_" +
@@ -77,8 +93,14 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      if (!BTechList.includes(newBTech)) setBTechList([...BTechList, newBTech]);
-      else {
+      if (!BTechList.includes(newBTech)) {
+        console.log(Subject.value);
+        if (checkSubject(subjects[Department.value], Subject.value)) {
+          setBTechList([...BTechList, newBTech]);
+        } else {
+          setShowDialog("Select correct subject.");
+        }
+      } else {
         setShowDialog("Class already added");
       }
     } else if (Course.value === "MTech") {
@@ -91,8 +113,13 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      if (!MTechList.includes(newMTech)) setMTechList([...MTechList, newMTech]);
-      else {
+      if (!MTechList.includes(newMTech)) {
+        if (checkSubject(subjects[Department.value], Subject.value)) {
+          setMTechList([...MTechList, newMTech]);
+        } else {
+          setShowDialog("Select correct subject.");
+        }
+      } else {
         setShowDialog("Class already added");
       }
     } else if (Course.value === "MBA") {
@@ -105,8 +132,13 @@ const LockList = () => {
         Section.value +
         "_" +
         Subject.value;
-      if (!MBAList.includes(newMBA)) setMBAList([...MBAList, newMBA]);
-      else {
+      if (!MBAList.includes(newMBA)) {
+        if (checkSubject(subjects[Department.value], Subject.value)) {
+          setMBAList([...MBAList, newMBA]);
+        } else {
+          setShowDialog("Select correct subject.");
+        }
+      } else {
         setShowDialog("Class already added");
       }
     }
@@ -116,6 +148,7 @@ const LockList = () => {
     setdisabledep(true);
     setdisablesec(true);
     setdisablesub(true);
+    console.log(Subject.value);
   };
 
   //handle remove
@@ -146,23 +179,31 @@ const LockList = () => {
   async function enroll(list) {
     if (currentUser.isHOD) {
       setIsLoading(true);
-      const res = await enrollHODClasses(currentUser.email, list);
-      if (res == null) {
-        setIsLoading(false);
-        setShowDialog("Course Enrolled Successfully");
-        setIsSuccess(true);
-      } else {
-        setShowDialog(res);
+      try {
+        const res = await enrollHODClasses(currentUser.email, list);
+        if (res == null) {
+          setIsLoading(false);
+          setShowDialog("Course Enrolled Successfully");
+          setIsSuccess(true);
+        } else {
+          setShowDialog(res);
+        }
+      } catch (e) {
+        console.log(e);
       }
     } else {
       setIsLoading(true);
-      const res = await enrollClasses(currentUser.email, list);
-      if (res == null) {
-        setIsLoading(false);
-        setShowDialog("Classes Enrolled Successfully");
-        setIsSuccess(true);
-      } else {
-        setShowDialog(res);
+      try {
+        const res = await enrollClasses(currentUser.email, list);
+        if (res == null) {
+          setIsLoading(false);
+          setShowDialog("Classes Enrolled Successfully");
+          setIsSuccess(true);
+        } else {
+          setShowDialog(res);
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   }
@@ -195,7 +236,7 @@ const LockList = () => {
           )}
           {isLoading && <LoadingScreen />}
           <div className="flex-container">
-            <div className="dropdown">
+            <div className="enroll-dropdown">
               <p className="locklist-dropdown-title">Course</p>
               <Select
                 placeholder=""
@@ -242,6 +283,7 @@ const LockList = () => {
                 }}
               />
               <p className="locklist-dropdown-title">Subject</p>
+              {console.log(subjects[Department.value])}
               <Select
                 placeholder=""
                 options={subjects[Department.value]}

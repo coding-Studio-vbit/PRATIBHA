@@ -3,7 +3,7 @@ import styles from "./uploadpra.module.css";
 import Button from "../../global_ui/buttons/button";
 import Navbar from "../../global_ui/navbar/navbar";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { getUploadedFile, uploadFile } from "../services/storageServices";
+import { uploadFile } from "../services/storageServices";
 import { LoadingScreen, Spinner } from "../../global_ui/spinner/spinner";
 import Dialog from "../../global_ui/dialog/dialog";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ import {
   getFileUploadDetails,
   getStudentData,
 } from "../services/studentServices";
-import { useAuth } from "../../context/AuthContext";
 import { useLocation} from "react-router-dom";
 import { fetchisMid1,fetchisMid2 } from "../services/studentServices";
 // import Download from "../../global_ui/download/download";
@@ -23,7 +22,6 @@ const Upload = () => {
     // console.log(location.state.rollno);
     // console.log(location.state.subject);
     let location = useLocation();
-    const [subject, setSubject] = useState("");
     const [isMid1,setisMid1]=useState(false);
     const [isMid2,setisMid2]=useState(false);
     const [loading, setLoading] = useState(false);
@@ -212,7 +210,6 @@ const Upload = () => {
     }
 
     const [showDialog, setshowDialog] = useState(false);
-    const { currentUser } = useAuth();
     const [pageLoad, setPageLoad] = useState();
     const [pageLoadError, setPageLoadError] = useState();
     const [user, setUser] = useState();
@@ -383,12 +380,14 @@ const Upload = () => {
                     </div>
                 {mid==1 ? (
 
+
                     <div >
                       
                       { (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?                    
                       (
                         <div>
                       <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(in <strong><u>PDF</u></strong> format only)</p>
+
                       <div>
                         <label className={styles.praLabel}>PRA Title:</label>
                         <input

@@ -6,17 +6,24 @@ import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../../student/services/storageServices";
 import { useLocation } from "react-router-dom";
-import { getStudentData } from "../../../student/services/studentServices";
+import {
+  getStudentData,
+  fetchisMid1,
+  fetchisMid2,
+} from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
-import { getPRA } from "../../services/facultyServices";
+import { getPRA, getSemester } from "../../services/facultyServices";
 import Download from "../../../global_ui/download/download";
+import { useAuth } from "../../../context/AuthContext";
 
 const ViewSubmissions = () => {
+  const {currentUser} = useAuth();
   const [data, setData] = useState([]);
   const [links, setLinks] = useState({});
+  const [sem, setSem] = useState("");
   const location = useLocation();
   const passedData = location.state;
-  console.log(passedData);
+  // console.log(passedData);
   let title =
     passedData.Year +
     "_" +
@@ -36,7 +43,7 @@ const ViewSubmissions = () => {
   courseName = course;
 
   course = course + "_" + title;
-  console.log(course);
+  // console.log(course);
   const DepartmentForFaculty =
     passedData.Course +
     "_" +
@@ -45,12 +52,12 @@ const ViewSubmissions = () => {
     passedData.Dept +
     "_" +
     passedData.Section;
-  console.log(DepartmentForFaculty);
+  // console.log(DepartmentForFaculty);
 
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
 
-  const Fetchlink = async (email) => {
+  const Fetchlink1 = async (email) => {
     var dict = {};
     let rollnum = email.split("@")[0];
     dict["rollno"] = rollnum;
@@ -74,6 +81,30 @@ const ViewSubmissions = () => {
     setLinks(links);
   };
 
+  const Fetchlink2 = async (email) => {
+    var dict = {};
+    let rollnum = email.split("@")[0];
+    dict["rollno"] = rollnum;
+    const res = await getUploadedFileByPath(
+      courseName +
+        "/" +
+        passedData.Year +
+        "/" +
+        passedData.Dept +
+        "/" +
+        passedData.Section +
+        "/" +
+        passedData.Subject +
+        "/" +
+        "2" +
+        "/" +
+        email.split("@")[0]
+    );
+    links[rollnum] = res.url;
+
+    setLinks(links);
+  };
+
   const Fetchdata = async () => {
     const result = await getPRA(passedData.Subject, DepartmentForFaculty);
     const facultyID = result.facultyID;
@@ -83,6 +114,12 @@ const ViewSubmissions = () => {
         collection(db, `faculty/${facultyID}/${course}`)
         // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
       );
+
+      let ismid1 = await fetchisMid1(courseName, passedData.Year);
+      let ismid2 = await fetchisMid2(courseName, passedData.Year);
+
+      let semester = await getSemester();
+      setSem(semester.data);
 
       await getDocs(studentref).then((querySnapshot) => {
         if (querySnapshot) {
@@ -135,7 +172,13 @@ const ViewSubmissions = () => {
                 let topic, name;
 
                 if (error == null) {
-                  await Fetchlink(email);
+                  if (ismid1) {
+                    await Fetchlink1(email);
+                  }
+                  if (ismid2) {
+                    await Fetchlink2(email);
+                  }
+
                   let obj = returndata["subjects"].find(
                     (o) => o.subject === passedData.Subject //"DAA"
                   );
@@ -186,7 +229,7 @@ const ViewSubmissions = () => {
 
   return (
     <div>
-      <Navbar title={title} logout={true} />
+      <Navbar title={title} backURL = {currentUser.isHOD ? "/faculty/hodclasslist":currentUser.isCOE ? "/faculty/coesearch":""} logout={true} />
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
@@ -198,7 +241,7 @@ const ViewSubmissions = () => {
           <table style={{ marginTop: "4.5rem" }}>
             <thead>
               <tr>
-                <th>ROLL NO:</th>
+                <th>ROLL NO</th>
                 <th>STUDENT NAME</th>
                 <th>TOPIC NAME</th>
                 <th>MID-1 GRADING</th>
@@ -239,7 +282,10 @@ const ViewSubmissions = () => {
             </tbody>
           </table>
           <div className="LOF_buttons">
-            <ExportCSV csvData={data} fileName={course} />
+            <ExportCSV
+              csvData={data}
+              fileName={sem === 1 ? course + "_sem1" : course + "_sem2"}
+            />
           </div>
         </div>
       )}

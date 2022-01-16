@@ -13,6 +13,7 @@ import {
   fetchisMid1,
   fetchisMid2,
 } from "../../../student/services/studentServices";
+import { getSemester } from "../../services/facultyServices";
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);
@@ -21,6 +22,8 @@ const ListofStudents = () => {
   const [buttonText, setButtonText] = useState("EDIT PRA");
   const [student, setStudent] = useState(null);
   const [studentTopic, setStudentTopic] = useState(null);
+  const [mid, setMid] = useState("");
+  const [sem, setSem] = useState("");
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -65,6 +68,15 @@ const ListofStudents = () => {
     let stddd = null;
     let ismid1 = await fetchisMid1(subjectval[0], subjectval[1]);
     let ismid2 = await fetchisMid2(subjectval[0], subjectval[1]);
+    if (ismid1) {
+      setMid(1);
+    }
+    if (ismid2) {
+      setMid(2);
+    }
+
+    let semester = await getSemester();
+    setSem(semester.data);
 
     await getDocs(studentref).then((querySnapshot) => {
       if (querySnapshot) {
@@ -182,7 +194,7 @@ const ListofStudents = () => {
 
   return (
     <div>
-      <Navbar backURL={"/faculty/classlist"} title={location.state.sub}>
+      <Navbar backURL={currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist"} title={location.state.sub}>
         <span
           onClick={() =>
             navigate("/faculty/createPra", {
@@ -206,7 +218,7 @@ const ListofStudents = () => {
       ) : (
         <>
           <div className="sub_body">
-            <p className="bold">SUBJECT : {subjectval[4]}</p>
+            <p className="bold subject">SUBJECT : {subjectval[4]}</p>
             <p className="bold">Number of students submitted: {data.length}</p>
             {/* <div> */}
             <table style={{ marginTop: "4.5rem" }}>
@@ -242,7 +254,7 @@ const ListofStudents = () => {
                                 "/" +
                                 subjectval[4] +
                                 "/" +
-                                "1" +
+                                `${mid}` +
                                 "/" +
                                 dataitem.ROLL_NO,
                               topicname: dataitem.TOPIC_NAME,
@@ -279,7 +291,7 @@ const ListofStudents = () => {
                         "/" +
                         subjectval[4] +
                         "/" +
-                        "1" +
+                        `${mid}` +
                         "/" +
                         student,
                       topicname: studentTopic,
@@ -292,7 +304,14 @@ const ListofStudents = () => {
             </div>
           </div>
           <div className="export_">
-            <ExportCSV csvData={data} fileName={location.state.sub} />
+            <ExportCSV
+              csvData={data}
+              fileName={
+                sem === 1
+                  ? location.state.sub + "_sem1"
+                  : location.state.sub + "_sem2"
+              }
+            />
           </div>
         </>
       )}
