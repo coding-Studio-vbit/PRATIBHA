@@ -33,7 +33,10 @@ export default function LoginPage() {
         nav("/coesearch", { replace: true });
       }
     }
-  }, [currentUser, nav]);
+    else{
+      nav("/")
+    }
+  }, [currentUser]);
 
   return loading === false ? (
     <div className="page">

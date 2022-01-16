@@ -9,8 +9,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 
     return (currentUser ? 
         <Navigate to="/home"/> : 
-        <Navigate to="/" />
-        
+        <Navigate to="/" replace="true" />     
     )
 }
 
