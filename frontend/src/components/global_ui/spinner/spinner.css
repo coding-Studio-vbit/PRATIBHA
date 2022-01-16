@@ -1,59 +1,61 @@
 .spinner {
-    position: relative;
-    width: 125px;
-    height: 125px;
+    display: flex;justify-content: center;align-items: center;
 }
 
-.spinner:before, .spinner:after {
+.spinner:after {
     content: "";
     display: block;
     position: absolute;
-    border-width: 4px;
+    border-width: 3px;
     border-style: solid;
     border-radius: 50%;
 }
 
-.spinner.spinner-1:before {
+/* .spinner.spinner-1:before {
     width: 45px;
     height: 45px;
-    border-bottom-color: #212121;
-    border-right-color: #212121;
+    border-bottom-color: #0E72AB;
+    border-right-color: #0E72AB;
     border-top-color: rgba(33, 33, 33, 0);
     border-left-color: rgba(33, 33, 33, 0);
+    border-width: 1px;
     top: 0px;
     left: 0px;
     animation: rotate-animation 1s linear 0s infinite;
-}
+} */
 .spinner.spinner-1:after {
-    width: 27px;
-    height: 27px;
-    border-bottom-color: #212121;
-    border-right-color: #212121;
-    border-top-color: rgba(33, 33, 33, 0);
-    border-left-color: rgba(33, 33, 33, 0);
-    top: 9px;
-    left: 9px;
-    animation: anti-rotate-animation 0.85s linear 0s infinite;
+    width: 35px;
+    height: 35px;
+    mask-border:unset;
+    border-width: 5px;
+    border-style:dashed;
+    border-bottom-color: #0E72AB;
+    border-right-color: #0E72AB;
+    border-top-color: white;
+    border-left-color: white;
+    animation: anti-rotate-animation 1s linear 0s infinite;
 }
 
 .spinnerDark {
     position: relative;
-    width: 125px;
-    height: 125px;
+    display: flex;justify-content: center;align-items: center;
 }
 
-.spinnerDark:before, .spinnerDark:after {
+.spinnerDark:after {
     content: "";
     display: block;
     position: absolute;
-    border-width: 4px;
+    border-width: 3px;
     border-style: solid;
     border-radius: 50%;
 }
 
-.spinnerDark.spinnerDark-1:before {
+/* .spinnerDark.spinnerDark-1:before {
     width: 45px;
     height: 45px;
+    border-width: 2px;
+    border-width: 1px;
+
     border-bottom-color: white;
     border-right-color: white;
     border-top-color: rgba(33, 33, 33, 0);
@@ -61,10 +63,11 @@
     top: 0px;
     left: 0px;
     animation: rotate-animation 1s linear 0s infinite;
-}
+} */
 .spinnerDark.spinnerDark-1:after {
-    width: 27px;
-    height: 27px;
+    width: 35px;
+    height: 35px;
+    border-width: 4px;
     border-bottom-color:white;
     border-right-color: white;
     border-top-color: rgba(33, 33, 33, 0);
@@ -80,9 +83,9 @@
     0% {
         transform: rotate(0deg);
    }
-   60%{
+   /* 60%{
        transform: rotate(240deg);
-   }
+   } */
     100% {
         transform: rotate(360deg);
    }
@@ -92,9 +95,12 @@
     0% {
         transform: rotate(0deg);
    }
+   /* 40%{
+    transform: rotate(120deg);
+   }
    60%{
     transform: rotate(240deg);
-}
+} */
     100% {
         transform: rotate(-360deg);
    }

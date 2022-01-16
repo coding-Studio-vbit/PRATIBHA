@@ -632,7 +632,10 @@ const Grading = () => {
                           marginRight: "12px",
                         }}
                         value={midNo}
-                        onChange={(e) => setMid(e.target.value)}
+                        onChange={(e) =>{ 
+                          setMid(e.target.value)
+                          searchRoll(rollNo);
+                        }}
                         className="selectList"
                         id="selectList">
                         <option value="1">MID I</option> 
