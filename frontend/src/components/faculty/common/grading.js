@@ -8,6 +8,7 @@ import { LoadingScreen, OverlayLoader } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
 import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
+import Download from './../../global_ui/download/download'
 
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
@@ -321,7 +322,7 @@ const Grading = () => {
               }}
             ></i>
 
-            <h3 style={{ textAlign: "center" }}>Student Details</h3>
+            <h3 style={{ textAlign: "center" }}>Student Details </h3>
 
             <div className="details">
                 <div style={{display: "flex",gap: "8px",alignItems: "center"}}>
@@ -618,6 +619,8 @@ const Grading = () => {
                   display: "grid",
                   gridTemplateColumns: "0.3fr 0.3fr 0.3fr",
                 }}>
+
+                
           
                   <span style={{
                         marginBottom:'10px',
@@ -657,7 +660,7 @@ const Grading = () => {
 
               <div className="display">
                 {url !== null ? (
-                  <Docviewer link={url} />
+                  <Docviewer link={url} rollNo={rollNo} />
                 ) : (
                   <div className="notSubmitted" >{`PRA not submitted yet`}</div>
                 )}

@@ -4,7 +4,7 @@ import { Worker } from "@react-pdf-viewer/core";
 import { getStorage, ref, getMetadata } from "firebase/storage";
 import { storage } from "../../../firebase";
 import { useEffect,useState } from "react";
-
+import Download from "../../global_ui/download/download";
 import { Component } from 'react';
 // import logger from 'logging-library';
 import FileViewer from 'react-file-viewer';
@@ -98,7 +98,7 @@ const ViewPdf=({object})=>{
     );    
 }
 
-function Docviewer({link}){
+function Docviewer({link,rollNo}){
     const forestRef = ref(storage,link);  
 
     const [extension, setextension] = useState(null);
@@ -120,9 +120,21 @@ function Docviewer({link}){
         });
     }, [link])
 
+    
+
     return (
         extension!=null?
-        <Module extension={extension} object={link}/>:
+        <div style={{display:'flex',flexDirection:"column",justifyContent:'center',alignItems:'center'}}>
+            <Module extension={extension} object={link}/>
+            <div style={{marginTop:'16px'}}>
+                {link !== null ? (
+                <Download url={link} userID={rollNo} isIcon={false}/>
+                ) : (
+                <div className="notSubmitted" >{`PRA not submitted yet`}</div>
+                )}
+            </div>
+        </div>
+        :
         <div>
             {
                 loading?<Spinner radius={2}/>:
