@@ -58,10 +58,15 @@ const Grading = () => {
     const parts = location.state.className.split('_');
     let course = parts[0]
     let year = parts[1]
-    const isMid1 = await fetchisMid1(course,year);
-    const isMid2 = await fetchisMid2(course,year);
-    setisMid1(isMid1);
-    setisMid2(isMid2);
+    const checkMid1 = await fetchisMid1(course,year);
+    const checkMid2 = await fetchisMid2(course,year);
+    if (checkMid1) {
+      setMid("1");
+    } else if (checkMid2) {
+      setMid("2");
+    }
+    setisMid1(checkMid1);
+    setisMid2(checkMid2);
   }
 
   function validateMarks(x) {
@@ -117,14 +122,15 @@ const Grading = () => {
   }
 }
 
-  async function searchRoll(val){
+  async function searchRoll(val,midX=null){
+    console.log(midNo,midX,val);
     setPageLoading(true);
     if(val!=null || val!==""){
       let x=allStudents.find(element=>element.id===val)
       if(x==null){
         alert("Student Not Found")
       }else{
-        console.log(x);
+        // console.log(x);
         setRollNo(x.id);
         if(x.data["mid1"]!=null){
           setIndividuality1(x.data["mid1"]["Individuality1"]);
@@ -147,7 +153,7 @@ const Grading = () => {
           setSubRel2(x.data["mid2"]["Subject_Relevance2"]);          
         }
         else{
-          console.log("fjf");
+          // console.log("fjf");
           setIndividuality2();
           setInnovation2();
           setPreparation2();
@@ -164,9 +170,18 @@ const Grading = () => {
         }else{
           setRemarks2("")
         }
-        const res = await getUploadedFileByPath(
-          location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+val    
-        );    
+        let res;
+        if(midX==null){
+          console.log(location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+val );
+          res = await getUploadedFileByPath(
+            location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+val    
+          ); 
+        }else{
+          console.log(location.state.path.slice(0,location.state.path.length-12)+midX+"/"+val );
+          res = await getUploadedFileByPath(
+            location.state.path.slice(0,location.state.path.length-12)+midX+"/"+val    
+          );
+        }
         if(res.error==null){
           setUrl(res.url);     
         }
@@ -175,7 +190,7 @@ const Grading = () => {
         }   
       }
     }else{
-      console.log("Show Error");
+      // console.log("Show Error");
     }
     setPageLoading(false)
   }    
@@ -275,11 +290,7 @@ const Grading = () => {
 
   useEffect(() => {
     midboolean();
-    if (isMid1) {
-      setMid("1");
-    } else if (isMid2) {
-      setMid("2");
-    }
+    
     getUserData();
     
   }, []);
@@ -310,7 +321,7 @@ const Grading = () => {
               }}
             ></i>
 
-            <h3 style={{ textAlign: "center" }}>Student Details </h3>
+            <h3 style={{ textAlign: "center" }}>Student Details</h3>
 
             <div className="details">
                 <div style={{display: "flex",gap: "8px",alignItems: "center"}}>
@@ -633,7 +644,7 @@ const Grading = () => {
                         value={midNo}
                         onChange={(e) =>{ 
                           setMid(e.target.value)
-                          searchRoll(rollNo);
+                          searchRoll(rollNo,e.target.value);
                         }}
                         className="selectList"
                         id="selectList">
