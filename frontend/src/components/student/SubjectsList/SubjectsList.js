@@ -47,6 +47,11 @@ const SubjectsList = () => {
         document.section;
       setCourseTitle(course);
 
+      if (document.course === "MBA") {
+        setCourseTitle(
+          document.course + "_" + document.year + "_" + document.section
+        );
+      }
       let ismid1 = await fetchisMid1(document.course, document.year);
       let ismid2 = await fetchisMid2(document.course, document.year);
       let coeDeadLine, dlDate, mid;
