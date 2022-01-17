@@ -240,7 +240,7 @@ const LockList = () => {
               <p className="locklist-dropdown-title">Course</p>
               <Select
                 placeholder=""
-                className="select"
+                className="select-locklist"
                 options={Courses}
                 onChange={(selectedCourse) => {
                   setCourse(selectedCourse);
@@ -249,7 +249,7 @@ const LockList = () => {
               <p className="locklist-dropdown-title">Year</p>
               <Select
                 placeholder=""
-                className="select"
+                className="select-locklist"
                 options={Course.value[0] === "M" ? MYears : Years}
                 isDisabled={!Course}
                 onChange={(selectedYear) => {
@@ -261,7 +261,7 @@ const LockList = () => {
               <Select
                 placeholder=""
                 options={departments}
-                className="select"
+                className="select-locklist"
                 isDisabled={disabledep}
                 onChange={(selectedDepartment) => {
                   setDepartment(selectedDepartment);
@@ -287,7 +287,7 @@ const LockList = () => {
               <Select
                 placeholder=""
                 options={subjects[Department.value]}
-                className="select"
+                className="select-locklist"
                 isDisabled={disablesub}
                 onChange={(selectedSubject) => {
                   setSubject(selectedSubject);
@@ -307,8 +307,8 @@ const LockList = () => {
               <div className="list-container">
                 {BTechList.length !== 0 && (
                   <div>
-                    <h4> B.Tech </h4>
-                    <ul>
+                    <h4 className="course-heading"> B.Tech </h4>
+                    <ul className="list-head">
                       {BTechList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
@@ -337,8 +337,8 @@ const LockList = () => {
                 )}
                 {MTechList.length !== 0 && (
                   <div>
-                    <h4> M.Tech </h4>
-                    <ul>
+                    <h4 className="course-heading"> M.Tech </h4>
+                    <ul className="list-head">
                       {MTechList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
@@ -366,8 +366,8 @@ const LockList = () => {
                 )}
                 {MBAList.length !== 0 && (
                   <div>
-                    <h4> MBA </h4>
-                    <ul>
+                    <h4 className="course-heading"> MBA </h4>
+                    <ul className="list-head">
                       {MBAList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
