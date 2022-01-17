@@ -609,9 +609,9 @@ const Grading = () => {
                 }}>
           
                   <span style={{
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        padding: "16px",
+                        marginBottom:'10px',
+                        marginLeft:'auto',
+                        marginRight:'auto',
                         fontSize:'x-large',
                         gridArea: "title",
                         alignSelf: "center",
@@ -627,7 +627,6 @@ const Grading = () => {
                       <select
                         style={{
                           width: "200px",
-                          padding: "8px",
                           borderRadius: "24px",
                           marginRight: "12px",
                         }}
@@ -649,7 +648,7 @@ const Grading = () => {
                 {url !== null ? (
                   <Docviewer link={url} />
                 ) : (
-                  <div>Unknown Error Occured</div>
+                  <div className="notSubmitted" >{`PRA not submitted yet`}</div>
                 )}
               </div>
 
@@ -660,7 +659,7 @@ const Grading = () => {
                   onChange={
                     (e)=>midNo==="1"?setRemarks1(e.target.value):setRemarks2(e.target.value)
                   }
-                  rows={3} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
+                  rows={4} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
                   {/* {
                     deadline!=null?
                     (
