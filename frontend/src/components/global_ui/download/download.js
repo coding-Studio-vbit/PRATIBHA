@@ -2,9 +2,9 @@ import React from "react";
 // import "./download.css";
 import axios from "axios";
 
-function Download({ url, text = "DOWNLOAD", userID = "random" }) {
+function Download({ url, text = "DOWNLOAD", userID = "random", isIcon=true }) {
   function download() {
-    console.log("Satrte");
+    // console.log("Satrte");
     console.log(url);
     axios({
       url: url,
@@ -41,11 +41,17 @@ function Download({ url, text = "DOWNLOAD", userID = "random" }) {
     <button
       className="download"
       onClick={() => download()}
-      style={{ background: "none", border: "none", cursor: "pointer" }}
+      style={{ 
+        display:'flex',
+        alignItems:'center',
+        background:isIcon?"none":"#0E72AB",
+        color:isIcon?"#0E72AB":"white", 
+        border: "none", cursor: "pointer",borderRadius:'6px',padding:isIcon?"auto":"6px 16px" }}
     >
+      <p style={{fontSize:'16px'}}>{isIcon?"":"DOWNLOAD"}</p>
       <i
         class="fas fa-cloud-download-alt downloadIcon"
-        style={{ color: "rgba(11, 91, 138, 1)" }}
+        style={{ color:isIcon?"#0E72AB":"white"}}
       ></i>
     </button>
   );
