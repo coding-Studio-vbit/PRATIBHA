@@ -1,6 +1,6 @@
 .grading {
   width: 100vw;
-  height: 100vh;
+  height: 100vh; 
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -187,16 +187,17 @@ select {
 }
 
 .savebutton{
+  margin: 20px auto;
   text-align: center;
   border-radius: 7px !important;
   border: none;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  font-size: large;
+  font-size: x-large;
   background-color: #0e72ab;
   color: white;
- padding: 5px 16px !important;
+ padding: 11px 16px !important;
   height: auto !important;
-  width:80px;
+  width:100px;
   align-self: center;
   cursor: pointer;
  
@@ -245,6 +246,7 @@ select {
   margin-top: auto;
   grid-area: rt;
   align-self: center;
+  font-size: x-large;
 }
 /* .head{
   height:15vh;
@@ -259,7 +261,7 @@ select {
   display: grid;
   /* gap:40px; */
   justify-content: center;
-
+  align-items: center;
   grid-template-areas:
     ". title dd "
     "pr pr pr "
@@ -270,12 +272,12 @@ select {
   background-color: rgb(4, 43, 116);
 }
 .remarksCon {
-  /* margin-top: 8px; */
+  margin-top: 20px;
   grid-area: rt;
   display: flex;
   gap: 8px;
   flex-direction: column;
-  height : 20vh;
+  min-height : 20vh;
 }
 
 .selectMid{
@@ -313,12 +315,22 @@ select {
   outline: none;
   height: 50px;
   text-indent: 8px;
+  vertical-align:25px;
+  padding:8px;
   /* -webkit-appearance: none;
   -moz-appearance: none;
   -o-appearance: none;
   appearance: none; 
   background: transparent url(http:cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat 100% center; */
 
+}
+
+.notSubmitted{
+  margin: 40px auto;
+  color: #4f4f4f;
+  font-family: sans-serif;
+  font-size: x-large;
+  font-weight: bold;
 }
 
 .searchBtn{
