@@ -29,7 +29,7 @@
   flex-wrap: wrap;
   justify-content: center;
 }
-.select{
+.select-locklist{
   max-width: 300px;
   min-width: 270px;
   justify-self: center;
@@ -41,18 +41,14 @@
   font-weight: bold;
   letter-spacing: 0.4px;
 }
-h4{
+.course-heading{
   text-align: center;
   margin: 5px;
   color:#0e72ab;
 }
-ul{
+.list-head{
   padding:10px;
   margin: 5px;
-}
-li{
-  margin-left : 1px;
-  text-align: left;
 }
 
 .locklist-dropdown-title {
@@ -73,5 +69,7 @@ li{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-left : 1px;
+  text-align: left;
 }
 
