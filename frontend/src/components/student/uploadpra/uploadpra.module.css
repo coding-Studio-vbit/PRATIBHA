@@ -41,31 +41,18 @@ input[type="file"] {
   flex-direction: column;
 }
 
-.UploadinputStyle {
-  display: inline-flexbox;
-  font-size: 20px;
-  outline: none;
-  background-color: #e5e4e2;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 7px;
-  font-weight: normal;
-  align-items: center;
-}
 
-.editbutton {
-  text-align: center;
-  border-radius: 500px !important;
-  border: none;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  font-size: large;
-  background-color: #0e72ab;
-  color: white;
-  width: 120px;
-  height: auto;
-  padding: 15px 10px !important;
+.uploadbutton{
+  background-color: #0E72AB;
+  color:white;
+  font-size: 16px;
   align-self: center;
   cursor: pointer;
+  display: inline;
+  outline: none;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
 }
 
 .praLabel {
@@ -118,17 +105,19 @@ label {
   align-self: center;
 }
 
-.instructions {
-  color: black;
-  font-size: 16px;
-  text-align: center;
-  font-weight: 500;
-  margin-bottom: 30px;
+.praInfo{
+   font-size: 16px;
+   text-align: center; 
 }
 
-.praInfo {
-  font-size: 16px;
-  text-align: center;
+.fileName{
+   color:darkslategrey;
+   font-size:20px;
+   margin-bottom: 20px;
+   font-weight: 450;
+   align-self: center;
+   justify-content: center;
+   display: flex;
 }
 
 .fileName {
@@ -138,34 +127,13 @@ label {
   font-weight: 450;
   align-self: center;
 }
-
-.selectList {
-  width: auto;
-  min-width: 200px;
-  padding: 5px 2px;
-  outline: none;
-  border: none;
-  border-radius: 14px;
-  background-color: #e5e4e2;
-  font-size: large;
-  font-weight: 500;
-  padding: 10px;
-
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSdibGFjaycgaGVpZ2h0PScyNCcgdmlld0JveD0nMCAwIDI0IDI0JyB3aWR0aD0nMjQnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZD0nTTcgMTBsNSA1IDUtNXonLz48cGF0aCBkPSdNMCAwaDI0djI0SDB6JyBmaWxsPSdub25lJy8+PC9zdmc+);
-  background-repeat: no-repeat;
-  background-position-x: right;
-  background-position-y: center;
-}
-.pratitle {
-  font-weight: medium;
-  font-size: 20px;
-  letter-spacing: 0.2px;
-  align-self: center;
-  color: #0e72ab;
-  font-weight: bold;
+.pratitle{
+   font-weight: medium;
+   font-size: 20px;
+   letter-spacing: 0.2px;
+   justify-content: center;
+   font-weight: 400;
+   display: flex;
 }
 
 .fileUploadModule {
@@ -184,42 +152,60 @@ label {
 }
 
 @media only screen and (max-width: 600px) {
-  .UploadinputStyle {
-    width: 80%;
-    width: calc(96% - 3rem);
-    margin-left: 5%;
-  }
+   .UploadinputStyle {
+   width: 80%;
+   width: calc(96% - 3rem);   
+   margin-left: 5%;
+    } 
 
-  .praLabel {
-    font-weight: 800;
-    font-size: 16px;
-    color: #0e72ab;
-    align-self: center;
-    margin-left: 5%;
-    margin-top: 10px;
-  }
-  .titleErrorField {
-    display: inline-block;
-    color: red;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 450;
-    margin-top: 0%;
-    margin-left: 18px;
-  }
+    .praLabel{
+      font-weight:800 ;
+      font-size: 16px;
+      color:#0e72ab ;
+      align-self: center;
+      margin-left: 5%;
+      margin-top: 10px;
+      
+   }
+   .titleErrorField{
+      display:inline-block;
+      color: red;
+      font-size: 12px;
+      font-style:normal;
+      font-weight: 450;
+      margin-top: 0%;
+      margin-left: 18px;
+      
+   }
 
-  .praInfo {
-    font-size: 16px;
-    text-align: center;
-    margin-bottom: 35px;
-    margin-left: 4%;
-  }
+   .praInfo{
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 35px;
+      padding: 10px;     
+   }
 
-  .instructions {
-    color: black;
-    font-size: 16px;
-    text-align: center;
-    margin: 4%;
-    line-height: 1.4;
-  }
-}
+    .instructions{
+      color:black;
+      font-size:16px;
+      font-weight: 600px;
+      font: bolder;
+      margin: 4%;
+      margin-bottom: 25px;
+      align-items: center;
+      line-height: 1.4;
+    }
+   }
+/* 
+.btn{
+   background-color: rgba(14, 114, 171, 1);
+   color: white;
+   justify-self: bottom;
+   margin-top: 50px;
+   border: none;
+   outline: none;
+   padding: 10px 30px;
+   border-radius: 6px;
+   font-size: large;
+   cursor: pointer;
+} */
