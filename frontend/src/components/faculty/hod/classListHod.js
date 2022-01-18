@@ -109,7 +109,7 @@ const HODClassList = () => {
       state: {
         Course: Course.value,
         Year: Year.value,
-        Dept: dep.value,
+        Dept: dep.label,
         Section: Section.value,
         Subject: Subject.value,
       },

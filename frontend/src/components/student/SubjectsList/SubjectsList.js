@@ -47,29 +47,36 @@ const SubjectsList = () => {
         document.section;
       setCourseTitle(course);
 
+      if (document.course === "MBA") {
+        setCourseTitle(
+          document.course + "_" + document.year + "_" + document.section
+        );
+      }
       let ismid1 = await fetchisMid1(document.course, document.year);
       let ismid2 = await fetchisMid2(document.course, document.year);
-      let coeDeadLine, dlDate;
+      let coeDeadLine, dlDate, mid;
 
       if (ismid1) {
         dlDate = await getCoeDeadline("1", document.course, document.year);
+        mid = 1;
       }
       if (ismid2) {
         dlDate = await getCoeDeadline("2", document.course, document.year);
+        mid = 2;
       }
       coeDeadLine = new Timestamp(
         dlDate.data["seconds"],
         dlDate.data["nanoseconds"]
       ).toDate();
 
-      await fetchsubject(document, coeDeadLine, course);
+      await fetchsubject(document, coeDeadLine, course, mid);
     } else {
       setError(error);
     }
     setloading(false);
   };
 
-  const fetchsubject = async (document, coedeadLine, course) => {
+  const fetchsubject = async (document, coedeadLine, course, midvalue) => {
     let mid;
     let date, dateConv;
     const subjectRef = doc(db, "subjects", course);
@@ -84,7 +91,7 @@ const SubjectsList = () => {
           let newDate = new Date();
           let currentDateConv = newDate.toLocaleDateString("en-US");
 
-          if (coedeadLine >= date1) {
+          if (midvalue === 1) {
             console.log("1");
             mid = 1;
 

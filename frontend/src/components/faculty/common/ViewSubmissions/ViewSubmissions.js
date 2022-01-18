@@ -23,7 +23,7 @@ const ViewSubmissions = () => {
   const [sem, setSem] = useState("");
   const location = useLocation();
   const passedData = location.state;
-  // console.log(passedData);
+  console.log(passedData);
   let title =
     passedData.Year +
     "_" +
@@ -246,7 +246,7 @@ const ViewSubmissions = () => {
         </div>
       ) : error ? (
         <div className="err_Display">{error}</div>
-      ) : data ? (
+      ) : data.length ? (
         <div className="sub_body">
           <table style={{ marginTop: "4.5rem" }}>
             <thead>
