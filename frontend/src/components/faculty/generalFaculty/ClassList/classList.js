@@ -12,6 +12,9 @@ const ClassList = () => {
   const [subs, setSubs] = useState();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+
+  
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
@@ -38,6 +41,7 @@ const ClassList = () => {
     }
   }
 
+  
   return loading ? (
     <LoadingScreen />
   ) : (
@@ -107,7 +111,7 @@ const ClassList = () => {
                 displayItem.splice(0, 1);
                 let newItem = displayItem[0];
                 let len = displayItem.length;
-                if (displayItem[0] == "1")
+                if (displayItem[0] === "1")
                   newItem =
                     newItem + "-" + displayItem[2] + "-" + displayItem[3];
                 else {
