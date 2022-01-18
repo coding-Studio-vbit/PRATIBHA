@@ -46,7 +46,7 @@ function Download({ url, text = "DOWNLOAD", userID = "random", isIcon=true }) {
         alignItems:'center',
         background:isIcon?"none":"#0E72AB",
         color:isIcon?"#0E72AB":"white", 
-        border: "none", cursor: "pointer",borderRadius:'6px',padding:isIcon?"auto":"6px 16px" }}
+        border: "none", cursor: "pointer",borderRadius:'6px',padding:isIcon?"auto":"4px 12px" }}
     >
       <p style={{fontSize:'16px'}}>{isIcon?"":"DOWNLOAD"}</p>
       <i
