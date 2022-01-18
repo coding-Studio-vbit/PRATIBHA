@@ -23,7 +23,7 @@ const ViewSubmissions = () => {
   const [sem, setSem] = useState("");
   const location = useLocation();
   const passedData = location.state;
-  // console.log(passedData);
+  console.log(passedData);
   let title =
     passedData.Year +
     "_" +
