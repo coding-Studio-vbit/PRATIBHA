@@ -65,35 +65,35 @@ const ViewPdf=({object})=>{
     // console.log(object);
     return(
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-            <div className="mt4" style={{  padding:'0px',width:'100%', margin:'0px' }}>
-                {object ? (
+            {
+                object ? (
                     <div
                         style={{
-                            border: '1px solid rgba(0, 0, 0, 0.3)',
-                            height: "500px",
-                            width:"100%"
-                            
-                        }}
-                    >
-
-                        <Viewer fileUrl={object} />
+                            border: '3px dotted rgba(0, 0, 0, 0.3)',  
+                            paddingTop:'30px',  
+                            backgroundColor: '#fff',
+                            width: '100%',
+                            height:"600px"
+                        
+                        }}>
+                        <Viewer fileUrl={object}  />
                     </div>
                 ) : (
-                    <div
-                        style={{
-                            alignItems: 'center',
-                            //border: '2px dashed rgba(0, 0, 0, .3)',
-                            display: 'flex',
-                            fontSize: '2rem',
-                            height: '100%',
-                            justifyContent: 'center',
-                            width: '100%',
-                        }}
-                    >
-                        File Cannot be previewed
-                    </div>
-                )}
-            </div>
+                <div
+                    style={{
+                        alignItems: 'center',
+                        //border: '2px dashed rgba(0, 0, 0, .3)',
+                        display: 'flex',
+                        fontSize: '2rem',
+                        height: '100%',
+                        justifyContent: 'center',
+                        width: '100%',
+                    }}
+                >
+                    File Cannot be previewed
+                </div>
+            )}
+        
         </Worker>
     );    
 }
@@ -105,11 +105,11 @@ function Docviewer({link,rollNo}){
     const [loading, setloading] = useState(true);
 
     useEffect(() => {
-        console.log(link);
-        console.log("XYZ");
+        // console.log(link);
+        // console.log("XYZ");
         getMetadata(forestRef)
         .then((metadata) => {
-            console.log(metadata.contentType);
+            //console.log(metadata.contentType);
             setextension(metadata.contentType.split("/")[1]);
             setloading(false);
         })
@@ -124,14 +124,16 @@ function Docviewer({link,rollNo}){
 
     return (
         extension!=null?
-        <div style={{display:'flex',flexDirection:"column",justifyContent:'center',alignItems:'center'}}>
+        <div style={{width:'100%',display:'flex',flexDirection:"column",justifyContent:'center',alignItems:'center'}}>
             <Module extension={extension} object={link}/>
             <div style={{marginTop:'16px'}}>
-                {link !== null ? (
-                <Download url={link} userID={rollNo} isIcon={false}/>
-                ) : (
-                <div className="notSubmitted" >{`PRA not submitted yet`}</div>
-                )}
+                {
+                    link !== null ? (
+                    <Download url={link} userID={rollNo} isIcon={false}/>
+                    ) : (
+                    <div className="notSubmitted" >{`PRA not submitted yet`}</div>
+                    )
+                }
             </div>
         </div>
         :
@@ -145,7 +147,7 @@ function Docviewer({link,rollNo}){
 }
 
 function Module({extension,object}) {
-    console.log(extension,1010);
+    // console.log(extension,1010);
     switch(extension){
         case 'pdf':
             return <ViewPdf object={object} />
