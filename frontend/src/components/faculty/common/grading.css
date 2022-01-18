@@ -1,9 +1,12 @@
 .grading {
   width: 100vw;
-  height: 100vh; 
+  min-height: 100vh; 
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+}
+
+.grading::-webkit-scrollbar {
+  display: none;
 }
 
 .left {
@@ -14,17 +17,18 @@
   justify-content: start;
   background-color: rgba(14, 114, 171, 1);
   color: #e4e4e4;
-  height: auto;
-  padding: 6px;
+  padding: 9px;
+  padding-bottom: 40px;
+  min-height: 100vh;
 }
 
 .right {
   width: 75%;
+  height: max-content;
   background-color: #ffffff;
+  padding: 0px;
   padding-top: 20px;
   overflow-y: scroll;
-  overflow-x: hidden;
-  padding-bottom: 25px;
 }
 
 .right::-webkit-scrollbar {
@@ -34,7 +38,6 @@
 /* Track */
 .right::-webkit-scrollbar-track {
   background: #f1f1f1;
-
 }
 
 /* Handle */
@@ -70,10 +73,6 @@
   resize:none,
 }
 
-/* .inputStyle:focus{
-  
-} */
-
 .error{
   background-color: #e76c6c;
 }
@@ -84,8 +83,8 @@
   margin-bottom: 24px;
   margin-right: auto; 
   flex-direction: column;
-  /* height:60vh; */
 }
+
 .details div:first-child{
   padding-left: 8px;
 }
@@ -163,7 +162,6 @@ select {
   -moz-appearance: none !important;
   -webkit-appearance: none !important;
   appearance: none !important;
-
   padding-right: 2rem !important;
 }
 
@@ -192,10 +190,10 @@ select {
   border-radius: 7px !important;
   border: none;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  font-size: x-large;
+  font-size:large;
   background-color: #0e72ab;
   color: white;
- padding: 11px 16px !important;
+ padding: 6px !important;
   height: auto !important;
   width:100px;
   align-self: center;
@@ -211,19 +209,11 @@ select {
   background-color: grey;
   cursor:not-allowed;
   box-shadow: none;
-  
 }
+
 .display {
   grid-area: pr;
-  /* opacity: 0.7; */
-  width: 85%;
-  /* height : 430px; */
-  /* height: 50vh; */
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: center;
-  align-items:flex-start;
+  width: 100%;
 }
 
 .btngrading {
@@ -244,22 +234,15 @@ select {
 
 .remarks-title {
   margin-top: auto;
-  grid-area: rt;
-  align-self: center;
-  font-size: x-large;
+  /* grid-area: rt; */
+  align-self: flex-start;
+  text-align: left;
+  font-size: large;
 }
-/* .head{
-  height:15vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-} */
 
 .preview {
   width: auto;
   display: grid;
-  /* gap:40px; */
   justify-content: center;
   align-items: center;
   grid-template-areas:
@@ -309,19 +292,19 @@ select {
 .selectList{
   background-color: #e5e4e2;
   width: "200px";
-  font-size: x-large;
+  font-size: large;
   border: none;
   font-weight: 400;
   outline: none;
-  height: 50px;
+  height: 40px;
   text-indent: 8px;
-  vertical-align:25px;
+  vertical-align:19px;
   padding:8px;
   /* -webkit-appearance: none;
   -moz-appearance: none;
   -o-appearance: none;
   appearance: none; 
-  background: transparent url(http:cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat 100% center; */
+  background: url("http:cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat 100% center"); */
 
 }
 
@@ -358,10 +341,14 @@ box-shadow: none;
   padding: 6px;
 }
 
-
-
+.backIcon{
+  color: white;
+}
 
 @media screen and (max-width: 770px) {
+  .backIcon{
+    color: black;
+  }
   .grading {
     flex-direction: column-reverse;
     justify-content: center;
@@ -369,6 +356,7 @@ box-shadow: none;
     height: auto;
     position: relative;
     overflow: visible;
+    gap: 30px;
   }
   .black{
     top: 10px !important;
@@ -376,8 +364,7 @@ box-shadow: none;
   }
   .left {
     width: auto;
-    height: auto;
-    justify-content: center;
+    height: max-content;
     padding: 10px;
   }
   .right {
@@ -391,24 +378,27 @@ box-shadow: none;
     right: 16px;
     width: auto;
     flex-direction: column;
-    transform: translateY(180px);
+    transform: translateY(270px);
     display: flex;
+  }
+  .savebutton{
+    font-size: large;
   }
   .preview{
       margin: 16px;
   }
 }
 
-
-
 .rollNo{
   outline: none;
   border: none;
+  width: 100%;
   /* background-color: #c5c5c5; */
   font-size: large;
   border-radius: 6px;
   padding: 6px;
 }
+
 
 
 @media screen and (max-width: 1220px) and (min-width:770px) {

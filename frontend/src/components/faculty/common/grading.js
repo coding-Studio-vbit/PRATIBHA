@@ -291,9 +291,7 @@ const Grading = () => {
 
   useEffect(() => {
     midboolean();
-    
     getUserData();
-    
   }, []);
 
   return !pageLoading ? (
@@ -311,10 +309,10 @@ const Grading = () => {
             <i style={{
                 position: "absolute",
                 left: "16px",
-                top: "16px",
+                top: "22px",
                 cursor: "pointer",
               }}
-              className="fas fa-arrow-left"
+              className="backIcon fas fa-arrow-left"
               onClick={() => {
                 navigate("/faculty/studentlist", {
                   state: { sub: location.state.className },
@@ -325,9 +323,9 @@ const Grading = () => {
             <h3 style={{ textAlign: "center" }}>Student Details </h3>
 
             <div className="details">
-                <div style={{display: "flex",gap: "8px",alignItems: "center"}}>
+                <div style={{display: "flex",flexDirection:'row',gap: "8px",alignItems: "center"}}>
                     <span>Roll Number</span>
-                    <div>
+                    <div style={{display: "flex",flexDirection:'row'}}>
                       <input className="rollNo"
                         type="text"
                         maxLength={10}
