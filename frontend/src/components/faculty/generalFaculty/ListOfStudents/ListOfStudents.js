@@ -45,7 +45,7 @@ const ListofStudents = () => {
     subjectval[2] +
     " " +
     subjectval[3];
-  if (subjectval[0] === "MBA") {
+  if (subjectval[0] === "MBA"&&subjectval[1]=='1') {
     title = subjectval[0] + " " + subjectval[1] + " " + subjectval[3];
   }
 
