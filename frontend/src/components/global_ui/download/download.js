@@ -48,7 +48,7 @@ function Download({ url, text = "DOWNLOAD", userID = "random", isIcon=true }) {
         color:isIcon?"#0E72AB":"white", 
         border: "none", cursor: "pointer",borderRadius:'6px',padding:isIcon?"auto":"4px 12px" }}
     >
-      <p style={{fontSize:'16px'}}>{isIcon?"":"DOWNLOAD"}</p>
+      {!isIcon && <p style={{fontSize:'16px'}}>{isIcon?"":"DOWNLOAD"}</p>}
       <i
         class="fas fa-cloud-download-alt downloadIcon"
         style={{ color:isIcon?"#0E72AB":"white"}}
