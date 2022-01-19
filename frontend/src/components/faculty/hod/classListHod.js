@@ -20,6 +20,8 @@ const HODClassList = () => {
   const [loading, setLoading] = useState(true);
   const nav = useNavigate();
   const [klass, setKlass] = useState([{ value: "Loading", label: "Loading" }]);
+  const [disabledep,setdisabledep] = useState(true);
+  const [disablesec,setdisablesec] = useState(true);
   const [dep, setDep] = useState("");
   const [department, setDepartment] = useState([
     { value: "Loading", label: "Loading" },
@@ -59,14 +61,19 @@ const HODClassList = () => {
   }, []);
 
   function filterDep(course) {
-    let showdeps = [];
-
-    for (let j = 0; j < department.length; j++) {
-      if (department[j].value === course.value) {
-        showdeps.push(department[j]);
+    if(!course==='MBA'){
+console.log('hi')
+      let showdeps = [];
+  
+      for (let j = 0; j < department.length; j++) {
+        if (department[j].value === course.value) {
+          showdeps.push(department[j]);
+        }
       }
+      setshowdep(showdeps);
+      console.log(showdeps)
     }
-    setshowdep(showdeps);
+
   }
   useEffect(() => {
     const getLables = async () => {
@@ -74,7 +81,26 @@ const HODClassList = () => {
         const res = await getDepartments(Course.value, Year.value);
         if (!res) return;
         setSubjects(res.subjects);
+        console.log(res.sections)
         setsections(res.sections);
+        if(Course.value==='MBA'){
+          console.log('it is MBA')
+          if(Year.value==='1'){
+            console.log('it is mba 1')
+            setdisabledep(true);
+            setDep({
+              "value": "MBA",
+              "label": "Not Applicable"
+          })
+          setdisablesec(false)
+          }
+          if( Year.value==='2'){
+console.log("it is mba 2")
+setdisabledep(false);
+            setshowdep(res.departments)
+          
+          }
+        }
       } catch (error) {
         console.log(error);
       }
@@ -235,6 +261,7 @@ const HODClassList = () => {
             isDisabled={!Course}
             onChange={async (selectedYear) => {
               setYear(selectedYear);
+             
             }}
           />
         </div>
@@ -245,12 +272,17 @@ const HODClassList = () => {
             placeholder=""
             className="department"
             options={showdep}
-            isDisabled={!Year}
+            isDisabled={disabledep}
             onChange={async (d) => {
               setDep(d);
+              console.log(d)
+           
               setsections((c) => {
+                console.log(c)
                 return { ...c };
               });
+              console.log(sections)
+              setdisablesec(false)
             }}
           />
         </div>
@@ -260,7 +292,7 @@ const HODClassList = () => {
           <Select
             placeholder=""
             options={sections[dep.label]}
-            isDisabled={!Year}
+            isDisabled={disablesec}
             onChange={(selectedSection) => {
               setSection(selectedSection);
             }}
