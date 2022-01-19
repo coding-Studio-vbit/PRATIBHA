@@ -22,6 +22,8 @@ const ViewSubmissions = () => {
   const [links, setLinks] = useState({});
   const [sem, setSem] = useState("");
   const location = useLocation();
+  // const [isData, setIsData] = useState(false);
+  // let isData;
   const passedData = location.state;
   console.log(passedData);
   let title =
@@ -106,6 +108,7 @@ const ViewSubmissions = () => {
   };
 
   const Fetchdata = async () => {
+    var isData = false;
     const result = await getPRA(passedData.Subject, DepartmentForFaculty);
     const facultyID = result.facultyID;
 
@@ -172,6 +175,8 @@ const ViewSubmissions = () => {
                 let topic, name;
 
                 if (error == null) {
+                  // setIsData(true);
+                  isData=true;
                   if (ismid1) {
                     await Fetchlink1(email);
                   }
@@ -211,6 +216,9 @@ const ViewSubmissions = () => {
                   setData((data) => [...data, dataobj]);
                 }
               });
+              if(!isData) {
+                setError("NO ONE ENROLLED THIS SUBJECT");
+              }
           });
         } else {
           setError("NO ONE ENROLLED THIS SUBJECT");
@@ -246,7 +254,10 @@ const ViewSubmissions = () => {
         </div>
       ) : error ? (
         <div className="err_Display">{error}</div>
-      ) : data.length ? (
+      ) 
+       :
+      //  data.length?
+       (
         <div className="sub_body">
           <table style={{ marginTop: "4.5rem" }}>
             <thead>
@@ -260,7 +271,8 @@ const ViewSubmissions = () => {
               </tr>
             </thead>
             <tbody>
-              {data &&
+              {
+              // data &&
                 data
                   .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
                   .map((dataitem) => (
@@ -271,10 +283,11 @@ const ViewSubmissions = () => {
                       <td>{dataitem.MID_1}</td>
                       <td>{dataitem.MID_2}</td>
                       <td>
+                        <center>
                         <Download
                           url={links[dataitem.ROLL_NO]}
                           userID={dataitem.ROLL_NO}
-                        />
+                        /></center>
                         {/* <a
                           href={links[dataitem.ROLL_NO]}
                           target="_blank"
@@ -298,8 +311,8 @@ const ViewSubmissions = () => {
             />
           </div>
         </div>
-      ) : (
-        <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
+      // ) : (
+      //   <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
       )}
     </div>
   );

@@ -72,6 +72,7 @@ const ListofStudents = () => {
   };
 
   const Fetchdata = async () => {
+    var isData = false;
     const studentref = query(
       collection(db, `faculty/${currentUser.email}/${location.state.sub}`)
       // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
@@ -153,6 +154,7 @@ const ListofStudents = () => {
               let topic, name;
 
               if (error == null) {
+                isData=true;
                 let obj = returndata["subjects"].find(
                   (o) => o.subject === subjectval[4]
                 );
@@ -190,6 +192,9 @@ const ListofStudents = () => {
                 setData((data) => [...data, dataobj]);
               }
             });
+            if(!isData) {
+              setError("NO ONE ENROLLED THIS SUBJECT");
+            }
         });
       } else {
         setError("NO ONE ENROLLED THIS SUBJECT");
@@ -231,7 +236,9 @@ const ListofStudents = () => {
         </div>
       ) : error ? (
         <div className="err_Display">{error}</div>
-      ) : data.length ? (
+      ) : 
+      // data.length ? 
+      (
         <>
           <div className="sub_body">
             <p className="bold subject">SUBJECT : {subjectval[4]}</p>
@@ -330,8 +337,8 @@ const ListofStudents = () => {
             />
           </div>
         </>
-      ) : (
-        <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
+      // ) : (
+      //   <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
       )}
     </div>
   );

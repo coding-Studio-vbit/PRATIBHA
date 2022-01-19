@@ -156,13 +156,14 @@ const Upload = () => {
               setfileUploadLoading(false);
               setError(null);
               setshowDialog(true);
-              setMid1NotSubmitted(true);
+              
           }
           else
           {
               setfileUploadLoading(false);
               setError(res);
               setTimeout(() => {setError(null);}, 2000);
+            
           }
           }
           else 
@@ -196,11 +197,18 @@ const Upload = () => {
               }
               else
               {
-                setPraTitle(res.data.topic)
+                if(res.data.topic==null)
+                {
+                  setMid1NotSubmitted(true)
+                }
+                else{
+                  setPraTitle(res.data.topic)
+                }
                   setexistingFile(null);
                   setloadExisting(false);
                   setFileName(" ");
               }
+              
         }
         catch (error)
         {
@@ -234,6 +242,8 @@ const Upload = () => {
 
     async function handleSelect(value)
     {
+        setPraTitle("")
+        setFileName("")
         setShowUploadModule(false);
         setError(null);
         setMid(value);
@@ -409,7 +419,7 @@ const Upload = () => {
                         </ul>
                         <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
                         <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
-                        <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes.</p>
+                        <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-1 submissions.</p>
                       </div>)
                       }
                     </div> 
@@ -418,7 +428,7 @@ const Upload = () => {
                     <div> 
                       <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
                       
-                        { (praTitle==""||praTitle==null||praTitle==undefined) ?
+                        { (mid1NotSubmitted || (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))) ?
                         (<div>
                           <label className={styles.praLabel}>PRA Title:</label>
                           <input
@@ -429,10 +439,15 @@ const Upload = () => {
                             value={praTitle}
                             onChange={(e) => handleTitle(e.target.value)}
                             maxLength={50}                          
-                          /> </div>
+                          />
+                          <div>
+                          <p className={styles.titleErrorField}>{titleError}</p>
+                          </div> </div>
                         ):(
                           <div>
                              <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                             <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                             <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-2 submissions.</p>
                           </div>
                         ) }                        
                       </div>)}
