@@ -37,6 +37,17 @@ const ListofStudents = () => {
     subjectval[2] +
     "_" +
     subjectval[3];
+  let title =
+    subjectval[0] +
+    " " +
+    subjectval[1] +
+    " " +
+    subjectval[2] +
+    " " +
+    subjectval[3];
+  if (subjectval[0] === "MBA"&&subjectval[1]=='1') {
+    title = subjectval[0] + " " + subjectval[1] + " " + subjectval[3];
+  }
 
   const Fetchsubject = async () => {
     try {
@@ -198,7 +209,7 @@ const ListofStudents = () => {
         backURL={
           currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist"
         }
-        title={location.state.sub}
+        title={title}
       >
         <span
           onClick={() =>
@@ -220,7 +231,7 @@ const ListofStudents = () => {
         </div>
       ) : error ? (
         <div className="err_Display">{error}</div>
-      ) : data ? (
+      ) : data.length ? (
         <>
           <div className="sub_body">
             <p className="bold subject">SUBJECT : {subjectval[4]}</p>
