@@ -62,7 +62,7 @@ const HODClassList = () => {
     let showdeps = [];
 
     for (let j = 0; j < department.length; j++) {
-      if (department[j].value == course.value) {
+      if (department[j].value === course.value) {
         showdeps.push(department[j]);
       }
     }
@@ -179,12 +179,24 @@ const HODClassList = () => {
             <h4>MBA</h4>
             <div className="card-flex">
               {subs.mbaSubs.map((item) => {
+                var displayItem = item.split("_");
+                displayItem.splice(0, 1);
+                let newItem = displayItem[0];
+                let len = displayItem.length;
+                if (displayItem[0] === "1")
+                  newItem =
+                    newItem + "_" + displayItem[2] + "_" + displayItem[3];
+                else {
+                  for (let i = 1; i < len; i++) {
+                    newItem = newItem + "_" + displayItem[i];
+                  }
+                }
                 return (
                   <Card
-                    key={item.split("MBA_")}
+                    key={newItem}
                     classname="card-container"
                     onclick={handleCard}
-                    text={item.split("MBA_")}
+                    text={newItem}
                     subText={subs.praSetSubs[item] ? true : false}
                     klass={item}
                   />
