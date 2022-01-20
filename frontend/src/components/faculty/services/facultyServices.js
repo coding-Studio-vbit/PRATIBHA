@@ -70,7 +70,7 @@ async function enrollClasses(email, enrolled_classes) {
 }
 
 export const getDepartments = async (course, year) => {
-  console.log(course, year);
+  
   if (year === 0) return;
   try {
     const q = query(collection(db, "curriculum", course, year));
@@ -118,7 +118,7 @@ export const getDepartments = async (course, year) => {
             subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
           }
         }
-      console.log(e.data());
+  
       const sectionsDoc = e.data()["sections"];
 
       for (let index = 0; index < sectionsDoc.length; index++) {
@@ -131,7 +131,7 @@ export const getDepartments = async (course, year) => {
         } else sections[e.id] = [{ value: element, label: element }];
       }
     });
-    console.log(sections);
+ 
     return { departments: departments, subjects: subjects, sections: sections };
     // for (let index = 0; index < data.length; index++) {
     //   const dep = data[index];
@@ -147,13 +147,12 @@ export const getPRA = async (sub, department) => {
     const docRef = doc(db, "subjects", department);
     const docData = await getDoc(docRef);
     const subjects = docData.data()["subjects"];
-    console.log(subjects);
-    console.log(sub);
+
     let res = {};
     subjects.forEach((v) => {
-      console.log(v.subject);
+     
       if (sub === v.subject) {
-        console.log(v);
+
         res = v;
         return;
       }
@@ -173,18 +172,18 @@ export const setPRA = async (
   isMid1,
   isMid2
 ) => {
-  console.log(isMid1);
+
   try {
     const docRef = doc(db, "subjects", department);
     const docData = await getDoc(docRef);
     if (docData.exists()) {
       let d1 = true;
       const subjects = docData.data()["subjects"];
-      console.log(subjects);
+      
 
       for (let index = 0; index < subjects.length; index++) {
         const ele = subjects[index];
-        console.log(ele.subject);
+ 
         if (ele.subject === sub) {
           d1 = false;
 
@@ -251,14 +250,14 @@ export const getSubjects = async (email) => {
     let praSetSubs = {};
     for (let index = 0; index < data.length; index++) {
       const sub = data[index];
-      console.log(sub);
+   
       const parts = sub.split("_");
       const idk = parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
-      console.log(idk);
+
       const subRef = await getDoc(doc(db, "subjects", idk));
       if (subRef.exists()) {
         const subsData = subRef.data()["subjects"];
-        console.log(subsData);
+   
         for (let i = 0; i < subsData.length; i++) {
           if (parts[4] === subsData[i].subject) {
             praSetSubs[sub] = subsData[i].subject;
@@ -267,7 +266,7 @@ export const getSubjects = async (email) => {
       }
 
       const klass = parts[0];
-      console.log(klass);
+    
       if (klass === "BTech") {
         btechSubs.push(sub);
       } else if (klass === "MTech") {
@@ -276,8 +275,7 @@ export const getSubjects = async (email) => {
         mbaSubs.push(sub);
       }
     }
-    console.log(praSetSubs);
-    console.log(praSetSubs)
+
     return {
       praSetSubs: praSetSubs,
       btechSubs: btechSubs,
@@ -337,11 +335,11 @@ async function postMarks(
   remarks
 ) {
   let error = null;
-  console.log(`faculty/${facultyID}/${className}`);
+
   const facultyRef = doc(db, `faculty/${facultyID}/${className}`, studentID);
 
   const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
-  console.log(marks);
+
   try {
     if (midNo === "1") {
       await updateDoc(facultyRef, {
@@ -402,7 +400,7 @@ async function postMarks(
 //   console.log("Ended");
 // }
 export const fetchSectionsAndSubs = async (course, year, departments) => {
-  console.log(course, year, departments);
+
   try {
     let subjects = [];
     let sections = [];
@@ -410,9 +408,9 @@ export const fetchSectionsAndSubs = async (course, year, departments) => {
       const element = departments[index].value;
       const q = query(doc(db, "curriculum", course, year, element));
       const alldocs = await getDoc(q);
-      console.log(alldocs);
+    
       const data = alldocs.data();
-      console.log(data);
+   
       for (let i = 0; i < data.subjects.length; i++) {
         if (subjects[alldocs.id]) {
           subjects[alldocs.id] = [
@@ -467,7 +465,7 @@ export const fetchSectionsAndSubs = async (course, year, departments) => {
         } else sections[alldocs.id] = [{ value: element, label: element }];
       }
     }
-    console.log(subjects);
+ 
     return { subjects: subjects, sections: sections };
   } catch (error) {
     console.log(error);
@@ -476,13 +474,12 @@ export const fetchSectionsAndSubs = async (course, year, departments) => {
 
 async function getCoeDeadline(midNo, course, year) {
   const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
-  console.log("ABCD");
+
   try {
-    console.log("PQRS");
+
     const docSnap = await getDoc(adminRef);
     if (docSnap.exists()) {
-      console.log("XY");
-      console.log(docSnap.data());
+   
       if (midNo === "1") {
         return {
           data: docSnap.data()["mid1"],
@@ -495,7 +492,7 @@ async function getCoeDeadline(midNo, course, year) {
         };
       }
     } else {
-      console.log("EFGH");
+   
       return {
         data: null,
         error: "DEADLINE_NOT_SET",
