@@ -36,11 +36,12 @@ const ViewSubmissions = () => {
     passedData.Subject;
 
   let course, courseName;
-  if (passedData.Course === "BTech") {
-    course = "BTech";
-  } else if (passedData.Course === "MTech") {
-    course = "MTech";
-  }
+  // if (passedData.Course === "BTech") {
+  //   course = "BTech";
+  // } else if (passedData.Course === "MTech") {
+  //   course = "MTech";
+  // } else if ()
+  course = passedData.Course;
 
   courseName = course;
 
@@ -124,11 +125,14 @@ const ViewSubmissions = () => {
       let semester = await getSemester();
       setSem(semester.data);
 
+      console.log(course)
+
       await getDocs(studentref).then((querySnapshot) => {
         if (querySnapshot) {
           querySnapshot.forEach(async (doc) => {
             const email = doc.id.toString() + "@vbithyd.ac.in";
             // await Fetchlink(email);
+            console.log(email);
             const docData = doc.data();
             let Innovation1 = "",
               Innovation2 = "",
@@ -176,6 +180,7 @@ const ViewSubmissions = () => {
 
                 if (error == null) {
                   // setIsData(true);
+                  console.log("hi");
                   isData=true;
                   if (ismid1) {
                     await Fetchlink1(email);
@@ -213,6 +218,7 @@ const ViewSubmissions = () => {
               })
               .then((dataobj) => {
                 if (dataobj) {
+                  console.log(dataobj);
                   setData((data) => [...data, dataobj]);
                 }
               });
@@ -234,6 +240,8 @@ const ViewSubmissions = () => {
   useEffect(() => {
     Fetchdata();
   }, []);
+
+  console.log(data);
 
   return (
     <div>
