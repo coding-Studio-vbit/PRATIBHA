@@ -59,9 +59,10 @@ const HODClassList = () => {
     setKlass(klasses);
     setDepartment(departments);
   }, []);
-
   function filterDep(course) {
-    if(!course==='MBA'){
+  console.log('called filterdep')
+  console.log(course)
+    if(course.value != 'MBA'&&!currentUser.isFirstYearHOD){
 console.log('hi')
       let showdeps = [];
   
@@ -71,10 +72,12 @@ console.log('hi')
         }
       }
       setshowdep(showdeps);
+      setdisabledep(false)
       console.log(showdeps)
     }
 
   }
+
   useEffect(() => {
     const getLables = async () => {
       try {
@@ -100,6 +103,10 @@ setdisabledep(false);
             setshowdep(res.departments)
           
           }
+        }
+        else if(currentUser.isFirstYearHOD){
+          setshowdep(res.departments)
+          setdisabledep(false)
         }
       } catch (error) {
         console.log(error);
