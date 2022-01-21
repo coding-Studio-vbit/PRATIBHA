@@ -92,13 +92,12 @@ const SubjectsList = () => {
           let currentDateConv = newDate.toLocaleDateString("en-US");
 
           if (midvalue === 1) {
-            console.log("1");
             mid = 1;
 
             date = date1.toLocaleDateString("en-GB");
             dateConv = date1.toLocaleDateString("en-US");
           } else {
-            console.log("2");
+        
             mid = 2;
             if (item["deadline2"]) {
               let date2 = new Timestamp(
@@ -110,17 +109,14 @@ const SubjectsList = () => {
             }
           }
 
-          // console.log(date);
-          // console.log(currentDate);
+         
 
           var dateint = new Date(dateConv).getTime();
           var currdate = new Date(currentDateConv).getTime();
-          // console.log(dateint);
-          // console.log(currdate);
-
+      
           var Difference_In_Time = dateint - currdate;
           var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-          // console.log(Difference_In_Days);
+          
           var isWeek = false;
           if (Difference_In_Days <= 7) {
             isWeek = true;
@@ -168,7 +164,7 @@ const SubjectsList = () => {
 
           const resdata = {
             SUBJECT: item.subject,
-            PRA_TOPIC: item.topic ? item.topic : " ",
+            PRA_TOPIC: item.topic,
             STATUS: gradetype,
             SUBMIT_BEFORE: date,
             IS_WEEK: isWeek,

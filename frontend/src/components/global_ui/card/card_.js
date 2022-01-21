@@ -20,14 +20,7 @@ const Card_ = ({
           ? `CardContainer red`
           : `CardContainer`
       }
-      // onClick={({currentuser, subject}) => {
-      //     navigate("/student/uploadPRA", {
-      //         state: {
-      //           rollno: currentuser,
-      //           subject: subject,
-      //         },
-      //       });
-      // }}
+   
     >
       {subject && (
         <p
