@@ -36,11 +36,12 @@ const ViewSubmissions = () => {
     passedData.Subject;
 
   let course, courseName;
-  if (passedData.Course === "BTech") {
-    course = "BTech";
-  } else if (passedData.Course === "MTech") {
-    course = "MTech";
-  }
+  // if (passedData.Course === "BTech") {
+  //   course = "BTech";
+  // } else if (passedData.Course === "MTech") {
+  //   course = "MTech";
+  // } else if ()
+  course = passedData.Course;
 
   courseName = course;
 
@@ -55,6 +56,17 @@ const ViewSubmissions = () => {
     "_" +
     passedData.Section;
   // console.log(DepartmentForFaculty);
+
+  if(passedData.Course === "MBA")
+  {
+    title=
+    passedData.Year +
+    "_" +
+    passedData.Section +
+    "_" +
+    passedData.Subject;
+
+  }
 
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
@@ -234,6 +246,7 @@ const ViewSubmissions = () => {
   useEffect(() => {
     Fetchdata();
   }, []);
+
 
   return (
     <div>
