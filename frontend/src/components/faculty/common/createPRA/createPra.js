@@ -114,7 +114,7 @@ const CreatePra = () => {
       }}
     >
       <Navbar
-        backURL={isNewPra ? "/faculty/classlist" : "/faculty/studentlist"}
+        backURL={isNewPra ? (currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist") : "/faculty/studentlist"}
         props={isNewPra ? false : { state: { sub: location.state.sub } }}
         title={location.state.editPRA ? "Edit PRA" : " Create PRA"}
       />
