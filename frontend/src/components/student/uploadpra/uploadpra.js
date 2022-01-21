@@ -412,21 +412,16 @@ const Upload = () => {
                         </div>
                       <p className={styles.titleErrorField}>{titleError}</p> </div> ):(
                        <div> 
-                         
-                         <ul className="praInfo">
-                        <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
-                        <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>                        
-                        </ul>
                         <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
                         <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
-                        <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-1 submissions.</p>
+                        <p className={styles.errorField} style={{alignItems:"center"}}>Cannot make any changes to Mid-1 submissions.</p>
                       </div>)
                       }
                     </div> 
                     ):
                     ( 
                     <div> 
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center',textAlign:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
                       
                         { (mid1NotSubmitted || (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))) ?
                         (<div>
