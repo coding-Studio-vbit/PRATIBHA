@@ -244,7 +244,7 @@ const ListofStudents = () => {
             <p className="bold subject">SUBJECT : {subjectval[4]}</p>
             <p className="bold">Number of students submitted: {data.length}</p>
             {/* <div> */}
-            <table style={{ marginTop: "4.5rem" }}>
+            <table style={{ marginTop: "1rem" }}>
               <thead>
                 <tr>
                   <th>ROLL.NO</th>
