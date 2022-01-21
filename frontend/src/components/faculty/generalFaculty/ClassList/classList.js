@@ -45,17 +45,13 @@ const ClassList = () => {
   return loading ? (
     <LoadingScreen />
   ) : (
-    <div
-      style={{
-        width: "100vw",
-      }}
-    >
+    <div>
       <Navbar back={false} title="Your Classes" logout={true} />
       <div className="div-container-classes">
         {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">
             <h4 className="courseTitle">B.Tech</h4>
-            <div className="card-flex">
+            <div className="cardList">
               {subs.btechSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
@@ -80,7 +76,7 @@ const ClassList = () => {
         {subs.mtechSubs.length !== 0 && (
           <div className="subjectsDivision">
             <h4 className="courseTitle"> M.Tech</h4>
-            <div className="card-flex">
+            <div className="cardList">
               {subs.mtechSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
@@ -105,7 +101,7 @@ const ClassList = () => {
         {subs.mbaSubs.length !== 0 && (
           <div className="subjectsDivision">
             <h4 className="courseTitle">MBA</h4>
-            <div className="card-flex">
+            <div className="cardList">
               {subs.mbaSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);

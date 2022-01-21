@@ -184,24 +184,32 @@ const Upload = () => {
         try
         {
           console.log(val);
-              const res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
+              let res;
+              if(val==="1"){
+                res = await getFileUploadDetails(location.state.rollno, location.state.subject, val);
+              }else{
+                console.log("efoiwoihfewoi");
+                res= await getFileUploadDetails(location.state.rollno, location.state.subject, val);
+                const mid1Res = await getFileUploadDetails(location.state.rollno, location.state.subject,"1");
+                if(mid1Res.error==null){
+                  console.log("rgogrougr");
+                  setMid1NotSubmitted(false);
+                }else{
+                  setMid1NotSubmitted(true);
+                }
+              }
               if (res.error == null) 
               {
-                console.log(res.data.fileName, 10);
-                  
+                //console.log(res.data.fileName, 10);
                   setPraTitle(res.data.topic);  
                   setFileName(res.data.fileName) ;
                   setexistingFile(res.data.link);
-                 
                   setloadExisting(false);
               }
               else
               {
-                if(res.data.topic==null)
+                if(res.data.topic!=null)
                 {
-                  setMid1NotSubmitted(true)
-                }
-                else{
                   setPraTitle(res.data.topic)
                 }
                   setexistingFile(null);
@@ -212,6 +220,7 @@ const Upload = () => {
         }
         catch (error)
         {
+          console.log("Fed");
           setexistingFile(null);
           setloadExisting(false);      
         }
@@ -335,6 +344,7 @@ const Upload = () => {
             }
             {/* <Download url={"https://images.pexels.com/photos/10757932/pexels-photo-10757932.png?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"} text="Download"/> */}
             <div className={styles.main}>
+
               <div id="selectMid">            
                   <select
                     className={styles.selectList}
@@ -376,7 +386,8 @@ const Upload = () => {
                       className={styles.editbutton}>
                       Edit PRA
                     </button>
-                  </div>) :
+                  </div>
+                  ) :
                    (                  
 
                   <div className={styles.fileUploadModule}>
@@ -388,16 +399,16 @@ const Upload = () => {
                         <div>{deadLineInfo.instructions}</div>
                       }
                     </div>
-                {mid==1 ? (
-
-
+                {
+                  mid==1 ? (
                     <div >
-                      
                       { (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?                    
                       (
                         <div>
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract of your PRA (in <strong>PDF</strong> format only).</p>
-
+                          <ul className="praInfo">
+                            <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
+                            <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>                        
+                          </ul>
                       <div>
                         <label className={styles.praLabel}>PRA Title:</label>
                         <input
@@ -410,42 +421,62 @@ const Upload = () => {
                           maxLength={50}                          
                         />
                         </div>
-                      <p className={styles.titleErrorField}>{titleError}</p> </div> ):(
-                       <div> 
-                        <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                        <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
-                        <p className={styles.errorField} style={{alignItems:"center"}}>Cannot make any changes to Mid-1 submissions.</p>
-                      </div>)
-                      }
+                      <p className={styles.titleErrorField}>{titleError}</p> </div> ):
+                      (
+                        <div> 
+                          <ul className="praInfo">
+                          <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
+                          <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>                        
+                          </ul>
+                          <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                          <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                          <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-1 submissions.</p>
+                        </div>
+                      )
+                    }
                     </div> 
                     ):
                     ( 
                     <div> 
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center',textAlign:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
-                      
-                        { (mid1NotSubmitted || (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))) ?
-                        (<div>
-                          <label className={styles.praLabel}>PRA Title:</label>
-                          <input
-                            size={30}
-                            type="text"
-                            placeholder="TITLE OF THE ACTIVITY"
-                            className={styles.UploadinputStyle}
-                            value={praTitle}
-                            onChange={(e) => handleTitle(e.target.value)}
-                            maxLength={50}                          
-                          />
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
+                        <div>
+                        {
+                          (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?
                           <div>
-                          <p className={styles.titleErrorField}>{titleError}</p>
-                          </div> </div>
-                        ):(
+                            {
+                             (mid1NotSubmitted)?
+                                <div>
+                                  <label className={styles.praLabel}>PRA Title:</label>
+                                  <input
+                                    size={30}
+                                    type="text"
+                                    placeholder="TITLE OF THE ACTIVITY"
+                                    className={styles.UploadinputStyle}
+                                    value={praTitle}
+                                    onChange={(e) => handleTitle(e.target.value)}
+                                    maxLength={50}                          
+                                  />
+                                  <div>
+                                    <p className={styles.titleErrorField}>{titleError}</p>
+                                  </div> 
+                              </div>:
+                              <div>                            
+                                  <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                              </div>
+                            
+                            } 
+                          </div>:
                           <div>
-                             <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                             <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
-                             <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-2 submissions.</p>
+                            {/* Deadline crossed message  */}
+                              <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                              <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-2 submissions.</p>
                           </div>
-                        ) }                        
-                      </div>)}
+                        }
+                        </div>                     
+                      </div>
+                      )
+                    }
                     {deadLineInfo != null && (
                       <div>
                         {new Date() < deadLineInfo.lastDate.toDate() && (

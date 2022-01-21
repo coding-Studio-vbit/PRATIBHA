@@ -5,12 +5,13 @@
   align-items: flex-start;
   padding:10px;
   gap: 16px;
+  width: 100vw;
 }
 
-.card-flex {
+.cardList {
   font-size: 20px;
   display: flex;
-  flex-direction: row;
+  flex-direction:row;
   flex-wrap: wrap;
   align-content: center;
 }
@@ -29,48 +30,17 @@
 .subjectsDivision{
   margin: 0;
   padding: 0;
+  width: 100%;
+
 }
 
 @media screen and (max-width: 600px) {
-
-  .div-container-classes {
-    /* background-color: red; */
-    width:100vw;    
-  }
-
-  .card-flex {
-    margin: 0px;
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;   
-  }
-
-  .card-container {
-    font-size: 20px;
-    margin-bottom: 5px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .div-container-classes {
+  .cardList{
     justify-content: center;
-    align-items: center;
-    /* background-color: red; */
-  
+    gap: 20px;
   }
-  .card-flex {
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  .card-container {
-    font-size: 20px;
-    margin-bottom: 5px;
-  }
-  h4 {
+  .courseTitle{
     text-align: center;
   }
-
-
 }
+

@@ -1,20 +1,21 @@
-.card-container{
-    height: 120px;
-    width: 220px;
+.globalCardContainer{
+    height: 140px;
+    margin: 6px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 18px;
+    padding: 15px 26px;
     background:rgba(176, 196, 222, 0.43);
     border-radius: 7px;
     cursor: pointer;
-    font-size:x-large;
+    font-size:large;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
+    width: 270px;
 
 }
-.card-container:hover {
+.globalCardContainer:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
