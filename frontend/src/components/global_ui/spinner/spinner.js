@@ -9,7 +9,7 @@ import './spinner.css';
 
 const Spinner = ({radius,isDark=false}) => {
     return ( 
-        <div class="spinner-block" >
+        <div class="spinner-block" style={{marginTop:'15px',marginBottom:'15px'}} >
             <div className={`${!isDark?"spinner spinner-1":"spinnerDark spinnerDark-1"}`}  ></div>
         </div>
     );
