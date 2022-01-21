@@ -16,13 +16,6 @@
    margin-top: 50px;
 }
 
-/* .buttton{
-   color: rgba(14, 114, 171, 1);
-   width: 100px;
-   justify-self: bottom;
-   margin-top: 100px;
-} */
-
 input[type="file"] {
    display: none;
  }
@@ -254,6 +247,7 @@ label{
       color:black;
       font-size:16px;
       font-weight: 600px;
+      text-align: center;
       font: bolder;
       margin: 4%;
       margin-bottom: 25px;

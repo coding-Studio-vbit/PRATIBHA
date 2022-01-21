@@ -213,6 +213,7 @@ export const setPRA = async (
       }
       if (d1) {
         // await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
+      if(isMid1){
         await updateDoc(docRef, {
           subjects: arrayUnion({
             facultyID: email,
@@ -221,6 +222,17 @@ export const setPRA = async (
             subject: sub,
           }),
         });
+      }  
+      if(isMid2){
+        await updateDoc(docRef, {
+          subjects: arrayUnion({
+            facultyID: email,
+            deadline2: date,
+            instructions: inst,
+            subject: sub,
+          }),
+        });
+      }
       }
     } else {
       await setDoc(docRef, {
