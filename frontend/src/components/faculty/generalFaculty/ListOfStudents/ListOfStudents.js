@@ -193,11 +193,11 @@ const ListofStudents = () => {
               }
             });
             if(!isData) {
-              setError("NO ONE ENROLLED THIS SUBJECT");
+              setError("NO SUBMISSIONS FROM STUDENTS");
             }
         });
       } else {
-        setError("NO ONE ENROLLED THIS SUBJECT");
+        setError("NO SUBMISSIONS FROM STUDENTS");
       }
     });
     setloading(false);
