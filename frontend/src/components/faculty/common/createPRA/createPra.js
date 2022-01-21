@@ -68,7 +68,6 @@ const CreatePra = () => {
   useEffect(() => {
     const fetchPRA = async () => {
       const res = await getPRA(sub, department);
-
       if (res.deadline2) {
         setDate(
           new Timestamp(
