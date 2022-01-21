@@ -77,7 +77,6 @@ const LockList = () => {
   const handleAddButton = () => {
     function checkSubject(array, item) {
       for (let i = 0; i < array.length; i++) {
-        console.log(array[i].value);
         if (array[i].value == item) {
           return true;
         }
@@ -95,7 +94,6 @@ const LockList = () => {
         "_" +
         Subject.value;
       if (!BTechList.includes(newBTech)) {
-        console.log(Subject.value);
         if (checkSubject(subjects[Department.value], Subject.value)) {
           setBTechList([...BTechList, newBTech]);
         } else {
@@ -284,7 +282,7 @@ const LockList = () => {
                 }}
               />
               <p className="locklist-dropdown-title">Subject</p>
-              {console.log(subjects[Department.value])}
+             
               <Select
                 placeholder=""
                 options={subjects[Department.value]}
