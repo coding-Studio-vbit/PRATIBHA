@@ -17,10 +17,15 @@ gap: 16px;
     margin-left: auto;
     flex-wrap: nowrap;
   }
+ .course-title-list{
+   margin-top: 20px;
+   margin-bottom: 10px;
+   font-size: 15px;
+ }
 @media screen and (max-width:500px) {
     .div-container-classesHOD {
         justify-content: center;
-        margin-top: 20px;
+       
         display: grid;
         align-content: center;
         grid-template-columns: repeat(2, 1fr);
@@ -61,7 +66,7 @@ gap: 16px;
 }
 .hod-dd{
     justify-content: space-evenly;
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -72,10 +77,12 @@ gap: 16px;
     text-align: center;
 }
 .dep-title{
-    text-align: left;
+    text-align: center;
     font-weight: bold;
+    font-size: large;
     color:#0E72AB;
-    padding-left: 5px;
+    margin-top: 20px;
+    margin-bottom: auto;
 }
 .view-style{
     display: flex;

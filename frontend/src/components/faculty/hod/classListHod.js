@@ -167,11 +167,11 @@ setdisabledep(false);
         back={false}
         logout={true}
       />
-      <p className="dep-title">Your Classes</p>
+      <p className="dep-title"><u>Your Classes</u></p>
       <div className="div-container-classesHOD">
         {subs.btechSubs.length !== 0 && (
           <div>
-            <h4> B.Tech</h4>
+            <h4 className="course-title-list"> B.Tech</h4>
             <div className="card-flex">
               {subs.btechSubs.map((item) => {
                 return (
@@ -190,7 +190,7 @@ setdisabledep(false);
         )}
         {subs.mtechSubs.length !== 0 && (
           <div>
-            <h4> M.Tech</h4>
+            <h4 className="course-title-list">M.Tech</h4>
             <div className="card-flex">
               {subs.mtechSubs.map((item) => {
                 return (
@@ -209,7 +209,7 @@ setdisabledep(false);
         )}
         {subs.mbaSubs.length !== 0 && (
           <div>
-            <h4>MBA</h4>
+            <h4 className="course-title-list">MBA</h4>
             <div className="card-flex">
               {subs.mbaSubs.map((item) => {
                 var displayItem = item.split("_");
@@ -239,7 +239,8 @@ setdisabledep(false);
           </div>
         )}
       </div>
-      <p className="dep-title">View Department Grades</p>
+   
+      <p className="dep-title"><u>View Department Grades</u></p>
       <div className="hod-dd">
         <div className="xyz">
           <span className="dd-text">Course</span>
