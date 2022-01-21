@@ -27,6 +27,7 @@ const LockList = () => {
   const [disabledep, setdisabledep] = useState(true);
   const [disablesec, setdisablesec] = useState(true);
   const [disablesub, setdisablesub] = useState(true);
+  const[disableadd,setdisableadd]=useState(true);
 
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -148,7 +149,7 @@ const LockList = () => {
     setdisabledep(true);
     setdisablesec(true);
     setdisablesub(true);
-    console.log(Subject.value);
+    setdisableadd(true);
   };
 
   //handle remove
@@ -275,7 +276,7 @@ const LockList = () => {
               <Select
                 placeholder=""
                 options={sections[Department.value]}
-                className="select"
+                className="select-locklist"
                 isDisabled={disablesec}
                 onChange={(selectedSection) => {
                   setSection(selectedSection);
@@ -291,13 +292,14 @@ const LockList = () => {
                 isDisabled={disablesub}
                 onChange={(selectedSubject) => {
                   setSubject(selectedSubject);
+                  setdisableadd(false);
                 }}
               />
               <button
                 className="add-button"
                 width="100"
                 height="50"
-                disabled={!Subject}
+                disabled={disableadd}
                 onClick={handleAddButton}
               >
                 <i className="fas fa-plus"></i>ADD

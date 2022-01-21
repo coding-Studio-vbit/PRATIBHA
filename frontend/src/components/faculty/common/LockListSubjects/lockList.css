@@ -19,7 +19,7 @@
   padding: 5px;
 }
 .enroll-dropdown{
-  margin:0px;
+  margin:10px;
 }
 
 .flex-container {
@@ -34,6 +34,7 @@
   min-width: 270px;
   justify-self: center;
   align-self: center;
+  margin:15px;
 }
 
 .instruction {
