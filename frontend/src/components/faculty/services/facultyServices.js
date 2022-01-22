@@ -272,9 +272,21 @@ export const getSubjects = async (email) => {
    
         for (let i = 0; i < subsData.length; i++) {
           if (parts[4] === subsData[i].subject) {
-            praSetSubs[sub] = subsData[i].subject;
+            praSetSubs[sub] = subsData[i]
+            let date1=praSetSubs[sub].deadline1.toDate()
+            date1 = date1.toLocaleDateString("en-GB")
+            praSetSubs[sub].date1=date1;
+            if(praSetSubs[sub].deadline2){
+
+              let date2=praSetSubs[sub].deadline2.toDate()
+              date2 = date2.toLocaleDateString('en-GB')
+              praSetSubs[sub].date2=date2;
+              console.log(praSetSubs[sub].date2)
+            }
+            
           }
         }
+        console.log(praSetSubs)
       }
 
       const klass = parts[0];

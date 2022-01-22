@@ -20,8 +20,8 @@ const HODClassList = () => {
   const [loading, setLoading] = useState(true);
   const nav = useNavigate();
   const [klass, setKlass] = useState([{ value: "Loading", label: "Loading" }]);
-  const [disabledep,setdisabledep] = useState(true);
-  const [disablesec,setdisablesec] = useState(true);
+  const [disabledep, setdisabledep] = useState(true);
+  const [disablesec, setdisablesec] = useState(true);
   const [dep, setDep] = useState("");
   const [department, setDepartment] = useState([
     { value: "Loading", label: "Loading" },
@@ -33,7 +33,8 @@ const HODClassList = () => {
     { value: "Loading", label: "Loading" },
   ]);
   const [showdep, setshowdep] = useState([]);
-
+  const [deadline1, setdeadline1] = useState(null);
+  const [deadline2, setdeadline2] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -60,22 +61,21 @@ const HODClassList = () => {
     setDepartment(departments);
   }, []);
   function filterDep(course) {
-  console.log('called filterdep')
-  console.log(course)
-    if(course.value != 'MBA'&&!currentUser.isFirstYearHOD){
-console.log('hi')
+    console.log("called filterdep");
+    console.log(course);
+    if (course.value != "MBA" && !currentUser.isFirstYearHOD) {
+      console.log("hi");
       let showdeps = [];
-  
+
       for (let j = 0; j < department.length; j++) {
         if (department[j].value === course.value) {
           showdeps.push(department[j]);
         }
       }
       setshowdep(showdeps);
-      setdisabledep(false)
-      console.log(showdeps)
+      setdisabledep(false);
+      console.log(showdeps);
     }
-
   }
 
   useEffect(() => {
@@ -84,29 +84,27 @@ console.log('hi')
         const res = await getDepartments(Course.value, Year.value);
         if (!res) return;
         setSubjects(res.subjects);
-        console.log(res.sections)
+        console.log(res.sections);
         setsections(res.sections);
-        if(Course.value==='MBA'){
-          console.log('it is MBA')
-          if(Year.value==='1'){
-            console.log('it is mba 1')
+        if (Course.value === "MBA") {
+          console.log("it is MBA");
+          if (Year.value === "1") {
+            console.log("it is mba 1");
             setdisabledep(true);
             setDep({
-              "value": "MBA",
-              "label": "Not Applicable"
-          })
-          setdisablesec(false)
+              value: "MBA",
+              label: "Not Applicable",
+            });
+            setdisablesec(false);
           }
-          if( Year.value==='2'){
-console.log("it is mba 2")
-setdisabledep(false);
-            setshowdep(res.departments)
-          
+          if (Year.value === "2") {
+            console.log("it is mba 2");
+            setdisabledep(false);
+            setshowdep(res.departments);
           }
-        }
-        else if(currentUser.isFirstYearHOD){
-          setshowdep(res.departments)
-          setdisabledep(false)
+        } else if (currentUser.isFirstYearHOD) {
+          setshowdep(res.departments);
+          setdisabledep(false);
         }
       } catch (error) {
         console.log(error);
@@ -167,7 +165,9 @@ setdisabledep(false);
         back={false}
         logout={true}
       />
-      <p className="dep-title"><u>Your Classes</u></p>
+      <p className="dep-title">
+        <u>Your Classes</u>
+      </p>
       <div className="div-container-classesHOD">
         {subs.btechSubs.length !== 0 && (
           <div>
@@ -180,7 +180,13 @@ setdisabledep(false);
                     classname="card-container"
                     onclick={handleCard}
                     text={item.split("BTech_")}
-                    subText={subs.praSetSubs[item] ? true : false}
+                    subText={
+                      subs.praSetSubs[item]
+                        ? subs.praSetSubs[item].date2
+                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
+                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                        : "PRA not created."
+                    }
                     klass={item}
                   />
                 );
@@ -199,7 +205,13 @@ setdisabledep(false);
                     classname="card-container"
                     onclick={handleCard}
                     text={item.split("MTech_")}
-                    subText={subs.praSetSubs[item] ? true : false}
+                    subText={
+                      subs.praSetSubs[item]
+                        ? subs.praSetSubs[item].date2
+                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
+                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                        : "PRA not created."
+                    }
                     klass={item}
                   />
                 );
@@ -230,7 +242,13 @@ setdisabledep(false);
                     classname="card-container"
                     onclick={handleCard}
                     text={newItem}
-                    subText={subs.praSetSubs[item] ? true : false}
+                    subText={
+                      subs.praSetSubs[item]
+                        ? subs.praSetSubs[item].date2
+                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
+                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                        : "PRA not created."
+                    }
                     klass={item}
                   />
                 );
@@ -239,8 +257,10 @@ setdisabledep(false);
           </div>
         )}
       </div>
-   
-      <p className="dep-title"><u>View Department Grades</u></p>
+
+      <p className="dep-title">
+        <u>View Department Grades</u>
+      </p>
       <div className="hod-dd">
         <div className="xyz">
           <span className="dd-text">Course</span>
@@ -269,7 +289,6 @@ setdisabledep(false);
             isDisabled={!Course}
             onChange={async (selectedYear) => {
               setYear(selectedYear);
-             
             }}
           />
         </div>
@@ -283,14 +302,14 @@ setdisabledep(false);
             isDisabled={disabledep}
             onChange={async (d) => {
               setDep(d);
-              console.log(d)
-           
+              console.log(d);
+
               setsections((c) => {
-                console.log(c)
+                console.log(c);
                 return { ...c };
               });
-              console.log(sections)
-              setdisablesec(false)
+              console.log(sections);
+              setdisablesec(false);
             }}
           />
         </div>
