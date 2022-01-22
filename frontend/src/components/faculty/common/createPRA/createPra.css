@@ -12,7 +12,8 @@
     margin-bottom: 50px;
     border-radius: 7px;
     width: min(700px,90%);
-    font-size: 15px;
+    font-size: 18px;
+    padding: 10px;
  
 }
 
@@ -44,10 +45,6 @@
     font-weight: 500;
 }
 
-.btn-style{
-    z-index: 1;
-    margin-top: 20px;
-}
 .select-dd{
     margin-left: 5px;
     font-size: 17px;
@@ -62,4 +59,5 @@
     width: auto !important;
     padding: 5px 16px !important;
     height: auto !important;
+    cursor: pointer;
 }

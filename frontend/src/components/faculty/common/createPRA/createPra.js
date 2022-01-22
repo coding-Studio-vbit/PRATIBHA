@@ -17,12 +17,14 @@ import {
   fetchisMid1,
   fetchisMid2,
 } from "../../../student/services/studentServices.js";
+import { Spinner } from "../../../global_ui/spinner/spinner.js";
 
 const CreatePra = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const [dialog, setdialog] = useState(null);
   const [isNewPra, setisNewPra] = useState(true);
+  const[Loading,setLoading] = useState(false);
   const [mid, setmid] = useState("");
   const [inst, setInst] = useState("");
   const location = useLocation();
@@ -92,6 +94,7 @@ const CreatePra = () => {
     }
   }, []);
   async function handleCreate() {
+    setLoading(true);
     const isMid1 = await fetchisMid1(course, year);
     const isMid2 = await fetchisMid2(course, year);
     const parts = location.state.sub.split("_");
@@ -107,6 +110,7 @@ const CreatePra = () => {
       isMid1,
       isMid2
     );
+    setLoading(false);
     setdialog("PRA created");
   }
 
@@ -144,7 +148,7 @@ const CreatePra = () => {
         ></textarea>
         <span className="coe-deadline"><span>CoE Deadline: </span>{CoeDate.toLocaleDateString("en-IN")}</span>
         <span className="text-style2">
-          Set PRA Deadline:
+          Set mid-{mid} PRA Deadline:
           <span>
             <DatePicker
               dateFormat="dd/MM/yyyy"
@@ -159,6 +163,7 @@ const CreatePra = () => {
             />
           </span>
         </span>
+      {Loading ? <Spinner radius={1.5}/>: 
         <Button
           style={{ padding: "5px" }}
           className="create-button normal"
@@ -167,7 +172,7 @@ const CreatePra = () => {
           }
           onClick={handleCreate}
           children={location.state.editPRA ? "Done" : "Create"}
-        />
+        />}
       </div>
     </div>
   );
