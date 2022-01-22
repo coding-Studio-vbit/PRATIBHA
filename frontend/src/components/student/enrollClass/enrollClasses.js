@@ -62,6 +62,7 @@ function EnrollClasses() {
     // const [peCount, setpeCount] = useState();
     function getData(val){
         let sect=[];
+        console.log(data,1010);
         data.forEach((e)=>{
             if(e.id===val){ 
                 setSubjects(e.data()['subjects'])              
@@ -153,7 +154,14 @@ function EnrollClasses() {
                 console.log("Invalid");
                 setLoading(false);
             }          
-        }                    
+        }
+        // if(course.value=="MBA" && year.value=="1"){
+        //     setOe("")
+        //     setPe("")
+        //     setSection("")
+        //     setDepartment({value: 'Not Applicable', label: 'Not Applicable'});
+        //     getData('Not Applicable'); 
+        // }                    
     }
 
     return (
@@ -213,6 +221,7 @@ function EnrollClasses() {
                             className="select"
                             options={departments}
                             onChange={(y) => {
+                                //console.log(y);
                                 setOe("")
                                 setPe("")
                                 setSection("")

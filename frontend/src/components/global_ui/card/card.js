@@ -8,10 +8,9 @@ const Card = ({
   onclick
 }) => {
   return (
-    <div className="card-container"  onClick={()=>onclick(klass)}>
+    <div className="globalCardContainer"  onClick={()=>onclick(klass)}>
       {text && <p>{text}</p>} 
-      {subText && <p className="subText" style={{fontSize:'14px',fontWeight:'bold'}}>{subText}</p>} 
-      {/* <p style={{fontSize:'14px',fontWeight:'bold'}} >{subText? `${subText}`:''}</p> */}
+      {subText && <p className="subText" style={{fontSize:'14px',fontWeight:'bold'}}>{subText}</p>}
     </div>
   );
 };

@@ -28,7 +28,7 @@ function Footer() {
 
             <div className='dev'>
                 <img src='/cs_logo.png' height={30}></img>                
-                <a className='devInfo' href='https://codingstudio.club' >coding.Studio();
+                <a className='devInfo' href='https://codingstudio.club' target="_blank" >coding.Studio();
                 </a>
             </div>
             

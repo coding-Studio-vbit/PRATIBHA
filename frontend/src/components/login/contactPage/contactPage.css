@@ -52,7 +52,7 @@
 }
 
 
-.textareaStyle{
+/* .textareaStyle{
     max-width: 420px;
     width: 420px;
     outline: none;
@@ -62,9 +62,14 @@
     font-size: large;
     color: whitesmoke;
     background-color:#375C86;
+} */
+
+.inputFieldStyle:is(:hover, :focus){
+  color: whitesmoke;
+  background-color:#375C86;
 }
 
-.textareaStyle:active:focus{
+.errorFieldStyle:is(:hover, :focus){
   color: whitesmoke;
   background-color:#375C86;
 }

@@ -55,10 +55,11 @@ tr {
 }
 
 .err_Display{
-  margin:20px;
+  margin-top: 20vh;
   color:red;
   font-weight:bold;
   text-align:center;
+  font-size: x-large;
   
 }
 

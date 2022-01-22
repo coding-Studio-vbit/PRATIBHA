@@ -78,17 +78,17 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                         if(midNo=="1"){
                             //TODO if mid1 is not submitted then setdoc in mid2
                             await setDoc(facultyRef,{
-                                isSubmitted:true,
+                                isSubmitted1:true,
                             })
                         }else if(midNo=="2"){
                             const doc =await getDoc(facultyRef);
                             if(doc.exists()){
                                 await updateDoc(facultyRef,{
-                                    isSubmitted:true,
+                                    isSubmitted2:true,
                                 })
                             }else{
                                 await setDoc(facultyRef,{
-                                    isSubmitted:true,
+                                    isSubmitted2:true,
                                 })
                             }                            
                         }
