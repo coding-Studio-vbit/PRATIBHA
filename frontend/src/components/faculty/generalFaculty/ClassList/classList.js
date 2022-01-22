@@ -68,8 +68,8 @@ const ClassList = () => {
                     subText={
                       subs.praSetSubs[item]
                         ? subs.praSetSubs[item].date2
-                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
-                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                          ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
+                          : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
                         : "PRA not created."
                     }
                     klass={item}
@@ -99,8 +99,8 @@ const ClassList = () => {
                     subText={
                       subs.praSetSubs[item]
                         ? subs.praSetSubs[item].date2
-                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
-                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                          ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
+                          : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
                         : "PRA not created."
                     }
                     klass={item}
@@ -135,8 +135,8 @@ const ClassList = () => {
                     subText={
                       subs.praSetSubs[item]
                         ? subs.praSetSubs[item].date2
-                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
-                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                          ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
+                          : ` MID 1 Deadline: ${subs.praSetSubs[item].date1}`
                         : "PRA not created."
                     }
                     klass={item}

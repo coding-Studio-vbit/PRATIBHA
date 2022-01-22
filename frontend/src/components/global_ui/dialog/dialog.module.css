@@ -3,7 +3,7 @@
     margin: 0;
     display: block;
     position: fixed; 
-    z-index: 1; 
+    z-index: 1000; 
     left: 0;
     top: 0;
     padding: 0px;

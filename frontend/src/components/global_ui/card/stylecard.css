@@ -14,7 +14,7 @@
 }
 
 .red {
-  background-color: #fdcbc9;
+  background-color:#E6E6E6;
 }
 .newcard {
   margin: 0.5rem;
@@ -26,7 +26,7 @@
 }
 
 .green {
-  background-color: #daffb0;
+  background-color: hsl(114, 80%, 91%);
 }
 
 

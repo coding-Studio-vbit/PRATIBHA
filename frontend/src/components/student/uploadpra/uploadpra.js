@@ -424,8 +424,19 @@ const Upload = () => {
                       <p className={styles.titleErrorField}>{titleError}</p> </div> ):
                       (
                         <div> 
-                          <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                          {
+                            praTitle!=null || praTitle.length>0 &&
+                            <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+
+
+                          }
+                          {
+                            fileName!=null || fileName.length>0 &&
                           <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+
+
+
+                          }
                           <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-1 submissions.</p>
                         </div>
                       )

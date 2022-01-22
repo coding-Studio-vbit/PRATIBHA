@@ -30,7 +30,11 @@ const Grading = () => {
   const [setDialog, setSetDialog] = useState();
   const [url, setUrl] = React.useState(null);   
   const [remarks1, setRemarks1] = useState("");
-  const [remarks2, setRemarks2] = useState('')
+  const [remarks2, setRemarks2] = useState('');
+
+  const [isMarksPosted, setisMarksPosted] = useState(false);
+
+  const [isMarksChanged, setIsMarksChanged] = useState(false);
 
   const [pageLoading, setPageLoading] = React.useState();
   const [pageLoadError, setPageLoadError] = React.useState();
@@ -117,9 +121,10 @@ const Grading = () => {
 
     if(res==null){
       setSetDialog(`Mid ${midNo} Marks Updated Successfully`);
+      setisMarksPosted(true);
     }else{
       setSetDialog(null);
-        }
+    }
   }
 }
 
@@ -274,17 +279,33 @@ const Grading = () => {
   async function switchStudent(isLeft){
     setIsSwitchDisabled(true);
     if(isLeft){
-      setRollNo(allStudents[switchIndex-1].id); 
-      setSwitchIndex(switchIndex-1);
-      console.log(rollNo); 
-      await searchRoll(allStudents[switchIndex-1].id);           
+      if(!isMarksPosted && isMarksChanged){
+        await updateMarks();
+      }
+      setTimeout(async() => {
+        setSetDialog(null);
+        await searchRoll(allStudents[switchIndex-1].id);
+        setRollNo(allStudents[switchIndex-1].id); 
+        setSwitchIndex(switchIndex-1);
+        console.log(rollNo); 
+        setisMarksPosted(false);
+      }, isMarksChanged?1000:0);
+                 
     }else{
-      console.log(allStudents[switchIndex+1].id);
-      console.log(switchIndex+1);
-      setRollNo(allStudents[switchIndex+1].id);
-      setSwitchIndex(switchIndex+1);
-      console.log(rollNo);
-      await searchRoll(allStudents[switchIndex+1].id);           
+      if(!isMarksPosted && isMarksChanged){
+        await updateMarks();
+      }
+      setTimeout(async() => {
+        setSetDialog(null);
+        await searchRoll(allStudents[switchIndex+1].id);     
+        console.log(allStudents[switchIndex+1].id);
+        console.log(switchIndex+1);
+        setRollNo(allStudents[switchIndex+1].id);
+        setSwitchIndex(switchIndex+1);
+        console.log(rollNo);
+        setisMarksPosted(false); 
+      }, isMarksChanged?1000:0);
+                      
     }
     setIsSwitchDisabled(false);       
   }
@@ -300,7 +321,10 @@ const Grading = () => {
           {/* Dialog Confirming Marks Updation */}
           {
               setDialog != null && 
-              <Dialog message={setDialog} onOK={() => setSetDialog(null)} />
+              <Dialog message={setDialog} onOK={
+
+                () => setSetDialog(null)
+              } />
           }
           {
             changeLoader && <LoadingScreen isTransparent={true}/>
@@ -359,6 +383,9 @@ const Grading = () => {
                     disabled={!isMid1}
                     value={innovation1}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setInnovation1(e.target.value);
                       } else {
@@ -376,6 +403,9 @@ const Grading = () => {
                     disabled={!isMid1}
                     value={subRel1}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setSubRel1(e.target.value);
                       } else {
@@ -393,6 +423,9 @@ const Grading = () => {
                     disabled={!isMid1}
                     value={individuality1}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setIndividuality1(e.target.value);
                       } else {
@@ -410,6 +443,9 @@ const Grading = () => {
                     disabled={!isMid1}
                     value={preparation1}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setPreparation1(e.target.value);
                       } else {
@@ -427,6 +463,9 @@ const Grading = () => {
                     disabled={!isMid1}
                     value={presentation1}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setPresentation1(e.target.value);
                       } else {
@@ -480,6 +519,9 @@ const Grading = () => {
                     disabled={!isMid2}
                     value={innovation2}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setInnovation2(e.target.value);
                       } else {
@@ -498,6 +540,9 @@ const Grading = () => {
                     maxLength={1}
                     value={subRel2}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setSubRel2(e.target.value);
                       } else {
@@ -516,6 +561,9 @@ const Grading = () => {
                     maxLength={1}
                     value={individuality2}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setIndividuality2(e.target.value);
                       } else {
@@ -534,6 +582,9 @@ const Grading = () => {
                     maxLength={1}
                     value={preparation2}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setPreparation2(e.target.value);
                       } else {
@@ -552,6 +603,9 @@ const Grading = () => {
                     maxLength={1}
                     value={presentation2}
                     onChange={(e) => {
+                      if(!isMarksChanged){
+                        setIsMarksChanged(true);
+                      }
                       if (e.target.value < 3 && e.target.value > -1) {
                         setPresentation2(e.target.value);
                       } else {
@@ -653,8 +707,6 @@ const Grading = () => {
                         {isMid2 && <option value="2">MID II</option>}
                       </select>
                   </div>
-
-              
 
               <div className="display">
                 {url !== null ? (
