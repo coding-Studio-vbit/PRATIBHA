@@ -56,7 +56,7 @@ const ViewImage=({object})=>{
 const ViewVideo=({object})=>{
     return(
         <video width="100%" height="500px" controls >
-            <source src={object} type="video/mp4"/>
+            <source src={object} />
         </video>
     );
 }
