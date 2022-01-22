@@ -56,7 +56,7 @@ const ViewImage=({object})=>{
 const ViewVideo=({object})=>{
     return(
         <video width="100%" height="500px" controls >
-            <source src="https://vod-progressive.akamaized.net/exp=1640442433~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F714%2F14%2F353573670%2F1436889546.mp4~hmac=37216186eae76a1428c2235043ed6e4f4cea5e9e7b4d5b53b0eb83e0333c1860/vimeo-prod-skyfire-std-us/01/714/14/353573670/1436889546.mp4" type="video/mp4"/>
+            <source src={object} />
         </video>
     );
 }
@@ -82,7 +82,6 @@ const ViewPdf=({object})=>{
                 <div
                     style={{
                         alignItems: 'center',
-                        //border: '2px dashed rgba(0, 0, 0, .3)',
                         display: 'flex',
                         fontSize: '2rem',
                         height: '100%',
@@ -109,7 +108,7 @@ function Docviewer({link,rollNo}){
         // console.log("XYZ");
         getMetadata(forestRef)
         .then((metadata) => {
-            //console.log(metadata.contentType);
+            console.log(metadata.contentType);
             setextension(metadata.contentType.split("/")[1]);
             setloading(false);
         })
@@ -147,7 +146,7 @@ function Docviewer({link,rollNo}){
 }
 
 function Module({extension,object}) {
-    // console.log(extension,1010);
+    console.log(extension,1010);
     switch(extension){
         case 'pdf':
             return <ViewPdf object={object} />
@@ -167,6 +166,7 @@ function Module({extension,object}) {
         case 'avi':
         case "mov":
         case 'm4v':
+        case 'quicktime':
             return <ViewVideo object={object}/>
         default:return (
                 <p>File Extension Not Supported</p>
