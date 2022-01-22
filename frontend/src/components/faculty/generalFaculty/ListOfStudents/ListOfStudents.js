@@ -24,6 +24,7 @@ const ListofStudents = () => {
   const [studentTopic, setStudentTopic] = useState(null);
   const [mid, setMid] = useState("");
   const [sem, setSem] = useState("");
+  const[mid2err,setmid2err]=useState(false);
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -49,27 +50,7 @@ const ListofStudents = () => {
     title = subjectval[0] + " " + subjectval[1] + " " + subjectval[3];
   }
 
-  const Fetchsubject = async () => {
-    try {
-      const subjectRef = doc(db, "subjects", `${course}`);
-      const subjectDoc = await getDoc(subjectRef);
-      if (subjectDoc.exists()) {
-        let document = subjectDoc.data();
-        if (document["subjects"]) {
-          let obj = document["subjects"].find(
-            (o) => o.subject === subjectval[4]
-          );
-          if (obj) {
-            setButtonText("EDIT PRA");
-          }
-        }
-      } else {
-        setError("NO CLASS");
-      }
-    } catch (e) {
-      setError("UNKNOWN_ERROR");
-    }
-  };
+  
 
   const Fetchdata = async () => {
     var isData = false;
@@ -202,6 +183,37 @@ const ListofStudents = () => {
     setloading(false);
   };
 
+  const Fetchsubject = async () => {
+    try {
+      const subjectRef = doc(db, "subjects", `${course}`);
+      const subjectDoc = await getDoc(subjectRef);
+      if (subjectDoc.exists()) {
+        let document = subjectDoc.data();
+        if (document["subjects"]) {
+          let obj = document["subjects"].find(
+            (o) => o.subject === subjectval[4]
+          );
+          console.log(obj.deadline2)
+          if (obj) {
+            setButtonText("EDIT PRA");
+            let ismid2 = await fetchisMid2(subjectval[0], subjectval[1]);
+            if(ismid2){
+              console.log('hi')
+              if(!obj.deadline2){
+                setmid2err(true)
+                console.log(mid2err)
+              }
+            }
+          }
+        }
+      } else {
+        setError("NO CLASS");
+      }
+    } catch (e) {
+      setError("UNKNOWN_ERROR");
+    }
+  };
+
   useEffect(() => {
     Fetchdata();
     Fetchsubject();
@@ -230,6 +242,7 @@ const ListofStudents = () => {
         </span>
       </Navbar>
       <p className="bold subject">SUBJECT : {subjectval[4]}</p>
+      {mid2err && <p className="mid2err">Please set deadline for Mid 2</p>}
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />

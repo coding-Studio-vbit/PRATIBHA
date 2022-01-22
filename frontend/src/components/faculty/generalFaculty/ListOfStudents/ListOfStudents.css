@@ -17,6 +17,11 @@
   text-align: center;
   font-size:large;
 }
+.mid2err{
+  text-align: center;
+  font-weight: 500;
+  color: red;
+}
 
 table {
   width: 100%;
