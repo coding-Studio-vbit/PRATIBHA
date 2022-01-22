@@ -108,7 +108,7 @@ function Docviewer({link,rollNo}){
         // console.log("XYZ");
         getMetadata(forestRef)
         .then((metadata) => {
-            //console.log(metadata.contentType);
+            console.log(metadata.contentType);
             setextension(metadata.contentType.split("/")[1]);
             setloading(false);
         })
@@ -146,7 +146,7 @@ function Docviewer({link,rollNo}){
 }
 
 function Module({extension,object}) {
-    // console.log(extension,1010);
+    console.log(extension,1010);
     switch(extension){
         case 'pdf':
             return <ViewPdf object={object} />
@@ -166,6 +166,7 @@ function Module({extension,object}) {
         case 'avi':
         case "mov":
         case 'm4v':
+        case 'quicktime':
             return <ViewVideo object={object}/>
         default:return (
                 <p>File Extension Not Supported</p>
