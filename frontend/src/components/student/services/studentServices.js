@@ -185,7 +185,7 @@ async function getDeadLines(course,year,department,section,subject,midNo){
                         }else{
                             return {
                                 data:null,
-                                error:"Deadline not defined",
+                                error:"Submissions are not opened by faculty",
                             }
                         }                        
                     }else if(midNo==="2"){
@@ -196,7 +196,7 @@ async function getDeadLines(course,year,department,section,subject,midNo){
                         }else{
                             return {
                                 data:null,
-                                error:"Deadline not defined",
+                                error:"Submissions are not opened by faculty",
                             }
                         }                        
                     }
