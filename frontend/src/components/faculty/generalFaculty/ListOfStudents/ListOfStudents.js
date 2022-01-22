@@ -317,7 +317,7 @@ const ListofStudents = () => {
                   });
                 }}
                 width="200"
-                className="rare"
+                className="rare grade-button"
               />
             </div>
           </div>

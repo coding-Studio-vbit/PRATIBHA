@@ -63,6 +63,7 @@ gap: 16px;
     align-self: center;
     justify-self: center;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 .hod-dd{
     justify-content: space-evenly;

@@ -42,10 +42,15 @@ th {
   margin-top: 10px;
   float: right;
   margin-right: 100px;
+  cursor: pointer;
+}
+.grade-button{
+  cursor: pointer;
 }
 
 tr {
   margin: 10px;
+  cursor: pointer;
 
 }
 
