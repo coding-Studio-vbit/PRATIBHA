@@ -73,7 +73,7 @@ const Upload = () => {
           if (files.size > size )
           {
             setUrl(null);
-            setFileError("File Limit Exceeded. Maximum file size is 200KB.");
+            setFileError("File Limit Exceeded");
           } 
           else 
           {
@@ -96,10 +96,11 @@ const Upload = () => {
 
             else if(mid==2)
             {
-              if(ext=="pptx")
+              if(ext!="pdf" && ext!="docx" && ext!="jpeg" && ext!="jpg" && ext!="png" && ext!="mp4" && ext!="avi" && ext!="mov" && ext!="m4v")
               {
+                console.log(ext);
                 setUrl(null);
-                setFileError("Convert the PPT file to PDF format and upload for submission.");
+                setFileError("Convert the file to PDF format and upload for submission.");
               }
               else
               {
@@ -445,7 +446,7 @@ const Upload = () => {
                     ):
                     ( 
                     <div> 
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignSelf:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
+                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignContent:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
                         <div>
                         {
                           (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?
