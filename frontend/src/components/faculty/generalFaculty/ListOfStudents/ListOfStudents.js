@@ -120,13 +120,14 @@ const ListofStudents = () => {
               Preparation1 +
               Presentation1
             : " ";
-          const mid2 = docData["mid2"]
-            ? Innovation2 +
+          const mid2 = ismid2 ?( docData["mid2"]
+            ? (Innovation2 +
               Subject_Relevance2 +
               Individuality2 +
               Preparation2 +
-              Presentation2
-            : " ";
+              Presentation2)
+            : docData["isSubmitted2"] 
+            ? "Not Graded": "Not Submitted"):" ";
 
           await getStudentData(email)
             .then(({ document, error }) => {
@@ -242,7 +243,7 @@ const ListofStudents = () => {
         </span>
       </Navbar>
       <p className="bold subject">SUBJECT : {subjectval[4]}</p>
-      {mid2err && <p className="mid2err">Please set deadline for Mid 2</p>}
+      {mid2err && <p className="mid2err"><u>Please set deadline for Mid 2 to open Submissions.</u></p>}
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
