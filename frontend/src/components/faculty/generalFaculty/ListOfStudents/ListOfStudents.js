@@ -45,7 +45,7 @@ const ListofStudents = () => {
     subjectval[2] +
     " " +
     subjectval[3];
-  if (subjectval[0] === "MBA"&&subjectval[1]=='1') {
+  if (subjectval[0] === "MBA" && subjectval[1] == "1") {
     title = subjectval[0] + " " + subjectval[1] + " " + subjectval[3];
   }
 
@@ -75,7 +75,6 @@ const ListofStudents = () => {
     var isData = false;
     const studentref = query(
       collection(db, `faculty/${currentUser.email}/${location.state.sub}`)
-      // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
     );
     let stddd = null;
     let ismid1 = await fetchisMid1(subjectval[0], subjectval[1]);
@@ -154,7 +153,7 @@ const ListofStudents = () => {
               let topic, name;
 
               if (error == null) {
-                isData=true;
+                isData = true;
                 let obj = returndata["subjects"].find(
                   (o) => o.subject === subjectval[4]
                 );
@@ -192,9 +191,9 @@ const ListofStudents = () => {
                 setData((data) => [...data, dataobj]);
               }
             });
-            if(!isData) {
-              setError("NO SUBMISSIONS FROM STUDENTS");
-            }
+          if (!isData) {
+            setError("NO SUBMISSIONS FROM STUDENTS");
+          }
         });
       } else {
         setError("NO SUBMISSIONS FROM STUDENTS");
@@ -230,20 +229,17 @@ const ListofStudents = () => {
           {buttonText}
         </span>
       </Navbar>
+      <p className="bold subject">SUBJECT : {subjectval[4]}</p>
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
         </div>
       ) : error ? (
         <div className="err_Display">{error}</div>
-      ) : 
-      // data.length ? 
-      (
+      ) : (
         <>
           <div className="sub_body">
-            <p className="bold subject">SUBJECT : {subjectval[4]}</p>
             <p className="bold">Number of students submitted: {data.length}</p>
-            {/* <div> */}
             <table style={{ marginTop: "1rem" }}>
               <thead>
                 <tr>
@@ -294,7 +290,6 @@ const ListofStudents = () => {
                     ))}
               </tbody>
             </table>
-            {/* </div> */}
             <div className="LOF_buttons">
               <Button
                 children="GRADE"
@@ -337,8 +332,6 @@ const ListofStudents = () => {
             />
           </div>
         </>
-      // ) : (
-      //   <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
       )}
     </div>
   );
