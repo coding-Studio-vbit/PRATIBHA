@@ -48,7 +48,6 @@ async function  fetchisMid1 (course,year) {
     try {
         const adminRef = doc(db,`adminData/coeDeadline/${course}`,`${year}`);
     const adminDoc = await getDoc(adminRef);
-    console.log(adminDoc.data())
     if (adminDoc.exists()) {
       let date = new Timestamp(adminDoc.data()["mid1"]["seconds"],adminDoc.data()["mid1"]["nanoseconds"]).toDate();
       const currentdate = new Date()
@@ -231,12 +230,7 @@ async function getDeadLines(course,year,department,section,subject,midNo){
 
 async function getFileUploadDetails(email,subject,midNo){
     const userRef = doc(db,"users",email);
-    // return {
-    //     data:{ link:"BTech/3/CSE/D/Computer Networks/1/18p61a0513",topic:"Computer Networks"},
-    //     error:null
-    // }
     try {
-        console.log(email,subject,midNo);
         const doc = await getDoc(userRef);
         if(doc.exists()){
             let subs = doc.data()["subjects"] 
