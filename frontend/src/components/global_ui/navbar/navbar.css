@@ -1,83 +1,81 @@
-.nav{
-    display:flex;
-    z-index: 0;
-    justify-content: center;
-    height: 64px;
-    background-color:#0E72AB;
-    align-items: center;
-    color:white;
-    align-items: center;
-    width:100%;
+.nav {
+  display: flex;
+  z-index: 0;
+  justify-content: center;
+  height: 64px;
+  background-color: #0e72ab;
+  align-items: center;
+  color: white;
+  align-items: center;
+  width: 100%;
 }
-.nav > *{
-    flex: 1;
+.nav > * {
+  flex: 1;
 }
-.title{
-    font-size: 20px;
-    font-weight: 400;
-    margin: auto;
-    flex-grow: 1;
-    text-align: center;
+.title {
+  font-size: 20px;
+  font-weight: 400;
+  margin: auto;
+  flex-grow: 1;
+  text-align: center;
 }
-.createPRA > *{
-    margin-right: 10px;
+.createPRA > * {
+  margin-right: 10px;
 }
-.btn{
-    position:absolute;
-    right:0;
-    z-index: 1;
-    margin-right:12px;
-    font-size:x-large;
-    width:max-content;
-    color:white;
-    border-style: none;
-    background-color:#0E72AB;
-    margin-top: 3px;
-    cursor: pointer;
-    display: inline-block;
+.btn {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  margin-right: 12px;
+  font-size: x-large;
+  width: max-content;
+  color: white;
+  border-style: none;
+  background-color: #0e72ab;
+  margin-top: 3px;
+  cursor: pointer;
+  display: inline-block;
 }
-.bck{
-    position:absolute;
-    z-index: 1;
-    left:8px;
-    margin-top: auto;
-    margin-bottom: auto;
-
-    font-size:20px;
-    width:max-content;
-    color:white;
-    border-style: none;
-    background-color:#0E72AB;
-    justify-self: center;
-    align-self: center;
+.bck {
+  position: absolute;
+  z-index: 1;
+  left: 8px;
+  margin-top: auto;
+  margin-bottom: auto;
+  cursor: pointer;
+  font-size: 20px;
+  width: max-content;
+  color: white;
+  border-style: none;
+  background-color: #0e72ab;
+  justify-self: center;
+  align-self: center;
 }
-
 
 .btn .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: #4f4f4f;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    border: 1px solid black;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    top: -5px;
-    right: 105%;
+  visibility: hidden;
+  width: 120px;
+  background-color: #4f4f4f;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  right: 105%;
 }
 
 .btn:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
 
-@media screen and (max-width: 500px)
-{
-    #hide{
-        display:none;
-    }
-    .title{
-        font-size: 18px;
-    }
+@media screen and (max-width: 500px) {
+  #hide {
+    display: none;
+  }
+  .title {
+    font-size: 18px;
+  }
 }
