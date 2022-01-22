@@ -56,7 +56,7 @@ const ViewImage=({object})=>{
 const ViewVideo=({object})=>{
     return(
         <video width="100%" height="500px" controls >
-            <source src="https://vod-progressive.akamaized.net/exp=1640442433~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F714%2F14%2F353573670%2F1436889546.mp4~hmac=37216186eae76a1428c2235043ed6e4f4cea5e9e7b4d5b53b0eb83e0333c1860/vimeo-prod-skyfire-std-us/01/714/14/353573670/1436889546.mp4" type="video/mp4"/>
+            <source src={object} type="video/mp4"/>
         </video>
     );
 }
@@ -82,7 +82,6 @@ const ViewPdf=({object})=>{
                 <div
                     style={{
                         alignItems: 'center',
-                        //border: '2px dashed rgba(0, 0, 0, .3)',
                         display: 'flex',
                         fontSize: '2rem',
                         height: '100%',
