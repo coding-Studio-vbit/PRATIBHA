@@ -24,7 +24,7 @@ const CreatePra = () => {
   const [date, setDate] = useState(new Date());
   const [dialog, setdialog] = useState(null);
   const [isNewPra, setisNewPra] = useState(true);
-  const[Loading,setLoading] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const [mid, setmid] = useState("");
   const [inst, setInst] = useState("");
   const location = useLocation();
@@ -40,9 +40,9 @@ const CreatePra = () => {
   const department =
     parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
 
-  let title = parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3]
-  if(parts[2]==='Not Applicable'){
-    title = parts[0]+" "+parts[1]+" "+parts[3]
+  let title = parts[0] + " " + parts[1] + " " + parts[2] + " " + parts[3];
+  if (parts[2] === "Not Applicable") {
+    title = parts[0] + " " + parts[1] + " " + parts[3];
   }
   const deadline = async () => {
     const isMid1 = await fetchisMid1(course, year);
@@ -121,11 +121,17 @@ const CreatePra = () => {
       }}
     >
       <Navbar
-        backURL={isNewPra ? (currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist") : "/faculty/studentlist"}
+        backURL={
+          isNewPra
+            ? currentUser.isHOD
+              ? "/faculty/hodclasslist"
+              : "/faculty/classlist"
+            : "/faculty/studentlist"
+        }
         props={isNewPra ? false : { state: { sub: location.state.sub } }}
         title={title}
       />
-        <p className="createPRAsub">Subject : {parts[4]}</p>
+      <p className="createPRAsub">Subject : {parts[4]}</p>
       {dialog && (
         <Dialog
           message={dialog}
@@ -136,44 +142,51 @@ const CreatePra = () => {
           }}
         />
       )}
-      <div className="div-container">
-    
-        <span className="text-style">Enter instructions (if any):</span>
-        <textarea
-          style={{ resize: "none" }}
-          rows={8}
-          value={inst}
-          className="span-style"
-          onChange={(e) => setInst(e.target.value)}
-        ></textarea>
-        <span className="coe-deadline"><span>CoE Deadline: </span>{CoeDate.toLocaleDateString("en-IN")}</span>
-        <span className="text-style2">
-          Set mid-{mid} PRA Deadline:
-          <span>
-            <DatePicker
-              dateFormat="dd/MM/yyyy"
-              selected={date}
-              value={date}
-              minDate={new Date()}
-              maxDate={CoeDate}
-              onChange={(newVal) => {
-                setDate(newVal);
-              }}
-              className="select-dd"
-            />
+
+      {Loading ? (
+        <Spinner radius={1.5} />
+      ) : (
+        <div className="div-container">
+          <span className="text-style">Enter instructions (if any):</span>
+          <textarea
+            style={{ resize: "none" }}
+            rows={8}
+            value={inst}
+            className="span-style"
+            onChange={(e) => setInst(e.target.value)}
+          ></textarea>
+          <span className="coe-deadline">
+            <span>CoE Deadline: </span>
+            {CoeDate.toLocaleDateString("en-IN")}
           </span>
-        </span>
-      {Loading ? <Spinner radius={1.5}/>: 
-        <Button
-          style={{ padding: "5px" }}
-          className="create-button normal"
-          icon={
-            location.state.editPRA ? false : <i className="fas fa-plus"></i>
-          }
-          onClick={handleCreate}
-          children={location.state.editPRA ? "Done" : "Create"}
-        />}
-      </div>
+          <span className="text-style2">
+            Set mid-{mid} PRA Deadline:
+            <span>
+              <DatePicker
+                dateFormat="dd/MM/yyyy"
+                selected={date}
+                value={date}
+                minDate={new Date()}
+                maxDate={CoeDate}
+                onChange={(newVal) => {
+                  setDate(newVal);
+                }}
+                className="select-dd"
+              />
+            </span>
+          </span>
+
+          <Button
+            style={{ padding: "5px" }}
+            className="create-button normal"
+            icon={
+              location.state.editPRA ? false : <i className="fas fa-plus"></i>
+            }
+            onClick={handleCreate}
+            children={location.state.editPRA ? "Done" : "Create"}
+          />
+        </div>
+      )}
     </div>
   );
 };
