@@ -65,7 +65,13 @@ const ClassList = () => {
                     key={newItem}
                     onclick={handleCard}
                     text={newItem}
-                    subText={subs.praSetSubs[item] ? true : false}
+                    subText={
+                      subs.praSetSubs[item]
+                        ? subs.praSetSubs[item].date2
+                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
+                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                        : "PRA not created."
+                    }
                     klass={item}
                   />
                 );
@@ -90,7 +96,13 @@ const ClassList = () => {
                     key={newItem}
                     onclick={handleCard}
                     text={newItem}
-                    subText={subs.praSetSubs[item] ? true : false}
+                    subText={
+                      subs.praSetSubs[item]
+                        ? subs.praSetSubs[item].date2
+                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
+                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                        : "PRA not created."
+                    }
                     klass={item}
                   />
                 );
@@ -120,7 +132,13 @@ const ClassList = () => {
                     key={newItem}
                     onclick={handleCard}
                     text={newItem}
-                    subText={subs.praSetSubs[item] ? true : false}
+                    subText={
+                      subs.praSetSubs[item]
+                        ? subs.praSetSubs[item].date2
+                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
+                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                        : "PRA not created."
+                    }
                     klass={item}
                   />
                 );
