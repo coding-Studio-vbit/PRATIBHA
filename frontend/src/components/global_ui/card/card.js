@@ -10,7 +10,7 @@ const Card = ({
   return (
     <div className="globalCardContainer"  onClick={()=>onclick(klass)}>
       {text && <p>{text}</p>} 
-      {subText && <p className="subText" style={{fontSize:'15px',fontWeight:'bold'}}>{subText}</p>}
+      {subText && <p className="subText" style={{fontSize:'15px',fontWeight:'bold'}}>{subText}rugure</p>}
     </div>
   );
 };
