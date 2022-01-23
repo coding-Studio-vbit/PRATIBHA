@@ -126,6 +126,9 @@ const Grading = () => {
       setSetDialog(null);
     }
   }
+  else{
+    setSetDialog('Do not leave any marks fields empty.');
+  }
 }
 
   async function searchRoll(val,midX=null){

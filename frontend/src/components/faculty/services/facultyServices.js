@@ -411,18 +411,6 @@ async function postMarks(
   return error;
 }
 
-// async function createSubCollection() {
-//   console.log("Started");
-//   try {
-//     await setDoc(doc(db,`dummy/abcd/ABCD`,"Lafoot"), {
-//       name: "Tokyo",
-//       country: "Japan"
-//     });
-//   } catch (error) {
-//     console.log("Fucked",error);
-//   }
-//   console.log("Ended");
-// }
 export const fetchSectionsAndSubs = async (course, year, departments) => {
 
   try {
