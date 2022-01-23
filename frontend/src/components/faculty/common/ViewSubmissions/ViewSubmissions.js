@@ -26,13 +26,13 @@ const ViewSubmissions = () => {
   const passedData = location.state;
   console.log(passedData);
   let title =
+  passedData.Course+
+  " "+
     passedData.Year +
-    "_" +
+    " " +
     passedData.Dept +
-    "_" +
-    passedData.Section +
-    "_" +
-    passedData.Subject;
+    " " +
+    passedData.Section ;
 
   let course, courseName;
   course = passedData.Course;
@@ -54,11 +54,10 @@ const ViewSubmissions = () => {
   if(passedData.Course === "MBA"&&passedData.Year==='1')
   {
     title=
+    passedData.Course+' '+
     passedData.Year +
-    "_" +
-    passedData.Section +
-    "_" +
-    passedData.Subject;
+    " " +
+    passedData.Section ;
 
   }
 
@@ -262,6 +261,7 @@ const ViewSubmissions = () => {
         }
         logout={true}
       />
+       <p className="bold subject">SUBJECT : {passedData.Subject}</p>
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
