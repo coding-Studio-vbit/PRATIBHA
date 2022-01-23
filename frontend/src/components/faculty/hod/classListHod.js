@@ -33,8 +33,7 @@ const HODClassList = () => {
     { value: "Loading", label: "Loading" },
   ]);
   const [showdep, setshowdep] = useState([]);
-  const [deadline1, setdeadline1] = useState(null);
-  const [deadline2, setdeadline2] = useState(null);
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -63,8 +62,7 @@ const HODClassList = () => {
   function filterDep(course) {
     console.log("called filterdep");
     console.log(course);
-    if (course.value != "MBA" && !currentUser.isFirstYearHOD) {
-      console.log("hi");
+    if (course.value !== "MBA" && !currentUser.isFirstYearHOD) {
       let showdeps = [];
 
       for (let j = 0; j < department.length; j++) {

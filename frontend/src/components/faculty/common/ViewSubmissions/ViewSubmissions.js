@@ -22,8 +22,7 @@ const ViewSubmissions = () => {
   const [links, setLinks] = useState({});
   const [sem, setSem] = useState("");
   const location = useLocation();
-  // const [isData, setIsData] = useState(false);
-  // let isData;
+
   const passedData = location.state;
   console.log(passedData);
   let title =
@@ -36,17 +35,12 @@ const ViewSubmissions = () => {
     passedData.Subject;
 
   let course, courseName;
-  // if (passedData.Course === "BTech") {
-  //   course = "BTech";
-  // } else if (passedData.Course === "MTech") {
-  //   course = "MTech";
-  // } else if ()
   course = passedData.Course;
 
   courseName = course;
 
   course = course + "_" + title;
-  // console.log(course);
+
   const DepartmentForFaculty =
     passedData.Course +
     "_" +
@@ -55,9 +49,9 @@ const ViewSubmissions = () => {
     passedData.Dept +
     "_" +
     passedData.Section;
-  // console.log(DepartmentForFaculty);
+  
 
-  if(passedData.Course === "MBA")
+  if(passedData.Course === "MBA"&&passedData.Year==='1')
   {
     title=
     passedData.Year +
@@ -122,125 +116,132 @@ const ViewSubmissions = () => {
   const Fetchdata = async () => {
     var isData = false;
     const result = await getPRA(passedData.Subject, DepartmentForFaculty);
-    const facultyID = result.facultyID;
+    if(result){
 
-    if (facultyID) {
-      const studentref = query(
-        collection(db, `faculty/${facultyID}/${course}`)
-        // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
-      );
-
-      let ismid1 = await fetchisMid1(courseName, passedData.Year);
-      let ismid2 = await fetchisMid2(courseName, passedData.Year);
-
-      let semester = await getSemester();
-      setSem(semester.data);
-
-      await getDocs(studentref).then((querySnapshot) => {
-        if (querySnapshot) {
-          querySnapshot.forEach(async (doc) => {
-            const email = doc.id.toString() + "@vbithyd.ac.in";
-            // await Fetchlink(email);
-            const docData = doc.data();
-            let Innovation1 = "",
-              Innovation2 = "",
-              Subject_Relevance1 = "",
-              Subject_Relevance2 = "",
-              Individuality1 = "",
-              Individuality2 = "",
-              Preparation1 = "",
-              Preparation2 = "",
-              Presentation1 = "",
-              Presentation2 = "";
-            if (docData["mid1"]) {
-              Innovation1 = docData["mid1"]["Innovation1"];
-              Subject_Relevance1 = docData["mid1"]["Subject_Relevance1"];
-              Individuality1 = docData["mid1"]["Individuality1"];
-              Preparation1 = docData["mid1"]["Preparation1"];
-              Presentation1 = docData["mid1"]["Presentation1"];
-            }
-            if (docData["mid2"]) {
-              Innovation2 = docData["mid2"]["Innovation2"];
-              Subject_Relevance2 = docData["mid2"]["Subject_Relevance2"];
-              Individuality2 = docData["mid2"]["Individuality2"];
-              Preparation2 = docData["mid2"]["Preparation2"];
-              Presentation2 = docData["mid2"]["Presentation2"];
-            }
-            const mid1 = docData["mid1"]
-              ? Innovation1 +
-                Subject_Relevance1 +
-                Individuality1 +
-                Preparation1 +
-                Presentation1
-              : " ";
-            const mid2 = docData["mid2"]
-              ? Innovation2 +
-                Subject_Relevance2 +
-                Individuality2 +
-                Preparation2 +
-                Presentation2
-              : " ";
-
-            await getStudentData(email)
-              .then(async ({ document, error }) => {
-                let returndata = document;
-                let topic, name;
-
-                if (error == null) {
-                  // setIsData(true);
-                  isData=true;
-                  if (ismid1) {
-                    await Fetchlink1(email);
-                  }
-                  if (ismid2) {
-                    await Fetchlink2(email);
-                  }
-
-                  let obj = returndata["subjects"].find(
-                    (o) => o.subject === passedData.Subject //"DAA"
-                  );
-                  topic = obj.topic;
-                  name = returndata.name;
-                  const dataobj = {
-                    ROLL_NO: doc.id.toString(),
-                    STUDENT_NAME: name,
-                    TOPIC_NAME: topic,
-                    Innovation1: Innovation1,
-                    Subject_Relevance1: Subject_Relevance1,
-                    Individuality1: Individuality1,
-                    Preparation1: Preparation1,
-                    Presentation1: Presentation1,
-                    MID_1: mid1,
-                    Innovation2: Innovation2,
-                    Subject_Relevance2: Subject_Relevance2,
-                    Individuality2: Individuality2,
-                    Preparation2: Preparation2,
-                    Presentation2: Presentation2,
-                    MID_2: mid2,
-                  };
-                  return dataobj;
-                } else {
-                  return null;
-                }
-              })
-              .then((dataobj) => {
-                if (dataobj) {
-                  setData((data) => [...data, dataobj]);
-                }
-              });
-              if(!isData) {
-                setError("NO ONE ENROLLED THIS SUBJECT");
+      let facultyID = result.facultyID;
+      if (facultyID) {
+        const studentref = query(
+          collection(db, `faculty/${facultyID}/${course}`)
+          // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
+        );
+  
+        let ismid1 = await fetchisMid1(courseName, passedData.Year);
+        let ismid2 = await fetchisMid2(courseName, passedData.Year);
+  
+        let semester = await getSemester();
+        setSem(semester.data);
+  
+        await getDocs(studentref).then((querySnapshot) => {
+          if (querySnapshot) {
+            querySnapshot.forEach(async (doc) => {
+              const email = doc.id.toString() + "@vbithyd.ac.in";
+              // await Fetchlink(email);
+              const docData = doc.data();
+              let Innovation1 = "",
+                Innovation2 = "",
+                Subject_Relevance1 = "",
+                Subject_Relevance2 = "",
+                Individuality1 = "",
+                Individuality2 = "",
+                Preparation1 = "",
+                Preparation2 = "",
+                Presentation1 = "",
+                Presentation2 = "";
+              if (docData["mid1"]) {
+                Innovation1 = docData["mid1"]["Innovation1"];
+                Subject_Relevance1 = docData["mid1"]["Subject_Relevance1"];
+                Individuality1 = docData["mid1"]["Individuality1"];
+                Preparation1 = docData["mid1"]["Preparation1"];
+                Presentation1 = docData["mid1"]["Presentation1"];
               }
-          });
-        } else {
-          setError("NO ONE ENROLLED THIS SUBJECT");
-        }
-      });
-
-      setloading(false);
-    } else {
-      setloading(false);
+              if (docData["mid2"]) {
+                Innovation2 = docData["mid2"]["Innovation2"];
+                Subject_Relevance2 = docData["mid2"]["Subject_Relevance2"];
+                Individuality2 = docData["mid2"]["Individuality2"];
+                Preparation2 = docData["mid2"]["Preparation2"];
+                Presentation2 = docData["mid2"]["Presentation2"];
+              }
+              const mid1 = docData["mid1"]
+                ? Innovation1 +
+                  Subject_Relevance1 +
+                  Individuality1 +
+                  Preparation1 +
+                  Presentation1
+                : " ";
+              const mid2 = docData["mid2"]
+                ? Innovation2 +
+                  Subject_Relevance2 +
+                  Individuality2 +
+                  Preparation2 +
+                  Presentation2
+                : " ";
+  
+              await getStudentData(email)
+                .then(async ({ document, error }) => {
+                  let returndata = document;
+                  let topic, name;
+  
+                  if (error == null) {
+                    isData=true;
+                    if (ismid1) {
+                      await Fetchlink1(email);
+                    }
+                    if (ismid2) {
+                      await Fetchlink2(email);
+                    }
+  
+                    let obj = returndata["subjects"].find(
+                      (o) => o.subject === passedData.Subject 
+                    );
+                    topic = obj.topic;
+                    name = returndata.name;
+                    const dataobj = {
+                      ROLL_NO: doc.id.toString(),
+                      STUDENT_NAME: name,
+                      TOPIC_NAME: topic,
+                      Innovation1: Innovation1,
+                      Subject_Relevance1: Subject_Relevance1,
+                      Individuality1: Individuality1,
+                      Preparation1: Preparation1,
+                      Presentation1: Presentation1,
+                      MID_1: mid1,
+                      Innovation2: Innovation2,
+                      Subject_Relevance2: Subject_Relevance2,
+                      Individuality2: Individuality2,
+                      Preparation2: Preparation2,
+                      Presentation2: Presentation2,
+                      MID_2: mid2,
+                    };
+                    return dataobj;
+                  } else {
+                    return null;
+                  }
+                })
+                .then((dataobj) => {
+                  if (dataobj) {
+                    setData((data) => [...data, dataobj]);
+                  }
+                });
+                if(!isData) {
+                  setError("No PRA submissions found in this subject");
+                }
+            });
+          } else {
+            setError("No PRA submissions found in this subject");
+          }
+        });
+  
+        setloading(false);
+      } else {
+        setloading(false);
+      }
     }
+    else{
+      setError('No PRA submissions found in this subject');
+      setloading(false)
+    }
+
+    
   };
 
   useEffect(() => {
