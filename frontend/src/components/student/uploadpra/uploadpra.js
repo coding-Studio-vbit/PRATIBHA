@@ -96,11 +96,15 @@ const Upload = () => {
 
             else if(mid==2)
             {
-              if(ext!="pdf" && ext!="docx" && ext!="jpeg" && ext!="jpg" && ext!="png" && ext!="mp4" && ext!="avi" && ext!="mov" && ext!="m4v")
+              if(ext==='pptx'){
+                setUrl(null);
+                setFileError("Convert PPT to PDF format for submission")
+              }
+              else if(ext!="pdf" && ext!="jpeg" && ext!="jpg" && ext!="png" && ext!="mp4" && ext!="avi" && ext!="mov" && ext!="m4v")
               {
                 console.log(ext);
                 setUrl(null);
-                setFileError("Convert the file to PDF format and upload for submission.");
+                setFileError(`${ext} file extension is not supported. Convert into another format and submit again.`);
               }
               else
               {
