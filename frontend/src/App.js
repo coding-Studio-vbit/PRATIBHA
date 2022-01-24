@@ -18,6 +18,7 @@ import EnrollClasses from "./components/student/enrollClass/enrollClasses";
 import ViewSubmissions from "./components/faculty/common/ViewSubmissions/ViewSubmissions";
 import CreatePra from "./components/faculty/common/createPRA/createPra";
 import HODClassList from "./components/faculty/hod/classListHod";
+import AddClasses from "./components/faculty/common/LockListSubjects/addclasses";
 
 const App = () => {
   return (
@@ -74,6 +75,7 @@ const AllRoutes = () => {
                 <Route exact path="/createPra" element={<CreatePra />} />
 
                 <Route exact path="/enroll" element={<LockList />} />
+                <Route exact path ="addclasses" element={<AddClasses/>}/>
                 {!currentUser.isHOD && (
                   <Route path="/classlist" element={<ClassList />} />
                 )}
