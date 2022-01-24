@@ -82,7 +82,7 @@ export default function AddClasses() {
               setdisableadd(true);
               setIsLoading(true);
               console.log("Adding")
-              const res = await addClass(currentUser.email,"BTech1CSE");
+              const res = await addClass(currentUser.email,"BTech1CSECMNNN");
               if(res===null){
                   console.log("Added.")
                   setIsLoading(false);
