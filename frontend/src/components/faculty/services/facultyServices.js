@@ -585,6 +585,23 @@ async function getAllStudentsData(facultyID, className) {
   }
 }
 
+
+async function addClass(email, addedClass) {
+  const facultyRef = doc(db, "faculty", email);
+  try {
+    await updateDoc(facultyRef, { subjects: arrayUnion(addedClass )});
+  
+      await setDoc(doc(db, `faculty/${email}/${addedClass}`, email), {
+        random: 1,
+      });
+    
+   
+  } catch (error) {
+    return error.code;
+  }
+  return null;
+}
+
 export {
   getEnrolledCourses,
   enrollClasses,
@@ -594,4 +611,5 @@ export {
   getCoeDeadline,
   getAllStudentsData,
   getSemester,
+  addClass
 };
