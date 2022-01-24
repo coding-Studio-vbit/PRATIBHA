@@ -589,11 +589,14 @@ async function getAllStudentsData(facultyID, className) {
 async function addClass(email, addedClass) {
   const facultyRef = doc(db, "faculty", email);
   try {
-    await updateDoc(facultyRef, { subjects: arrayUnion(addedClass )});
+    await updateDoc(facultyRef, { subjects: arrayUnion("someclass")});
   
-      await setDoc(doc(db, `faculty/${email}/${addedClass}`, email), {
+    let isAdded = false;
+    await setDoc(doc(db, `faculty/${email}/${addedClass}`, email), {
         random: 1,
       });
+      isAdded = true;
+console.log(isAdded)
     
    
   } catch (error) {

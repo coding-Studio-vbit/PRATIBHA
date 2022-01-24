@@ -4,6 +4,7 @@ import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import {
+    addClass,
   getDepartments,
 } from "../../services/facultyServices";
 import "./lockList.css";
@@ -77,10 +78,28 @@ export default function AddClasses() {
      async function handleAddButton(){
           const sem = await fetchSemNumber("BTech","1")
           console.log(sem)
-          console.log("added")
-          setIsSuccess(true)
-          setShowDialog("Class Added");
-          setdisableadd(true);
+          try{
+              setdisableadd(true);
+              setIsLoading(true);
+              console.log("Adding")
+              const res = await addClass(currentUser.email,"BTech1CSE");
+              if(res===null){
+                  console.log("Added.")
+                  setIsLoading(false);
+                  setIsSuccess(true);
+                  setShowDialog("Class added");
+                  
+                  
+              }
+              else{
+                  setShowDialog(res);
+              }
+
+          }
+          catch(e){
+console.log(e)
+          }
+          
           
 
       }
