@@ -77,12 +77,22 @@ export default function AddClasses() {
     
      async function handleAddButton(){
           const sem = await fetchSemNumber("BTech","1")
+          const adding =  Course.value +"_"+
+          Year.value +
+          "_" +
+          Department.value +
+          "_" +
+          Section.value +
+          "_" +
+          Subject.value;
+          console.log(adding)
           console.log(sem)
           try{
               setdisableadd(true);
               setIsLoading(true);
               console.log("Adding")
-              const res = await addClass(currentUser.email,"BTech1CSECMNNN");
+
+              const res = await addClass(currentUser.email,adding);
               if(res===null){
                   console.log("Added.")
                   setIsLoading(false);
