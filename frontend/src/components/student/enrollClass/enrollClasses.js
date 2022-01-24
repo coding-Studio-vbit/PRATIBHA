@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import Navbar from '../../global_ui/navbar/navbar';
 import Select from "react-select";
-import { enrollCourse, fetchDepartments } from '../services/studentServices';
+import { enrollCourse, fetchDepartments, fetchRegulationOptions } from '../services/studentServices';
 import Button from '../../global_ui/buttons/button';
 import { Spinner } from '../../global_ui/spinner/spinner';
 import { useAuth } from '../../context/AuthContext';
@@ -33,16 +33,24 @@ function EnrollClasses() {
         { value: "3", label: "3" },
         { value: "4", label: "4" }
     ];
+
     const yearsList=(type)=>{
         if(type==="BTech" ){
-          return years;
+            return years;
         }else if(type==='MBA' || type==="MTech"){
-          return years.slice(0,2);
+            return years.slice(0,2);
         }
         else{
-          return [];
+            return [];
         }
     }
+    const [regulation,setRegulation]=useState('');
+    const[regoptionss,setregoptionss]=useState([]);
+   async function regoptions(){
+    const res = await fetchRegulationOptions();
+  setregoptionss(res.data);
+   } 
+
 
     const [department, setDepartment] = useState("");
     const [departments, setDepartments] = useState(null);
@@ -194,6 +202,7 @@ function EnrollClasses() {
                         onChange={(c) => {
                             setYear("")
                             setCourse(c);
+                            regoptions();
                         }}
                         />
                     </div>
@@ -206,8 +215,21 @@ function EnrollClasses() {
                         className="select"
                         options={yearsList(course.value)}
                         onChange={(y) => {
-                            setDepartment("");
                             setYear(y);
+                        }}
+                        />
+                    </div>
+                    <div className='inputBox'>
+                        <p className="enroll-dropdown-title">Regulation</p>
+                        <Select
+                        placeholder=""
+                        value={regulation}
+                        isDisabled={depLock}
+                        className="select"
+                        options={regoptionss}
+                        onChange={(r) => {
+                            setDepartment("");
+                            setRegulation(r);
                         }}
                         />
                     </div>

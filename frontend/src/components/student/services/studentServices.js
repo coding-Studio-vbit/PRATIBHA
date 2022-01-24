@@ -1,340 +1,411 @@
-import { doc,setDoc,getDoc,query, collection, getDocs, Timestamp } from "firebase/firestore"; 
-import {db} from '../../../firebase'
+import {
+  doc,
+  setDoc,
+  getDoc,
+  query,
+  collection,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
+import { db } from "../../../firebase";
 
 async function checkEnrollment(email) {
-    let error=null;
-    const userRef = doc(db, 'users', email);   
-    try {
-        const userDoc = await getDoc(userRef);
-        if(userDoc.exists()){
-            error=null;
-        }else{
-            error="STUDENT_NOT_VERIFIED";
-        }
-    } catch (e) {
-        error="UNKNOWN_ERROR";        
+  let error = null;
+  const userRef = doc(db, "users", email);
+  try {
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      error = null;
+    } else {
+      error = "STUDENT_NOT_VERIFIED";
     }
-    return error;
+  } catch (e) {
+    error = "UNKNOWN_ERROR";
+  }
+  return error;
 }
 
-async function enrollCourse(email,course_details) {
-    let error=null;
-    const userRef = doc(db, 'users', email);   
-    try{
-        await setDoc(userRef,course_details); 
-    }
-    catch(e){
-        error=e.code;
-    }
-    return error;
+async function enrollCourse(email, course_details) {
+  let error = null;
+  const userRef = doc(db, "users", email);
+  try {
+    await setDoc(userRef, course_details);
+  } catch (e) {
+    error = e.code;
+  }
+  return error;
 }
 
-async function getStudentData(email){
-    try{
-        const userRef = doc(db,"users", email);   
-        const userDoc = await getDoc(userRef);
-        if(userDoc.exists()){
-            return { document:userDoc.data(), error:null };
-        }else{
-            return { document:null, error:"Enroll the details to access"}
-        }       
+async function getStudentData(email) {
+  try {
+    const userRef = doc(db, "users", email);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      return { document: userDoc.data(), error: null };
+    } else {
+      return { document: null, error: "Enroll the details to access" };
     }
-    catch(e){
-        return { document:null, error:e.code }
-    }        
+  } catch (e) {
+    return { document: null, error: e.code };
+  }
 }
 
-async function  fetchisMid1 (course,year) {
-    try {
-        const adminRef = doc(db,`adminData/coeDeadline/${course}`,`${year}`);
+async function fetchisMid1(course, year) {
+  try {
+    const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
     const adminDoc = await getDoc(adminRef);
     if (adminDoc.exists()) {
-      let date = new Timestamp(adminDoc.data()["mid1"]["seconds"],adminDoc.data()["mid1"]["nanoseconds"]).toDate();
-      const currentdate = new Date()
-      if(date > currentdate){
-        return true
+      let date = new Timestamp(
+        adminDoc.data()["mid1"]["seconds"],
+        adminDoc.data()["mid1"]["nanoseconds"]
+      ).toDate();
+      const currentdate = new Date();
+      if (date > currentdate) {
+        return true;
       }
       return false;
     }
-    } catch (error) {
-        console.log(error);
-    }
-};
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-async function  fetchisMid2 (course,year) {
-    try {
-        const adminRef = doc(db,`adminData/coeDeadline/${course}`,`${year}`);
+async function fetchisMid2(course, year) {
+  try {
+    const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
     const adminDoc = await getDoc(adminRef);
     if (adminDoc.exists()) {
-        let date1 = new Timestamp(adminDoc.data()["mid1"]["seconds"],adminDoc.data()["mid1"]["nanoseconds"]).toDate();
-      let date2 = new Timestamp(adminDoc.data()["mid2"]["seconds"],adminDoc.data()["mid2"]["nanoseconds"]).toDate();
-      const currentdate = new Date()
-      if(date1 < currentdate&& date2 >currentdate){
-        return true
-        
+      let date1 = new Timestamp(
+        adminDoc.data()["mid1"]["seconds"],
+        adminDoc.data()["mid1"]["nanoseconds"]
+      ).toDate();
+      let date2 = new Timestamp(
+        adminDoc.data()["mid2"]["seconds"],
+        adminDoc.data()["mid2"]["nanoseconds"]
+      ).toDate();
+      const currentdate = new Date();
+      if (date1 < currentdate && date2 > currentdate) {
+        return true;
       }
       return false;
     }
-    } catch (error) {
-        console.log(error);
-    }
-};
-
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 async function getCurriculumDetails(course_details) {
-    const curriculumRef=query(
-        collection(
-            db,`curriculum/${course_details.course}/${course_details.year}`
-        )
-    );
-    try {
-        const docs = await getDocs(curriculumRef);
-        let docSnap=null;
-        docs.forEach((doc) => {
-            if(doc.id===`${course_details.department}`){
-                docSnap=doc;
-            } // "doc1" and "doc2"
-        });
-        if(docSnap!=null){
-            let result={
-                subjects:docSnap.data()['subjects'],
-                sections:docSnap.data()['sections']
-            };
-            if(docSnap.data()['OEs']!=null){
-                result.oe=docSnap.data()['OEs'];
-                result.numberOEs=docSnap.data()['numberOEs'];
-            }
-            if(docSnap.data()['PEs']!=null){
-                result.pe=docSnap.data()['PEs'];
-                result.numberPEs=docSnap.data()['numberPEs'];
-            }
-            return {
-                document:result,
-                error:null
-            }                     
-        }else{
-            return { document:null, error:'Give proper details to enroll'}
-        } 
-    }catch(error){
-        return {document:null,error:error.toString()}                
-    }  
+  const curriculumRef = query(
+    collection(db, `curriculum/${course_details.course}/${course_details.year}`)
+  );
+  try {
+    const docs = await getDocs(curriculumRef);
+    let docSnap = null;
+    docs.forEach((doc) => {
+      if (doc.id === `${course_details.department}`) {
+        docSnap = doc;
+      } // "doc1" and "doc2"
+    });
+    if (docSnap != null) {
+      let result = {
+        subjects: docSnap.data()["subjects"],
+        sections: docSnap.data()["sections"],
+      };
+      if (docSnap.data()["OEs"] != null) {
+        result.oe = docSnap.data()["OEs"];
+        result.numberOEs = docSnap.data()["numberOEs"];
+      }
+      if (docSnap.data()["PEs"] != null) {
+        result.pe = docSnap.data()["PEs"];
+        result.numberPEs = docSnap.data()["numberPEs"];
+      }
+      return {
+        document: result,
+        error: null,
+      };
+    } else {
+      return { document: null, error: "Give proper details to enroll" };
+    }
+  } catch (error) {
+    return { document: null, error: error.toString() };
+  }
 }
 
-async function getSubjectsList(email){
-    const userRef = doc(db, "users",email);
-    try {
-        const userDoc = await getDoc(userRef);
-        if(userDoc.exists()){
-            return {
-                data:{ 
-                    subjects:userDoc.data()["subjects"],
+async function getSubjectsList(email) {
+  const userRef = doc(db, "users", email);
+  try {
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      return {
+        data: {
+          subjects: userDoc.data()["subjects"],
+        },
+        error: null,
+      };
+    } else {
+      return {
+        data: null,
+        error: "Enroll Details to get subject information",
+      };
+    }
+  } catch (e) {
+    return {
+      data: null,
+      error: e.code,
+    };
+  }
+}
+
+async function fetchDepartments(course, year) {
+  const depRef = query(collection(db, `curriculum/${course}/${year}`));
+  try {
+    const docs = await getDocs(depRef);
+    let depList = [];
+    docs.forEach((e) => {
+      depList.push(e);
+    });
+    return {
+      data: depList,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: error.code,
+    };
+  }
+}
+
+async function getDeadLines(course, year, department, section, subject, midNo) {
+  const deadLinesRef = doc(
+    db,
+    "subjects",
+    `${course}_${year}_${department}_${section}`
+  );
+  try {
+    const deadLineDoc = await getDoc(deadLinesRef);
+    if (deadLineDoc.exists()) {
+      let subs = deadLineDoc.data()["subjects"];
+      let deadline = {};
+      let dataFetch = false;
+      for (let i = 0; i < subs.length; i++) {
+        if (subs[i].subject === subject) {
+          if (midNo === "1") {
+            if (subs[i].deadline1 != null) {
+              deadline.lastDate = subs[i].deadline1;
+              deadline.instructions = subs[i].instructions;
+              dataFetch = true;
+            } else {
+              return {
+                data: null,
+                error: "Submissions are not opened by faculty",
+              };
+            }
+          } else if (midNo === "2") {
+            if (subs[i].deadline2 != null) {
+              deadline.lastDate = subs[i].deadline2;
+              deadline.instructions = subs[i].instructions;
+              dataFetch = true;
+            } else {
+              return {
+                data: null,
+                error: "Submissions are not opened by faculty",
+              };
+            }
+          }
+          break;
+        }
+      }
+      if (dataFetch) {
+        return {
+          data: deadline,
+          error: null,
+        };
+      } else {
+        return {
+          data: null,
+          error: "Unknown Error Occured",
+        };
+      }
+    } else {
+      return {
+        data: null,
+        error: "Unknown Error Occured ",
+      };
+    }
+  } catch (error) {
+    return {
+      data: null,
+      error: error.code,
+    };
+  }
+}
+
+async function getFileUploadDetails(email, subject, midNo) {
+  const userRef = doc(db, "users", email);
+  try {
+    const doc = await getDoc(userRef);
+    if (doc.exists()) {
+      let subs = doc.data()["subjects"];
+      for (let i = 0; i < subs.length; i++) {
+        if (subject === subs[i].subject) {
+          if (midNo === "1") {
+            if (subs[i].topic != null && subs[i].mid_1 != null) {
+              return {
+                data: {
+                  link: subs[i].mid_1,
+                  topic: subs[i].topic,
+                  fileName: subs[i].fileName1,
                 },
-                error:null
-            } 
-        }else{
-            return {
-                data:null,
-                error:"Enroll Details to get subject information"
+                error: null,
+              };
+            } else {
+              return {
+                data: null,
+                error: "PRA not submitted",
+              };
             }
+          } else if (midNo === "2") {
+            if (subs[i].topic != null && subs[i].mid_2 != null) {
+              return {
+                data: {
+                  link: subs[i].mid_2,
+                  topic: subs[i].topic,
+                  fileName: subs[i].fileName2,
+                },
+                error: null,
+              };
+            } else {
+              return {
+                data: { topic: subs[i].topic },
+                error: "PRA not submitted",
+              };
+            }
+          }
+          break;
         }
-    } catch (e) {
-        return {
-            data:null,
-            error:e.code,
-        }       
+      }
+    } else {
+      return {
+        data: null,
+        error: "Enroll to get details",
+      };
     }
+  } catch (error) {
+    return {
+      data: null,
+      error: error.code,
+    };
+  }
 }
 
-
-async function fetchDepartments(course,year){
-    const depRef = query(collection(db,`curriculum/${course}/${year}`));
-    try {
-        const docs = await getDocs(depRef);
-        let depList=[];
-        docs.forEach(e=>{
-            depList.push(e);
-        })
-        return {
-            data:depList,
-            error:null
-        }                
-    } catch (error) {
-        return {
-            data:null,
-            error:error.code
-        }         
-    }             
-}
-
-async function getDeadLines(course,year,department,section,subject,midNo){
-    
-    const deadLinesRef = doc(db,"subjects",`${course}_${year}_${department}_${section}`);
-    try {
-        const deadLineDoc = await getDoc(deadLinesRef);
-        if(deadLineDoc.exists()){
-            let subs = deadLineDoc.data()["subjects"];
-            let deadline={};
-            let dataFetch=false;
-            for (let i = 0; i < subs.length; i++) {                
-                if(subs[i].subject===subject){
-                    if(midNo==="1"){                        
-                        if(subs[i].deadline1!=null){
-                            deadline.lastDate = subs[i].deadline1; 
-                            deadline.instructions = subs[i].instructions
-                            dataFetch=true
-                        }else{
-                            return {
-                                data:null,
-                                error:"Submissions are not opened by faculty",
-                            }
-                        }                        
-                    }else if(midNo==="2"){
-                        if(subs[i].deadline2!=null){
-                            deadline.lastDate = subs[i].deadline2;
-                            deadline.instructions = subs[i].instructions
-                            dataFetch=true
-                        }else{
-                            return {
-                                data:null,
-                                error:"Submissions are not opened by faculty",
-                            }
-                        }                        
-                    }
-                    break;
-                }                
-            }
-            if(dataFetch){
-                return {
-                    data:deadline,
-                    error:null,
-                }
-            }else{
-                return {
-                    data:null,
-                    error:"Unknown Error Occured"
-                }
-            }
-        }else{
-            return {
-                data:null,
-                error:"Unknown Error Occured "
-            }
-        }
-    } catch (error) {
-        return {
-            data:null,
-            error:error.code
-        }        
-    }    
-}
-
-async function getFileUploadDetails(email,subject,midNo){
-    const userRef = doc(db,"users",email);
-    try {
-        const doc = await getDoc(userRef);
-        if(doc.exists()){
-            let subs = doc.data()["subjects"] 
-            for (let i = 0; i < subs.length; i++) {
-                if(subject===subs[i].subject){
-                    if(midNo==="1"){
-                        if(subs[i].topic!=null && subs[i].mid_1!=null){
-                            return {
-                                data:{ link:subs[i].mid_1,topic:subs[i].topic, fileName:subs[i].fileName1},
-                                error:null
-                            }
-                        }else{
-                            return {
-                                data:null,
-                                error:"PRA not submitted"
-                            }
-                        }                  
-                    }else if(midNo==="2"){
-                     
-                        if(subs[i].topic!=null && subs[i].mid_2!=null){
-                            return {
-                                data:{ link:subs[i].mid_2,topic:subs[i].topic, fileName:subs[i].fileName2},
-                                error:null
-                            }
-                        }else{
-                            return {
-                                data:{topic:subs[i].topic},
-                                error:"PRA not submitted"
-                            }
-                        }                
-                    }
-                    break;
-                }  
-                              
-            }            
-        }else{
-            return {
-                data:null,
-                error:"Enroll to get details"
-            }
-        }
-    } catch (error) {
-        return {
-            data:null,
-            error:error.code
-        }        
-    }    
-}
-
-
-
-
-async function  fetchisSem1 (course,year) {
-    try {
-        const adminRef = doc(db,`adminData/semester/${course}`,`${year}`);
+async function fetchRegulationOptions() {
+  try {
+    const adminRef = doc(db, `adminData/regulations`);
     const adminDoc = await getDoc(adminRef);
     if (adminDoc.exists()) {
-      let date = new Timestamp(adminDoc.data()["sem1"]["seconds"],adminDoc.data()["sem1"]["nanoseconds"]).toDate();
-      const currentdate = new Date()
-      if(date > currentdate){
-        return true
+      let arr = [];
+      let regarray = adminDoc.data()["regarray"];
+      for (let i = 0; i < regarray.length; i++) {
+        let match = false;
+        if (arr.length === 0) {
+          console.log(i);
+          arr = [...arr, { value: `${regarray[i]}`, label: `${regarray[i]}` }];
+        }
+        for (let j = 0; j < arr.length; j++) {
+          if (arr[j].value == regarray[i]) {
+            console.log(i, j);
+            match = true;
+          }
+        }
+        if (!match) {
+          arr = [...arr, { value: `${regarray[i]}`, label: `${regarray[i]}` }];
+        }
+      }
+return {
+    data : arr,
+    error:null
+}
+      
+    }
+  
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function fetchisSem1(course, year) {
+  try {
+    const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let date = new Timestamp(
+        adminDoc.data()["sem1"]["seconds"],
+        adminDoc.data()["sem1"]["nanoseconds"]
+      ).toDate();
+      const currentdate = new Date();
+      if (date > currentdate) {
+        return true;
       }
       return false;
     }
-    } catch (error) {
-        console.log(error);
-    }
-};
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-
-async function  fetchisSem2 (course,year) {
-    try {
-        const adminRef = doc(db,`adminData/semester/${course}`,`${year}`);
+async function fetchisSem2(course, year) {
+  try {
+    const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
     const adminDoc = await getDoc(adminRef);
     if (adminDoc.exists()) {
-        let date1 = new Timestamp(adminDoc.data()["sem1"]["seconds"],adminDoc.data()["sem1"]["nanoseconds"]).toDate();
-      let date2 = new Timestamp(adminDoc.data()["sem2"]["seconds"],adminDoc.data()["sem2"]["nanoseconds"]).toDate();
-      const currentdate = new Date()
-      if(date1 < currentdate&& date2 >currentdate){
-        return true
-        
+      let date1 = new Timestamp(
+        adminDoc.data()["sem1"]["seconds"],
+        adminDoc.data()["sem1"]["nanoseconds"]
+      ).toDate();
+      let date2 = new Timestamp(
+        adminDoc.data()["sem2"]["seconds"],
+        adminDoc.data()["sem2"]["nanoseconds"]
+      ).toDate();
+      const currentdate = new Date();
+      if (date1 < currentdate && date2 > currentdate) {
+        return true;
       }
       return false;
     }
-    } catch (error) {
-        console.log(error);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function fetchSemNumber(course, year) {
+  try {
+    const d1 = await fetchisSem1(course, year);
+    const d2 = await fetchisSem2(course, year);
+    if (d1) {
+      return 1;
     }
-};
-
-
-async function  fetchSemNumber (course,year) {
-    try {
-   const d1 = await fetchisSem1(course,year);
-   const d2 = await fetchisSem2(course,year);
-   if(d1){
-       return 1;
-   }
-   if(d2){
-       return 2;
-   }
-    } catch (error) {
-        console.log(error);
+    if (d2) {
+      return 2;
     }
-};
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-export {enrollCourse,checkEnrollment,getStudentData,
-    getCurriculumDetails,getSubjectsList,fetchDepartments,getDeadLines,getFileUploadDetails,fetchisMid1,fetchisMid2,fetchisSem1,fetchisSem2,fetchSemNumber};
+export {
+  enrollCourse,
+  checkEnrollment,
+  getStudentData,
+  getCurriculumDetails,
+  getSubjectsList,
+  fetchDepartments,
+  getDeadLines,
+  getFileUploadDetails,
+  fetchisMid1,
+  fetchisMid2,
+  fetchisSem1,
+  fetchisSem2,
+  fetchSemNumber,
+  fetchRegulationOptions,
+};
