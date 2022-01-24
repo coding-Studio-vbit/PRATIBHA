@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import {
-  enrollClasses,
-  enrollHODClasses,
   getDepartments,
 } from "../../services/facultyServices";
 import "./lockList.css";
@@ -78,15 +75,40 @@ export default function AddClasses() {
     
       function handleAddButton(){
           console.log("added")
+          setIsSuccess(true)
+          setShowDialog("Class Added");
+          setdisableadd(true);
+          
+
       }
 
   return (
       <div>
 
-<Navbar title={"Add any class"} backURL={"/faculty/classlist"}/>
+<Navbar title={"Add any class"} backURL={currentUser.isHOD?"/faculty/hodclasslist":"/faculty/classlist"}/>
   
   <div className="addclasses-root">
-     
+  <p className="instruction">Select the class to be added.</p>
+  {showDialog && (
+            <Dialog
+              message={showDialog}
+              onOK={() => {
+                isSuccess
+                  ? currentUser.isHOD
+                    ? nav(
+                        "/faculty/hodclasslist",
+                        { state: currentUser },
+                        { replace: true }
+                      )
+                    : nav(
+                        "/faculty/classlist",
+                        { state: currentUser },
+                        { replace: true }
+                      )
+                  : setShowDialog(false);
+              }}
+            />
+          )}
       <div className="addclasses-dropdown">
               <p className="addclasses-dropdown-title">Course</p>
               <Select

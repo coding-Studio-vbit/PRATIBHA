@@ -98,10 +98,15 @@
   font-size: large;
   width: 100px;
   height: 50px;
+  cursor: pointer;
 }
 
 .addclasses-btn:hover{
   box-shadow: none;
+}
+.addclasses-btn:disabled{
+  background-color: grey;
+  cursor: not-allowed;
 }
 .addclasses-btn-div{
  display: flex;
