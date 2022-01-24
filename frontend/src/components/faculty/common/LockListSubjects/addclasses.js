@@ -9,6 +9,7 @@ import {
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { fetchSemNumber } from "../../../student/services/studentServices";
 
 export default function AddClasses() {
     const [Course, setCourse] = useState({ value: "none" });
@@ -73,7 +74,9 @@ export default function AddClasses() {
         { value: "2", label: "2" },
       ];
     
-      function handleAddButton(){
+     async function handleAddButton(){
+          const sem = await fetchSemNumber("BTech","1")
+          console.log(sem)
           console.log("added")
           setIsSuccess(true)
           setShowDialog("Class Added");

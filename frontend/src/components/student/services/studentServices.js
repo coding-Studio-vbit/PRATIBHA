@@ -280,5 +280,61 @@ async function getFileUploadDetails(email,subject,midNo){
     }    
 }
 
+
+
+
+async function  fetchisSem1 (course,year) {
+    try {
+        const adminRef = doc(db,`adminData/semester/${course}`,`${year}`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let date = new Timestamp(adminDoc.data()["sem1"]["seconds"],adminDoc.data()["sem1"]["nanoseconds"]).toDate();
+      const currentdate = new Date()
+      if(date > currentdate){
+        return true
+      }
+      return false;
+    }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+async function  fetchisSem2 (course,year) {
+    try {
+        const adminRef = doc(db,`adminData/semester/${course}`,`${year}`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+        let date1 = new Timestamp(adminDoc.data()["sem1"]["seconds"],adminDoc.data()["sem1"]["nanoseconds"]).toDate();
+      let date2 = new Timestamp(adminDoc.data()["sem2"]["seconds"],adminDoc.data()["sem2"]["nanoseconds"]).toDate();
+      const currentdate = new Date()
+      if(date1 < currentdate&& date2 >currentdate){
+        return true
+        
+      }
+      return false;
+    }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+async function  fetchSemNumber (course,year) {
+    try {
+   const d1 = await fetchisSem1(course,year);
+   const d2 = await fetchisSem2(course,year);
+   if(d1){
+       return 1;
+   }
+   if(d2){
+       return 2;
+   }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export {enrollCourse,checkEnrollment,getStudentData,
-    getCurriculumDetails,getSubjectsList,fetchDepartments,getDeadLines,getFileUploadDetails,fetchisMid1,fetchisMid2};
+    getCurriculumDetails,getSubjectsList,fetchDepartments,getDeadLines,getFileUploadDetails,fetchisMid1,fetchisMid2,fetchisSem1,fetchisSem2,fetchSemNumber};
