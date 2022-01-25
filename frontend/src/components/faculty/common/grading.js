@@ -63,7 +63,7 @@ const Grading = () => {
   async function midboolean (){
     const parts = location.state.className.split('_');
     let course = parts[0]
-    let year = parts[1]
+    let year = parts[2]
     const checkMid1 = await fetchisMid1(course,year);
     const checkMid2 = await fetchisMid2(course,year);
     if (checkMid1) {
@@ -244,6 +244,7 @@ const Grading = () => {
     }
     let course = location.state.className.split("_")[0];
     let year = location.state.className.split("_")[1]
+    console.log(location.state)
 
     const coeDeadLine = await getCoeDeadline(midNo,course,year);
     if(coeDeadLine.error==null){
