@@ -15,6 +15,7 @@ import Dialog from "../../global_ui/dialog/dialog";
 
 const Grading = () => {
   let location = useLocation();
+  console.log(location.state.path)
   const { currentUser } = useAuth();
   const [subject, setSubject] = useState(
     location.state.path.split("/")[location.state.path.split("/").length - 3]

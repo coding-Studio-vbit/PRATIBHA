@@ -147,6 +147,7 @@ const Upload = () => {
               url,
               user.course,
               user.year,
+              user.regulation,
               user.department,
               user.section,
               location.state.subject,
@@ -268,6 +269,7 @@ const Upload = () => {
             const res = await getDeadLines(
               user.course,
               user.year,
+              user.regulation,
               user.department,
               user.section,
               location.state.subject,
@@ -317,6 +319,7 @@ const Upload = () => {
             year: res.document["year"],
             department: res.document["department"],
             section: res.document["section"],
+            regulation:res.document["regulation"]
         });
         setPageLoad(false);
         setPageLoadError(null);
