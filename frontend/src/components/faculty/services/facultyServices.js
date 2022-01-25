@@ -506,23 +506,6 @@ async function getCoeDeadline(midNo, course, year) {
   }
 }
 
-async function getSemester() {
-  const semRef = doc(db, "adminData", "semester");
-  try {
-    const docSnap = await getDoc(semRef);
-    if (docSnap.exists()) {
-      return {
-        data: docSnap.data()["semester"],
-        error: null,
-      };
-    }
-  } catch (error) {
-    return {
-      data: null,
-      error: error,
-    };
-  }
-}
 
 async function getAllStudentsData(facultyID, className) {
   const facultyRef = collection(db, `faculty/${facultyID}/${className}`);
@@ -572,6 +555,5 @@ export {
   getMarks,
   getCoeDeadline,
   getAllStudentsData,
-  getSemester,
   addClass,
 };
