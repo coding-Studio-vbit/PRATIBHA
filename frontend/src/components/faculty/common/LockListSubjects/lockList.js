@@ -44,7 +44,7 @@ const LockList = () => {
   const [sections, setSections] = useState([
     { value: "loading", label: "Loading..." },
   ]);
-  const [regulation,setRegulation]=useState('');
+  const [Regulation,setRegulation]=useState('');
   const[regoptionss,setregoptionss]=useState([]);
    async function regoptions(){
     const res = await fetchRegulationOptions();
@@ -93,6 +93,7 @@ const LockList = () => {
     if (Course.value === "BTech") {
       const newBTech =
         "BTech_" +
+        Regulation.value +"_"+
         Year.value +
         "_" +
         Department.value +
@@ -112,6 +113,7 @@ const LockList = () => {
     } else if (Course.value === "MTech") {
       const newMTech =
         "MTech_" +
+        Regulation.value +"_"+
         Year.value +
         "_" +
         Department.value +
@@ -131,6 +133,7 @@ const LockList = () => {
     } else if (Course.value === "MBA") {
       const newMBA =
         "MBA_" +
+        Regulation.value +"_"+
         Year.value +
         "_" +
         Department.value +
@@ -269,7 +272,7 @@ const LockList = () => {
                <p className="locklist-dropdown-title">Regulation</p>
                         <Select
                         placeholder=""
-                        value={regulation}
+                        value={Regulation}
                         isDisabled={disablereg}
                         className="select-locklist"
                         options={regoptionss}
@@ -335,9 +338,9 @@ const LockList = () => {
                       {BTechList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
-                        let newItem = displayItem[0];
+                        let newItem = displayItem[1];
                         let len = displayItem.length;
-                        for (let i = 1; i < len; i++) {
+                        for (let i = 2; i < len; i++) {
                           newItem = newItem + "_" + displayItem[i];
                         }
                         return (
@@ -365,9 +368,9 @@ const LockList = () => {
                       {MTechList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
-                        let newItem = displayItem[0];
+                        let newItem = displayItem[1];
                         let len = displayItem.length;
-                        for (let i = 1; i < len; i++) {
+                        for (let i = 2; i < len; i++) {
                           newItem = newItem + "_" + displayItem[i];
                         }
                         return (
@@ -394,17 +397,17 @@ const LockList = () => {
                       {MBAList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
-                        let newItem = displayItem[0];
+                        let newItem = displayItem[1];
                         let len = displayItem.length;
-                        if (displayItem[0] === "1")
+                        if (displayItem[1] === "1")
                           newItem =
                             newItem +
                             "_" +
-                            displayItem[2] +
+                            displayItem[3] +
                             "_" +
-                            displayItem[3];
+                            displayItem[4]
                         else {
-                          for (let i = 1; i < len; i++) {
+                          for (let i = 2; i < len; i++) {
                             newItem = newItem + "_" + displayItem[i];
                           }
                         }
