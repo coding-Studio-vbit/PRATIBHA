@@ -176,11 +176,11 @@ async function fetchDepartments(course, year) {
   }
 }
 
-async function getDeadLines(course, year, department, section, subject, midNo) {
+async function getDeadLines(course, year,regulation, department, section, subject, midNo) {
   const deadLinesRef = doc(
     db,
     "subjects",
-    `${course}_${year}_${department}_${section}`
+    `${course}_${regulation}_${year}_${department}_${section}`
   );
   try {
     const deadLineDoc = await getDoc(deadLinesRef);
