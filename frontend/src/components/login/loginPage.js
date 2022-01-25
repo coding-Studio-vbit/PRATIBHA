@@ -21,9 +21,7 @@ export default function LoginPage() {
       } else if (currentUser.userType === "FACULTY") {
         if (currentUser.isFirstTime) {
           nav("/faculty/enroll", { replace: true });
-        } else if (currentUser.isHOD) {
-          nav("/faculty/hodclasslist", { replace: true });
-        } else if (currentUser.isCOE) {
+        }  else if (currentUser.isCOE) {
           nav("/faculty/coesearch", { replace: true });
         } else {
           nav("/faculty/classlist", { replace: true });
