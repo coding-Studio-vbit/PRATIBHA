@@ -34,7 +34,7 @@
   min-width: 270px;
   justify-self: center;
   align-self: center;
-  margin:15px;
+  /* margin:15px; */
 }
 
 .instruction {
@@ -54,6 +54,7 @@
 
 .locklist-dropdown-title {
   font-weight: 500;
+  margin:0.5em;
 }
 .add-button{
   border: none;
