@@ -12,7 +12,7 @@
   display: flex;
   row-gap: 5px;
   column-gap: 20px;
-  flex-direction:row;
+  flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
   padding: 4px 10px;
@@ -23,29 +23,31 @@
   font-weight: normal;
   margin: 10px;
 }
+.addclass-button {
+  margin-top: 10px;
+  margin-left: auto;
+}
 
-.courseTitle{
+.courseTitle {
   text-align: left;
   margin: 8px 3px;
   font-size: 20px;
-  padding:4px 10px;
-  padding-right:0px;
+  padding: 4px 10px;
+  padding-right: 0px;
 }
 
-.subjectsDivision{
+.subjectsDivision {
   margin: 0;
   padding: 0;
   width: 100%;
-
 }
 
 @media screen and (max-width: 600px) {
-  .cardList{
+  .cardList {
     justify-content: center;
     gap: 20px;
   }
-  .courseTitle{
+  .courseTitle {
     text-align: center;
   }
 }
-

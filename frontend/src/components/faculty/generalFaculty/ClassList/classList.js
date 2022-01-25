@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Card from "../../../global_ui/card/card.js";
+import Button from "../../../global_ui/buttons/button";
 import "./classList.css";
 import { useNavigate } from "react-router-dom";
 import { getSubjects } from "../../services/facultyServices";
@@ -47,7 +48,12 @@ const ClassList = () => {
   ) : (
     <div>
       <Navbar back={false} title="Your Classes" logout={true} />
+      
       <div className="div-container-classes">
+      <div className="addclass-button">
+
+      <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i class="fas fa-plus"></i>Add Classes</Button>
+      </div>
         {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">
             <h4 className="courseTitle">B.Tech</h4>
