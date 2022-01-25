@@ -12,20 +12,24 @@
   border:aqua;
 }
 .list-container {
-  background-color: rgb(176, 196, 222, 0.25);
-  height: 440px;
-  width: 300px;
+  /* background-color: rgb(176, 196, 222, 0.25); */
+  /* height: 440px; */
+  /* width: 300px; */
   border-radius: 10px;
-  padding: 5px;
+  /* padding: 5px; */
+ display: grid;
+ grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+ justify-content: center;
+ /* justify-items: center; */
 }
-.enroll-dropdown{
+/* .enroll-dropdown{
   margin:10px;
-}
+} */
 
 .flex-container {
   display: flex;
   gap: 30px;
- 
+ padding: 15px auto;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -34,6 +38,8 @@
   min-width: 270px;
   justify-self: center;
   align-self: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
   /* margin:15px; */
 }
 
@@ -44,17 +50,18 @@
 }
 .course-heading{
   text-align: center;
-  margin: 5px;
+  margin: 0px;
   color:#0e72ab;
 }
-.list-head{
-  padding:10px;
+/* .list-head{
+  padding:3px;
   margin: 5px;
-}
+} */
 
 .locklist-dropdown-title {
   font-weight: 500;
-  margin:0.5em;
+  margin:0px;
+  margin-bottom: 10px;
 }
 .add-button{
   border: none;
@@ -71,8 +78,17 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  justify-self: center;
+  width:min(90%,400px);
   margin-left : 1px;
-  text-align: left;
+  /* text-align: left; */
+  margin-bottom: 7px;
+  box-shadow: 0px 3px 1px 1px #0e72ab;
+  border-radius: 4px;
+  padding: 0.5rem 0.7rem;
+  /* border:2px solid grey; */
+  background-color: rgb(176, 196, 222, 0.25);
+
 }
 
 .addclasses-root{

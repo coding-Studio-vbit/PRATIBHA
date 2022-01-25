@@ -1,19 +1,19 @@
 .globalCardContainer{
-    height: 140px;
-    margin: 6px;
+    height: 120px;
+    margin: 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 15px 26px;
+    padding: 12px;
     background:rgba(176, 196, 222, 0.43);
     border-radius: 7px;
     cursor: pointer;
     font-size:large;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    width: 270px;
+    width: 220px;
 
 }
 .globalCardContainer:hover {
