@@ -2,13 +2,13 @@ import { db, storage } from "../../../firebase";
 import { ref,uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, getDoc,setDoc,updateDoc } from "firebase/firestore"; 
 
-async function uploadFile(fileObj,course,year,department,section,subject,midNo,email,title,fileName){
+async function uploadFile(fileObj,course,year,regulation,department,section,subject,midNo,email,title,fileName){
     let error=null;
     console.log(fileObj.type);
 
     const pra_ref= ref(
         storage,
-        `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
+        `${course}/${regulation}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
     );
     
     // let pra_ref;
@@ -55,7 +55,7 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                     });
                     let faculty=null;
                     console.log(`${course}_${year}_${department}_${section}`);
-                    const subRef = doc(db,"subjects",`${course}_${year}_${department}_${section}`);
+                    const subRef = doc(db,"subjects",`${course}_${regulation}_${year}_${department}_${section}`);
                     const docSnap = await getDoc(subRef);
                     if(docSnap.exists()){
                         console.log("AB");
@@ -74,7 +74,7 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
                     if(faculty!=null){
                         console.log(`${course}_${year}_${department}_${section}_${subject}`);
                         const facultyRef = doc(
-                            db,`faculty/${faculty}/${course}_${year}_${department}_${section}_${subject}`,email.split('@')[0]);
+                            db,`faculty/${faculty}/${course}_${regulation}_${year}_${department}_${section}_${subject}`,email.split('@')[0]);
                         if(midNo=="1"){
                             //TODO if mid1 is not submitted then setdoc in mid2
                             await setDoc(facultyRef,{
@@ -114,13 +114,13 @@ async function uploadFile(fileObj,course,year,department,section,subject,midNo,e
     return error;
 }
 
-async function getUploadedFile(course,year,department,section,subject,midNo,email) {
+async function getUploadedFile(course,year,regulation,department,section,subject,midNo,email) {
     let res={
         url:null,
         error:null,    
     }
     console.log(`${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`);
-    await getDownloadURL(ref(storage,`${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`))
+    await getDownloadURL(ref(storage,`${course}/${regulation}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`))
     .then((url) => {
         console.log(url);
         res.url=url;
