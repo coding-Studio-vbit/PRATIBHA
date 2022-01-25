@@ -7,7 +7,7 @@ import { addClass, getDepartments } from "../../services/facultyServices";
 import "./addclasses.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { fetchSemNumber,fetchRegulationOptions } from "../../../student/services/studentServices";
+import { fetchRegulationOptions } from "../../../student/services/studentServices";
 
 export default function AddClasses() {
   const [Course, setCourse] = useState({ value: "none" });
@@ -80,7 +80,6 @@ export default function AddClasses() {
   ];
 
   async function handleAddButton() {
-    const sem = await fetchSemNumber("BTech", "1");
     const adding =
       Course.value +
       "_"+
@@ -93,8 +92,6 @@ export default function AddClasses() {
       Section.value +
       "_" +
       Subject.value;
-    console.log(adding);
-    console.log(sem);
     try {
       setdisableadd(true);
       setIsLoading(true);

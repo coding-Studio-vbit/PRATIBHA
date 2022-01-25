@@ -34,7 +34,6 @@ const SubjectsList = () => {
 
   const fetchdata = async () => {
     const { document, error } = await getStudentData(`${currentUser.email}`);
-    console.log(document)
     if (error == null) {
       setuserDoc(document);
       setcourse(document.course);
@@ -50,7 +49,6 @@ const SubjectsList = () => {
         document.department +
         "_" +
         document.section;
-        console.log(course)
       setCourseTitle(document.course + "_"+ document.year +"_"+document.department+  "_" + document.section);
 
       if (document.course === "MBA"&&document.year==='1') {
