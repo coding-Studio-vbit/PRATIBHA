@@ -264,7 +264,7 @@ const ViewSubmissions = () => {
         title={title}
         backURL={
           currentUser.isHOD
-            ? "/faculty/hodclasslist"
+            ? "/faculty/classlist"
             : currentUser.isCOE
             ? "/faculty/coesearch"
             : ""

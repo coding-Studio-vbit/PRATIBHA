@@ -119,7 +119,7 @@ export default function AddClasses() {
       <Navbar
         title={"Add any class"}
         backURL={
-          currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist"
+          "/faculty/classlist"
         }
       />
       {isLoading ? (
@@ -132,13 +132,7 @@ export default function AddClasses() {
               message={showDialog}
               onOK={() => {
                 isSuccess
-                  ? currentUser.isHOD
-                    ? nav(
-                        "/faculty/hodclasslist",
-                        { state: currentUser },
-                        { replace: true }
-                      )
-                    : nav(
+                  ?  nav(
                         "/faculty/classlist",
                         { state: currentUser },
                         { replace: true }

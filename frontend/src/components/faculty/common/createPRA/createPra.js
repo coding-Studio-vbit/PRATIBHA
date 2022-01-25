@@ -123,9 +123,8 @@ const CreatePra = () => {
       <Navbar
         backURL={
           isNewPra
-            ? currentUser.isHOD
-              ? "/faculty/hodclasslist"
-              : "/faculty/classlist"
+            ? 
+               "/faculty/classlist"
             : "/faculty/studentlist"
         }
         props={isNewPra ? false : { state: { sub: location.state.sub } }}

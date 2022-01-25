@@ -233,13 +233,7 @@ const LockList = () => {
               message={showDialog}
               onOK={() => {
                 isSuccess
-                  ? currentUser.isHOD
-                    ? nav(
-                        "/faculty/hodclasslist",
-                        { state: currentUser },
-                        { replace: true }
-                      )
-                    : nav(
+                  ?  nav(
                         "/faculty/classlist",
                         { state: currentUser },
                         { replace: true }
