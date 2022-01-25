@@ -144,7 +144,9 @@ const CreatePra = () => {
       )}
 
       {Loading ? (
+        <div className='createspinnerload'>
         <Spinner radius={1.5} />
+        </div>
       ) : (
         <div className="div-container">
           <span className="text-style">Enter instructions (if any):</span>
