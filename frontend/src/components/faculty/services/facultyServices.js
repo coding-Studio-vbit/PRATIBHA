@@ -367,7 +367,7 @@ async function postMarks(
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
         subs.find((e) => {
-          if (e.subject == className.split("_")[4]) {
+          if (e.subject == className.split("_")[5]) {
             e.gradeStatus1 = "GRADED";
           }
         });
@@ -386,7 +386,7 @@ async function postMarks(
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
         subs.find((e) => {
-          if (e.subject == className.split("_")[4]) {
+          if (e.subject == className.split("_")[5]) {
             e.gradeStatus2 = "GRADED";
           }
         });
