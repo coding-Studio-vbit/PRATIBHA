@@ -83,6 +83,8 @@ export default function AddClasses() {
     const sem = await fetchSemNumber("BTech", "1");
     const adding =
       Course.value +
+      "_"+
+      Regulation.value+
       "_" +
       Year.value +
       "_" +
