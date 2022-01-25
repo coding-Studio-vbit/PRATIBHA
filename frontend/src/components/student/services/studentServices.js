@@ -310,7 +310,7 @@ async function fetchRegulationOptions() {
         let match = false;
         if (arr.length === 0) {
           console.log(i);
-          arr = [...arr, { value: `${regarray[i]}`, label: `${regarray[i]}` }];
+          arr = [...arr, { value: `R${regarray[i]}`, label: `R${regarray[i]}` }];
         }
         for (let j = 0; j < arr.length; j++) {
           if (arr[j].value == regarray[i]) {
@@ -319,7 +319,7 @@ async function fetchRegulationOptions() {
           }
         }
         if (!match) {
-          arr = [...arr, { value: `${regarray[i]}`, label: `${regarray[i]}` }];
+          arr = [...arr, { value: `R${regarray[i]}`, label: `R${regarray[i]}` }];
         }
       }
 return {
