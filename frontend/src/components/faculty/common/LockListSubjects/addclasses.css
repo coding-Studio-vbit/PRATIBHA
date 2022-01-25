@@ -1,0 +1,54 @@
+.addclasses-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .addclasses-dropdown {
+    margin: 10px;
+  
+    align-items: center;
+    justify-content: center;
+  }
+  .addclasses-dropdown-title {
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top:5px;
+  }
+  .addclasses-btn {
+    text-align: center;
+    border-radius: 7px !important;
+    border: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    font-size: large;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    margin-top:5px;
+  }
+  .addclasses-instruction{
+    color: #0e72ab;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    margin-bottom: 0px;
+  }
+  .select-addclasses{
+    max-width: 300px;
+    min-width: 270px;
+    justify-self: center;
+    align-self: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+  .addclasses-btn:hover {
+    box-shadow: none;
+  }
+  .addclasses-btn:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+  .addclasses-btn-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

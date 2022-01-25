@@ -80,44 +80,7 @@
   background-color: rgb(176, 196, 222, 0.25);
 }
 
-.addclasses-root {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.addclasses-dropdown {
-  margin: 10px;
 
-  align-items: center;
-  justify-content: center;
-}
-.addclasses-dropdown-title {
-  text-align: center;
-}
-.addclasses-btn {
-  text-align: center;
-  border-radius: 7px !important;
-  border: none;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  font-size: large;
-  width: 100px;
-  height: 50px;
-  cursor: pointer;
-}
-
-.addclasses-btn:hover {
-  box-shadow: none;
-}
-.addclasses-btn:disabled {
-  background-color: grey;
-  cursor: not-allowed;
-}
-.addclasses-btn-div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 @media screen and (max-width: 600px) {
   .li-tag-flex {

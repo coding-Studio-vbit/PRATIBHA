@@ -4,7 +4,7 @@ import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import { addClass, getDepartments } from "../../services/facultyServices";
-import "./lockList.css";
+import "./addclasses.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { fetchSemNumber,fetchRegulationOptions } from "../../../student/services/studentServices";
@@ -126,7 +126,7 @@ export default function AddClasses() {
         <LoadingScreen />
       ) : (
         <div className="addclasses-root">
-          <p className="instruction">Select the class to be added.</p>
+          <p className="addclasses-instruction">Select the class to be added.</p>
           {showDialog && (
             <Dialog
               message={showDialog}
@@ -145,7 +145,7 @@ export default function AddClasses() {
             <p className="addclasses-dropdown-title">Course</p>
             <Select
               placeholder=""
-              className="select-locklist"
+              className="select-addclasses"
               options={Courses}
               onChange={(selectedCourse) => {
                 setCourse(selectedCourse);
@@ -155,7 +155,7 @@ export default function AddClasses() {
             <p className="addclasses-dropdown-title">Year</p>
             <Select
               placeholder=""
-              className="select-locklist"
+              className="select-addclasses"
               options={Course.value[0] === "M" ? MYears : Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
@@ -169,7 +169,7 @@ export default function AddClasses() {
               placeholder=""
               value={Regulation}
               isDisabled={disablereg}
-              className="select-locklist"
+              className="select-addclasses"
               options={regoptionss}
               onChange={(r) => {
                 setdisabledep(false);
@@ -181,7 +181,7 @@ export default function AddClasses() {
             <Select
               placeholder=""
               options={departments}
-              className="select-locklist"
+              className="select-addclasses"
               isDisabled={disabledep}
               onChange={(selectedDepartment) => {
                 setDepartment(selectedDepartment);
@@ -195,7 +195,7 @@ export default function AddClasses() {
             <Select
               placeholder=""
               options={sections[Department.value]}
-              className="select-locklist"
+              className="select-addclasses"
               isDisabled={disablesec}
               onChange={(selectedSection) => {
                 setSection(selectedSection);
@@ -207,7 +207,7 @@ export default function AddClasses() {
             <Select
               placeholder=""
               options={subjects[Department.value]}
-              className="select-locklist"
+              className="select-addclasses"
               isDisabled={disablesub}
               onChange={(selectedSubject) => {
                 setSubject(selectedSubject);
