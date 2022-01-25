@@ -259,14 +259,14 @@ export const getSubjects = async (email) => {
       const sub = data[index];
 
       const parts = sub.split("_");
-      const idk = parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
+      const idk = parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3]+"_"+parts[4];
 
       const subRef = await getDoc(doc(db, "subjects", idk));
       if (subRef.exists()) {
         const subsData = subRef.data()["subjects"];
 
         for (let i = 0; i < subsData.length; i++) {
-          if (parts[4] === subsData[i].subject) {
+          if (parts[5] === subsData[i].subject) {
             praSetSubs[sub] = subsData[i];
             let date1 = praSetSubs[sub].deadline1.toDate();
             date1 = date1.toLocaleDateString("en-GB");

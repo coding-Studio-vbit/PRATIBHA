@@ -32,17 +32,16 @@ const CreatePra = () => {
   const { currentUser } = useAuth();
 
   const parts = location.state.sub.split("_");
-
   const course = parts[0];
-  const year = parts[1];
+  const year = parts[2];
 
-  const sub = parts[4];
+  const sub = parts[5];
   const department =
-    parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
+    parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3]+"_"+parts[4];
 
-  let title = parts[0] + " " + parts[1] + " " + parts[2] + " " + parts[3];
-  if (parts[2] === "Not Applicable") {
-    title = parts[0] + " " + parts[1] + " " + parts[3];
+  let title = parts[0] + " " + parts[2] + " " + parts[3] + " " + parts[4];
+  if (parts[3] === "Not Applicable") {
+    title = parts[0] + " " + parts[2] + " " + parts[4];
   }
   const deadline = async () => {
     const isMid1 = await fetchisMid1(course, year);
@@ -69,6 +68,7 @@ const CreatePra = () => {
 
   useEffect(() => {
     const fetchPRA = async () => {
+      console.log(department)
       const res = await getPRA(sub, department);
       if (res.deadline2) {
         setDate(
@@ -98,9 +98,9 @@ const CreatePra = () => {
     const isMid1 = await fetchisMid1(course, year);
     const isMid2 = await fetchisMid2(course, year);
     const parts = location.state.sub.split("_");
-    const sub = parts[4];
+    const sub = parts[5];
     const department =
-      parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3];
+      parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3]+"_"+parts[4];
     await setPRA(
       sub,
       department,
@@ -131,7 +131,7 @@ const CreatePra = () => {
         props={isNewPra ? false : { state: { sub: location.state.sub } }}
         title={title}
       />
-      <p className="createPRAsub">Subject : {parts[4]}</p>
+      <p className="createPRAsub">Subject : {parts[5]}</p>
       {dialog && (
         <Dialog
           message={dialog}
