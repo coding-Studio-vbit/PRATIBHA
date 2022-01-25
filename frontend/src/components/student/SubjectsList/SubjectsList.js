@@ -27,6 +27,7 @@ const SubjectsList = () => {
   const [userDoc, setuserDoc] = useState(null);
   const [courseTitle, setCourseTitle] = useState(" ");
   const [course, setcourse] = useState("");
+  const[regulation,setregulation]=useState("");
   const [year, setyear] = useState("");
 
   const { currentUser } = useAuth();
@@ -38,6 +39,7 @@ const SubjectsList = () => {
       setuserDoc(document);
       setcourse(document.course);
       setyear(document.year);
+      setregulation(document.regulation);
       let course =
         document.course +
         "_" +
@@ -216,6 +218,7 @@ const SubjectsList = () => {
                             rollno: `${currentUser.email}`,
                             subject: dataitem.SUBJECT,
                             course: course,
+                            regulation:regulation,
                             year: year,
                           },
                         });
