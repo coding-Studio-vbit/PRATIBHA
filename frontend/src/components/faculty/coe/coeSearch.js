@@ -3,6 +3,7 @@ import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
 import { getDepartments } from "../services/facultyServices";
+import { fetchRegulationOptions } from "../../student/services/studentServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
@@ -27,6 +28,12 @@ export default function CoeSearch() {
   ]);
 
   const [showDialog, setShowDialog] = useState(null);
+  const [Regulation,setRegulation]=useState('');
+  const[regoptionss,setregoptionss]=useState([]);
+   async function regoptions(){
+    const res = await fetchRegulationOptions();
+  setregoptionss(res.data);
+   }
 
   const nav = useNavigate();
   useEffect(()=>{
@@ -45,6 +52,7 @@ export default function CoeSearch() {
     if (
       Course.value != null &&
       Year.value != null &&
+      Regulation.value!=null&&
       Department.value != null &&
       Section.value != null &&
       Subject.value != null
@@ -52,6 +60,7 @@ export default function CoeSearch() {
       var passing = {
         Course: Course.value,
         Year: Year.value,
+        Regulation:Regulation.value,
         Dept: Department.value,
         Section: Section.value,
         Subject: Subject.value,
@@ -99,6 +108,7 @@ export default function CoeSearch() {
           options={Courses}
           onChange={(selectedCourse) => {
             setCourse(selectedCourse);
+            regoptions();
           }}
         />
         <p className="dropdown-title">Year</p>
@@ -111,12 +121,25 @@ export default function CoeSearch() {
                 setYear(selectedYear);
               }}
             />
+             <p className="dropdown-title">Regulation</p>
+                        <Select
+                        placeholder=""
+                        value={Regulation}
+                        isDisabled={!Year}
+                        className="select"
+                        options={regoptionss}
+                        onChange={(r) => {
+                         
+                           
+                            setRegulation(r);
+                        }}
+                        />
         <p className="dropdown-title">Department</p>
         <Select
               placeholder=""
               options={departments}
               className="select"
-              isDisabled={!Year}
+              isDisabled={!Regulation}
               onChange={(selectedDepartment) => {
                 setDepartment(selectedDepartment);
                 setSections((c)=>{return {...c}})
