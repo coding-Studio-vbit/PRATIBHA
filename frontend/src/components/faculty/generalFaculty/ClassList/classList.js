@@ -55,9 +55,9 @@ const ClassList = () => {
               {subs.btechSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
-                let newItem = displayItem[0];
+                let newItem = displayItem[1];
                 let len = displayItem.length;
-                for (let i = 1; i < len; i++) {
+                for (let i = 2; i < len; i++) {
                   newItem = newItem + "-" + displayItem[i];
                 }
                 return (
@@ -86,9 +86,9 @@ const ClassList = () => {
               {subs.mtechSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
-                let newItem = displayItem[0];
+                let newItem = displayItem[1];
                 let len = displayItem.length;
-                for (let i = 1; i < len; i++) {
+                for (let i = 2; i < len; i++) {
                   newItem = newItem + "-" + displayItem[i];
                 }
                 return (
@@ -117,13 +117,13 @@ const ClassList = () => {
               {subs.mbaSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
-                let newItem = displayItem[0];
+                let newItem = displayItem[1];
                 let len = displayItem.length;
-                if (displayItem[0] === "1")
+                if (displayItem[1] === "1")
                   newItem =
-                    newItem + "-" + displayItem[2] + "-" + displayItem[3];
+                    newItem + "-" + displayItem[3] + "-" + displayItem[4];
                 else {
-                  for (let i = 1; i < len; i++) {
+                  for (let i = 2; i < len; i++) {
                     newItem = newItem + "-" + displayItem[i];
                   }
                 }
