@@ -39,17 +39,19 @@ const ViewSubmissions = () => {
 
   courseName = course;
 
-  course = course + "_" + title;
+  
 
   const DepartmentForFaculty =
     passedData.Course +
     "_" +
+    passedData.Regulation+
+    "_"+
     passedData.Year +
     "_" +
     passedData.Dept +
     "_" +
     passedData.Section;
-  
+  course = DepartmentForFaculty+"_"+passedData.Subject;
 
   if(passedData.Course === "MBA"&&passedData.Year==='1')
   {
@@ -71,6 +73,8 @@ const ViewSubmissions = () => {
     const res = await getUploadedFileByPath(
       courseName +
         "/" +
+        passedData.Regulation+
+        "/"+
         passedData.Year +
         "/" +
         passedData.Dept +
@@ -95,6 +99,9 @@ const ViewSubmissions = () => {
     const res = await getUploadedFileByPath(
       courseName +
         "/" +
+        
+        passedData.Regulation+
+        "/"+
         passedData.Year +
         "/" +
         passedData.Dept +
@@ -114,12 +121,15 @@ const ViewSubmissions = () => {
 
   const Fetchdata = async () => {
     var isData = false;
+    console.log(DepartmentForFaculty)
     const result = await getPRA(passedData.Subject, DepartmentForFaculty);
     if(result){
 
       let facultyID = result.facultyID;
       if (facultyID) {
+        console.log(course)
         const studentref = query(
+          
           collection(db, `faculty/${facultyID}/${course}`)
           // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
         );

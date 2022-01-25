@@ -52,6 +52,7 @@ export default function CoeSearch() {
     if (
       Course.value != null &&
       Year.value != null &&
+      Regulation.value!=null&&
       Department.value != null &&
       Section.value != null &&
       Subject.value != null
@@ -59,6 +60,7 @@ export default function CoeSearch() {
       var passing = {
         Course: Course.value,
         Year: Year.value,
+        Regulation:Regulation.value,
         Dept: Department.value,
         Section: Section.value,
         Subject: Subject.value,
