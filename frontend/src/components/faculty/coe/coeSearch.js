@@ -104,7 +104,7 @@ export default function CoeSearch() {
         <p className="dropdown-title">Course</p>
         <Select
           placeholder=""
-          className="select"
+          className="selectCOE"
           options={Courses}
           onChange={(selectedCourse) => {
             setCourse(selectedCourse);
@@ -114,7 +114,7 @@ export default function CoeSearch() {
         <p className="dropdown-title">Year</p>
         <Select
               placeholder=""
-              className="select"
+              className="selectCOE"
               options={Course.value[0]==='M'? MYears:Years}
               isDisabled={!Course}
               onChange={(selectedYear) => {
@@ -126,7 +126,7 @@ export default function CoeSearch() {
                         placeholder=""
                         value={Regulation}
                         isDisabled={!Year}
-                        className="select"
+                        className="selectCOE"
                         options={regoptionss}
                         onChange={(r) => {
                          
@@ -138,7 +138,7 @@ export default function CoeSearch() {
         <Select
               placeholder=""
               options={departments}
-              className="select"
+              className="selectCOE"
               isDisabled={!Regulation}
               onChange={(selectedDepartment) => {
                 setDepartment(selectedDepartment);
@@ -149,7 +149,7 @@ export default function CoeSearch() {
         <Select
               placeholder=""
               options={sections[Department.value]}
-              className="select"
+              className="selectCOE"
               isDisabled={!Department}
               onChange={(selectedSection) => {
                 setSection(selectedSection);
@@ -159,7 +159,7 @@ export default function CoeSearch() {
         <Select
               placeholder=""
               options={subjects[Department.value]}
-              className="select"
+              className="selectCOE"
               isDisabled={!Section}
               onChange={(selectedSubject) => {
                 setSubject(selectedSubject);
