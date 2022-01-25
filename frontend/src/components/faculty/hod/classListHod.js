@@ -167,22 +167,28 @@ const HODClassList = () => {
         <u>Your Classes</u>
       </p>
       <div className="div-container-classesHOD">
-        {subs.btechSubs.length !== 0 && (
-          <div>
-            <h4 className="course-title-list"> B.Tech</h4>
-            <div className="card-flex">
+      {subs.btechSubs.length !== 0 && (
+          <div className="subjectsDivision">
+            <h4 className="courseTitle">B.Tech</h4>
+            <div className="cardList">
               {subs.btechSubs.map((item) => {
+                var displayItem = item.split("_");
+                displayItem.splice(0, 1);
+                let newItem = displayItem[1];
+                let len = displayItem.length;
+                for (let i = 2; i < len; i++) {
+                  newItem = newItem + "-" + displayItem[i];
+                }
                 return (
                   <Card
-                    key={item.split("BTech_")}
-                    classname="card-container"
+                    key={newItem}
                     onclick={handleCard}
-                    text={item.split("BTech_")}
+                    text={newItem}
                     subText={
                       subs.praSetSubs[item]
                         ? subs.praSetSubs[item].date2
-                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
-                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                          ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
+                          : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
                         : "PRA not created."
                     }
                     klass={item}
@@ -193,21 +199,27 @@ const HODClassList = () => {
           </div>
         )}
         {subs.mtechSubs.length !== 0 && (
-          <div>
-            <h4 className="course-title-list">M.Tech</h4>
-            <div className="card-flex">
+          <div className="subjectsDivision">
+            <h4 className="courseTitle"> M.Tech</h4>
+            <div className="cardList">
               {subs.mtechSubs.map((item) => {
+                var displayItem = item.split("_");
+                displayItem.splice(0, 1);
+                let newItem = displayItem[1];
+                let len = displayItem.length;
+                for (let i = 2; i < len; i++) {
+                  newItem = newItem + "-" + displayItem[i];
+                }
                 return (
                   <Card
-                    key={item.split("MTech_")}
-                    classname="card-container"
+                    key={newItem}
                     onclick={handleCard}
-                    text={item.split("MTech_")}
+                    text={newItem}
                     subText={
                       subs.praSetSubs[item]
                         ? subs.praSetSubs[item].date2
-                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
-                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
+                          ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
+                          : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
                         : "PRA not created."
                     }
                     klass={item}
@@ -224,14 +236,14 @@ const HODClassList = () => {
               {subs.mbaSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
-                let newItem = displayItem[0];
+                let newItem = displayItem[1];
                 let len = displayItem.length;
-                if (displayItem[0] === "1")
+                if (displayItem[1] === "1")
                   newItem =
-                    newItem + "_" + displayItem[2] + "_" + displayItem[3];
+                    newItem + "-" + displayItem[3] + "-" + displayItem[4];
                 else {
-                  for (let i = 1; i < len; i++) {
-                    newItem = newItem + "_" + displayItem[i];
+                  for (let i = 2; i < len; i++) {
+                    newItem = newItem + "-" + displayItem[i];
                   }
                 }
                 return (
