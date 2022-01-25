@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./uploadpra.module.css";
-import Button from "../../global_ui/buttons/button";
+
+import cx from 'classnames'
+import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../global_ui/navbar/navbar";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { uploadFile } from "../services/storageServices";
@@ -14,6 +16,7 @@ import {
 } from "../services/studentServices";
 import { useLocation} from "react-router-dom";
 import { fetchisMid1,fetchisMid2 } from "../services/studentServices";
+import Download from "../../global_ui/download/download";
 // import Download from "../../global_ui/download/download";
 // import { Timestamp } from "firebase/firestore";
 
@@ -37,6 +40,8 @@ const Upload = () => {
     const [fileError, setFileError] = useState("");
     const [fileUploadLoading, setfileUploadLoading] = useState(false);
     const navigate = useNavigate();
+
+    const {currentUser} = useAuth();
   
 
     function handleTitle(e) 
@@ -347,10 +352,11 @@ const Upload = () => {
         pageLoadError === null ? (
         <div className={styles.uploadScreen}>
             <Navbar title={location.state.subject} backURL={'/student/subjectslist'}logout={false}></Navbar>
+            
             {
               showDialog && <Dialog message={"Uploaded Successfully"} onOK={dialogClose} />
             }
-            {/* <Download url={"https://images.pexels.com/photos/10757932/pexels-photo-10757932.png?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"} text="Download"/> */}
+
             <div className={styles.main}>
 
               <div id="selectMid">            
@@ -389,6 +395,10 @@ const Upload = () => {
                     </div>}
                     <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
                     <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                    {/* <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/> */}
+                    <p className={styles.downloadBtn}>
+                      <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>
+                    </p>
                    <button
                       onClick={() => seteditPRA(true)}
                       className={styles.editbutton}>
@@ -401,7 +411,7 @@ const Upload = () => {
                   <div className={styles.fileUploadModule}>
                   
                     <div className={styles.instructions}>
-                     <strong><u>INSTRUCTIONS:</u></strong>
+                     <strong style={{fontSize:'20px',marginTop:'20px'}}><u>INSTRUCTIONS:</u></strong>
                       {
                         deadLineInfo != null && 
                         <div>{deadLineInfo.instructions}</div>
@@ -411,49 +421,51 @@ const Upload = () => {
                   mid==1 ? (
                     <div >
                       { (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?                    
-                      (
+                       (
                         <div>
-                          <ul className="praInfo">
-                            <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit 200KB)</li>
-                            <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong><u>PDF</u></strong> format only.</li>                        
+                          <ul className={styles.praInfo} >
+                            <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload an abstract for your PRA.(Maximum file size limit <strong>200KB</strong> )</li>
+                            <li style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500'}}>Upload file in <strong>PDF</strong> format only.</li>                        
                           </ul>
-                      <div>
-                        <label className={styles.praLabel}>PRA Title:</label>
-                        <input
-                          size={30}
-                          type="text"
-                          placeholder="TITLE OF THE ACTIVITY"
-                          className={styles.UploadinputStyle}
-                          value={praTitle}
-                          onChange={(e) => handleTitle(e.target.value)}
-                          maxLength={50}                          
-                        />
-                        </div>
-                      <p className={styles.titleErrorField}>{titleError}</p> </div> ):
-                      (
-                        <div> 
-                          {
-                            praTitle!=null || praTitle.length>0 &&
-                            <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
 
-
-                          }
-                          {
-                            fileName!=null || fileName.length>0 &&
-                          <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
-
-
-
-                          }
-                          <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-1 submissions.</p>
-                        </div>
+                          <div>
+                            <label className={styles.praLabel}>PRA Title</label>
+                            <input
+                              size={30}
+                              type="text"
+                              placeholder="TITLE OF THE ACTIVITY"
+                              className={styles.UploadinputStyle}
+                              value={praTitle}
+                              onChange={(e) => handleTitle(e.target.value)}
+                              maxLength={50}                          
+                            />
+                          </div>
+                          <p className={styles.titleErrorField}>{titleError}</p> 
+                        </div> 
+                        ):
+                        (
+                          <div> 
+                            {
+                              praTitle!=null || praTitle.length>0 &&
+                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
+                            }
+                            {
+                              fileName!=null || fileName.length>0 &&
+                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                            }
+                            {/* <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/> */}
+                            <p className={styles.downloadBtn}>
+                              <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>
+                            </p>
+                            <p className={styles.errorField} style={{alignItems:"center"}}>Deadline Exceeeded.Cannot make any changes for Mid-1 submissions.</p>
+                          </div>
                       )
                     }
                     </div> 
                     ):
                     ( 
                     <div> 
-                      <p className="praInfo" style={{color:'#0E72AB', marginBottom:'10px', fontWeight:'500',alignContent:'center'}}>Upload proof of PRA (Maximum file size : 1GB).</p>
+                      <p className="praInfo">Upload proof of PRA (Maximum file size : 1GB).</p>
                         <div>
                         {
                           (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?
@@ -461,7 +473,7 @@ const Upload = () => {
                             {
                              (mid1NotSubmitted)?
                                 <div>
-                                  <label className={styles.praLabel}>PRA Title:</label>
+                                  <label className={styles.praLabel}>PRA Title </label>
                                   <input
                                     size={30}
                                     type="text"
@@ -485,6 +497,10 @@ const Upload = () => {
                             {/* Deadline crossed message  */}
                               <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
                               <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                              <p className={styles.downloadBtn}>
+                              <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>
+                              </p>
+                            
                               <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-2 submissions.</p>
                           </div>
                         }
@@ -519,7 +535,12 @@ const Upload = () => {
                               {fileError.length > 0 ? (
                                 <p className={styles.errorField}>{fileError}</p>
                               ) : (
-                                <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File :</strong> {fileName}</p>
+                                fileName.length>0 ?
+                                <p className={cx(styles.fileName,styles.fileUploadView)} >
+                                  <i class="far fa-file"></i>
+                                  
+                                  <strong style={{color:'#0E72AB'}}></strong>{fileName}
+                                </p>:<p></p>
                               )}
                             </div>
                             <button
@@ -530,7 +551,7 @@ const Upload = () => {
                               disabled={fileError || titleError||fileName==null||praTitle==null}
                             >                            
                               Upload
-                              <i className="fas fa-upload"></i>
+                              <i className="fas fa-upload" style={{marginLeft:'14px'}}></i>
                             </button>
                           </div>
                         )}
