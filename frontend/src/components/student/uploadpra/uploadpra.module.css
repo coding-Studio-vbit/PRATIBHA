@@ -21,17 +21,17 @@ input[type="file"] {
  }
 
  .customFileUpload {
+    
    background-color: rgba(176, 196, 222, 0.43);
    color: rgba(11, 91, 138, 1);
    outline: none;
-   padding: 5px 10px;
+   padding: 13px 10px;
    border-radius: 5px;
    border: none;
    text-align: center;
    text-decoration: none;
    cursor: pointer;
-   margin-top: 10px;
-   width:100px;
+   width: 100px;
    align-self: center;
    
  }
@@ -57,13 +57,15 @@ input[type="file"] {
    border-radius: 7px;
    font-weight: normal;
    align-items: center;
+   margin: 0px;
    
 }
 
 
 .editbutton{
+   margin-top: 40px;
    text-align: center;
-   border-radius: 500px !important;
+   border-radius:36px;
    border: none;
    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
    font-size: large;
@@ -71,9 +73,14 @@ input[type="file"] {
    color: white;
    width:120px;
    height: auto;
-   padding: 15px 10px !important;
+   padding:8px;
    align-self: center;
    cursor: pointer;
+   text-transform: capitalize;
+}
+
+.downloadBtn{
+   margin: auto;
 }
 
 .praLabel{
@@ -82,7 +89,8 @@ input[type="file"] {
    color:#0e72ab ;
    align-self: center;
    justify-content: space-between;
-   margin-right: 5px;
+   margin-left:0px;
+   margin-right: 8px;
    
 }
 label{
@@ -90,30 +98,36 @@ label{
 
 }
 .uploadbutton{
+  margin-bottom: 25px;
   background-color: #0E72AB;
   color:white;
   font-size: 16px;
   align-self: center;
   justify-self: center;
+  justify-content: space-around;
   cursor: pointer;
   display: inline;
   outline: none;
   border: none;
-  padding: 10px 15px;
+  padding: 10px 16px;
   border-radius: 8px;
+  text-transform: uppercase;
 }
 
 .uploadbutton:disabled{
-   background-color: grey;
+   background-color: #80808046;
    cursor:not-allowed;
    box-shadow: none;
+   color: darkslategrey;
    
  }
 .fileContainer{
    margin-bottom: 25px;
    display: flex;
-   flex-direction:column-reverse;
-   justify-content: space-between; 
+   flex-direction:row;
+   /* flex-wrap: wrap;
+   align-content: center; */
+   justify-content: center; 
    align-items: center;
 }
 .titleErrorField{
@@ -150,8 +164,13 @@ label{
 
 .praInfo{
    font-size: 16px;
-   text-align: center; 
+   text-align: left; 
+   margin-left: 0px;
+   margin-bottom: 35px ;
+   padding-left: 20px;
+   margin-left: 0px;
 }
+
 
 .fileName{
    color:darkslategrey;
@@ -161,6 +180,28 @@ label{
    align-self: center;
    justify-content: center;
    display: flex;
+   flex-wrap: wrap;
+   justify-items: center;
+   align-content: center;
+   text-align: center;
+}
+
+.fileUploadView{
+   overflow: hidden;
+   width: 250px;
+   text-overflow:ellipsis;
+   white-space: nowrap;
+   padding: 8px;
+   border:1px solid #80808086;
+   border-radius: 6px;
+   background-color: whitesmoke;
+   font-size:16px;
+   text-align: left;
+   padding-left: 8px;
+   text-align: left;
+   display: flex;
+   justify-content: start;
+   align-items: center;
 }
 
 .selectList{
@@ -211,10 +252,11 @@ label{
 
 @media only screen and (max-width: 600px) {
    .UploadinputStyle {
-   width: 80%;
+      margin-top: 14px;
    width: calc(96% - 3rem);   
    margin-left: 5%;
     } 
+   
 
     .praLabel{
       font-weight:800 ;
@@ -222,8 +264,7 @@ label{
       color:#0e72ab ;
       align-self: center;
       margin-left: 5%;
-      margin-top: 10px;
-      
+      margin-top: 10px;      
    }
    .titleErrorField{
       display:inline-block;
@@ -237,8 +278,9 @@ label{
    }
 
    .praInfo{
+      width: calc(96% - 3rem);   
+      margin: auto;
       font-size: 16px;
-      text-align: center;
       margin-bottom: 35px;
       padding: 10px;     
    }
@@ -253,7 +295,11 @@ label{
       margin-bottom: 25px;
       align-items: center;
       line-height: 1.4;
-    }
+    } 
+    .fileUploadView{
+       width:150px;
+    } 
+
    }
 /* 
 .btn{

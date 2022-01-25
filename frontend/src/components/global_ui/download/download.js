@@ -1,11 +1,21 @@
 import React from "react";
 // import "./download.css";
 import axios from "axios";
+import { ref, getDownloadURL } from "firebase/storage";
+import {storage} from './../../../firebase'
+
 
 function Download({ url, text = "DOWNLOAD", userID = "random", isIcon=true }) {
-  function download() {
-    // console.log("Satrte");
-    console.log(url);
+  console.log(userID);
+  async function download() {
+    if(url.slice(0,5)=="https"){
+      //do nothing
+    }else{
+      await getDownloadURL(ref(storage,url))
+      .then((ux) => {
+          url=ux;
+      })
+    }      
     axios({
       url: url,
       method: "GET",
@@ -52,7 +62,7 @@ function Download({ url, text = "DOWNLOAD", userID = "random", isIcon=true }) {
       {!isIcon && <p style={{fontSize:'16px'}}>{isIcon?"":"DOWNLOAD"}</p>}
       <i
         class="fas fa-cloud-download-alt downloadIcon"
-        style={{ color:isIcon?"#0E72AB":"white"}}
+        style={{ color:isIcon?"#0E72AB":"white",fontSize:isIcon?'28px':"12px"}}
       ></i>
     </button>
   );
