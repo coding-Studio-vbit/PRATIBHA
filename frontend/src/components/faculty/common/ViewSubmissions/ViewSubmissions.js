@@ -10,9 +10,10 @@ import {
   getStudentData,
   fetchisMid1,
   fetchisMid2,
+  fetchSemNumber
 } from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
-import { getPRA, getSemester } from "../../services/facultyServices";
+import { getPRA } from "../../services/facultyServices";
 import Download from "../../../global_ui/download/download";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -24,7 +25,6 @@ const ViewSubmissions = () => {
   const location = useLocation();
 
   const passedData = location.state;
-  console.log(passedData);
   let title =
   passedData.Course+
   " "+
@@ -121,13 +121,11 @@ const ViewSubmissions = () => {
 
   const Fetchdata = async () => {
     var isData = false;
-    console.log(DepartmentForFaculty)
     const result = await getPRA(passedData.Subject, DepartmentForFaculty);
     if(result){
 
       let facultyID = result.facultyID;
       if (facultyID) {
-        console.log(course)
         const studentref = query(
           
           collection(db, `faculty/${facultyID}/${course}`)
@@ -137,8 +135,8 @@ const ViewSubmissions = () => {
         let ismid1 = await fetchisMid1(courseName, passedData.Year);
         let ismid2 = await fetchisMid2(courseName, passedData.Year);
   
-        let semester = await getSemester();
-        setSem(semester.data);
+        let semester = await fetchSemNumber();
+        setSem(semester);
   
         await getDocs(studentref).then((querySnapshot) => {
           if (querySnapshot) {

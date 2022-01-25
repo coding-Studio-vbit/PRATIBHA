@@ -32,8 +32,6 @@ const HODSearch = () => {
   ]);
   const [showdep, setshowdep] = useState([]);
 
-
-
   useEffect(() => {
     let klasses = [];
     let departments = [];
@@ -47,8 +45,6 @@ const HODSearch = () => {
     setDepartment(departments);
   }, []);
   function filterDep(course) {
-    console.log("called filterdep");
-    console.log(course);
     if (course.value !== "MBA" && !currentUser.isFirstYearHOD) {
       let showdeps = [];
 
@@ -58,7 +54,6 @@ const HODSearch = () => {
         }
       }
       setshowdep(showdeps);
-      console.log(showdeps);
     }
   }
 
@@ -68,12 +63,9 @@ const HODSearch = () => {
         const res = await getDepartments(Course.value, Year.value);
         if (!res) return;
         setSubjects(res.subjects);
-        console.log(res.sections);
         setsections(res.sections);
         if (Course.value === "MBA") {
-          console.log("it is MBA");
           if (Year.value === "1") {
-            console.log("it is mba 1");
             setdisabledep(true);
             setDep({
               value: "MBA",
@@ -82,7 +74,6 @@ const HODSearch = () => {
             setdisablesec(false);
           }
           if (Year.value === "2") {
-            console.log("it is mba 2");
             setdisabledep(false);
             setshowdep(res.departments);
           }
@@ -111,50 +102,37 @@ const HODSearch = () => {
   ];
 
   function handleClick() {
-    console.log(
-      Course.value +
-        "_" +
-        Year.value +
-        "_" +
-        Section.value +
-        "_" +
-        Subject.value
-    );
     nav("/faculty/viewsubmissions", {
       state: {
         Course: Course.value,
         Year: Year.value,
-        Regulation:Regulation.value,
+        Regulation: Regulation.value,
         Dept: dep.label,
         Section: Section.value,
         Subject: Subject.value,
       },
     });
   }
-  const [Regulation,setRegulation]=useState('');
-  const[disablereg,setdisablereg]=useState(true);
-  const[regoptionss,setregoptionss]=useState([]);
-   async function regoptions(){
+  const [Regulation, setRegulation] = useState("");
+  const [disablereg, setdisablereg] = useState(true);
+  const [regoptionss, setregoptionss] = useState([]);
+  async function regoptions() {
     const res = await fetchRegulationOptions();
-  setregoptionss(res.data);
-   }
-
-
+    setregoptionss(res.data);
+  }
 
   return loading ? (
     <LoadingScreen />
   ) : (
     <>
-
       <Navbar
         style={{ marginBottom: "30px" }}
         title={"HOD"}
         logout={true}
         backURL={"/faculty/classlist"}
       />
-    <div className="root-hod">
-      
-      {/* <div className="div-container-classesHOD">
+      <div className="root-hod">
+        {/* <div className="div-container-classesHOD">
       {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">
             <h4 className="courseTitle">B.Tech</h4>
@@ -256,105 +234,92 @@ const HODSearch = () => {
         )}
       </div> */}
 
-      <p className="dep-title">
-        <u>View Department Grades</u>
-    </p>
+        <p className="dep-title">
+          <u>View Department Grades</u>
+        </p>
 
-       
-          <span className="dd-text">Course</span>
-          <Select
-            placeholder=""
-            className="selectHOD"
-            options={klass}
-            onChange={(selectedCourse) => {
-              setCourse(selectedCourse);
-              filterDep(selectedCourse);
-              regoptions();
-            }}
-          />
-     
-     
-          <span className="dd-text">Year</span>
-          <Select
-            placeholder=""
-            className="selectHOD"
-            options={
-              Course.value[0] === "M"
-                ? MYears
-                : currentUser.isFirstYearHOD
-                ? [Years[0]]
-                : [Years[1], Years[2], Years[3]]
-            }
-            isDisabled={!Course}
-            onChange={async (selectedYear) => {
-              setYear(selectedYear);
-              setdisablereg(false);
-            }}
-          />
-            <span className="dd-text">Regulation</span>
-                        <Select
-                        placeholder=""
-                        value={Regulation}
-                        isDisabled={disablereg}
-                        className="selectHOD"
-                        options={regoptionss}
-                        onChange={(r) => {
-                         
-                           
-                            setRegulation(r);
-                            setdisabledep(false);
-                        }}
-                        />
-    
-
-     
-          <span className="dd-text">Department</span>
-          <Select
-             className="selectHOD"
-            placeholder=""
-            options={showdep}
-            isDisabled={disabledep}
-            onChange={async (d) => {
-              setDep(d);
-              console.log(d);
-
-              setsections((c) => {
-                console.log(c);
-                return { ...c };
-              });
-              console.log(sections);
-              setdisablesec(false);
-            }}
-          />
-     
-
-       
-          <span className="dd-text">Section</span>
-          <Select
-             className="selectHOD"
-            placeholder=""
-            options={sections[dep.label]}
-            isDisabled={disablesec}
-            onChange={(selectedSection) => {
-              setSection(selectedSection);
-            }}
-          />
-        
-      
-          <span className="dd-text">Subject</span>
-          <Select
+        <span className="dd-text">Course</span>
+        <Select
+          placeholder=""
           className="selectHOD"
-            placeholder=""
-            options={subjects[dep.label]}
-            isDisabled={!Section}
-            onChange={(selectedSubject) => {
-              setSubject(selectedSubject);
-              setButton(false);
-            }}
-          />
-   
-    
-   
+          options={klass}
+          onChange={(selectedCourse) => {
+            setCourse(selectedCourse);
+            filterDep(selectedCourse);
+            regoptions();
+          }}
+        />
+
+        <span className="dd-text">Year</span>
+        <Select
+          placeholder=""
+          className="selectHOD"
+          options={
+            Course.value[0] === "M"
+              ? MYears
+              : currentUser.isFirstYearHOD
+              ? [Years[0]]
+              : [Years[1], Years[2], Years[3]]
+          }
+          isDisabled={!Course}
+          onChange={async (selectedYear) => {
+            setYear(selectedYear);
+            setdisablereg(false);
+          }}
+        />
+        <span className="dd-text">Regulation</span>
+        <Select
+          placeholder=""
+          value={Regulation}
+          isDisabled={disablereg}
+          className="selectHOD"
+          options={regoptionss}
+          onChange={(r) => {
+            setRegulation(r);
+            setdisabledep(false);
+          }}
+        />
+
+        <span className="dd-text">Department</span>
+        <Select
+          className="selectHOD"
+          placeholder=""
+          options={showdep}
+          isDisabled={disabledep}
+          onChange={async (d) => {
+            setDep(d);
+
+            setsections((c) => {
+              return { ...c };
+            });
+
+            setdisablesec(false);
+          }}
+        />
+
+        <span className="dd-text">Section</span>
+        <Select
+          className="selectHOD"
+          placeholder=""
+          options={sections[dep.label]}
+          isDisabled={disablesec}
+          onChange={(selectedSection) => {
+            setSection(selectedSection);
+          }}
+        />
+
+        <span className="dd-text">Subject</span>
+        <Select
+          className="selectHOD"
+          placeholder=""
+          options={subjects[dep.label]}
+          isDisabled={!Section}
+          onChange={(selectedSubject) => {
+            setSubject(selectedSubject);
+            setButton(false);
+          }}
+        />
+
         <Button
           icon={<i class="fas fa-search"></i>}
           className="normal hod-button"
@@ -362,8 +327,7 @@ const HODSearch = () => {
           onClick={handleClick}
           children="View"
         />
-
-    </div>
+      </div>
     </>
   );
 };

@@ -59,7 +59,6 @@ const LockList = () => {
         if (!res) return;
         setSubjects(res.subjects);
         setDepartments(res.departments);
-        console.log(res.departments);
         setSections(res.sections);
       } catch (error) {
         console.log(error);

@@ -12,8 +12,9 @@ import { useAuth } from "../../../context/AuthContext";
 import {
   fetchisMid1,
   fetchisMid2,
+  fetchSemNumber
 } from "../../../student/services/studentServices";
-import { getSemester } from "../../services/facultyServices";
+
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);
@@ -30,7 +31,6 @@ const ListofStudents = () => {
   const navigate = useNavigate();
   const val = location.state.sub;
   const subjectval = val.split("_");
-  console.log(subjectval);
   const course =
     subjectval[0] +
     "_" +
@@ -62,9 +62,7 @@ const ListofStudents = () => {
     );
     let stddd = null;
     let ismid1 = await fetchisMid1(subjectval[0], subjectval[2]);
-    console.log(ismid1)
     let ismid2 = await fetchisMid2(subjectval[0], subjectval[2]);
-    console.log(ismid2)
     if (ismid1) {
       setMid(1);
     }
@@ -72,8 +70,8 @@ const ListofStudents = () => {
       setMid(2);
     }
 
-    let semester = await getSemester();
-    setSem(semester.data);
+    let semester = await fetchSemNumber();
+    setSem(semester);
 
     await getDocs(studentref).then((querySnapshot) => {
       if (querySnapshot) {
@@ -199,15 +197,12 @@ const ListofStudents = () => {
           let obj = document["subjects"].find(
             (o) => o.subject === subjectval[5]
           );
-          console.log(obj.deadline2)
           if (obj) {
             setButtonText("EDIT PRA");
             let ismid2 = await fetchisMid2(subjectval[0], subjectval[2]);
             if(ismid2){
-              console.log('hi')
               if(!obj.deadline2){
                 setmid2err(true)
-                console.log(mid2err)
               }
             }
           }
