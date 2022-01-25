@@ -36,6 +36,12 @@
      font-weight: bold;
      margin-top: 20px;
 }
+.createspinnerload {
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 .text-style2{
     display:flex;
     font-size:20px;
