@@ -90,8 +90,9 @@ export default function CoeSearch() {
 
 
   return (
-    <div className="CoESearch-container">
+    <div >
       <Navbar title="COE" back={false} logout />
+      <div className="COESearch-container">
       {showDialog && (
         <Dialog
           message={showDialog}
@@ -100,6 +101,9 @@ export default function CoeSearch() {
           }}
         />
       )}
+ 
+      <p className="coe-instruction">Select the class to view grades.</p>
+     
       <div className="coe-dropdown">
         <p className="dropdown-title">Course</p>
         <Select
@@ -173,6 +177,7 @@ export default function CoeSearch() {
           height="40"
           onClick={handleView}
         />
+      </div>
       </div>
     </div>
   );

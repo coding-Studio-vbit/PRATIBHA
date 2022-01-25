@@ -1,31 +1,42 @@
-/* .CoESearch-container {
-  text-align: center;
-} */
+.CoESearch-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .coe-button {
-  margin: 20px;
+  margin-top: 16px;
   align-self: center;
   cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.dropdown-title {
-  font-weight: 500;
+.coe-instruction{
+  color: #0e72ab;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  margin-bottom: 0px;
   text-align: center;
-  font-weight: 500;
-  padding-bottom: 5px;
-  padding-top: 5px;
+}
+.dropdown-title {
+  text-align: center;
+  margin-bottom: 0px;
+  margin-top: 5px;
 }
 .selectCOE {
   max-width: 300px;
   min-width: 270px;
-  justify-self: center;
-  align-self: center;
-}
-.coe-dropdown {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
   margin-right: auto;
   margin-left: auto;
+}
+.coe-dropdown {
+  margin: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
 }
