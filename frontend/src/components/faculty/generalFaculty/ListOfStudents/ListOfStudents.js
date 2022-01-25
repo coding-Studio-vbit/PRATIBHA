@@ -30,6 +30,7 @@ const ListofStudents = () => {
   const navigate = useNavigate();
   const val = location.state.sub;
   const subjectval = val.split("_");
+  console.log(subjectval);
   const course =
     subjectval[0] +
     "_" +
@@ -37,17 +38,19 @@ const ListofStudents = () => {
     "_" +
     subjectval[2] +
     "_" +
-    subjectval[3];
+    subjectval[3]+
+    "_"+
+    subjectval[4];
   let title =
     subjectval[0] +
     " " +
-    subjectval[1] +
-    " " +
     subjectval[2] +
     " " +
-    subjectval[3];
+    subjectval[3] +
+    " " +
+    subjectval[4];
   if (subjectval[0] === "MBA" && subjectval[1] == "1") {
-    title = subjectval[0] + " " + subjectval[1] + " " + subjectval[3];
+    title = subjectval[0] + " " + subjectval[2] + " " + subjectval[4];
   }
 
   
@@ -58,8 +61,10 @@ const ListofStudents = () => {
       collection(db, `faculty/${currentUser.email}/${location.state.sub}`)
     );
     let stddd = null;
-    let ismid1 = await fetchisMid1(subjectval[0], subjectval[1]);
-    let ismid2 = await fetchisMid2(subjectval[0], subjectval[1]);
+    let ismid1 = await fetchisMid1(subjectval[0], subjectval[2]);
+    console.log(ismid1)
+    let ismid2 = await fetchisMid2(subjectval[0], subjectval[2]);
+    console.log(ismid2)
     if (ismid1) {
       setMid(1);
     }
@@ -137,7 +142,7 @@ const ListofStudents = () => {
               if (error == null) {
                 isData = true;
                 let obj = returndata["subjects"].find(
-                  (o) => o.subject === subjectval[4]
+                  (o) => o.subject === subjectval[5]
                 );
                 if (obj) {
                   topic = obj.topic;
@@ -192,12 +197,12 @@ const ListofStudents = () => {
         let document = subjectDoc.data();
         if (document["subjects"]) {
           let obj = document["subjects"].find(
-            (o) => o.subject === subjectval[4]
+            (o) => o.subject === subjectval[5]
           );
           console.log(obj.deadline2)
           if (obj) {
             setButtonText("EDIT PRA");
-            let ismid2 = await fetchisMid2(subjectval[0], subjectval[1]);
+            let ismid2 = await fetchisMid2(subjectval[0], subjectval[2]);
             if(ismid2){
               console.log('hi')
               if(!obj.deadline2){
@@ -242,7 +247,7 @@ const ListofStudents = () => {
           {buttonText}
         </span>
       </Navbar>
-      <p className="bold subject">SUBJECT : {subjectval[4]}</p>
+      <p className="bold subject">SUBJECT : {subjectval[5]}</p>
       {mid2err && <p className="mid2err"><u>Please set deadline for Mid 2 to open Submissions.</u></p>}
       {loading ? (
         <div className="spinnerload">
@@ -287,6 +292,8 @@ const ListofStudents = () => {
                                 "/" +
                                 subjectval[4] +
                                 "/" +
+                                subjectval[5]+
+                                "/"+
                                 `${mid}` +
                                 "/" +
                                 dataitem.ROLL_NO,
@@ -323,6 +330,8 @@ const ListofStudents = () => {
                         "/" +
                         subjectval[4] +
                         "/" +
+                        subjectval[5]+
+                        "/"+
                         `${mid}` +
                         "/" +
                         student,
