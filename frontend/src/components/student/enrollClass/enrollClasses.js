@@ -137,6 +137,7 @@ function EnrollClasses() {
                     console.log({
                         course:course.value,
                         year:year.value,
+                        regulation:regulation.value,
                         department:department.value,
                         subjects:subjects,
                         section:section.value                       
@@ -145,6 +146,7 @@ function EnrollClasses() {
                         name:currentUser.username,
                         course:course.value,
                         year:year.value,
+                        regulation:regulation.value,
                         department:department.value,
                         subjects:subjects,
                         section:section.value                       

@@ -33,6 +33,7 @@ const SubjectsList = () => {
 
   const fetchdata = async () => {
     const { document, error } = await getStudentData(`${currentUser.email}`);
+    console.log(document)
     if (error == null) {
       setuserDoc(document);
       setcourse(document.course);
@@ -40,14 +41,17 @@ const SubjectsList = () => {
       let course =
         document.course +
         "_" +
+        document.regulation+
+        "_"+
         document.year +
         "_" +
         document.department +
         "_" +
         document.section;
-      setCourseTitle(course);
+        console.log(course)
+      setCourseTitle(document.course + "_"+ document.year +"_"+document.department+  "_" + document.section);
 
-      if (document.course === "MBA") {
+      if (document.course === "MBA"&&document.year==='1') {
         setCourseTitle(
           document.course + "_" + document.year + "_" + document.section
         );
