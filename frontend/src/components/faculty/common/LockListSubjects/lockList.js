@@ -9,6 +9,7 @@ import {
   enrollHODClasses,
   getDepartments,
 } from "../../services/facultyServices";
+import { fetchRegulationOptions } from "../../../student/services/studentServices";
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +29,7 @@ const LockList = () => {
   const [disablesec, setdisablesec] = useState(true);
   const [disablesub, setdisablesub] = useState(true);
   const[disableadd,setdisableadd]=useState(true);
+  const[disablereg,setdisablereg]=useState(true);
 
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +44,12 @@ const LockList = () => {
   const [sections, setSections] = useState([
     { value: "loading", label: "Loading..." },
   ]);
-
+  const [regulation,setRegulation]=useState('');
+  const[regoptionss,setregoptionss]=useState([]);
+   async function regoptions(){
+    const res = await fetchRegulationOptions();
+  setregoptionss(res.data);
+   }
   const { currentUser } = useAuth();
   const nav = useNavigate();
   useEffect(() => {
@@ -144,6 +151,7 @@ const LockList = () => {
     setDepartments([{ value: "Loading", label: "Loading" }]);
     setSections([{ value: "Loading", label: "Loading" }]);
     setSubjects([{ value: "Loading", label: "Loading" }]);
+    setdisablereg(true);
     setdisabledep(true);
     setdisablesec(true);
     setdisablesub(true);
@@ -243,6 +251,7 @@ const LockList = () => {
                 options={Courses}
                 onChange={(selectedCourse) => {
                   setCourse(selectedCourse);
+                  regoptions();
                 }}
               />
               <p className="locklist-dropdown-title">Year</p>
@@ -253,9 +262,23 @@ const LockList = () => {
                 isDisabled={!Course}
                 onChange={(selectedYear) => {
                   setYear(selectedYear);
-                  setdisabledep(false);
+                  setdisablereg(false);
+                 
                 }}
               />
+               <p className="locklist-dropdown-title">Regulation</p>
+                        <Select
+                        placeholder=""
+                        value={regulation}
+                        isDisabled={disablereg}
+                        className="select-locklist"
+                        options={regoptionss}
+                        onChange={(r) => {
+                          setdisabledep(false);
+                           
+                            setRegulation(r);
+                        }}
+                        />
               <p className="locklist-dropdown-title">Department</p>
               <Select
                 placeholder=""
