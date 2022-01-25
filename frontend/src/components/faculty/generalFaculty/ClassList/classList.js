@@ -10,6 +10,7 @@ import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 
 const ClassList = () => {
   const { currentUser } = useAuth();
+  console.log(currentUser)
   const [subs, setSubs] = useState();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const ClassList = () => {
       <div className="addclass-button">
 
       <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i class="fas fa-plus"></i>Add Classes</Button>
+      {currentUser.isHOD?<Button className="addclass-button normal" onClick={()=>{navigate("/faculty/hodclasslist")}}>View Department Grades</Button>:<p></p>}
       </div>
         {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">
