@@ -54,7 +54,7 @@ const ClassList = () => {
       <div className="addclass-button">
 
       <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i class="fas fa-plus"></i>Add Classes</Button>
-      {currentUser.isHOD?<Button className="addclass-button normal" onClick={()=>{navigate("/faculty/hodclasslist")}}>View Department Grades</Button>:<p></p>}
+      {currentUser.isHOD?<Button className="addclass-button normal" onClick={()=>{navigate("/faculty/HODSearch")}}>View Department Grades</Button>:<p></p>}
       </div>
         {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">

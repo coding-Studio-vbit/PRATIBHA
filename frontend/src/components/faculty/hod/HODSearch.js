@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar.js";
-import Card from "../../global_ui/card/card.js";
 import Button from "../../global_ui/buttons/button";
-import "./classListHod.css";
+import "./HODSearch.css";
 import { useAuth } from "../../context/AuthContext.js";
 import { getSubjects } from "../services/facultyServices";
 import { getDepartments } from "../services/facultyServices.js";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 
-const HODClassList = () => {
+const HODSearch = () => {
   const [Course, setCourse] = useState({ value: "Loading", label: "Loading" });
   const [Year, setYear] = useState("");
   const { currentUser } = useAuth();
@@ -35,18 +34,7 @@ const HODClassList = () => {
   const [showdep, setshowdep] = useState([]);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      const res = await getSubjects(currentUser.email);
-      if (res === -1) {
-        //display error
-      } else {
-        setSubs(res);
-        setLoading(false);
-      }
-    };
-    fetchSubjects();
-  }, []);
+
 
   useEffect(() => {
     let klasses = [];
@@ -56,6 +44,7 @@ const HODClassList = () => {
       klasses.push({ value: parts[0], label: parts[0] });
       departments.push({ value: parts[0], label: parts[1] });
     }
+    setLoading(false);
     setKlass(klasses);
     setDepartment(departments);
   }, []);
@@ -145,32 +134,25 @@ const HODClassList = () => {
     });
   }
 
-  function handleCard(sub) {
-    console.log(sub);
-    if (subs.praSetSubs[sub]) {
-      navigate("/faculty/studentlist", { state: { sub: sub } });
-    } else {
-      navigate("/faculty/createPRA", { state: { sub: sub } });
-    }
-  }
+
   return loading ? (
     <LoadingScreen />
   ) : (
-    <div className="root-hod">
+    <>
+
       <Navbar
         style={{ marginBottom: "30px" }}
         title={"HOD"}
-        back={false}
         logout={true}
+        backURL={"/faculty/classlist"}
       />
-      <p className="dep-title">
-        <u>Your Classes</u>
-      </p>
-      <div className="div-container-classesHOD">
+    <div className="root-hod">
+      
+      {/* <div className="div-container-classesHOD">
       {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">
             <h4 className="courseTitle">B.Tech</h4>
-            <div className="cardList">
+            <div className="cardList-HOD">
               {subs.btechSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
@@ -201,7 +183,7 @@ const HODClassList = () => {
         {subs.mtechSubs.length !== 0 && (
           <div className="subjectsDivision">
             <h4 className="courseTitle"> M.Tech</h4>
-            <div className="cardList">
+            <div className="cardList-HOD">
               {subs.mtechSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
@@ -230,9 +212,9 @@ const HODClassList = () => {
           </div>
         )}
         {subs.mbaSubs.length !== 0 && (
-          <div>
-            <h4 className="course-title-list">MBA</h4>
-            <div className="card-flex">
+          <div className="subjectsDivision">
+            <h4 className="courseTitle">MBA</h4>
+            <div className="cardList-HOD">
               {subs.mbaSubs.map((item) => {
                 var displayItem = item.split("_");
                 displayItem.splice(0, 1);
@@ -266,12 +248,12 @@ const HODClassList = () => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
 
       <p className="dep-title">
         <u>View Department Grades</u>
       </p>
-      <div className="hod-dd">
+
         <div className="xyz">
           <span className="dd-text">Course</span>
           <Select
@@ -347,7 +329,7 @@ const HODClassList = () => {
             }}
           />
         </div>
-      </div>
+    
       <span className="view-style">
         <Button
           icon={<i class="fas fa-search"></i>}
@@ -358,7 +340,8 @@ const HODClassList = () => {
         />
       </span>
     </div>
+    </>
   );
 };
 
-export default HODClassList;
+export default HODSearch;

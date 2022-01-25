@@ -1,0 +1,44 @@
+.root-hod{
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.hod-button {
+  margin-top: 10px;
+  align-self: center;
+  justify-self: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+/* .hod-dd {
+  justify-content: space-evenly;
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-right: 20px;
+  align-items: center;
+} */
+.dd-text {
+  text-align: center;
+}
+.dep-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+  color: #0e72ab;
+  margin-top: 20px;
+  margin-bottom: auto;
+}
+.view-style {
+  display: flex;
+  justify-content: center;
+}
+.xyz {
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 300px;
+}

@@ -229,7 +229,7 @@ const ListofStudents = () => {
     <div>
       <Navbar
         backURL={
-          currentUser.isHOD ? "/faculty/hodclasslist" : "/faculty/classlist"
+          "/faculty/classlist"
         }
         title={title}
       >
