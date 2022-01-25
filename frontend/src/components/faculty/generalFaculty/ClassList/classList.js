@@ -10,7 +10,6 @@ import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 
 const ClassList = () => {
   const { currentUser } = useAuth();
-  console.log(currentUser)
   const [subs, setSubs] = useState();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ const ClassList = () => {
     const fetchSubjects = async () => {
       try {
         const res = await getSubjects(currentUser.email);
-        console.log(res);
         if (res === -1) {
           //display error
         } else {
