@@ -28,8 +28,8 @@ const LockList = () => {
   const [disabledep, setdisabledep] = useState(true);
   const [disablesec, setdisablesec] = useState(true);
   const [disablesub, setdisablesub] = useState(true);
-  const[disableadd,setdisableadd]=useState(true);
-  const[disablereg,setdisablereg]=useState(true);
+  const [disableadd, setdisableadd] = useState(true);
+  const [disablereg, setdisablereg] = useState(true);
 
   const [showDialog, setShowDialog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,12 +44,12 @@ const LockList = () => {
   const [sections, setSections] = useState([
     { value: "loading", label: "Loading..." },
   ]);
-  const [Regulation,setRegulation]=useState('');
-  const[regoptionss,setregoptionss]=useState([]);
-   async function regoptions(){
+  const [Regulation, setRegulation] = useState("");
+  const [regoptionss, setregoptionss] = useState([]);
+  async function regoptions() {
     const res = await fetchRegulationOptions();
-  setregoptionss(res.data);
-   }
+    setregoptionss(res.data);
+  }
   const { currentUser } = useAuth();
   const nav = useNavigate();
   useEffect(() => {
@@ -59,7 +59,7 @@ const LockList = () => {
         if (!res) return;
         setSubjects(res.subjects);
         setDepartments(res.departments);
-        console.log(res.departments)
+        console.log(res.departments);
         setSections(res.sections);
       } catch (error) {
         console.log(error);
@@ -94,7 +94,8 @@ const LockList = () => {
     if (Course.value === "BTech") {
       const newBTech =
         "BTech_" +
-        Regulation.value +"_"+
+        Regulation.value +
+        "_" +
         Year.value +
         "_" +
         Department.value +
@@ -114,7 +115,8 @@ const LockList = () => {
     } else if (Course.value === "MTech") {
       const newMTech =
         "MTech_" +
-        Regulation.value +"_"+
+        Regulation.value +
+        "_" +
         Year.value +
         "_" +
         Department.value +
@@ -134,7 +136,8 @@ const LockList = () => {
     } else if (Course.value === "MBA") {
       const newMBA =
         "MBA_" +
-        Regulation.value +"_"+
+        Regulation.value +
+        "_" +
         Year.value +
         "_" +
         Department.value +
@@ -267,22 +270,21 @@ const LockList = () => {
                 onChange={(selectedYear) => {
                   setYear(selectedYear);
                   setdisablereg(false);
-                 
                 }}
               />
-               <p className="locklist-dropdown-title">Regulation</p>
-                        <Select
-                        placeholder=""
-                        value={Regulation}
-                        isDisabled={disablereg}
-                        className="select-locklist"
-                        options={regoptionss}
-                        onChange={(r) => {
-                          setdisabledep(false);
-                           
-                            setRegulation(r);
-                        }}
-                        />
+              <p className="locklist-dropdown-title">Regulation</p>
+              <Select
+                placeholder=""
+                value={Regulation}
+                isDisabled={disablereg}
+                className="select-locklist"
+                options={regoptionss}
+                onChange={(r) => {
+                  setdisabledep(false);
+
+                  setRegulation(r);
+                }}
+              />
               <p className="locklist-dropdown-title">Department</p>
               <Select
                 placeholder=""
@@ -309,7 +311,7 @@ const LockList = () => {
                 }}
               />
               <p className="locklist-dropdown-title">Subject</p>
-             
+
               <Select
                 placeholder=""
                 options={subjects[Department.value]}
@@ -330,12 +332,12 @@ const LockList = () => {
                 <i className="fas fa-plus"></i>ADD
               </button>
             </div>
-            <div>
+            
               <div className="list-container">
                 {BTechList.length !== 0 && (
-                  <div>
-                    <h4 className="course-heading"> B.Tech </h4>
-                    <ul className="list-head">
+                  <>
+                    <span className="course-heading"> B.Tech </span>
+                    <div className="list-head">
                       {BTechList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
@@ -345,9 +347,8 @@ const LockList = () => {
                           newItem = newItem + "_" + displayItem[i];
                         }
                         return (
-                          <li className="li-tag-flex" key={index}>
-                            {newItem}
-
+                          <div className="li-tag-flex" key={index}>
+                            <span>{newItem}</span>
                             <span className="far">
                               <i
                                 onClick={() => {
@@ -356,16 +357,16 @@ const LockList = () => {
                                 className="lock-screen-icon fas fa-minus"
                               />
                             </span>
-                          </li>
+                          </div>
                         );
                       })}
-                    </ul>
-                  </div>
+                    </div>
+                  </>
                 )}
                 {MTechList.length !== 0 && (
-                  <div>
-                    <h4 className="course-heading"> M.Tech </h4>
-                    <ul className="list-head">
+                  <>
+                    <span className="course-heading"> M.Tech </span>
+                    <div className="list-head">
                       {MTechList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
@@ -375,7 +376,7 @@ const LockList = () => {
                           newItem = newItem + "_" + displayItem[i];
                         }
                         return (
-                          <li className="li-tag-flex" key={index}>
+                          <span className="li-tag-flex" key={index}>
                             {newItem}
                             <span className="far">
                               <i
@@ -385,16 +386,16 @@ const LockList = () => {
                                 className=" lock-screen-icon fas fa-minus"
                               />
                             </span>
-                          </li>
+                          </span>
                         );
                       })}
-                    </ul>
-                  </div>
+                    </div>
+                  </>
                 )}
                 {MBAList.length !== 0 && (
-                  <div>
-                    <h4 className="course-heading"> MBA </h4>
-                    <ul className="list-head">
+                  <>
+                    <span className="course-heading"> MBA </span>
+                    <div className="list-head">
                       {MBAList.map((item, index) => {
                         var displayItem = item.split("_");
                         displayItem.splice(0, 1);
@@ -406,14 +407,14 @@ const LockList = () => {
                             "_" +
                             displayItem[3] +
                             "_" +
-                            displayItem[4]
+                            displayItem[4];
                         else {
                           for (let i = 2; i < len; i++) {
                             newItem = newItem + "_" + displayItem[i];
                           }
                         }
                         return (
-                          <li className="li-tag-flex" key={index}>
+                          <span className="li-tag-flex" key={index}>
                             {newItem}
                             <span className="far">
                               <i
@@ -423,13 +424,15 @@ const LockList = () => {
                                 className="lock-screen-icon fas fa-minus"
                               />
                             </span>
-                          </li>
+                          </span>
                         );
                       })}
-                    </ul>
-                  </div>
+                    </div>
+                  </>
                 )}
-              </div>
+             
+            </div>
+          </div>
               <Button
                 className="locklist-button normal"
                 width="90"
@@ -437,8 +440,6 @@ const LockList = () => {
                 children="Done"
                 onClick={handleDone}
               />
-            </div>
-          </div>
         </div>
       ) : (
         <Dialog
