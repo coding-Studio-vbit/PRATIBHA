@@ -275,11 +275,9 @@ export const getSubjects = async (email) => {
               let date2 = praSetSubs[sub].deadline2.toDate();
               date2 = date2.toLocaleDateString("en-GB");
               praSetSubs[sub].date2 = date2;
-              console.log(praSetSubs[sub].date2);
             }
           }
         }
-        console.log(praSetSubs);
       }
 
       const klass = parts[0];
@@ -526,30 +524,6 @@ async function getSemester() {
   }
 }
 
-// async function getDataByRollNumber(facultyID,className,studentID,) {
-//   const facultyRef = doc(db,`faculty/${facultyID}/${className}`,studentID);
-
-//   try {
-//     const res = await getDoc(facultyRef);
-//     if(res.exists()){
-//       return {
-//         data:res.data(),
-//         error:null,
-//       }
-//     }else{
-//       return {
-//         data:null,
-//         error:"Student Not Found"
-//       }
-//     }
-//   } catch (error) {
-//     return {
-//       data:null,
-//       error:error.toString()
-//     }
-//   }
-// }
-
 async function getAllStudentsData(facultyID, className) {
   const facultyRef = collection(db, `faculty/${facultyID}/${className}`);
 
@@ -584,7 +558,6 @@ async function addClass(email, addedClass) {
       random: 1,
     });
     isAdded = true;
-    console.log(isAdded);
   } catch (error) {
     return error.code;
   }

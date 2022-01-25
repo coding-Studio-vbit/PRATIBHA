@@ -31,7 +31,7 @@ const ClassList = () => {
       }
     };
     fetchSubjects();
-  }, []);
+  }, [currentUser.email]);
 
   function handleCard(sub) {
     if (subs.praSetSubs[sub]) {
