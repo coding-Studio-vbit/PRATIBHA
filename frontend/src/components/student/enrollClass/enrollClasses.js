@@ -18,6 +18,7 @@ function EnrollClasses() {
     const [loading, setLoading] = useState(false);
     const [buttonTitle, setButtonTitle] = useState("Get Departments");
     const [data, setData] = useState();
+    const[isSuccess,setisSuccess]=useState(false);
 
     const [course, setCourse] = useState("");
     const courses = [
@@ -70,7 +71,6 @@ function EnrollClasses() {
     // const [peCount, setpeCount] = useState();
     function getData(val){
         let sect=[];
-        console.log(data,1010);
         data.forEach((e)=>{
             if(e.id===val){ 
                 setSubjects(e.data()['subjects'])              
@@ -96,9 +96,7 @@ function EnrollClasses() {
         try{
           const f1=await fetchisMid1(course,year);
           const f2=await fetchisMid2(course,year);
-          console.log(f1,f2)
           if(f1||f2){
-              console.log("valid")
               return true;
           }
           else{
@@ -152,14 +150,7 @@ function EnrollClasses() {
                     }
                 }
                 if(isValid){
-                    console.log({
-                        course:course.value,
-                        year:year.value,
-                        regulation:regulation.value,
-                        department:department.value,
-                        subjects:subjects,
-                        section:section.value                       
-                    });
+                    
                     const enrollValid = await isEnrollValid(course.value,year.value)
                     if(enrollValid){
                         const res = await enrollCourse(currentUser.email,{
@@ -172,22 +163,22 @@ function EnrollClasses() {
                             section:section.value                       
                         })
                         if(res==null){
-                     
+                            setisSuccess(true);
                             setLoading(false);
                             setdialog("Enrolled Successfully")
                         }
                     }
                     else{
+                        setLoading(false);
                         setdialog("Cannot Enroll.Deadlines crossed")
                     }
 
                  
                 }else{
-                    console.log("Invalid");
                     setLoading(false);
                 }
             }else{
-                console.log("Invalid");
+              
                 setLoading(false);
             }          
         }
@@ -209,7 +200,7 @@ function EnrollClasses() {
         <div>
             <Navbar back={false} title="Enrollment" logout={false}/>
             {
-                dialog && <Dialog message={dialog} onOK={()=>{navigator('/student/subjectslist',{replace:true})}}/>
+                dialog && <Dialog message={dialog} onOK={()=>{isSuccess ? navigator('/student/subjectslist',{replace:true}):setdialog(false)}}/>
             } 
             <div className='enrollPage'>
                 <div className='instructions'>
@@ -271,7 +262,6 @@ function EnrollClasses() {
                             className="select"
                             options={departments}
                             onChange={(y) => {
-                                //console.log(y);
                                 setOe("")
                                 setPe("")
                                 setSection("")
