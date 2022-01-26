@@ -14,6 +14,12 @@
   margin-left: auto;
   margin-right: auto;
 }
+.userDetails{
+  text-align: center;
+  color:#0e72ab;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
 
 .list-grid {
   /* align-self: flex-start; */
