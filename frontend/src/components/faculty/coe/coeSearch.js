@@ -3,7 +3,7 @@ import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
 import { getDepartments } from "../services/facultyServices";
-import { fetchRegulationOptions } from "../../student/services/studentServices";
+import { fetchRegulationOptions, fetchSemNumber } from "../../student/services/studentServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
@@ -38,7 +38,8 @@ export default function CoeSearch() {
   const nav = useNavigate();
   useEffect(()=>{
     const getLables = async ()=>{
-      const res = await getDepartments(Course.value,Year.value)
+      const sem = await fetchSemNumber(Course.value,Year.value);
+      const res = await getDepartments(Course.value,Year.value,sem);
       if(!res) return
        setSubjects(res.subjects)
        setDepartments(res.departments)

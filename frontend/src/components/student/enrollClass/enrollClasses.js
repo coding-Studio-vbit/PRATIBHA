@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import Navbar from '../../global_ui/navbar/navbar';
 import Select from "react-select";
-import { enrollCourse, fetchDepartments, fetchRegulationOptions,fetchisMid1,fetchisMid2 } from '../services/studentServices';
+import { enrollCourse, fetchDepartments, fetchRegulationOptions,fetchisMid1,fetchisMid2, fetchisSem1, fetchisSem2, fetchSemNumber } from '../services/studentServices';
 import Button from '../../global_ui/buttons/button';
 import { Spinner } from '../../global_ui/spinner/spinner';
 import { useAuth } from '../../context/AuthContext';
@@ -108,7 +108,23 @@ function EnrollClasses() {
         }
       
       }
-
+// async function foo(course,year){
+//     try{
+//         const f1=await fetchisSem1(course,year);
+//         const f2=await fetchisSem2(course,year);
+//         if(f1){
+//             console.log(f1,1);
+//         }
+//         if(f2){
+//             console.log(f2,2)
+//         }
+//         const f3 = await fetchSemNumber(course,year);
+//         console.log(f3);
+//     }
+//     catch(e){
+//         console.log(e);
+//     }
+// }
     async function fetchData(){
         if(departments==null && course!=="" && year!==""){
             setLoading(true);
@@ -153,6 +169,7 @@ function EnrollClasses() {
                     
                     const enrollValid = await isEnrollValid(course.value,year.value)
                     if(enrollValid){
+                        const sem = await fetchSemNumber(course.value,year.value);
                         const res = await enrollCourse(currentUser.email,{
                             name:currentUser.username,
                             course:course.value,
@@ -160,7 +177,8 @@ function EnrollClasses() {
                             regulation:regulation.value,
                             department:department.value,
                             subjects:subjects,
-                            section:section.value                       
+                            section:section.value,
+                            semester:sem                 
                         })
                         if(res==null){
                             setisSuccess(true);
@@ -182,13 +200,6 @@ function EnrollClasses() {
                 setLoading(false);
             }          
         }
-        // if(course.value=="MBA" && year.value=="1"){
-        //     setOe("")
-        //     setPe("")
-        //     setSection("")
-        //     setDepartment({value: 'Not Applicable', label: 'Not Applicable'});
-        //     getData('Not Applicable'); 
-        // }                    
     }
 
     return (

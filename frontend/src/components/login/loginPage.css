@@ -10,7 +10,16 @@
   flex-wrap: wrap;
   background-size: cover;
 } 
-
+.titleLogin{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-self: center;
+  height:auto;
+width:100%;
+max-width: 400px;
+}
 .logos{
   width: 100%;
   display: flex;
@@ -85,7 +94,7 @@
     justify-content: center;
     gap: 12vw;
     align-items: center;
-    margin-top: 20vh;
+    /* margin-top: 20vh; */
 }
 
 .pratibhaDescription{
@@ -100,7 +109,7 @@
 @media only screen and (max-width: 600px) {
  .row{
    flex-direction: column;
-   margin-top: 15vh;
+   /* margin-top: 15vh; */
    gap: 70px;
  }
  .cs_logo{

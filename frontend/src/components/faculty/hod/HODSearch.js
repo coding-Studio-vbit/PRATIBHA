@@ -4,7 +4,7 @@ import Navbar from "../../global_ui/navbar/navbar.js";
 import Button from "../../global_ui/buttons/button";
 import "./HODSearch.css";
 import { useAuth } from "../../context/AuthContext.js";
-import { fetchRegulationOptions } from "../../student/services/studentServices.js";
+import { fetchRegulationOptions,fetchSemNumber } from "../../student/services/studentServices.js";
 import { getDepartments } from "../services/facultyServices.js";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
@@ -60,7 +60,8 @@ const HODSearch = () => {
   useEffect(() => {
     const getLables = async () => {
       try {
-        const res = await getDepartments(Course.value, Year.value);
+        const sem = await fetchSemNumber(Course.value,Year.value);
+        const res = await getDepartments(Course.value,Year.value,sem);
         if (!res) return;
         setSubjects(res.subjects);
         setsections(res.sections);

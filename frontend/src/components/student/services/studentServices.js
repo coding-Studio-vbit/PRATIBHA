@@ -30,11 +30,7 @@ async function enrollCourse(email, course_details) {
   let error = null;
   const userRef = doc(db, "users", email);
   try {
-    var myTimestamp = Timestamp.fromDate(new Date());
     await setDoc(userRef, course_details);
-    await updateDoc(userRef, {
-      'Enrolled at': myTimestamp,
-    });
   } catch (e) {
     error = e.code;
   }
@@ -99,42 +95,43 @@ async function fetchisMid2(course, year) {
   }
 }
 
-async function getCurriculumDetails(course_details) {
-  const curriculumRef = query(
-    collection(db, `curriculum/${course_details.course}/${course_details.year}`)
-  );
-  try {
-    const docs = await getDocs(curriculumRef);
-    let docSnap = null;
-    docs.forEach((doc) => {
-      if (doc.id === `${course_details.department}`) {
-        docSnap = doc;
-      } // "doc1" and "doc2"
-    });
-    if (docSnap != null) {
-      let result = {
-        subjects: docSnap.data()["subjects"],
-        sections: docSnap.data()["sections"],
-      };
-      if (docSnap.data()["OEs"] != null) {
-        result.oe = docSnap.data()["OEs"];
-        result.numberOEs = docSnap.data()["numberOEs"];
-      }
-      if (docSnap.data()["PEs"] != null) {
-        result.pe = docSnap.data()["PEs"];
-        result.numberPEs = docSnap.data()["numberPEs"];
-      }
-      return {
-        document: result,
-        error: null,
-      };
-    } else {
-      return { document: null, error: "Give proper details to enroll" };
-    }
-  } catch (error) {
-    return { document: null, error: error.toString() };
-  }
-}
+// ////CHANGE SEMESTER!!!!!!!!!!!!
+// async function getCurriculumDetails(course_details) {
+//   const curriculumRef = query(
+//     collection(db, `curriculum/${course_details.course}/${course_details.year}`)
+//   );
+//   try {
+//     const docs = await getDocs(curriculumRef);
+//     let docSnap = null;
+//     docs.forEach((doc) => {
+//       if (doc.id === `${course_details.department}`) {
+//         docSnap = doc;
+//       } // "doc1" and "doc2"
+//     });
+//     if (docSnap != null) {
+//       let result = {
+//         subjects: docSnap.data()["subjects"],
+//         sections: docSnap.data()["sections"],
+//       };
+//       if (docSnap.data()["OEs"] != null) {
+//         result.oe = docSnap.data()["OEs"];
+//         result.numberOEs = docSnap.data()["numberOEs"];
+//       }
+//       if (docSnap.data()["PEs"] != null) {
+//         result.pe = docSnap.data()["PEs"];
+//         result.numberPEs = docSnap.data()["numberPEs"];
+//       }
+//       return {
+//         document: result,
+//         error: null,
+//       };
+//     } else {
+//       return { document: null, error: "Give proper details to enroll" };
+//     }
+//   } catch (error) {
+//     return { document: null, error: error.toString() };
+//   }
+// }
 
 async function getSubjectsList(email) {
   const userRef = doc(db, "users", email);
@@ -391,6 +388,7 @@ async function fetchSemNumber(course, year) {
     if (d2) {
       return 2;
     }
+    return -1;
   } catch (error) {
     console.log(error);
   }
@@ -401,7 +399,6 @@ export {
   enrollCourse,
   checkEnrollment,
   getStudentData,
-  getCurriculumDetails,
   getSubjectsList,
   fetchDepartments,
   getDeadLines,

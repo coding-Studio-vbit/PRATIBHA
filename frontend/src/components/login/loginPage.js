@@ -38,13 +38,16 @@ export default function LoginPage() {
         
         <div className="logos">
           <div className="pratibha">
-              <img alt="Pratibha" height={70} src="/pratibha.png"/>
-              <span className="titleStyle" >PRATIBHA</span>
+              <img alt="Pratibha" height={100} src="/pratibhamainfin.png"/>
+              {/* <span className="titleStyle" >PRATIBHA</span> */}
           </div>
           <img alt="vbit" className="vbit" src="/vbit.png" />       
           <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
         </div>
+<div className="titleLogin">
+<img alt="Pratibha" src="/PRATIBHAmaintitle.png"/>
 
+</div>
         <div className="row">
           <div className="button-and-icon">
           <i class="fas fa-user-graduate icons"></i>            

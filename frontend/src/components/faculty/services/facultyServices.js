@@ -68,8 +68,8 @@ async function enrollClasses(email, enrolled_classes) {
   }
   return null;
 }
-
-export const getDepartments = async (course, year) => {
+//CHANGE SEMESTER DONEEEEEEE!!!!!!!!!!!!!!
+export const getDepartments = async (course, year,semester) => {
   if (year === 0) return;
   try {
     const q = query(collection(db, "curriculum", course, year));
@@ -82,41 +82,91 @@ export const getDepartments = async (course, year) => {
     alldocs.docs.forEach((e) => {
       departments.push({ value: e.id, label: e.id });
 
-      for (let index = 0; index < e.data()["subjects"].length; index++) {
-        const ele = e.data()["subjects"][index];
-        if (subjects[e.id]) {
-          subjects[e.id] = [
-            ...subjects[e.id],
-            { value: ele.subject, label: ele.subject },
-          ];
-        } else {
-          subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
-        }
+if(semester==1){
+
+  for (let index = 0; index < e.data()["subjects"].length; index++) {
+    const ele = e.data()["subjects"][index];
+    if (subjects[e.id]) {
+      subjects[e.id] = [
+        ...subjects[e.id],
+        { value: ele.subject, label: ele.subject },
+      ];
+    } else {
+      subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
+    }
+  }
+  if (e.data()["OEs"]){
+
+    for (let index = 0; index < e.data()["OEs"].length; index++) {
+      const ele = e.data()["OEs"][index];
+      if (subjects[e.id]) {
+        subjects[e.id] = [
+          ...subjects[e.id],
+          { value: ele.subject, label: ele.subject },
+        ];
+      } else {
+        subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
       }
-      if (e.data()["OEs"])
-        for (let index = 0; index < e.data()["OEs"].length; index++) {
-          const ele = e.data()["OEs"][index];
-          if (subjects[e.id]) {
-            subjects[e.id] = [
-              ...subjects[e.id],
-              { value: ele.subject, label: ele.subject },
-            ];
-          } else {
-            subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
-          }
-        }
-      if (e.data()["PEs"])
-        for (let index = 0; index < e.data()["PEs"].length; index++) {
-          const ele = e.data()["PEs"][index];
-          if (subjects[e.id]) {
-            subjects[e.id] = [
-              ...subjects[e.id],
-              { value: ele.subject, label: ele.subject },
-            ];
-          } else {
-            subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
-          }
-        }
+    }
+  }
+  if (e.data()["PEs"]){
+
+    for (let index = 0; index < e.data()["PEs"].length; index++) {
+      const ele = e.data()["PEs"][index];
+      if (subjects[e.id]) {
+        subjects[e.id] = [
+          ...subjects[e.id],
+          { value: ele.subject, label: ele.subject },
+        ];
+      } else {
+        subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
+      }
+    }
+  }
+}
+
+if(semester==2){
+
+  for (let index = 0; index < e.data()["subjects2"].length; index++) {
+    const ele = e.data()["subjects2"][index];
+    if (subjects[e.id]) {
+      subjects[e.id] = [
+        ...subjects[e.id],
+        { value: ele.subject, label: ele.subject },
+      ];
+    } else {
+      subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
+    }
+  }
+  if (e.data()["OEs2"]){
+
+    for (let index = 0; index < e.data()["OEs2"].length; index++) {
+      const ele = e.data()["OEs2"][index];
+      if (subjects[e.id]) {
+        subjects[e.id] = [
+          ...subjects[e.id],
+          { value: ele.subject, label: ele.subject },
+        ];
+      } else {
+        subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
+      }
+    }
+  }
+  if (e.data()["PEs2"]){
+
+    for (let index = 0; index < e.data()["PEs2"].length; index++) {
+      const ele = e.data()["PEs2"][index];
+      if (subjects[e.id]) {
+        subjects[e.id] = [
+          ...subjects[e.id],
+          { value: ele.subject, label: ele.subject },
+        ];
+      } else {
+        subjects[e.id] = [{ value: ele.subject, label: ele.subject }];
+      }
+    }
+  }
+}
 
       const sectionsDoc = e.data()["sections"];
 
@@ -130,12 +180,9 @@ export const getDepartments = async (course, year) => {
         } else sections[e.id] = [{ value: element, label: element }];
       }
     });
-
+console.log(departments,subjects,sections)
     return { departments: departments, subjects: subjects, sections: sections };
-    // for (let index = 0; index < data.length; index++) {
-    //   const dep = data[index];
-    //   departments.push(dep.)
-    // }
+
   } catch (error) {
     console.log(error);
   }
@@ -402,77 +449,6 @@ async function postMarks(
   return error;
 }
 
-export const fetchSectionsAndSubs = async (course, year, departments) => {
-  try {
-    let subjects = [];
-    let sections = [];
-    for (let index = 0; index < departments.length; index++) {
-      const element = departments[index].value;
-      const q = query(doc(db, "curriculum", course, year, element));
-      const alldocs = await getDoc(q);
-
-      const data = alldocs.data();
-
-      for (let i = 0; i < data.subjects.length; i++) {
-        if (subjects[alldocs.id]) {
-          subjects[alldocs.id] = [
-            ...subjects[alldocs.id],
-            {
-              value: data.subjects[i].subject,
-              label: data.subjects[i].subject,
-            },
-          ];
-        } else {
-          subjects[alldocs.id] = [
-            {
-              value: data.subjects[i].subject,
-              label: data.subjects[i].subject,
-            },
-          ];
-        }
-      }
-      if (alldocs.data()["OEs"])
-        for (let index = 0; index < alldocs.data()["OEs"].length; index++) {
-          const ele = alldocs.data()["OEs"][index];
-          if (subjects[alldocs.id]) {
-            subjects[alldocs.id] = [
-              ...subjects[alldocs.id],
-              { value: ele.subject, label: ele.subject },
-            ];
-          } else {
-            subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
-          }
-        }
-      if (alldocs.data()["PEs"])
-        for (let index = 0; index < alldocs.data()["PEs"].length; index++) {
-          const ele = alldocs.data()["PEs"][index];
-          if (subjects[alldocs.id]) {
-            subjects[alldocs.id] = [
-              ...subjects[alldocs.id],
-              { value: ele.subject, label: ele.subject },
-            ];
-          } else {
-            subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
-          }
-        }
-      const sectionsDoc = data["sections"];
-
-      for (let index = 0; index < sectionsDoc.length; index++) {
-        const element = sectionsDoc[index];
-        if (sections[alldocs.id]) {
-          sections[alldocs.id] = [
-            ...sections[alldocs.id],
-            { value: element, label: element },
-          ];
-        } else sections[alldocs.id] = [{ value: element, label: element }];
-      }
-    }
-
-    return { subjects: subjects, sections: sections };
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 async function getCoeDeadline(midNo, course, year) {
   const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
