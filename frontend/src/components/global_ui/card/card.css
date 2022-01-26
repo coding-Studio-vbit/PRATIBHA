@@ -17,6 +17,10 @@
     width: 220px;
 
 }
+.delicon{
+  align-self: flex-end;
+  font-size: small;
+}
 .globalCardContainer:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }

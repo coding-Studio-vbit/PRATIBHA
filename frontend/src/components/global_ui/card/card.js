@@ -5,11 +5,13 @@ const Card = ({
   text, 
   klass,
   subText,
-  onclick
+  onclick,
+  children,onClickchildren
 }) => {
   return (
     <div className="globalCardContainer"  onClick={()=>onclick(klass)}>
-      {text && <p>{text}</p>} 
+    {children&& <span className="delicon" onClick={()=>onClickchildren(klass)}>{children}</span>}
+    {text && <p>{text}</p>}
       {subText && <p className="subText" style={{fontSize:'15px',fontWeight:'bold'}}>{subText}</p>}
     </div>
   );
