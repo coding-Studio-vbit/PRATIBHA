@@ -41,6 +41,7 @@
   }
   .addclasses-btn:hover {
     box-shadow: none;
+    cursor: pointer;
   }
   .addclasses-btn:disabled {
     background-color: grey;
