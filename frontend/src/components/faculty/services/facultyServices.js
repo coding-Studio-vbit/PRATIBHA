@@ -4,6 +4,7 @@ import {
   getDoc,
   updateDoc,
   setDoc,
+  deleteDoc,
   arrayUnion,
   arrayRemove,
   collection,
@@ -523,6 +524,26 @@ async function addClass(email, addedClass) {
   return null;
 }
 
+async function deleteClass(email,deletedClass){
+  const facultyRef=collection(db,"faculty",email,deletedClass);
+  const alldocs = await getDocs(facultyRef);
+console.log(alldocs)
+  async function del(e){
+    await deleteDoc(doc(db, "faculty", email,deletedClass,e));
+
+  }
+  try{
+  alldocs.docs.forEach((d)=>{
+    del(d.id);
+    console.log(d.id);
+
+  })
+  }
+  catch(err){
+    console.log(err);
+  }
+}
+
 export {
   getEnrolledCourses,
   enrollClasses,
@@ -532,4 +553,5 @@ export {
   getCoeDeadline,
   getAllStudentsData,
   addClass,
+  deleteClass
 };
