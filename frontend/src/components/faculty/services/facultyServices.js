@@ -68,7 +68,7 @@ async function enrollClasses(email, enrolled_classes) {
   }
   return null;
 }
-//CHANGE SEMESTER !!!!!!!!!!!!!!
+//CHANGE SEMESTER DONEEEEEEE!!!!!!!!!!!!!!
 export const getDepartments = async (course, year,semester) => {
   if (year === 0) return;
   try {
@@ -449,128 +449,6 @@ async function postMarks(
   return error;
 }
 
-/////CHANGE SEMESTER !!!!!!!!!!!!
-// export const fetchSectionsAndSubs = async (course, year, departments,semester) => {
-//   console.log('called')
-//   try {
-//     let subjects = [];
-//     let sections = [];
-//     for (let index = 0; index < departments.length; index++) {
-//       const element = departments[index].value;
-//       const q = query(doc(db, "curriculum", course, year, element));
-//       const alldocs = await getDoc(q);
-
-//       const data = alldocs.data();
-//       if(semester==1){
-
-//         for (let i = 0; i < data.subjects.length; i++) {
-//           if (subjects[alldocs.id]) {
-//             subjects[alldocs.id] = [
-//               ...subjects[alldocs.id],
-//               {
-//                 value: data.subjects[i].subject,
-//                 label: data.subjects[i].subject,
-//               },
-//             ];
-//           } else {
-//             subjects[alldocs.id] = [
-//               {
-//                 value: data.subjects[i].subject,
-//                 label: data.subjects[i].subject,
-//               },
-//             ];
-//           }
-//         }
-//         if (alldocs.data()["OEs"])
-//           for (let index = 0; index < alldocs.data()["OEs"].length; index++) {
-//             const ele = alldocs.data()["OEs"][index];
-//             if (subjects[alldocs.id]) {
-//               subjects[alldocs.id] = [
-//                 ...subjects[alldocs.id],
-//                 { value: ele.subject, label: ele.subject },
-//               ];
-//             } else {
-//               subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
-//             }
-//           }
-//         if (alldocs.data()["PEs"])
-//           for (let index = 0; index < alldocs.data()["PEs"].length; index++) {
-//             const ele = alldocs.data()["PEs"][index];
-//             if (subjects[alldocs.id]) {
-//               subjects[alldocs.id] = [
-//                 ...subjects[alldocs.id],
-//                 { value: ele.subject, label: ele.subject },
-//               ];
-//             } else {
-//               subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
-//             }
-//           }
-//       }
-//       if(semester==2){
-
-//         for (let i = 0; i < data.subjects2.length; i++) {
-//           if (subjects[alldocs.id]) {
-//             subjects[alldocs.id] = [
-//               ...subjects[alldocs.id],
-//               {
-//                 value: data.subjects2[i].subject,
-//                 label: data.subjects2[i].subject,
-//               },
-//             ];
-//           } else {
-//             subjects[alldocs.id] = [
-//               {
-//                 value: data.subjects2[i].subject,
-//                 label: data.subjects2[i].subject,
-//               },
-//             ];
-//           }
-//         }
-//         if (alldocs.data()["OEs2"])
-//           for (let index = 0; index < alldocs.data()["OEs2"].length; index++) {
-//             const ele = alldocs.data()["OEs2"][index];
-//             if (subjects[alldocs.id]) {
-//               subjects[alldocs.id] = [
-//                 ...subjects[alldocs.id],
-//                 { value: ele.subject, label: ele.subject },
-//               ];
-//             } else {
-//               subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
-//             }
-//           }
-//         if (alldocs.data()["PEs2"])
-//           for (let index = 0; index < alldocs.data()["PEs2"].length; index++) {
-//             const ele = alldocs.data()["PEs2"][index];
-//             if (subjects[alldocs.id]) {
-//               subjects[alldocs.id] = [
-//                 ...subjects[alldocs.id],
-//                 { value: ele.subject, label: ele.subject },
-//               ];
-//             } else {
-//               subjects[alldocs.id] = [{ value: ele.subject, label: ele.subject }];
-//             }
-//           }
-//       }
-
-//       const sectionsDoc = data["sections"];
-
-//       for (let index = 0; index < sectionsDoc.length; index++) {
-//         const element = sectionsDoc[index];
-//         if (sections[alldocs.id]) {
-//           sections[alldocs.id] = [
-//             ...sections[alldocs.id],
-//             { value: element, label: element },
-//           ];
-//         } else sections[alldocs.id] = [{ value: element, label: element }];
-//       }
-//     }
-
-//     console.log(subjects,sections)
-//     return { subjects: subjects, sections: sections };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 async function getCoeDeadline(midNo, course, year) {
   const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
