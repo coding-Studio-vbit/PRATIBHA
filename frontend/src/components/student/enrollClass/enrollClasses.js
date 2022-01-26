@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import Navbar from '../../global_ui/navbar/navbar';
 import Select from "react-select";
-import { enrollCourse, fetchDepartments, fetchRegulationOptions } from '../services/studentServices';
+import { enrollCourse, fetchDepartments, fetchRegulationOptions,fetchisMid1,fetchisMid2 } from '../services/studentServices';
 import Button from '../../global_ui/buttons/button';
 import { Spinner } from '../../global_ui/spinner/spinner';
 import { useAuth } from '../../context/AuthContext';
@@ -92,6 +92,24 @@ function EnrollClasses() {
         })
         setSections(sect);  
     }
+    async function isEnrollValid(course,year){
+        try{
+          const f1=await fetchisMid1(course,year);
+          const f2=await fetchisMid2(course,year);
+          console.log(f1,f2)
+          if(f1||f2){
+              console.log("valid")
+              return true;
+          }
+          else{
+            return false;
+          }
+        }
+        catch(e){
+          console.log(e);
+        }
+      
+      }
 
     async function fetchData(){
         if(departments==null && course!=="" && year!==""){
@@ -142,20 +160,28 @@ function EnrollClasses() {
                         subjects:subjects,
                         section:section.value                       
                     });
-                    const res = await enrollCourse(currentUser.email,{
-                        name:currentUser.username,
-                        course:course.value,
-                        year:year.value,
-                        regulation:regulation.value,
-                        department:department.value,
-                        subjects:subjects,
-                        section:section.value                       
-                    })
-                    if(res==null){
-                 
-                        setLoading(false);
-                        setdialog("Enrolled Successfully")
+                    const enrollValid = await isEnrollValid(course.value,year.value)
+                    if(enrollValid){
+                        const res = await enrollCourse(currentUser.email,{
+                            name:currentUser.username,
+                            course:course.value,
+                            year:year.value,
+                            regulation:regulation.value,
+                            department:department.value,
+                            subjects:subjects,
+                            section:section.value                       
+                        })
+                        if(res==null){
+                     
+                            setLoading(false);
+                            setdialog("Enrolled Successfully")
+                        }
                     }
+                    else{
+                        setdialog("Cannot Enroll.Deadlines crossed")
+                    }
+
+                 
                 }else{
                     console.log("Invalid");
                     setLoading(false);
