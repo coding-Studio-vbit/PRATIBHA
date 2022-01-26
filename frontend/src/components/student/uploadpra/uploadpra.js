@@ -105,7 +105,7 @@ const Upload = () => {
                 setUrl(null);
                 setFileError("Convert PPT to PDF format for submission")
               }
-              else if(ext!="pdf" && ext!="jpeg" && ext!="jpg" && ext!="png" && ext!="mp4" && ext!="avi" && ext!="mov" && ext!="m4v")
+              else if(ext!="pdf" && ext!="jpeg" &&  ext!="jfif" && ext!="jpg" && ext!="png" && ext!="mp4" && ext!="avi" && ext!="mov" && ext!="m4v")
               {
                 console.log(ext);
                 setUrl(null);
@@ -394,11 +394,11 @@ const Upload = () => {
                         <div>{deadLineInfo.instructions}</div>
                     </div>}
                     <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                    <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
+                    <p className={styles.fileName}><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}
                     {/* <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/> */}
-                    <p className={styles.downloadBtn}>
+                    <p className={styles.downloadBtn} style={{margin:"0%"}}>
                       <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>
-                    </p>
+                    </p></p>
                    <button
                       onClick={() => seteditPRA(true)}
                       className={styles.editbutton}>
@@ -445,18 +445,20 @@ const Upload = () => {
                         ):
                         (
                           <div> 
-                            {
-                              praTitle!=null || praTitle.length>0 &&
-                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                            }
-                            {
-                              fileName!=null || fileName.length>0 &&
-                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
-                            }
+                            
+                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>                     
+                             
+                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}
+                              {
+                                (fileName!=""|| praTitle!="") && 
+                                <div>
+                                <span className={styles.downloadBtn} style={{margin:"0%", alignSelf:"center"}}>
+                                <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>
+                                </span>
+                                </div>
+                              }
                             {/* <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/> */}
-                            <p className={styles.downloadBtn}>
-                              <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>
-                            </p>
+                            </p> 
                             <p className={styles.errorField} style={{alignItems:"center"}}>Deadline Exceeeded.Cannot make any changes for Mid-1 submissions.</p>
                           </div>
                       )
@@ -496,10 +498,10 @@ const Upload = () => {
                           <div>
                             {/* Deadline crossed message  */}
                               <p className={styles.pratitle}><strong style={{color:'#0E72AB'}}>Title :</strong> {praTitle}</p>
-                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}</p>
-                              <p className={styles.downloadBtn}>
+                              <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}
+                              <p className={styles.downloadBtn} style={{margin:"0%", alignSelf:"center"}}>
                               <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>
-                              </p>
+                              </p></p>
                             
                               <p className={styles.errorField} style={{alignItems:"center"}}>Deadline crossed. Cannot make any changes for Mid-2 submissions.</p>
                           </div>
@@ -596,3 +598,4 @@ export default Upload;
 //                 }
 //                 </div>
 //             </Worker>
+
