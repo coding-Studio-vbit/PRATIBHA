@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Card from "../../../global_ui/card/card.js";
 import Button from "../../../global_ui/buttons/button";
+import Dialog from "../../../global_ui/dialog/dialog";
 import "./classList.css";
 import { useNavigate } from "react-router-dom";
-import { getSubjects } from "../../services/facultyServices";
+import { deleteClass, getSubjects } from "../../services/facultyServices";
 import { useAuth } from "../../../context/AuthContext";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 
@@ -12,6 +13,8 @@ const ClassList = () => {
   const { currentUser } = useAuth();
   const [subs, setSubs] = useState();
   const [loading, setLoading] = useState(true);
+  const[showDialog,setShowDialog]=useState(null);
+  const[isConfirm,setConfirm]=useState(true);
   const navigate = useNavigate();
 
 
@@ -34,10 +37,26 @@ const ClassList = () => {
   }, [currentUser.email]);
 
   function handleCard(sub) {
+    console.log('called1')
     if (subs.praSetSubs[sub]) {
       navigate("/faculty/studentlist", { state: { sub: sub } });
     } else {
       navigate("/faculty/createPRA", { state: { sub: sub } });
+    }
+  }
+ async function handledelete(sub){
+    console.log(sub);
+
+    setShowDialog("Are you sure you want to delete class ? All the data will be lost forever.")
+    console.log('called2')
+    console.log(showDialog)
+    if(isConfirm){
+      setLoading(true);
+      const d = await deleteClass(currentUser.email,sub);
+      if(d){
+        setLoading(false);
+      }
+
     }
   }
 
@@ -50,6 +69,7 @@ const ClassList = () => {
       
       <div className="div-container-classes">
       <div className="addclass-button btn-container">
+      {showDialog && (<Dialog twoButtons={true} message={showDialog} onConfirm={()=>{setConfirm(true) ;setShowDialog(false)}} onCancel={()=>setShowDialog(false)}/>)}
 
       <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i class="fas fa-plus"></i>Add Classes</Button>
       {currentUser.isHOD?<Button className="viewdept-button normal" onClick={()=>{navigate("/faculty/HODSearch")}}>View Department Grades</Button>:<p></p>}
@@ -68,6 +88,8 @@ const ClassList = () => {
                 }
                 return (
                   <Card
+                  children={<i class="fas fa-trash-alt"></i>}
+                  onClickchildren={handledelete}
                     key={newItem}
                     onclick={handleCard}
                     text={newItem}
@@ -99,6 +121,8 @@ const ClassList = () => {
                 }
                 return (
                   <Card
+                    children={<i class="fas fa-trash-alt"></i>}
+                  onClickchildren={handledelete}
                     key={newItem}
                     onclick={handleCard}
                     text={newItem}
@@ -135,6 +159,8 @@ const ClassList = () => {
                 }
                 return (
                   <Card
+                    children={<i class="fas fa-trash-alt"></i>}
+                  onClickchildren={handledelete}
                     key={newItem}
                     onclick={handleCard}
                     text={newItem}
