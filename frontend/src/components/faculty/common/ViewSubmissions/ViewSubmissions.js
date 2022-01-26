@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
 import "./ViewSubmissions.css";
+import Dialog from "../../../global_ui/dialog/dialog";
 import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
@@ -10,7 +11,7 @@ import {
   getStudentData,
   fetchisMid1,
   fetchisMid2,
-  fetchSemNumber
+  fetchSemNumber,
 } from "../../../student/services/studentServices";
 import { collection, query, getDocs } from "firebase/firestore";
 import { getPRA } from "../../services/facultyServices";
@@ -23,44 +24,38 @@ const ViewSubmissions = () => {
   const [links, setLinks] = useState({});
   const [sem, setSem] = useState("");
   const location = useLocation();
+  const [showDialog, setShowDialog] = useState(null);
 
   const passedData = location.state;
   let title =
-  passedData.Course+
-  " "+
+    passedData.Course +
+    " " +
     passedData.Year +
     " " +
     passedData.Dept +
     " " +
-    passedData.Section ;
+    passedData.Section;
 
   let course, courseName;
   course = passedData.Course;
 
   courseName = course;
 
-  
-
   const DepartmentForFaculty =
     passedData.Course +
     "_" +
-    passedData.Regulation+
-    "_"+
+    passedData.Regulation +
+    "_" +
     passedData.Year +
     "_" +
     passedData.Dept +
     "_" +
     passedData.Section;
-  course = DepartmentForFaculty+"_"+passedData.Subject;
+  course = DepartmentForFaculty + "_" + passedData.Subject;
 
-  if(passedData.Course === "MBA"&&passedData.Year==='1')
-  {
-    title=
-    passedData.Course+' '+
-    passedData.Year +
-    " " +
-    passedData.Section ;
-
+  if (passedData.Course === "MBA" && passedData.Year === "1") {
+    title =
+      passedData.Course + " " + passedData.Year + " " + passedData.Section;
   }
 
   const [error, setError] = useState(null);
@@ -73,8 +68,8 @@ const ViewSubmissions = () => {
     const res = await getUploadedFileByPath(
       courseName +
         "/" +
-        passedData.Regulation+
-        "/"+
+        passedData.Regulation +
+        "/" +
         passedData.Year +
         "/" +
         passedData.Dept +
@@ -99,9 +94,8 @@ const ViewSubmissions = () => {
     const res = await getUploadedFileByPath(
       courseName +
         "/" +
-        
-        passedData.Regulation+
-        "/"+
+        passedData.Regulation +
+        "/" +
         passedData.Year +
         "/" +
         passedData.Dept +
@@ -122,22 +116,20 @@ const ViewSubmissions = () => {
   const Fetchdata = async () => {
     var isData = false;
     const result = await getPRA(passedData.Subject, DepartmentForFaculty);
-    if(result){
-
+    if (result) {
       let facultyID = result.facultyID;
       if (facultyID) {
         const studentref = query(
-          
           collection(db, `faculty/${facultyID}/${course}`)
           // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
         );
-  
+
         let ismid1 = await fetchisMid1(courseName, passedData.Year);
         let ismid2 = await fetchisMid2(courseName, passedData.Year);
-  
+
         let semester = await fetchSemNumber();
         setSem(semester);
-  
+
         await getDocs(studentref).then((querySnapshot) => {
           if (querySnapshot) {
             querySnapshot.forEach(async (doc) => {
@@ -182,23 +174,23 @@ const ViewSubmissions = () => {
                   Preparation2 +
                   Presentation2
                 : " ";
-  
+
               await getStudentData(email)
                 .then(async ({ document, error }) => {
                   let returndata = document;
                   let topic, name;
-  
+
                   if (error == null) {
-                    isData=true;
+                    isData = true;
                     if (ismid1) {
                       await Fetchlink1(email);
                     }
                     if (ismid2) {
                       await Fetchlink2(email);
                     }
-  
+
                     let obj = returndata["subjects"].find(
-                      (o) => o.subject === passedData.Subject 
+                      (o) => o.subject === passedData.Subject
                     );
                     topic = obj.topic;
                     name = returndata.name;
@@ -229,32 +221,28 @@ const ViewSubmissions = () => {
                     setData((data) => [...data, dataobj]);
                   }
                 });
-                if(!isData) {
-                  setError("No PRA submissions found in this subject");
-                }
+              if (!isData) {
+                setError("No PRA submissions found in this subject");
+              }
             });
           } else {
             setError("No PRA submissions found in this subject");
           }
         });
-  
+
         setloading(false);
       } else {
         setloading(false);
       }
+    } else {
+      setError("No PRA submissions found in this subject");
+      setloading(false);
     }
-    else{
-      setError('No PRA submissions found in this subject');
-      setloading(false)
-    }
-
-    
   };
 
   useEffect(() => {
     Fetchdata();
   }, []);
-
 
   return (
     <div>
@@ -269,18 +257,24 @@ const ViewSubmissions = () => {
         }
         logout={true}
       />
-       <p className="bold subject">SUBJECT : {passedData.Subject}</p>
+      <p className="bold subject">SUBJECT : {passedData.Subject}</p>
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
         </div>
       ) : error ? (
         <div className="err_Display">{error}</div>
-      ) 
-       :
-      //  data.length?
-       (
+      ) : (
+        //  data.length?
         <div className="sub_body">
+          {showDialog && (
+            <Dialog
+              message={showDialog}
+              onOK={() => {
+                setShowDialog(false);
+              }}
+            />
+          )}
           <table>
             <thead>
               <tr>
@@ -293,8 +287,7 @@ const ViewSubmissions = () => {
               </tr>
             </thead>
             <tbody>
-              {
-              // data &&
+              {data &&
                 data
                   .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
                   .map((dataitem) => (
@@ -306,11 +299,13 @@ const ViewSubmissions = () => {
                       <td>{dataitem.MID_2}</td>
                       <td>
                         <center>
-                        <Download
-                        className="viewsub-download"
-                          url={links[dataitem.ROLL_NO]}
-                          userID={dataitem.ROLL_NO}
-                        /></center>
+                          <Download
+                            className="viewsub-download"
+                            url={links[dataitem.ROLL_NO]}
+                            userID={dataitem.ROLL_NO}
+                            setShowDialog={setShowDialog}
+                          />
+                        </center>
                         {/* <a
                           href={links[dataitem.ROLL_NO]}
                           target="_blank"
@@ -334,8 +329,8 @@ const ViewSubmissions = () => {
             />
           </div>
         </div>
-      // ) : (
-      //   <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
+        // ) : (
+        //   <div className="err_Display">NO ONE ENROLLED IN THIS SUBJECT</div>
       )}
     </div>
   );

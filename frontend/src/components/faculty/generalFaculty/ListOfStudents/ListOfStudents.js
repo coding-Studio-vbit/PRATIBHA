@@ -12,9 +12,8 @@ import { useAuth } from "../../../context/AuthContext";
 import {
   fetchisMid1,
   fetchisMid2,
-  fetchSemNumber
+  fetchSemNumber,
 } from "../../../student/services/studentServices";
-
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);
@@ -25,7 +24,7 @@ const ListofStudents = () => {
   const [studentTopic, setStudentTopic] = useState(null);
   const [mid, setMid] = useState("");
   const [sem, setSem] = useState("");
-  const[mid2err,setmid2err]=useState(false);
+  const [mid2err, setmid2err] = useState(false);
   const location = useLocation();
   const { currentUser } = useAuth();
   const navigate = useNavigate();
@@ -38,8 +37,8 @@ const ListofStudents = () => {
     "_" +
     subjectval[2] +
     "_" +
-    subjectval[3]+
-    "_"+
+    subjectval[3] +
+    "_" +
     subjectval[4];
   let title =
     subjectval[0] +
@@ -52,8 +51,6 @@ const ListofStudents = () => {
   if (subjectval[0] === "MBA" && subjectval[1] == "1") {
     title = subjectval[0] + " " + subjectval[2] + " " + subjectval[4];
   }
-
-  
 
   const Fetchdata = async () => {
     var isData = false;
@@ -122,15 +119,18 @@ const ListofStudents = () => {
               Individuality1 +
               Preparation1 +
               Presentation1
+            : "Not Graded";
+          const mid2 = ismid2
+            ? docData["mid2"]
+              ? Innovation2 +
+                Subject_Relevance2 +
+                Individuality2 +
+                Preparation2 +
+                Presentation2
+              : docData["isSubmitted2"]
+              ? "Not Graded"
+              : "Not Submitted"
             : " ";
-          const mid2 = ismid2 ?( docData["mid2"]
-            ? (Innovation2 +
-              Subject_Relevance2 +
-              Individuality2 +
-              Preparation2 +
-              Presentation2)
-            : docData["isSubmitted2"] 
-            ? "Not Graded": "Not Submitted"):" ";
 
           await getStudentData(email)
             .then(({ document, error }) => {
@@ -200,9 +200,9 @@ const ListofStudents = () => {
           if (obj) {
             setButtonText("EDIT PRA");
             let ismid2 = await fetchisMid2(subjectval[0], subjectval[2]);
-            if(ismid2){
-              if(!obj.deadline2){
-                setmid2err(true)
+            if (ismid2) {
+              if (!obj.deadline2) {
+                setmid2err(true);
               }
             }
           }
@@ -222,12 +222,7 @@ const ListofStudents = () => {
 
   return (
     <div>
-      <Navbar
-        backURL={
-          "/faculty/classlist"
-        }
-        title={title}
-      >
+      <Navbar backURL={"/faculty/classlist"} title={title}>
         <span
           onClick={() =>
             navigate("/faculty/createPra", {
@@ -243,7 +238,11 @@ const ListofStudents = () => {
         </span>
       </Navbar>
       <p className="bold subject">SUBJECT : {subjectval[5]}</p>
-      {mid2err && <p className="mid2err"><u>Please set deadline for Mid 2 to open Submissions.</u></p>}
+      {mid2err && (
+        <p className="mid2err">
+          <u>Please set deadline for Mid 2 to open Submissions.</u>
+        </p>
+      )}
       {loading ? (
         <div className="spinnerload">
           <Spinner radius={2} />
@@ -287,8 +286,8 @@ const ListofStudents = () => {
                                 "/" +
                                 subjectval[4] +
                                 "/" +
-                                subjectval[5]+
-                                "/"+
+                                subjectval[5] +
+                                "/" +
                                 `${mid}` +
                                 "/" +
                                 dataitem.ROLL_NO,
@@ -325,8 +324,8 @@ const ListofStudents = () => {
                         "/" +
                         subjectval[4] +
                         "/" +
-                        subjectval[5]+
-                        "/"+
+                        subjectval[5] +
+                        "/" +
                         `${mid}` +
                         "/" +
                         student,
