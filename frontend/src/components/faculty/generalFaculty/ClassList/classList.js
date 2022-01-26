@@ -49,10 +49,10 @@ const ClassList = () => {
       <Navbar back={false} title="Your Classes" logout={true} />
       
       <div className="div-container-classes">
-      <div className="addclass-button">
+      <div className="addclass-button btn-container">
 
       <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i class="fas fa-plus"></i>Add Classes</Button>
-      {currentUser.isHOD?<Button className="addclass-button normal" onClick={()=>{navigate("/faculty/HODSearch")}}>View Department Grades</Button>:<p></p>}
+      {currentUser.isHOD?<Button className="viewdept-button normal" onClick={()=>{navigate("/faculty/HODSearch")}}>View Department Grades</Button>:<p></p>}
       </div>
         {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">

@@ -57,10 +57,14 @@ const CreatePra = () => {
     midNumber();
 
     const coeDeadline = await getCoeDeadline(mid, course, year);
-    if (coeDeadline) {
-      setDeadLine(coeDeadline.data.seconds);
-    } else {
-      setDeadLine(false);
+    try{
+      if (coeDeadline) {
+        setDeadLine(coeDeadline.data.seconds);
+      } else {
+        setDeadLine(false);
+      }
+    }catch{
+      console.log(coeDeadline.error);
     }
   };
   deadline();
