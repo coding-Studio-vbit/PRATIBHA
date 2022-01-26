@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../../global_ui/navbar/navbar";
-import "../../generalFaculty/ListOfStudents/ListOfStudents.css";
+import "./ViewSubmissions.css";
 import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
@@ -281,7 +281,7 @@ const ViewSubmissions = () => {
       //  data.length?
        (
         <div className="sub_body">
-          <table style={{ marginTop: "4.5rem" }}>
+          <table>
             <thead>
               <tr>
                 <th>ROLL NO</th>
@@ -307,6 +307,7 @@ const ViewSubmissions = () => {
                       <td>
                         <center>
                         <Download
+                        className="viewsub-download"
                           url={links[dataitem.ROLL_NO]}
                           userID={dataitem.ROLL_NO}
                         /></center>

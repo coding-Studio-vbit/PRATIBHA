@@ -25,11 +25,7 @@ export default function LoginPage() {
           nav("/faculty/coesearch", { replace: true });
         } else {
           nav("/faculty/classlist", { replace: true });
-        }
-      } else {
-        //COE
-        nav("/coesearch", { replace: true });
-      }
+        }}
     }
     else{
       nav("/")

@@ -1,0 +1,81 @@
+.spinnerload {
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .sub_body {
+    margin: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .subject{
+    color:#0E72AB;
+    text-align: center;
+    font-size:large;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse:separate;
+    border-spacing:0px 5px;
+  }
+  th {
+    border-bottom: 1px solid black;
+    border-collapse: collapse;
+  }
+  
+  td,
+  th {
+    padding: 7px;
+    text-align: center;
+  }
+  
+  .LOF_buttons {
+    margin-top: 50px;
+  }
+  
+  tr {
+    margin: 5px;
+    cursor: pointer;
+  
+  }
+  .viewsub-download{
+      font-size: 15px;
+  }
+  
+  .err_Display{
+    margin-top: 20vh;
+    color:red;
+    font-weight:bold;
+    text-align:center;
+    font-size: x-large;
+    
+  }
+  
+  tbody tr:nth-child(odd) {
+    background-color: rgba(176, 196, 222, 0.43);
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: rgba(176, 196, 222, 0.63);
+  }
+  .bold {
+    font-weight: bold;
+  }
+  @media screen and (max-width: 500px) {
+    table {
+      width: screen;
+      display: block;
+      overflow-x: scroll;
+    }
+  
+    .export_ {
+      margin-top: 20px;
+      margin-right: 20px;
+    }
+  }
+  
