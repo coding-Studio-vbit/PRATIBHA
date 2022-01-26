@@ -30,11 +30,7 @@ async function enrollCourse(email, course_details) {
   let error = null;
   const userRef = doc(db, "users", email);
   try {
-    var myTimestamp = Timestamp.fromDate(new Date());
     await setDoc(userRef, course_details);
-    await updateDoc(userRef, {
-      'Enrolled at': myTimestamp,
-    });
   } catch (e) {
     error = e.code;
   }
@@ -391,6 +387,7 @@ async function fetchSemNumber(course, year) {
     if (d2) {
       return 2;
     }
+    return -1;
   } catch (error) {
     console.log(error);
   }

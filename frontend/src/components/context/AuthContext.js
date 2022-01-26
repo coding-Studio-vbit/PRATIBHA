@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { auth, db } from "../../firebase";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
+import { fetchSemNumber } from "../student/services/studentServices";
 
 const AuthContext = React.createContext();
 
@@ -61,7 +62,15 @@ export function AuthProvider({ children }) {
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-                isFirstTime = false;
+              const  semester = docSnap.data().semester;
+              const semcheck = await fetchSemNumber(docSnap.data().course,docSnap.data().year);
+              console.log(semester,semcheck);
+              if(semester==semcheck){
+                isFirstTime=false;
+              }else{
+                isFirstTime = true;
+              }
+               
               }
             } catch (e) {
               //Display it
