@@ -95,6 +95,7 @@ async function fetchisMid2(course, year) {
   }
 }
 
+////CHANGE SEMESTER!!!!!!!!!!!!
 async function getCurriculumDetails(course_details) {
   const curriculumRef = query(
     collection(db, `curriculum/${course_details.course}/${course_details.year}`)
@@ -157,6 +158,8 @@ async function getSubjectsList(email) {
   }
 }
 
+
+////CHANGE SEMESTER!!!!!!!!!!
 async function fetchDepartments(course, year) {
   const depRef = query(collection(db, `curriculum/${course}/${year}`));
   try {
