@@ -314,12 +314,10 @@ async function fetchRegulationOptions() {
       for (let i = 0; i < regarray.length; i++) {
         let match = false;
         if (arr.length === 0) {
-          console.log(i);
           arr = [...arr, { value: `${regarray[i]}`, label: `R${regarray[i]}` }];
         }
         for (let j = 0; j < arr.length; j++) {
           if (arr[j].value == regarray[i]) {
-            console.log(i, j);
             match = true;
           }
         }
@@ -398,22 +396,6 @@ async function fetchSemNumber(course, year) {
   }
 }
 
-async function isEnrollValid(course,year){
-  try{
-    const f1=fetchisMid1(course,year);
-    const f2=fetchisMid2(course,year);
-    if(f1||f2){
-        return true;
-    }
-    else{
-      return false;
-    }
-  }
-  catch(e){
-    console.log(e);
-  }
-
-}
 
 export {
   enrollCourse,
