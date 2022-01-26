@@ -2,6 +2,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  updateDoc,
   query,
   collection,
   getDocs,
@@ -29,7 +30,11 @@ async function enrollCourse(email, course_details) {
   let error = null;
   const userRef = doc(db, "users", email);
   try {
+    var myTimestamp = Timestamp.fromDate(new Date());
     await setDoc(userRef, course_details);
+    await updateDoc(userRef, {
+      'Enrolled at': myTimestamp,
+    });
   } catch (e) {
     error = e.code;
   }
@@ -391,6 +396,23 @@ async function fetchSemNumber(course, year) {
   } catch (error) {
     console.log(error);
   }
+}
+
+async function isEnrollValid(course,year){
+  try{
+    const f1=fetchisMid1(course,year);
+    const f2=fetchisMid2(course,year);
+    if(f1||f2){
+        return true;
+    }
+    else{
+      return false;
+    }
+  }
+  catch(e){
+    console.log(e);
+  }
+
 }
 
 export {
