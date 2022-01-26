@@ -14,7 +14,7 @@
     flex-direction:column;
     justify-content: center;
     align-items: center;
-    min-width: 390px;
+    /* min-width: 390px; */
 }
 
 .enrollBtn{
@@ -24,6 +24,9 @@
     color: white;
     display: block;
     /* align-self: center; */
+}
+.inputBox{
+    min-width: 300px;
 }
 
 .btnSpinner{
