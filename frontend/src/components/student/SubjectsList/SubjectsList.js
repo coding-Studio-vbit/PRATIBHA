@@ -39,6 +39,7 @@ const SubjectsList = () => {
       setcourse(document.course);
       setyear(document.year);
       setregulation(document.regulation);
+      console.log(document);
       let course =
         document.course +
         "_" +
@@ -59,21 +60,29 @@ const SubjectsList = () => {
       let ismid1 = await fetchisMid1(document.course, document.year);
       let ismid2 = await fetchisMid2(document.course, document.year);
       let coeDeadLine, dlDate, mid;
+      console.log(ismid1,ismid2);
 
       if (ismid1) {
         dlDate = await getCoeDeadline("1", document.course, document.year);
         mid = 1;
       }
-      if (ismid2) {
+      else if (ismid2) {
         dlDate = await getCoeDeadline("2", document.course, document.year);
         mid = 2;
       }
-      coeDeadLine = new Timestamp(
-        dlDate.data["seconds"],
-        dlDate.data["nanoseconds"]
-      ).toDate();
+      if(dlDate!=null){
 
-      await fetchsubject(document, coeDeadLine, course, mid);
+        console.log(mid);
+        coeDeadLine = new Timestamp(
+          dlDate.data["seconds"],
+          dlDate.data["nanoseconds"]
+        ).toDate();
+  
+        await fetchsubject(document, coeDeadLine, course, mid);
+      }
+      else{
+        setError("Cannot Enroll");
+      }
     } else {
       setError(error);
     }
