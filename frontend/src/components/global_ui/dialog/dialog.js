@@ -7,11 +7,15 @@ function Dialog({message,onOK,onConfirm,onCancel,twoButtons=false}) {
             <div className={styles.dialog}>
                 <p className={styles.message}>{message}</p>
               
-                {twoButtons? (<div>
-                 <button onClick={()=>onConfirm()} className={styles.btn}>Confirm Delete</button>
-                 <button onClick={()=>onCancel()} className={styles.btn}>Cancel</button>)
-            </div>):  (<button onClick={()=>onOK()} className={styles.btn}>Okay</button>)}
-        </div> 
+                {
+                    twoButtons? (
+                    <div style={{display:"flex",gap:'100px'}}>
+                        <button onClick={()=>onConfirm()} className={styles.btn}>Delete</button>
+                        <button onClick={()=>onCancel()} className={styles.btn}>Cancel</button>
+                    </div>):  
+                    (<button onClick={()=>onOK()} className={styles.btn}>Okay</button>)
+                }
+            </div> 
         </div>       
     )
 }

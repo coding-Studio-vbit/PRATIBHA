@@ -10,7 +10,11 @@ const Card = ({
 }) => {
   return (
     <div className="globalCardContainer"  onClick={()=>onclick(klass)}>
-    {children&& <span className="delicon" onClick={()=>onClickchildren(klass)}>{children}</span>}
+    {children&& <span className="delicon" onClick={function(e){
+      console.log("Prevent");
+          e.stopPropagation()
+          onClickchildren(klass)}
+      }>{children}</span>}
     {text && <p>{text}</p>}
       {subText && <p className="subText" style={{fontSize:'15px',fontWeight:'bold'}}>{subText}</p>}
     </div>
