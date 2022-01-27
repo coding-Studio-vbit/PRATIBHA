@@ -427,6 +427,8 @@ const LockList = () => {
              
             </div>
           </div>
+          <div className="btn-container">
+
               <Button
                 className="locklist-button normal"
                 width="90"
@@ -434,6 +436,7 @@ const LockList = () => {
                 children="Done"
                 onClick={handleDone}
               />
+              </div>
         </div>
       ) : (
         <Dialog

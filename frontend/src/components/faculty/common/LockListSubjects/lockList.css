@@ -5,6 +5,10 @@
 .locklist-button {
   margin: 10px;
 }
+.btn-container{
+  display: flex;
+justify-content: center;
+}
 .small {
   padding: 0px;
   margin: 0px;
@@ -30,6 +34,7 @@
 .select-locklist {
   max-width: 300px;
   min-width: 270px;
+  text-align: left;
   justify-self: center;
   align-self: center;
   margin-bottom: 5px;
@@ -44,7 +49,7 @@
   letter-spacing: 0.4px;
 }
 .course-heading {
-  text-align: center;
+text-align: center;
   margin: 0px;
   color: #0e72ab;
   font-weight: bold;
