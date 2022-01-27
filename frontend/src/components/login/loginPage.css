@@ -3,23 +3,18 @@
   flex-direction:column;
 }
 
+.pLogo{
+  width:400px;
+}
+
 .loginComponent {
-  height: 100vh;
+  min-height: 100vh;
+  overflow-x: scroll;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  background-size: cover;
 } 
-.titleLogin{
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  align-self: center;
-  height:auto;
-width:100%;
-max-width: 400px;
-}
+
 .logos{
   width: 100%;
   display: flex;
@@ -29,11 +24,11 @@ max-width: 400px;
   align-items: center;
   height: 80px;
   border-bottom:1px solid #e5e4e2;
-  
 }
 
+
 .cs_logo{
-    height: 65px;
+  height: 65px;
 }
 
 .vbit{
@@ -57,6 +52,37 @@ max-width: 400px;
   vertical-align: middle;
 }
 
+.row{
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 6vw;
+    align-items: center;
+}
+
+.landingCard{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  margin-top: 15vh;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+
+.titleLogin{
+  margin-top: 40px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
 
 .loginBtn{
   background-color: #0e72ab;
@@ -87,15 +113,7 @@ max-width: 400px;
   gap: 20px;
 }
 
-.row{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12vw;
-    align-items: center;
-    /* margin-top: 20vh; */
-}
+
 
 .pratibhaDescription{
   height: 100vh;
@@ -107,6 +125,12 @@ max-width: 400px;
 }
 
 @media only screen and (max-width: 600px) {
+  .pLogo{
+    width:80vw;
+  }
+  .landingCard{
+    margin-top: 40px;
+  }
  .row{
    flex-direction: column;
    /* margin-top: 15vh; */
@@ -125,14 +149,47 @@ max-width: 400px;
    width: 40vw;
    height: 60px;
  }
+ .loginBtn{
+   width: 60vw;
+ }
  
 }
 
+@media only screen and (max-width: 1068px) {
+  .row{
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .landingCard{
+    flex-direction: column;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    gap: 40px;
+  }
+}
 
 
+@import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
 
 
+.line1{
+  color:darkblue;
+  background-color: #e0e0e0;
+    margin-top:40px;
+    font-size: 21px;
+    text-align: center;
+}
 
+.animtypewriter{
+  animation: blinkTextCursor 500ms steps(81) infinite normal;
+}
+
+@keyframes blinkTextCursor{
+  from{opacity: 1;}
+  to{opacity: 0;}
+}
 
 
 

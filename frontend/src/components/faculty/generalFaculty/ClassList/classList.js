@@ -14,7 +14,7 @@ const ClassList = () => {
   const [subs, setSubs] = useState();
   const [loading, setLoading] = useState(true);
   const[showDialog,setShowDialog]=useState(null);
-  const[isConfirm,setConfirm]=useState(true);
+  const[isConfirm,setConfirm]=useState(false);
   const navigate = useNavigate();
 
 
@@ -44,20 +44,15 @@ const ClassList = () => {
       navigate("/faculty/createPRA", { state: { sub: sub } });
     }
   }
+
+  const [delSub, setdelSub] = useState(null);
  async function handledelete(sub){
     console.log(sub);
+    setdelSub(sub);
 
     setShowDialog("Are you sure you want to delete class ? All the data will be lost forever.")
     console.log('called2')
     console.log(showDialog)
-    if(isConfirm){
-      setLoading(true);
-      const d = await deleteClass(currentUser.email,sub);
-      if(d){
-        setLoading(false);
-      }
-
-    }
   }
 
   
@@ -69,7 +64,23 @@ const ClassList = () => {
       
       <div className="div-container-classes">
       <div className="addclass-button btn-container">
-      {showDialog && (<Dialog twoButtons={true} message={showDialog} onConfirm={()=>{setConfirm(true) ;setShowDialog(false)}} onCancel={()=>setShowDialog(false)}/>)}
+      {   
+        showDialog && 
+        <Dialog twoButtons={true} message={showDialog} 
+          onConfirm={
+            async()=>{
+              setLoading(true);
+              const d = await deleteClass(currentUser.email,delSub);
+              if(d){
+                setLoading(false);
+              }
+              setLoading(false);
+              setConfirm(true);
+              setShowDialog(false)
+            }
+          } 
+        onCancel={()=>setShowDialog(false)}/>
+      }
 
       <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i class="fas fa-plus"></i>Add Classes</Button>
       {currentUser.isHOD?<Button className="viewdept-button normal" onClick={()=>{navigate("/faculty/HODSearch")}}>View Department Grades</Button>:<p></p>}

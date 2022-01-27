@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import "./loginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -10,7 +10,23 @@ import PratibhaInfo from "./pratibhaInfo/pratibhaInfo";
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
   const nav = useNavigate();
+  const text="Participatory Report Assessment of Theme and Innovation Based Harmonic Activities";
+  
+  const [displayText, setdisplayText] = useState("");
+  let i=0;
+
+  function animate() {
+    
+    setTimeout(() => {
+      setdisplayText(text.slice(0,i));  
+      i+=1;
+      animate()    
+    }, 75); 
+
+  }
+  
   useEffect(() => {
+    animate()
     if (currentUser) {
       if (currentUser.userType === "STUDENT") {
         if (currentUser.isFirstTime) {
@@ -44,29 +60,40 @@ export default function LoginPage() {
           <img alt="vbit" className="vbit" src="/vbit.png" />       
           <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
         </div>
-<div className="titleLogin">
-<img alt="Pratibha" src="/PRATIBHAmaintitle.png"/>
 
-</div>
-        <div className="row">
-          <div className="button-and-icon">
-          <i class="fas fa-user-graduate icons"></i>            
-          <button className="loginBtn" onClick={signInWithGoogle}>
-              Login as Student
-            </button>
-          </div>
-          <div className="button-and-icon">
-          <i className="fas fa-users icons"></i>
+        <div className="landingCard">
+            <div className="titleLogin">
+                <img className="pLogo" alt="Pratibha" src="/PRATIBHAmaintitle.png"/>
+                <div className="pLogo" style={{marginTop:'30px',height:'100px'}}>
+                  <span className="line1">
+                      {displayText}
+                  <span className="animtypewriter">|</span>
+                  </span>
+                </div>
+                
+            </div>
 
-            <button className="loginBtn" onClick={signInWithGoogle}>
-              Login as Faculty
-            </button>
-          </div>
-        </div>        
-      </div>
-  
-      {/* <PratibhaInfo/> */}
+            <div className="row">
 
+              <div className="button-and-icon">
+                <i class="fas fa-user-graduate icons"></i>            
+                <button className="loginBtn" onClick={signInWithGoogle}>
+                    Login as Student
+                  </button>
+              </div>
+
+              <div className="button-and-icon">
+                  <i className="fas fa-users icons"></i>
+                  <button className="loginBtn" onClick={signInWithGoogle}>
+                    Login as Faculty
+                  </button>
+              </div>
+              
+            </div>
+        </div>
+      
+      </div>       
+    
       <Footer/>
     </div>
   ) : (
