@@ -7,7 +7,7 @@ import { addClass, getDepartments } from "../../services/facultyServices";
 import "./addclasses.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { fetchRegulationOptions } from "../../../student/services/studentServices";
+import { fetchRegulationOptions,fetchSemNumber } from "../../../student/services/studentServices";
 
 export default function AddClasses() {
   const [Course, setCourse] = useState({ value: "none" });
@@ -49,7 +49,8 @@ export default function AddClasses() {
   useEffect(() => {
     const getLables = async () => {
       try {
-        const res = await getDepartments(Course.value, Year.value);
+        const sem = await fetchSemNumber(Course.value,Year.value);
+        const res = await getDepartments(Course.value,Year.value,sem);
         if (!res) return;
         setSubjects(res.subjects);
         setDepartments(res.departments);
