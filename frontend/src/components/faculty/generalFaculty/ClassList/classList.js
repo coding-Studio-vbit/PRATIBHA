@@ -34,7 +34,7 @@ const ClassList = () => {
       }
     };
     fetchSubjects();
-  }, [currentUser.email]);
+  }, [currentUser.email,subs]);
 
   function handleCard(sub) {
     console.log('called1')
