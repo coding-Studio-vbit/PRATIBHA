@@ -17,6 +17,7 @@
     "classnames": "^2.3.1",
     "file-saver": "^2.0.5",
     "firebase": "^9.6.1",
+    "firebase-tools": "^10.1.2",
     "pdfjs-dist": "^2.6.347",
     "react": "^17.0.2",
     "react-datepicker": "^4.5.0",
