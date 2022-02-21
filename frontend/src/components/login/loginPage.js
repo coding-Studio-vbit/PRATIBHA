@@ -3,9 +3,8 @@ import "./loginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen, Spinner } from "../global_ui/spinner/spinner";
-import ContactPage from "./contactPage/contactPage";
 import Footer from "./footer/footer";
-import PratibhaInfo from "./pratibhaInfo/pratibhaInfo";
+import Announcement from "./announcements/announcements";
 
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
@@ -92,7 +91,9 @@ export default function LoginPage() {
             </div>
         </div>
       
-      </div>       
+      </div> 
+
+      <Announcement/>     
     
       <Footer/>
     </div>

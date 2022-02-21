@@ -1,0 +1,26 @@
+.mainCard{
+    margin: auto;
+    width: min(90%,900px);
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    padding: 30px 35px;
+    border-radius: 20px;
+    min-height: 230px;
+    margin-bottom: 10vh;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    flex-direction: row;
+}
+
+.micImage{
+    width:22%;
+    padding: 4px 20px;
+
+}
+
+.announcementInfo{
+    justify-items: flex-start;
+    align-self: flex-start;
+}
+
