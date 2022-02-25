@@ -437,6 +437,17 @@ async function fetchSemNumber(course, year) {
   }
 }
 
+async function getAnnouncements() {
+  const announceRef = doc(db,'announcements','announce');
+  const announce = await getDoc(announceRef);
+
+  if(announce.exists()){
+    return announce.data()["list"];
+  }else{
+    return null;
+  }  
+}
+
 
 export {
   enrollCourse,
@@ -452,4 +463,5 @@ export {
   fetchisSem2,
   fetchSemNumber,
   fetchRegulationOptions,
+  getAnnouncements
 };
