@@ -7,7 +7,7 @@ import {
   collection,
   getDocs,
   Timestamp,
-  arrayUnion
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 
@@ -27,35 +27,32 @@ async function checkEnrollment(email) {
   return error;
 }
 
-
-export const addStudent = async (
-  studentID,
-  department,
-) => {
+export const addStudent = async (studentID, department) => {
   try {
     const docRef = doc(db, "classesinfo", department);
     const docData = await getDoc(docRef);
     if (docData.exists()) {
       // let d1 = true;
       const students = docData.data()["students"];
+      if (students != null) {
+        for (let index = 0; index < students.length; index++) {
+          const ele = students[index];
 
-      for (let index = 0; index < students.length; index++) {
-        const ele = students[index];
-
-        if (ele === studentID) {
-          // d1 = false;
-          break;
+          if (ele === studentID) {
+            // d1 = false;
+            break;
+          } else {
+            await updateDoc(docRef, { students: arrayUnion(studentID) });
+          }
         }
-        else {
-          await updateDoc(docRef,{students: arrayUnion(studentID)})
-        }
+      } else {
+        await updateDoc(docRef, {
+          students: [studentID],
+        });
       }
-    }
-     else {
+    } else {
       await setDoc(docRef, {
-        students: [
-          studentID
-        ],
+        students: [studentID],
       });
     }
   } catch (error) {
@@ -66,11 +63,20 @@ export const addStudent = async (
 async function enrollCourse(email, course_details) {
   let error = null;
   const userRef = doc(db, "users", email);
-const dep = course_details.course+"_"+course_details.regulation+'_'+course_details.year+'_'+course_details.department+'_'+course_details.section;
+  const dep =
+    course_details.course +
+    "_" +
+    course_details.regulation +
+    "_" +
+    course_details.year +
+    "_" +
+    course_details.department +
+    "_" +
+    course_details.section;
 
   try {
     await setDoc(userRef, course_details);
-    await addStudent(email,dep);
+    await addStudent(email, dep);
   } catch (e) {
     error = e.code;
   }
@@ -218,7 +224,15 @@ async function fetchDepartments(course, year) {
   }
 }
 
-async function getDeadLines(course, year,regulation, department, section, subject, midNo) {
+async function getDeadLines(
+  course,
+  year,
+  regulation,
+  department,
+  section,
+  subject,
+  midNo
+) {
   const deadLinesRef = doc(
     db,
     "subjects",
@@ -362,13 +376,11 @@ async function fetchRegulationOptions() {
           arr = [...arr, { value: `${regarray[i]}`, label: `R${regarray[i]}` }];
         }
       }
-return {
-    data : arr,
-    error:null
-}
-      
+      return {
+        data: arr,
+        error: null,
+      };
     }
-  
   } catch (error) {
     console.log(error);
   }
@@ -435,16 +447,15 @@ async function fetchSemNumber(course, year) {
 }
 
 async function getAnnouncements() {
-  const announceRef = doc(db,'announcements','announce');
+  const announceRef = doc(db, "announcements", "announce");
   const announce = await getDoc(announceRef);
 
-  if(announce.exists()){
+  if (announce.exists()) {
     return announce.data()["list"];
-  }else{
+  } else {
     return null;
-  }  
+  }
 }
-
 
 export {
   enrollCourse,
@@ -460,5 +471,5 @@ export {
   fetchisSem2,
   fetchSemNumber,
   fetchRegulationOptions,
-  getAnnouncements
+  getAnnouncements,
 };
