@@ -401,22 +401,24 @@ async function postMarks(
 ) {
   let error = null;
 
-  const facultyRef = doc(db, `faculty/${facultyID}/${className}`, studentID);
+  // const facultyRef = doc(db, `faculty/${facultyID}/${className}`, studentID);
 
   const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
 
   try {
     if (midNo === "1") {
-      await updateDoc(facultyRef, {
-        mid1: marks,
-        remarks1: remarks,
-      });
+      // await updateDoc(facultyRef, {
+      //   mid1: marks,
+      //   remarks1: remarks,
+      // });
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
         subs.find((e) => {
           if (e.subject == className.split("_")[5]) {
             e.gradeStatus1 = "GRADED";
+            e.mid1_marks = marks;
+            e.mid1_remarks=remarks;
           }
         });
         await updateDoc(userRef, {
@@ -426,16 +428,18 @@ async function postMarks(
         error = "Unknown Error Occured";
       }
     } else if (midNo === "2") {
-      await updateDoc(facultyRef, {
-        mid2: marks,
-        remarks2: remarks,
-      });
+      // await updateDoc(facultyRef, {
+      //   mid2: marks,
+      //   remarks2: remarks,
+      // });
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
         subs.find((e) => {
           if (e.subject == className.split("_")[5]) {
             e.gradeStatus2 = "GRADED";
+            e.mid2_marks = marks;
+            e.mid2_remarks=remarks;
           }
         });
         await updateDoc(userRef, {
