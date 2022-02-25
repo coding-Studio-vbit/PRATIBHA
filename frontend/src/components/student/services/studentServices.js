@@ -66,10 +66,8 @@ export const addStudent = async (
 
 async function enrollCourse(email, course_details) {
   let error = null;
-  const d = new Date();
-const currentYear = d.getFullYear();
   const userRef = doc(db, "users", email);
-const dep = course_details.course+"_"+course_details.regulation+'_'+course_details.year+'_'+course_details.department+'_'+course_details.section+'_'+currentYear;
+const dep = course_details.course+"_"+course_details.regulation+'_'+course_details.year+'_'+course_details.department+'_'+course_details.section;
 
   try {
     await setDoc(userRef, course_details);
