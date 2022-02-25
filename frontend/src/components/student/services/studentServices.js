@@ -7,6 +7,8 @@ import {
   collection,
   getDocs,
   Timestamp,
+  arrayRemove,
+  arrayUnion
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 
@@ -26,11 +28,52 @@ async function checkEnrollment(email) {
   return error;
 }
 
+
+export const addStudent = async (
+  studentID,
+  department,
+) => {
+  try {
+    const docRef = doc(db, "classesinfo", department);
+    const docData = await getDoc(docRef);
+    if (docData.exists()) {
+      let d1 = true;
+      const students = docData.data()["students"];
+
+      for (let index = 0; index < students.length; index++) {
+        const ele = students[index];
+
+        if (ele === studentID) {
+          d1 = false;
+          break;
+        }
+        else {
+          await updateDoc(docRef,{students: arrayUnion(studentID)})
+        }
+      }
+    }
+     else {
+      await setDoc(docRef, {
+        students: [
+          studentID
+        ],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 async function enrollCourse(email, course_details) {
   let error = null;
+  const d = new Date();
+const currentYear = d.getFullYear();
   const userRef = doc(db, "users", email);
+const dep = course_details.course+"_"+course_details.regulation+'_'+course_details.year+'_'+course_details.department+'_'+course_details.section+'_'+currentYear;
+
   try {
     await setDoc(userRef, course_details);
+    await addStudent(email,dep);
   } catch (e) {
     error = e.code;
   }
