@@ -7,7 +7,6 @@ import {
   collection,
   getDocs,
   Timestamp,
-  arrayRemove,
   arrayUnion
 } from "firebase/firestore";
 import { db } from "../../../firebase";
@@ -37,14 +36,14 @@ export const addStudent = async (
     const docRef = doc(db, "classesinfo", department);
     const docData = await getDoc(docRef);
     if (docData.exists()) {
-      let d1 = true;
+      // let d1 = true;
       const students = docData.data()["students"];
 
       for (let index = 0; index < students.length; index++) {
         const ele = students[index];
 
         if (ele === studentID) {
-          d1 = false;
+          // d1 = false;
           break;
         }
         else {

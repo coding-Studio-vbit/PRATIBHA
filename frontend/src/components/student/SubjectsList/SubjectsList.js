@@ -39,7 +39,6 @@ const SubjectsList = () => {
       setcourse(document.course);
       setyear(document.year);
       setregulation(document.regulation);
-      console.log(document);
       let course =
         document.course +
         "_" +
@@ -60,7 +59,6 @@ const SubjectsList = () => {
       let ismid1 = await fetchisMid1(document.course, document.year);
       let ismid2 = await fetchisMid2(document.course, document.year);
       let coeDeadLine, dlDate, mid;
-      console.log(ismid1,ismid2);
 
       if (ismid1) {
         dlDate = await getCoeDeadline("1", document.course, document.year);
@@ -72,7 +70,7 @@ const SubjectsList = () => {
       }
       if(dlDate!=null){
 
-        console.log(mid);
+
         coeDeadLine = new Timestamp(
           dlDate.data["seconds"],
           dlDate.data["nanoseconds"]

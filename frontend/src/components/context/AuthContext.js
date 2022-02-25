@@ -64,7 +64,6 @@ export function AuthProvider({ children }) {
               if (docSnap.exists()) {
               const  semester = docSnap.data().semester;
               const semcheck = await fetchSemNumber(docSnap.data().course,docSnap.data().year);
-              console.log(semester,semcheck);
               if(semester==semcheck){
                 isFirstTime=false;
               }else{
