@@ -22,11 +22,11 @@ import { Spinner } from "../../../global_ui/spinner/spinner.js";
 const CreatePra = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
-  const [dialog, setdialog] = useState(null);
+  const [dialog, setdialog] = useState(null); 
   const [isNewPra, setisNewPra] = useState(true);
-  const [Loading, setLoading] = useState(false);
+  const [Loading, setLoading] = useState(true);
   const [mid, setmid] = useState("");
-  const [inst, setInst] = useState("");
+  const [inst, setInst] = useState(""); 
   const location = useLocation();
   const [DeadLine, setDeadLine] = useState("");
   const { currentUser } = useAuth();
@@ -66,13 +66,12 @@ const CreatePra = () => {
     }catch{
       console.log(coeDeadline.error);
     }
+    setLoading(false);
   };
   deadline();
   var CoeDate = new Date(DeadLine * 1000);
-
   useEffect(() => {
     const fetchPRA = async () => {
-      console.log(department)
       const res = await getPRA(sub, department);
       if (res.deadline2) {
         setDate(
@@ -116,6 +115,7 @@ const CreatePra = () => {
     );
     setLoading(false);
     setdialog("PRA created");
+    console.log(new Timestamp())
   }
 
   return (
@@ -146,11 +146,12 @@ const CreatePra = () => {
         />
       )}
 
-      {Loading ? (
-        <div className='createspinnerload'>
-        <Spinner radius={1.5} />
-        </div>
-      ) : (
+      {    Loading ? (
+      <div className='createspinnerload'>
+      <Spinner radius={1.5} />
+      </div>
+    ) : 
+(
         <div className="div-container">
           <span className="text-style">Enter instructions (if any):</span>
           <textarea
@@ -166,12 +167,13 @@ const CreatePra = () => {
           </span>
           <span className="text-style2">
             Set mid-{mid} PRA Deadline:
-            <span>
+            <span className="date-time">
               <DatePicker
-                dateFormat="dd/MM/yyyy"
+                dateFormat="dd/MM/yyyy h:mm aa"
                 selected={date}
                 value={date}
                 minDate={new Date()}
+                showTimeSelect
                 maxDate={CoeDate}
                 onChange={(newVal) => {
                   setDate(newVal);
@@ -179,7 +181,7 @@ const CreatePra = () => {
                 className="select-dd"
               />
             </span>
-          </span>
+          </span> 
 
           <Button
             style={{ padding: "5px" }}
