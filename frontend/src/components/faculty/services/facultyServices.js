@@ -56,15 +56,72 @@ async function enrollHODClasses(email, enrolled_classes) {
 
 async function enrollClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
+  
   try {
     await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false });
     for (let i = 0; i < enrolled_classes.length; i++) {
-      await setDoc(doc(db, `faculty/${email}/${enrolled_classes[i]}`, email), {
-        random: 1,
-      });
+      console.log(enrolled_classes[i])
+      var classname = enrolled_classes[i].split("_");
+      var fetchclass = classname[0]+"_"+ classname[1]+"_"+ classname[2]+"_"+ classname[3]+"_"+ classname[4]
+      console.log(fetchclass)
+      const docRef = doc(db,"classesinfo",fetchclass);
+      const docData = await getDoc(docRef);
+      if(docData.exists()){
+        console.log('hi')
+        let d1 = true;
+        const facultyIDs = docData.data()["faculty_ID"]
+        console.log(facultyIDs)
+        console.log('hiiiiiiiiii')
+        if(facultyIDs!=null)
+        for (let index = 0; index < facultyIDs.length; index++) { 
+          console.log("infor")
+          const ele = facultyIDs[index];
+  
+          if (ele.subject === classname[5]) {
+            d1 = false;
+            //SHOW THAT SOME FACULTY ALREADY REGISTERED......
+          }
+          else {
+            await updateDoc(docRef, {
+              faculty_ID: arrayUnion({
+                faculty: email,
+                subject: classname[5],
+              }),
+            });    
+          break;
+              }
+        }
+        console.log('afterfor')
+        console.log(d1)
+        if(d1){
+          console.log("d1trueif")
+          await updateDoc(docRef, {
+            faculty_ID: [
+              {
+                faculty: email,
+                subject: classname[5],
+              }
+            ],
+          });
+        }
+        console.log("afterd1trueif")
+      }
+      else {
+        console.log('doc not exist')
+        //setdoc
+        await setDoc(docRef, {
+          faculty_ID: [
+            {
+              faculty: email,
+              subject: classname[5],
+            }
+          ],
+        });
+      }
     }
     await updateDoc(facultyRef, { isEnrolled: true });
   } catch (error) {
+    console.log(error)
     return error.code;
   }
   return null;
