@@ -69,6 +69,7 @@ const LockList = () => {
   }, [Course, Year]);
 
   function handleDone() {
+    
     //store this list of mtech btech and mba for this respective faculty and then show classlist screen for that faculty
     var finalList = BTechList.concat(MTechList, MBAList);
     if (finalList.length === 0) {
@@ -200,6 +201,7 @@ const LockList = () => {
           setShowDialog("Classes Enrolled Successfully");
           setIsSuccess(true);
         } else {
+          setIsLoading(false)
           setShowDialog(res);
         }
       } catch (e) {
@@ -214,6 +216,7 @@ const LockList = () => {
           setShowDialog("Classes Enrolled Successfully");
           setIsSuccess(true);
         } else {
+          setIsLoading(false);
           setShowDialog(res);
         }
       } catch (e) {
