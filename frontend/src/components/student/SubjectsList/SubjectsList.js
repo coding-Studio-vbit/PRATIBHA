@@ -105,7 +105,7 @@ const SubjectsList = () => {
           if (midvalue === 1) {
             mid = 1;
 
-            date = date1.toLocaleDateString("en-GB")+" "+date1.toLocaleTimeString("en-IN");
+            date = date1.toLocaleDateString("en-GB")+" "+date1.toLocaleTimeString("en-IN",{ hour: '2-digit', minute: '2-digit' });
             dateConv = date1.toLocaleDateString("en-US");
           } else {
         
@@ -115,7 +115,7 @@ const SubjectsList = () => {
                 item["deadline2"].seconds,
                 item["deadline2"].nanoseconds
               ).toDate();
-              date = date2.toLocaleDateString("en-GB")+" "+date2.toLocaleTimeString("en-IN");
+              date = date2.toLocaleDateString("en-GB")+" "+date2.toLocaleTimeString("en-IN",{ hour: '2-digit', minute: '2-digit' });
               dateConv = date2.toLocaleDateString("en-US");
             }
           }
