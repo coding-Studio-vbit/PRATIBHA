@@ -70,4 +70,5 @@
 .date-time{
     display: flex;
     gap: 10px;
+    width:250px;
 }
