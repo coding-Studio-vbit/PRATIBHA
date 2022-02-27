@@ -660,18 +660,18 @@ async function addClass(email, addedClass) {
     const docRef = doc(db, "classesinfo", fetchclass);
     const docData = await getDoc(docRef);
     if (docData.exists()) {
-      console.log("hi");
       let d1 = true;
       const facultyIDs = docData.data()["faculty_ID"];
-      console.log(facultyIDs);
-      console.log("hiiiiiiiiii");
       if (facultyIDs != null)
         for (let index = 0; index < facultyIDs.length; index++) {
-          console.log("infor");
+
           const ele = facultyIDs[index];
 
           if (ele.subject === classname[5]) {
             d1 = false;
+            return {
+              data : ele.faculty
+          }
             //SHOW THAT SOME FACULTY ALREADY REGISTERED......
           } else {
             await updateDoc(docRef, {
@@ -683,10 +683,7 @@ async function addClass(email, addedClass) {
             break;
           }
         }
-      console.log("afterfor");
-      console.log(d1);
       if (d1) {
-        console.log("d1trueif");
         await updateDoc(docRef, {
           faculty_ID: [
             {
@@ -696,7 +693,6 @@ async function addClass(email, addedClass) {
           ],
         });
       }
-      console.log("afterd1trueif");
     } else {
       console.log("doc not exist");
       //setdoc
