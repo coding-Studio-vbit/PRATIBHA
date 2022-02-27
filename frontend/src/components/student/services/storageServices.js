@@ -10,19 +10,9 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
         storage,
         `${course}/${regulation}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
     );
-    
-    // let pra_ref;
-    // if(fileObj.type=="application/vnd.openxmlformats-officedocument.presentationml.presentation"){
-    //     pra_ref = ref(
-    //         storage,
-    //         `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}.pptx`
-    //     );
-    // }else{
-    //     pra_ref = ref(
-    //         storage,
-    //         `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
-    //     );
-    // }
+
+    //referring to the storage location | creating path
+    //uploading files to storage 
 
     await uploadBytes(pra_ref,fileObj)
     .then(async(snapshot) => {
@@ -39,11 +29,13 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
                             s.fileName1=fileName
                             s.topic=title
                             s.mid_1=snapshot.ref.fullPath;
+                            //s.isSubmitted1=true
                             subs[i]=s;
                         }else if(midNo==="2"){
                             s.fileName2=fileName
                             s.topic=title
                             s.mid_2=snapshot.ref.fullPath;
+                            //s.isSubmitted2=true
                             subs[i]=s;
                         }
                         break;                        
@@ -54,7 +46,7 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
                         subjects:subs,                        
                     });
                     let faculty=null;
-                    console.log(`${course}_${year}_${department}_${section}`);
+                    // console.log(`${course}_${year}_${department}_${section}`);
                     const subRef = doc(db,"subjects",`${course}_${regulation}_${year}_${department}_${section}`);
                     const docSnap = await getDoc(subRef);
                     if(docSnap.exists()){
@@ -75,12 +67,12 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
                         console.log(`${course}_${year}_${department}_${section}_${subject}`);
                         const facultyRef = doc(
                             db,`faculty/${faculty}/${course}_${regulation}_${year}_${department}_${section}_${subject}`,email.split('@')[0]);
-                        if(midNo=="1"){
+                        if(midNo==="1"){
                             //TODO if mid1 is not submitted then setdoc in mid2
                             await setDoc(facultyRef,{
                                 isSubmitted1:true,
                             })
-                        }else if(midNo=="2"){
+                        }else if(midNo==="2"){
                             const doc =await getDoc(facultyRef);
                             if(doc.exists()){
                                 await updateDoc(facultyRef,{
@@ -148,3 +140,19 @@ async function getUploadedFileByPath(path) {
 }
 
 export {uploadFile,getUploadedFile,getUploadedFileByPath}
+
+
+
+
+// let pra_ref;
+    // if(fileObj.type=="application/vnd.openxmlformats-officedocument.presentationml.presentation"){
+    //     pra_ref = ref(
+    //         storage,
+    //         `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}.pptx`
+    //     );
+    // }else{
+    //     pra_ref = ref(
+    //         storage,
+    //         `${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
+    //     );
+    // }

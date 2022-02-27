@@ -727,6 +727,7 @@ async function deleteClass(email, deletedClass) {
     await deleteDoc(doc(db, "faculty", email, deletedClass, e));
     console.log(docSnap.data());
   }
+  
   try {
     if (docSnap.exists()) {
       console.log(docSnap.data());
