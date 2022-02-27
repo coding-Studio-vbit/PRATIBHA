@@ -99,12 +99,21 @@ export default function AddClasses() {
       console.log("Adding");
 
       const res = await addClass(currentUser.email, adding);
+      console.log(res);
+      console.log(typeof(res))
       if (res === null) {
         console.log("Added.");
         setIsLoading(false);
         setIsSuccess(true);
         setShowDialog("Class added");
-      } else {
+      } else if(res.data!=null) {
+        setIsLoading(false);
+        setShowDialog(
+          "Class is already enrolled by "+ res.data
+        );
+      }
+      else{
+        setIsLoading(false);
         setShowDialog(res);
       }
     } catch (e) {
@@ -135,7 +144,7 @@ export default function AddClasses() {
                         { state: currentUser },
                         { replace: true }
                       )
-                  : setShowDialog(false);
+                  : (setShowDialog(false) )
               }}
             />
           )}
@@ -165,7 +174,6 @@ export default function AddClasses() {
             <p className="addclasses-dropdown-title">Regulation</p>
             <Select
               placeholder=""
-              value={Regulation}
               isDisabled={disablereg}
               className="select-addclasses"
               options={regoptionss}
