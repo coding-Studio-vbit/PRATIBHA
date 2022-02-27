@@ -760,19 +760,25 @@ async function deleteClass(email,className) {
   const facultyRef = doc(db, "faculty", email);
   const subjectsRef = doc(db, "subjects", className.replace("_"+subject,""));
 
-  console.log(subject);
-  console.log(className);
-  console.log(className.replace("_"+subject,""),10);
+  // console.log(subject);
+  // console.log(className);
+  // console.log(className.replace("_"+subject,""),10);
   try {
+    //removes the object in classes info 
     await updateDoc(classesInfoRef,{
       faculty_ID:arrayRemove({
         faculty:email,
         subject:subject
       })
     })  
+
+    //removes the value in faculty collection 
     await updateDoc(facultyRef,{
       subjects:arrayRemove(className)
     })
+
+
+    //updates subject collection i.e remove faculty name - persists faculty changes
     const subjectDoc = await getDoc(subjectsRef)
     if (subjectDoc.exists()) {
       console.log("Subject Collection Changed");
