@@ -6,7 +6,6 @@ import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
 import { doc, getDoc, collection, query, getDocs } from "firebase/firestore";
-import { getStudentData } from "../../../student/services/studentServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import {
@@ -14,6 +13,7 @@ import {
   fetchisMid2,
   fetchSemNumber,
 } from "../../../student/services/studentServices";
+import { getAllStudents } from "../../services/facultyServices";
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);
@@ -29,6 +29,7 @@ const ListofStudents = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const val = location.state.sub;
+  // console.log(val);
   const subjectval = val.split("_");
   const course =
     subjectval[0] +
@@ -52,14 +53,31 @@ const ListofStudents = () => {
     title = subjectval[0] + " " + subjectval[2] + " " + subjectval[4];
   }
 
-  const Fetchdata = async () => {
-    var isData = false;
+  let Course = subjectval[0],
+    regulation = subjectval[1],
+    year = subjectval[2],
+    branch = subjectval[3],
+    section = subjectval[4],
+    subject = subjectval[5];
+
+  const Fetchdata = async (
+    Course,
+    regulation,
+    year,
+    branch,
+    section,
+    subject,
+    val
+  ) => {
     const studentref = query(
-      collection(db, `faculty/${currentUser.email}/${location.state.sub}`)
+      doc(
+        db,
+        `classesinfo/${Course}_${regulation}_${year}_${branch}_${section}`
+      )
     );
-    let stddd = null;
-    let ismid1 = await fetchisMid1(subjectval[0], subjectval[2]);
-    let ismid2 = await fetchisMid2(subjectval[0], subjectval[2]);
+    let ismid1 = await fetchisMid1(Course, year);
+    let ismid2 = await fetchisMid2(Course, year);
+
     if (ismid1) {
       setMid(1);
     }
@@ -70,120 +88,34 @@ const ListofStudents = () => {
     let semester = await fetchSemNumber();
     setSem(semester);
 
-    await getDocs(studentref).then((querySnapshot) => {
-      if (querySnapshot) {
-        querySnapshot.forEach(async (doc) => {
-          const email = doc.id.toString() + "@vbithyd.ac.in";
-          const docData = doc.data();
-          let Innovation1 = "",
-            Innovation2 = "",
-            Subject_Relevance1 = "",
-            Subject_Relevance2 = "",
-            Individuality1 = "",
-            Individuality2 = "",
-            Preparation1 = "",
-            Preparation2 = "",
-            Presentation1 = "",
-            Presentation2 = "";
-          if (docData["mid1"]) {
-            Innovation1 = docData["mid1"]["Innovation1"];
-            Subject_Relevance1 = docData["mid1"]["Subject_Relevance1"];
-            Individuality1 = docData["mid1"]["Individuality1"];
-            Preparation1 = docData["mid1"]["Preparation1"];
-            Presentation1 = docData["mid1"]["Presentation1"];
+    let classDoc = await getDoc(studentref);
+    if (classDoc.exists()) {
+      let doc = classDoc.data();
+      if (doc["students"]) {
+        await getAllStudents(
+          doc["students"],
+          subject,
+          ismid1,
+          ismid2,
+          false,
+          val
+        ).then((res) => {
+          // console.log(res);
+          if (res) {
+            setData(res.data);
+            setStudent(res.student);
+            setStudentTopic(res.studentTopic);
+            // console.log(res.data, res.student, res.studentTopic);
           } else {
-            if (stddd === null && ismid1) {
-              if (doc.id.toString() !== currentUser.email) {
-                setStudent(doc.id.toString());
-                stddd = doc.id.toString();
-              }
-            }
-          }
-          if (docData["mid2"]) {
-            Innovation2 = docData["mid2"]["Innovation2"];
-            Subject_Relevance2 = docData["mid2"]["Subject_Relevance2"];
-            Individuality2 = docData["mid2"]["Individuality2"];
-            Preparation2 = docData["mid2"]["Preparation2"];
-            Presentation2 = docData["mid2"]["Presentation2"];
-          } else {
-            if (stddd === null && ismid2) {
-              if (doc.id.toString() !== currentUser.email) {
-                setStudent(doc.id.toString());
-                stddd = doc.id.toString();
-              }
-            }
-          }
-          const mid1 = docData["mid1"]
-            ? Innovation1 +
-              Subject_Relevance1 +
-              Individuality1 +
-              Preparation1 +
-              Presentation1
-            : "Not Graded";
-          const mid2 = ismid2
-            ? docData["mid2"]
-              ? Innovation2 +
-                Subject_Relevance2 +
-                Individuality2 +
-                Preparation2 +
-                Presentation2
-              : docData["isSubmitted2"]
-              ? "Not Graded"
-              : "Not Submitted"
-            : " ";
-
-          await getStudentData(email)
-            .then(({ document, error }) => {
-              let returndata = document;
-              let topic, name;
-
-              if (error == null) {
-                isData = true;
-                let obj = returndata["subjects"].find(
-                  (o) => o.subject === subjectval[5]
-                );
-                if (obj) {
-                  topic = obj.topic;
-                  name = returndata.name;
-                  if (stddd === doc.id.toString()) {
-                    setStudentTopic(topic);
-                  }
-                }
-                const dataobj = {
-                  ROLL_NO: doc.id.toString(),
-                  STUDENT_NAME: name,
-                  TOPIC_NAME: topic,
-                  Innovation1: Innovation1,
-                  Subject_Relevance1: Subject_Relevance1,
-                  Individuality1: Individuality1,
-                  Preparation1: Preparation1,
-                  Presentation1: Presentation1,
-                  MID_1: mid1,
-                  Innovation2: Innovation2,
-                  Subject_Relevance2: Subject_Relevance2,
-                  Individuality2: Individuality2,
-                  Preparation2: Preparation2,
-                  Presentation2: Presentation2,
-                  MID_2: mid2,
-                };
-                return dataobj;
-              } else {
-                return null;
-              }
-            })
-            .then((dataobj) => {
-              if (dataobj) {
-                setData((data) => [...data, dataobj]);
-              }
-            });
-          if (!isData) {
-            setError("NO SUBMISSIONS FROM STUDENTS");
+            setError("ERROR OCCURED");
           }
         });
       } else {
-        setError("NO SUBMISSIONS FROM STUDENTS");
+        setError("NO STUDENTS ENROLLED THIS CLASS");
       }
-    });
+    } else {
+      setError("THIS CLASS DOES NOT EXIST");
+    }
     setloading(false);
   };
 
@@ -216,7 +148,7 @@ const ListofStudents = () => {
   };
 
   useEffect(() => {
-    Fetchdata();
+    Fetchdata(Course, regulation, year, branch, section, subject, val);
     Fetchsubject();
   }, []);
 
@@ -252,7 +184,7 @@ const ListofStudents = () => {
       ) : (
         <>
           <div className="sub_body">
-            <p className="bold">Number of students submitted: {data.length}</p>
+            <p className="bold">Number of students: {data.length}</p>
             <table style={{ marginTop: "1rem" }}>
               <thead>
                 <tr>
