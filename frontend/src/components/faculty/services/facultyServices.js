@@ -10,6 +10,7 @@ import {
   collection,
   query,
   getDocs,
+  Firestore,
 } from "firebase/firestore";
 
 async function getEnrolledCourses(email) {
@@ -712,41 +713,92 @@ async function addClass(email, addedClass) {
   }
   return null;
 }
-/////CHANGE THIS according to new collection!!!!!!!!!!!!!
-async function deleteClass(email, deletedClass) {
-  const subjectRef = collection(db, "faculty", email, deletedClass);
-  const facultyRef = doc(db, "faculty", email);
-  const docSnap = await getDoc(facultyRef);
-  const alldocs = await getDocs(subjectRef);
 
-  async function del(e) {
-    await deleteDoc(doc(db, "faculty", email, deletedClass, e));
-    console.log(docSnap.data());
-  }
+
+//delete class 
+//deletes class from the faculty, although subject changes are persistent
+// async function deleteClass(email, deletedClass) {
+//     const subjectRef = collection(db, "faculty", email, deletedClass);
+//     const facultyRef = doc(db, "faculty", email);
+//     const docSnap = await getDoc(facultyRef);
+//     const alldocs = await getDocs(subjectRef);
+
+//     async function del(e) {
+//       await deleteDoc(doc(db, "faculty", email, deletedClass, e));
+//       console.log(docSnap.data());
+//     }
   
-  try {
-    if (docSnap.exists()) {
-      console.log(docSnap.data());
-      const subjects = docSnap.data()["subjects"];
-      console.log(subjects);
-      for (let index = 0; index < subjects.length; index++) {
-        const ele = subjects[index];
+//     try {
+//       if (docSnap.exists()) {
+//         console.log(docSnap.data());
+//         const subjects = docSnap.data()["subjects"];
+//         console.log(subjects);
+//         for (let index = 0; index < subjects.length; index++) {
+//           const ele = subjects[index];
 
-        if (ele === deletedClass) {
-          await updateDoc(facultyRef, { subjects: arrayRemove(ele) });
+//           if (ele === deletedClass) {
+//             await updateDoc(facultyRef, { subjects: arrayRemove(ele) });
+//           }
+//         }
+//       }
+//       alldocs.docs.forEach((d) => {
+//         del(d.id);
+//         console.log(d.id);
+//       });
+//       return true;
+//     } catch (err) {
+//       console.log(err);
+//     }
+
+//     return false;
+// }
+
+async function deleteClass(email,className) {
+  let error =true;
+  const subject = className.split('_').pop();
+  const classesInfoRef = doc(db,'classesinfo',className.replace("_"+subject,""));
+  const facultyRef = doc(db, "faculty", email);
+  const subjectsRef = doc(db, "subjects", className.replace("_"+subject,""));
+
+  console.log(subject);
+  console.log(className);
+  console.log(className.replace("_"+subject,""),10);
+  try {
+    await updateDoc(classesInfoRef,{
+      faculty_ID:arrayRemove({
+        faculty:email,
+        subject:subject
+      })
+    })  
+    await updateDoc(facultyRef,{
+      subjects:arrayRemove(className)
+    })
+    const subjectDoc = await getDoc(subjectsRef)
+    if (subjectDoc.exists()) {
+      console.log("Subject Collection Changed");
+      let data = subjectDoc.data()["subjects"];
+      console.log(subjectDoc);
+      console.log(data);
+      data = data.map(obj => {
+        if (obj.subject === subject) {
+          return {...obj, facultyID: ''};
         }
-      }
-    }
-    alldocs.docs.forEach((d) => {
-      del(d.id);
-      console.log(d.id);
-    });
-    return true;
+        return obj;
+      });
+      console.log(data,11);
+      await updateDoc(subjectsRef,{
+        subjects:data
+      })
+    } else {
+      console.log("fjffh");
+      error=true
+    }    
   } catch (err) {
     console.log(err);
+    error=true
   }
-  return false;
-}
+    return error;
+  }
 
 export {
   getEnrolledCourses,
