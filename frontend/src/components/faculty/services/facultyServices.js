@@ -4,13 +4,11 @@ import {
   getDoc,
   updateDoc,
   setDoc,
-  deleteDoc,
   arrayUnion,
   arrayRemove,
   collection,
   query,
   getDocs,
-  Firestore,
 } from "firebase/firestore";
 
 async function getEnrolledCourses(email) {
@@ -210,7 +208,7 @@ export const getDepartments = async (course, year, semester) => {
     alldocs.docs.forEach((e) => {
       departments.push({ value: e.id, label: e.id });
 
-      if (semester == 1) {
+      if (semester === 1) {
         for (let index = 0; index < e.data()["subjects"].length; index++) {
           const ele = e.data()["subjects"][index];
           if (subjects[e.id]) {
@@ -250,7 +248,7 @@ export const getDepartments = async (course, year, semester) => {
         }
       }
 
-      if (semester == 2) {
+      if (semester === 2) {
         for (let index = 0; index < e.data()["subjects2"].length; index++) {
           const ele = e.data()["subjects2"][index];
           if (subjects[e.id]) {
@@ -542,7 +540,7 @@ async function postMarks(
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
         subs.find((e) => {
-          if (e.subject == className.split("_")[5]) {
+          if (e.subject === className.split("_")[5]) {
             e.gradeStatus1 = "GRADED";
             e.mid1_marks = marks;
             e.mid1_remarks = remarks;
@@ -563,7 +561,7 @@ async function postMarks(
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
         subs.find((e) => {
-          if (e.subject == className.split("_")[5]) {
+          if (e.subject === className.split("_")[5]) {
             e.gradeStatus2 = "GRADED";
             e.mid2_marks = marks;
             e.mid2_remarks = remarks;
@@ -644,7 +642,7 @@ async function addClass(email, addedClass) {
   try {
     await updateDoc(facultyRef, { subjects: arrayUnion(addedClass) });
 
-    let isAdded = false;
+    //let isAdded = false;
     console.log(addedClass);
     var classname = addedClass.split("_");
     var fetchclass =
@@ -706,7 +704,7 @@ async function addClass(email, addedClass) {
         ],
       });
     }
-    isAdded = true;
+    //isAdded = true;
   } catch (error) {
     console.log(error);
     return error.code;

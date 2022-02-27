@@ -84,9 +84,9 @@ const Upload = () => {
           {
             let ext;
             ext=files.name.split('.').pop();
-            if(mid==1)
+            if(mid===1)
             {
-              if(ext=="pdf")
+              if(ext==="pdf")
               {
                 setFileError("");
                 setFileName(files.name);
@@ -99,13 +99,13 @@ const Upload = () => {
               }
             }
 
-            else if(mid==2)
+            else if(mid===2)
             {
               if(ext==='pptx'){
                 setUrl(null);
                 setFileError("Convert PPT to PDF format for submission")
               }
-              else if(ext!="pdf" && ext!="jpeg" &&  ext!="jfif" && ext!="jpg" && ext!="png" && ext!="mp4" && ext!="avi" && ext!="mov" && ext!="m4v")
+              else if(ext!=="pdf" && ext!=="jpeg" &&  ext!=="jfif" && ext!=="jpg" && ext!=="png" && ext!=="mp4" && ext!=="avi" && ext!=="mov" && ext!=="m4v")
               {
                 console.log(ext);
                 setUrl(null);
@@ -418,7 +418,7 @@ const Upload = () => {
                       }
                     </div>
                 {
-                  mid==1 ? (
+                  mid===1 ? (
                     <div >
                       { (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?                    
                        (
@@ -450,7 +450,7 @@ const Upload = () => {
                              
                               <p className={styles.fileName} ><strong style={{color:'#0E72AB'}}>File Uploaded :</strong>{fileName}
                               {
-                                (fileName!=""|| praTitle!="") && 
+                                (fileName!==""|| praTitle!=="") && 
                                 <div>
                                 <span className={styles.downloadBtn} style={{margin:"0%", alignSelf:"center"}}>
                                 <Download isIcon={true} url={existingFile} userID={currentUser.email.slice(0,10)}/>

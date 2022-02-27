@@ -1,6 +1,6 @@
 import { db, storage } from "../../../firebase";
 import { ref,uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, getDoc,setDoc,updateDoc } from "firebase/firestore"; 
+import { doc, getDoc,updateDoc } from "firebase/firestore"; 
 
 async function uploadFile(fileObj,course,year,regulation,department,section,subject,midNo,email,title,fileName){
     let error=null;
