@@ -5,16 +5,14 @@ import Dialog from "../../../global_ui/dialog/dialog";
 import { ExportCSV } from "../../../export/ExportCSV";
 import { db } from "../../../../firebase";
 import { Spinner } from "../../../global_ui/spinner/spinner";
-import { getUploadedFileByPath } from "../../../student/services/storageServices";
+import { doc, getDoc, query } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 import {
-  getStudentData,
   fetchisMid1,
   fetchisMid2,
   fetchSemNumber,
 } from "../../../student/services/studentServices";
-import { collection, query, getDocs } from "firebase/firestore";
-import { getPRA } from "../../services/facultyServices";
+import { getAllStudents } from "../../services/facultyServices";
 import Download from "../../../global_ui/download/download";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -36,10 +34,8 @@ const ViewSubmissions = () => {
     " " +
     passedData.Section;
 
-  let course, courseName;
+  let course;
   course = passedData.Course;
-
-  courseName = course;
 
   const DepartmentForFaculty =
     passedData.Course +
@@ -61,187 +57,65 @@ const ViewSubmissions = () => {
   const [error, setError] = useState(null);
   const [loading, setloading] = useState(true);
 
-  const Fetchlink1 = async (email) => {
-    var dict = {};
-    let rollnum = email.split("@")[0];
-    dict["rollno"] = rollnum;
-    const res = await getUploadedFileByPath(
-      courseName +
-        "/" +
-        passedData.Regulation +
-        "/" +
-        passedData.Year +
-        "/" +
-        passedData.Dept +
-        "/" +
-        passedData.Section +
-        "/" +
-        passedData.Subject +
-        "/" +
-        "1" +
-        "/" +
-        email.split("@")[0]
+  let Course = passedData.Course,
+    regulation = passedData.Regulation,
+    year = passedData.Year,
+    branch = passedData.Dept,
+    section = passedData.Section,
+    subject = passedData.Subject;
+
+  const Fetchdata = async (
+    Course,
+    regulation,
+    year,
+    branch,
+    section,
+    subject,
+    val
+  ) => {
+    const studentref = query(
+      doc(
+        db,
+        `classesinfo/${Course}_${regulation}_${year}_${branch}_${section}`
+      )
     );
-    links[rollnum] = res.url;
+    let ismid1 = await fetchisMid1(Course, year);
+    let ismid2 = await fetchisMid2(Course, year);
 
-    setLinks(links);
-  };
+    let semester = await fetchSemNumber();
+    setSem(semester);
 
-  const Fetchlink2 = async (email) => {
-    var dict = {};
-    let rollnum = email.split("@")[0];
-    dict["rollno"] = rollnum;
-    const res = await getUploadedFileByPath(
-      courseName +
-        "/" +
-        passedData.Regulation +
-        "/" +
-        passedData.Year +
-        "/" +
-        passedData.Dept +
-        "/" +
-        passedData.Section +
-        "/" +
-        passedData.Subject +
-        "/" +
-        "2" +
-        "/" +
-        email.split("@")[0]
-    );
-    links[rollnum] = res.url;
-
-    setLinks(links);
-  };
-
-  const Fetchdata = async () => {
-    var isData = false;
-    const result = await getPRA(passedData.Subject, DepartmentForFaculty);
-    if (result) {
-      let facultyID = result.facultyID;
-      if (facultyID) {
-        const studentref = query(
-          collection(db, `faculty/${facultyID}/${course}`)
-          // collection(db, `faculty/cse@vbithyd.ac.in/BTech_2_CSE_D_DAA`)
-        );
-
-        let ismid1 = await fetchisMid1(courseName, passedData.Year);
-        let ismid2 = await fetchisMid2(courseName, passedData.Year);
-
-        let semester = await fetchSemNumber();
-        setSem(semester);
-
-        await getDocs(studentref).then((querySnapshot) => {
-          if (querySnapshot) {
-            querySnapshot.forEach(async (doc) => {
-              const email = doc.id.toString() + "@vbithyd.ac.in";
-              // await Fetchlink(email);
-              const docData = doc.data();
-              let Innovation1 = "",
-                Innovation2 = "",
-                Subject_Relevance1 = "",
-                Subject_Relevance2 = "",
-                Individuality1 = "",
-                Individuality2 = "",
-                Preparation1 = "",
-                Preparation2 = "",
-                Presentation1 = "",
-                Presentation2 = "";
-              if (docData["mid1"]) {
-                Innovation1 = docData["mid1"]["Innovation1"];
-                Subject_Relevance1 = docData["mid1"]["Subject_Relevance1"];
-                Individuality1 = docData["mid1"]["Individuality1"];
-                Preparation1 = docData["mid1"]["Preparation1"];
-                Presentation1 = docData["mid1"]["Presentation1"];
-              }
-              if (docData["mid2"]) {
-                Innovation2 = docData["mid2"]["Innovation2"];
-                Subject_Relevance2 = docData["mid2"]["Subject_Relevance2"];
-                Individuality2 = docData["mid2"]["Individuality2"];
-                Preparation2 = docData["mid2"]["Preparation2"];
-                Presentation2 = docData["mid2"]["Presentation2"];
-              }
-              const mid1 = docData["mid1"]
-                ? Innovation1 +
-                  Subject_Relevance1 +
-                  Individuality1 +
-                  Preparation1 +
-                  Presentation1
-                : " ";
-              const mid2 = docData["mid2"]
-                ? Innovation2 +
-                  Subject_Relevance2 +
-                  Individuality2 +
-                  Preparation2 +
-                  Presentation2
-                : " ";
-
-              await getStudentData(email)
-                .then(async ({ document, error }) => {
-                  let returndata = document;
-                  let topic, name;
-
-                  if (error == null) {
-                    isData = true;
-                    if (ismid1) {
-                      await Fetchlink1(email);
-                    }
-                    if (ismid2) {
-                      await Fetchlink2(email);
-                    }
-
-                    let obj = returndata["subjects"].find(
-                      (o) => o.subject === passedData.Subject
-                    );
-                    topic = obj.topic;
-                    name = returndata.name;
-                    const dataobj = {
-                      ROLL_NO: doc.id.toString(),
-                      STUDENT_NAME: name,
-                      TOPIC_NAME: topic,
-                      Innovation1: Innovation1,
-                      Subject_Relevance1: Subject_Relevance1,
-                      Individuality1: Individuality1,
-                      Preparation1: Preparation1,
-                      Presentation1: Presentation1,
-                      MID_1: mid1,
-                      Innovation2: Innovation2,
-                      Subject_Relevance2: Subject_Relevance2,
-                      Individuality2: Individuality2,
-                      Preparation2: Preparation2,
-                      Presentation2: Presentation2,
-                      MID_2: mid2,
-                    };
-                    return dataobj;
-                  } else {
-                    return null;
-                  }
-                })
-                .then((dataobj) => {
-                  if (dataobj) {
-                    setData((data) => [...data, dataobj]);
-                  }
-                });
-              if (!isData) {
-                setError("No PRA submissions found in this subject");
-              }
-            });
+    let classDoc = await getDoc(studentref);
+    if (classDoc.exists()) {
+      let doc = classDoc.data();
+      if (doc["students"]) {
+        await getAllStudents(
+          doc["students"],
+          subject,
+          ismid1,
+          ismid2,
+          true,
+          val
+        ).then((res) => {
+          // console.log(res);
+          if (res) {
+            setData(res.data);
+            setLinks(res.links);
           } else {
-            setError("No PRA submissions found in this subject");
+            setError("ERROR OCCURED");
           }
         });
-
-        setloading(false);
       } else {
-        setloading(false);
+        setError("NO STUDENTS ENROLLED THIS CLASS");
       }
     } else {
-      setError("No PRA submissions found in this subject");
-      setloading(false);
+      setError("THIS CLASS DOES NOT EXIST");
     }
+    setloading(false);
   };
 
   useEffect(() => {
-    Fetchdata();
+    Fetchdata(Course, regulation, year, branch, section, subject, course);
   }, []);
 
   return (
