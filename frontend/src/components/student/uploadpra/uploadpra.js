@@ -467,7 +467,7 @@ const Upload = () => {
                     ):
                     ( 
                     <div> 
-                      <p className="praInfo">Upload proof of PRA (Maximum file size : 1GB).</p>
+                      <p className={styles.praInfo}>Upload proof of PRA (Maximum file size : 1GB).</p>
                         <div>
                         {
                           (deadLineInfo != null && (new Date() < deadLineInfo.lastDate.toDate()))?
