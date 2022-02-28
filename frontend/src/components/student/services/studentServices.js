@@ -368,7 +368,7 @@ async function fetchRegulationOptions() {
           arr = [...arr, { value: `${regarray[i]}`, label: `R${regarray[i]}` }];
         }
         for (let j = 0; j < arr.length; j++) {
-          if (arr[j].value == regarray[i]) {
+          if (arr[j].value === regarray[i]) {
             match = true;
           }
         }
