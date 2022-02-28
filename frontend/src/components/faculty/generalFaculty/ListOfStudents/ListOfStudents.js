@@ -111,7 +111,7 @@ const ListofStudents = () => {
           }
         });
       } else {
-        setError("NO STUDENTS ENROLLED THIS CLASS");
+        setError("NO STUDENTS HAVE ENROLLED TO THIS CLASS");
       }
     } else {
       setError("THIS CLASS DOES NOT EXIST");
