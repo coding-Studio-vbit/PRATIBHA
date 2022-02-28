@@ -149,28 +149,32 @@ console.log(enrolled_classes)
         const facultyIDs = docData.data()["faculty_ID"];
         console.log(facultyIDs);
         console.log("hiiiiiiiiii");
-        if (facultyIDs != null)
+        if (facultyIDs != null){
+
+
+
           for (let index = 0; index < facultyIDs.length; index++) {
             console.log("infor");
             const ele = facultyIDs[index];
 
             if (ele.subject === classname[5]) {
+              console.log("insideeleif")
               d1 = false;
+              console.log(ele.subject)
               //SHOW THAT SOME FACULTY ALREADY REGISTERED......
             } else {
+              console.log("inelse")
               await updateDoc(docRef, {
                 faculty_ID: arrayUnion({
                   faculty: email,
                   subject: classname[5],
                 }),
               });
-              break;
             }
+            continue;
           }
-        console.log("afterfor");
-        console.log(d1);
-        if (d1) {
-          console.log("d1trueif");
+        }
+        else{
           await updateDoc(docRef, {
             faculty_ID: [
               {
@@ -180,6 +184,8 @@ console.log(enrolled_classes)
             ],
           });
         }
+        console.log("afterfor");
+        console.log(d1);
         console.log("afterd1trueif");
       } else {
         console.log("doc not exist");
