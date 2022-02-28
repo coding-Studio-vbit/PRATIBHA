@@ -2,9 +2,11 @@ import React, { useEffect ,useState} from "react";
 import "./loginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { LoadingScreen, Spinner } from "../global_ui/spinner/spinner";
+import { LoadingScreen } from "../global_ui/spinner/spinner";
 import Footer from "./footer/footer";
-import Announcement from "./announcements/announcements";
+
+
+// import Announcement from "./announcements/announcements";
 
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
@@ -93,7 +95,7 @@ export default function LoginPage() {
       
       </div> 
 
-      <Announcement/>     
+      {/* <Announcement/>      */}
     
       <Footer/>
     </div>

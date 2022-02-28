@@ -620,22 +620,42 @@ async function getCoeDeadline(midNo, course, year) {
   }
 }
 
-async function getAllStudentsData(facultyID, className) {
-  const facultyRef = collection(db, `faculty/${facultyID}/${className}`);
+async function getAllStudentsData(
+  // facultyID, this param is not necessary 
+  className) {
+  const subject = className.split('_').pop();
+  const facultyRef = doc(db, "classesinfo",className.replace("_"+subject,""));  
 
   try {
-    const res = await getDocs(facultyRef);
-    if (res.docs.length !== 0) {
+    const res = await getDoc(facultyRef);
+    if(res.exists()){
+      let studentList =  res.data()["students"]; 
+      let studentsInfo = [];
+      
+      // let studentRef;
+      studentList.forEach(async(e)=>{
+        const studentSnap  = await getDoc(doc(db,'users',e));
+        studentsInfo.push(studentSnap.data()['subjects'].find((e)=>e.subject===subject));        
+      })
+
       return {
-        data: res.docs,
+        data:studentsInfo,
         error: null,
-      };
-    } else {
+      };     
+
+    }else{
       return {
         data: null,
         error: "Data Not Found",
       };
     }
+    // if (res.docs.length !== 0) {
+    //   return {
+    //     data: res.docs,
+    //     error: null,
+    //   };
+    // } else {
+    // }
   } catch (error) {
     return {
       data: null,
