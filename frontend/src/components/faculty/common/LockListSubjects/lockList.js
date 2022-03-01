@@ -222,6 +222,7 @@ const LockList = () => {
           arr.forEach((e)=>{
             s = s.concat(`(${e.subject}-${e.faculty})`)
           })  
+          setIsSuccess(true)
           setIsLoading(false);
           setShowDialog(s);
         }
