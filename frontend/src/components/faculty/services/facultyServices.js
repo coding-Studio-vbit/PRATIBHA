@@ -797,7 +797,8 @@ async function addClass(email, addedClass) {
           if (ele.subject === classname[5]) {
             d1 = false;
             return {
-              data : ele.faculty
+              data : ele.faculty,
+              className:addedClass.split('_').join('-')
           }
             //SHOW THAT SOME FACULTY ALREADY REGISTERED......
           } else {
