@@ -81,10 +81,7 @@ const CreatePra = () => {
             res.deadline2.seconds,
             res.deadline2.nanoseconds
           ).toDate()
-        );let date1 = new Timestamp(
-          res.deadline2.seconds,
-          res.deadline2.nanoseconds
-        ).toDate();date1 = date1.toLocaleDateString("en-GB")+" "+date1.toLocaleTimeString("en-IN",{ hour: '2-digit', minute: '2-digit' });console.log(date1)
+        );
       } else {
         setDate(
           new Timestamp(
