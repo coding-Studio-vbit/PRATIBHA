@@ -217,9 +217,13 @@ const LockList = () => {
           setShowDialog("Classes Enrolled Successfully");
           setIsSuccess(true);
         } else {
-           arr=res;
+          arr=res;
+          let s = "The following classes are already enrolled =>";
+          arr.forEach((e)=>{
+            s = s.concat(`(${e.subject}-${e.faculty})`)
+          })  
           setIsLoading(false);
-          setShowDialog(arr);
+          setShowDialog(s);
         }
       } catch (e) {
         console.log(e);
