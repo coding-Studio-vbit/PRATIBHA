@@ -485,13 +485,13 @@ export const getSubjects = async (email) => {
   }
 };
 
-async function getMarks(facultyID, className, studentID) {
-  const facultyRef = doc(db, `faculty/${facultyID}/${className}`, studentID);
+async function getMarks(className, email) {
+  const userRef= doc(db, `users`, email);
   try {
-    const docSnap = await getDoc(facultyRef);
+    const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
       return {
-        data: docSnap.data(),
+        data: docSnap.data()["subjects"].find((e)=>e.subject===className.split('_').pop()),
         error: null,
       };
       // if(docSnap.data()["isGraded"]){
@@ -633,9 +633,13 @@ async function getAllStudentsData(
       let studentsInfo = [];
       
       // let studentRef;
-      studentList.forEach(async(e)=>{
-        const studentSnap  = await getDoc(doc(db,'users',e));
-        studentsInfo.push(studentSnap.data()['subjects'].find((e)=>e.subject===subject));        
+      studentList.forEach(async(student)=>{
+        const studentSnap  = await getDoc(doc(db,'users',student));
+        //studentsInfo.push(studentSnap.data()['subjects'].find((e)=>e.subject===subject)); 
+        studentsInfo.push({
+          id:student,
+          data:studentSnap.data()['subjects'].find((e)=>e.subject===subject)
+        })  
       })
 
       return {
@@ -783,7 +787,7 @@ async function deleteClass(email,className) {
   const subject = className.split('_').pop();
   const classesInfoRef = doc(db,'classesinfo',className.replace("_"+subject,""));
   const facultyRef = doc(db, "faculty", email);
-  const subjectsRef = doc(db, "subjects", className.replace("_"+subject,""));
+  //const subjectsRef = doc(db, "subjects", className.replace("_"+subject,""));
 
   // console.log(subject);
   // console.log(className);
@@ -804,26 +808,26 @@ async function deleteClass(email,className) {
 
 
     //updates subject collection i.e remove faculty name - persists faculty changes
-    const subjectDoc = await getDoc(subjectsRef)
-    if (subjectDoc.exists()) {
-      console.log("Subject Collection Changed");
-      let data = subjectDoc.data()["subjects"];
-      console.log(subjectDoc);
-      console.log(data);
-      data = data.map(obj => {
-        if (obj.subject === subject) {
-          return {...obj, facultyID: ''};
-        }
-        return obj;
-      });
-      console.log(data,11);
-      await updateDoc(subjectsRef,{
-        subjects:data
-      })
-    } else {
-      console.log("fjffh");
-      error=true
-    }    
+    //const subjectDoc = await getDoc(subjectsRef)
+    // if (subjectDoc.exists()) {
+    //   console.log("Subject Collection Changed");
+    //   let data = subjectDoc.data()["subjects"];
+    //   console.log(subjectDoc);
+    //   console.log(data);
+    //   data = data.map(obj => {
+    //     if (obj.subject === subject) {
+    //       return {...obj, facultyID: ''};
+    //     }
+    //     return obj;
+    //   });
+    //   console.log(data,11);
+    //   await updateDoc(subjectsRef,{
+    //     subjects:data
+    //   })
+    // } else {
+    //   console.log("fjffh");
+    //   error=true
+    // }    
   } catch (err) {
     console.log(err);
     error=true
