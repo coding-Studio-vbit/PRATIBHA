@@ -583,10 +583,12 @@ export const getSubjects = async (email) => {
 };
 
 async function getMarks(className, email) {
-  const userRef= doc(db, `users`, email);
+  // console.log(email);
+  const userRef= doc(db,"users", email+"@vbithyd.ac.in");
   try {
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
+      console.log(className.split('_').pop());
       return {
         data: docSnap.data()["subjects"].find((e)=>e.subject===className.split('_').pop()),
         error: null,
@@ -608,7 +610,7 @@ async function getMarks(className, email) {
       return {
         data: null,
         // status:"UNGRADED",
-        error: null,
+        error:"Student Not Graded",
       };
     }
   } catch (error) {
