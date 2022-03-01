@@ -431,7 +431,7 @@ export const setPRA = async (
   department,
   date,
   inst,
-  email,
+  //email,
   isMid1,
   isMid2
 ) => {
@@ -452,7 +452,7 @@ export const setPRA = async (
           if (isMid1) {
             await updateDoc(docRef, {
               subjects: arrayUnion({
-                facultyID: email,
+                //facultyID: email,
                 deadline1: date,
                 instructions: inst,
                 subject: sub,
@@ -461,7 +461,7 @@ export const setPRA = async (
           } else if (isMid2) {
             await updateDoc(docRef, {
               subjects: arrayUnion({
-                facultyID: email,
+                //facultyID: email,
                 deadline1: ele.deadline1,
                 deadline2: date,
                 instructions: inst,
@@ -477,7 +477,7 @@ export const setPRA = async (
         if (isMid1) {
           await updateDoc(docRef, {
             subjects: arrayUnion({
-              facultyID: email,
+              //facultyID: email,
               deadline1: date,
               instructions: inst,
               subject: sub,
@@ -487,7 +487,7 @@ export const setPRA = async (
         if (isMid2) {
           await updateDoc(docRef, {
             subjects: arrayUnion({
-              facultyID: email,
+              //facultyID: email,
               deadline2: date,
               instructions: inst,
               subject: sub,
@@ -499,7 +499,7 @@ export const setPRA = async (
       await setDoc(docRef, {
         subjects: [
           {
-            facultyID: email,
+            //facultyID: email,
             deadline1: date,
             instructions: inst,
             subject: sub,
@@ -524,6 +524,7 @@ export const getSubjects = async (email) => {
     for (let index = 0; index < data.length; index++) {
       const sub = data[index];
 
+      //TODO :alter this 
       const parts = sub.split("_");
       const idk =
         parts[0] +
