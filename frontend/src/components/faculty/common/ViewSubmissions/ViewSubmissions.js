@@ -106,7 +106,7 @@ const ViewSubmissions = () => {
           }
         });
       } else {
-        setError("NO STUDENTS ENROLLED THIS CLASS");
+        setError("NO STUDENTS HAVE TO ENROLLED THIS CLASS");
       }
     } else {
       setError("THIS CLASS DOES NOT EXIST");

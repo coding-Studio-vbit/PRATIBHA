@@ -211,13 +211,15 @@ const LockList = () => {
       setIsLoading(true);
       try {
         const res = await enrollClasses(currentUser.email, list);
+        let arr=[]
         if (res == null) {
           setIsLoading(false);
           setShowDialog("Classes Enrolled Successfully");
           setIsSuccess(true);
         } else {
+           arr=res;
           setIsLoading(false);
-          setShowDialog(res);
+          setShowDialog(arr);
         }
       } catch (e) {
         console.log(e);

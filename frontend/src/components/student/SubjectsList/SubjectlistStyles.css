@@ -19,6 +19,7 @@
   color:#0e72ab;
   font-weight: bold;
   margin-bottom: 0px;
+  font-size: large;
 }
 
 .list-grid {
@@ -31,7 +32,8 @@
   grid-template-columns: auto auto auto;
 }
 .listerror{
-  align-self: center;
+  /* align-self: center; */
+  text-align: center;
   font-size: 20px;
   font-weight: medium;
   margin-top: 30px;

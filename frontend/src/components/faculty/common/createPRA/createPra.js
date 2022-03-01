@@ -22,7 +22,7 @@ import { Spinner } from "../../../global_ui/spinner/spinner.js";
 const CreatePra = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
-  const [dialog, setdialog] = useState(null); 
+  const [dialog, setdialog] = useState(""); 
   const [isNewPra, setisNewPra] = useState(true);
   const [Loading, setLoading] = useState(true);
   const [mid, setmid] = useState("");
@@ -43,6 +43,8 @@ const CreatePra = () => {
   if (parts[3] === "Not Applicable") {
     title = parts[0] + " " + parts[2] + " " + parts[4];
   }
+
+  
   const deadline = async () => {
     const isMid1 = await fetchisMid1(course, year);
     const isMid2 = await fetchisMid2(course, year);
@@ -104,6 +106,7 @@ const CreatePra = () => {
     const sub = parts[5];
     const department =
       parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3]+"_"+parts[4];
+    setdialog("PRA created");  
     await setPRA(
       sub,
       department,
@@ -114,8 +117,6 @@ const CreatePra = () => {
       isMid2
     );
     setLoading(false);
-    setdialog("PRA created");
-    console.log(new Timestamp())
   }
 
   return (

@@ -111,7 +111,7 @@ const ListofStudents = () => {
           }
         });
       } else {
-        setError("NO STUDENTS ENROLLED THIS CLASS");
+        setError("NO STUDENTS HAVE ENROLLED TO THIS CLASS");
       }
     } else {
       setError("THIS CLASS DOES NOT EXIST");
@@ -184,7 +184,7 @@ const ListofStudents = () => {
       ) : (
         <>
           <div className="sub_body">
-            <p className="bold">Number of students: {data.length}</p>
+            <p className="bold">Number of students enrolled: {data.length}</p>
             <table style={{ marginTop: "1rem" }}>
               <thead>
                 <tr>
