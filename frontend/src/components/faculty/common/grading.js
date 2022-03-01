@@ -4,11 +4,10 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import Docviewer from "./docviewer";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { LoadingScreen, OverlayLoader } from "../../global_ui/spinner/spinner";
+import { LoadingScreen, } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
 import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
-import Download from './../../global_ui/download/download'
 
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
