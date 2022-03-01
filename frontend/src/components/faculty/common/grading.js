@@ -208,7 +208,8 @@ const Grading = () => {
   async function getUserData() {
     setPageLoading(true);   
     const response = await getMarks(
-      currentUser.email,location.state.className,
+      // currentUser.email,
+      location.state.className,
       location.state.path.split("/")[location.state.path.split("/").length-1]
     );
     if(response.error==null){  
@@ -252,21 +253,17 @@ const Grading = () => {
     } else {
       setdeadline(null);
     }
-    const data = await getAllStudentsData(currentUser.email,location.state.className);
+    const data = await getAllStudentsData(location.state.className);
     if(data.error==null)
     {
       let students=[];
       data.data.forEach(element => {
-        if(element.id!==currentUser.email){
-          let s={};
-          s.id = element.id;
           if(element.id===location.state.path.split("/")[location.state.path.split("/").length-1]){
-            console.log(students.length);
+            //console.log(students.length);
             setSwitchIndex(students.length);
           }
-          s.data=element.data();              
-          students.push(s); 
-        }             
+          students.push(element); 
+                     
       });
       setAllStudents(students);  
 
