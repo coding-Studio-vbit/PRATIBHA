@@ -149,7 +149,9 @@ async function enrollClasses(email,enrolled_classes){
         if(docData.exists()){
           console.log('nnnn');
           const facultyIDs = docData.data()["faculty_ID"];
-          if(facultyIDs!==null){
+          console.log();
+          if(facultyIDs!=null){
+            console.log("Not Null");
             console.log('nnnn');
             for (let index=0;index<facultyIDs.length;index++){
               console.log('nnnn');
@@ -172,6 +174,7 @@ async function enrollClasses(email,enrolled_classes){
             }
           }
           else{
+            console.log("Null Here");
             console.log('nnnn');
             await updateDoc(docRef, {
               faculty_ID: [
