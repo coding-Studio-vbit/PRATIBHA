@@ -158,7 +158,7 @@ async function enrollClasses(email,enrolled_classes){
                 console.log('nnnn');
                 isAlreadyEnrolled = true;
               alreadyEnrolled=[...alreadyEnrolled,{ faculty: ele.faculty,
-                  subject:ele.subject}]
+                  subject:enrolled_classes[i]}]
               }
               else{
                 console.log('nnnn');
