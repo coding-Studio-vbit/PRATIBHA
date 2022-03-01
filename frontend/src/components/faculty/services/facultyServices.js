@@ -149,7 +149,9 @@ async function enrollClasses(email,enrolled_classes){
         if(docData.exists()){
           console.log('nnnn');
           const facultyIDs = docData.data()["faculty_ID"];
-          if(facultyIDs!==null){
+          console.log();
+          if(facultyIDs!=null){
+            console.log("Not Null");
             console.log('nnnn');
             for (let index=0;index<facultyIDs.length;index++){
               console.log('nnnn');
@@ -172,6 +174,7 @@ async function enrollClasses(email,enrolled_classes){
             }
           }
           else{
+            console.log("Null Here");
             console.log('nnnn');
             await updateDoc(docRef, {
               faculty_ID: [
@@ -431,7 +434,7 @@ export const setPRA = async (
   department,
   date,
   inst,
-  email,
+  //email,
   isMid1,
   isMid2
 ) => {
@@ -452,7 +455,7 @@ export const setPRA = async (
           if (isMid1) {
             await updateDoc(docRef, {
               subjects: arrayUnion({
-                facultyID: email,
+                //facultyID: email,
                 deadline1: date,
                 instructions: inst,
                 subject: sub,
@@ -461,7 +464,7 @@ export const setPRA = async (
           } else if (isMid2) {
             await updateDoc(docRef, {
               subjects: arrayUnion({
-                facultyID: email,
+                //facultyID: email,
                 deadline1: ele.deadline1,
                 deadline2: date,
                 instructions: inst,
@@ -477,7 +480,7 @@ export const setPRA = async (
         if (isMid1) {
           await updateDoc(docRef, {
             subjects: arrayUnion({
-              facultyID: email,
+              //facultyID: email,
               deadline1: date,
               instructions: inst,
               subject: sub,
@@ -487,7 +490,7 @@ export const setPRA = async (
         if (isMid2) {
           await updateDoc(docRef, {
             subjects: arrayUnion({
-              facultyID: email,
+              //facultyID: email,
               deadline2: date,
               instructions: inst,
               subject: sub,
@@ -499,7 +502,7 @@ export const setPRA = async (
       await setDoc(docRef, {
         subjects: [
           {
-            facultyID: email,
+            //facultyID: email,
             deadline1: date,
             instructions: inst,
             subject: sub,
@@ -524,6 +527,7 @@ export const getSubjects = async (email) => {
     for (let index = 0; index < data.length; index++) {
       const sub = data[index];
 
+      //TODO :alter this 
       const parts = sub.split("_");
       const idk =
         parts[0] +
@@ -793,7 +797,8 @@ async function addClass(email, addedClass) {
           if (ele.subject === classname[5]) {
             d1 = false;
             return {
-              data : ele.faculty
+              data : ele.faculty,
+              className:addedClass.split('_').join('-')
           }
             //SHOW THAT SOME FACULTY ALREADY REGISTERED......
           } else {

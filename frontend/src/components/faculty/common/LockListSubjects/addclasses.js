@@ -109,7 +109,7 @@ export default function AddClasses() {
       } else if(res.data!=null) {
         setIsLoading(false);
         setShowDialog(
-          "Class is already enrolled by "+ res.data
+          res.className+" is already enrolled by "+ res.data
         );
       }
       else{

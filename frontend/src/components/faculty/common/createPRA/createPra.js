@@ -112,7 +112,7 @@ const CreatePra = () => {
       department,
       date,
       inst,
-      currentUser.email,
+      //currentUser.email,
       isMid1,
       isMid2
     );
