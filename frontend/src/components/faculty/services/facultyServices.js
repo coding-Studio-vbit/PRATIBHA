@@ -50,75 +50,7 @@ async function enrollHODClasses(email, enrolled_classes) {
       subjects: enrolled_classes,
       isEnrolled: false,
     });
-    // for (let i = 0; i < enrolled_classes.length; i++) {
-    //   console.log(enrolled_classes[i]);
-    //   var classname = enrolled_classes[i].split("_");
-    //   var fetchclass =
-    //     classname[0] +
-    //     "_" +
-    //     classname[1] +
-    //     "_" +
-    //     classname[2] +
-    //     "_" +
-    //     classname[3] +
-    //     "_" +
-    //     classname[4];
-    //   console.log(fetchclass);
-    //   const docRef = doc(db, "classesinfo", fetchclass);
-    //   const docData = await getDoc(docRef);
-    //   if (docData.exists()) {
-    //     console.log("hi");
-    //     let d1 = true;
-    //     const facultyIDs = docData.data()["faculty_ID"];
-    //     console.log(facultyIDs);
-    //     console.log("hiiiiiiiiii");
-    //     if (facultyIDs != null)
-    //       for (let index = 0; index < facultyIDs.length; index++) {
-    //         console.log("infor");
-    //         const ele = facultyIDs[index];
-
-    //         if (ele.subject === classname[5]) {
-    //           d1 = false;
-    //           //SHOW THAT SOME FACULTY ALREADY REGISTERED......
-    //         } else {
-    //           await updateDoc(docRef, {
-    //             faculty_ID: arrayUnion({
-    //               faculty: email,
-    //               subject: classname[5],
-    //             }),
-    //           });
-    //           break;
-    //         }
-    //       }
-    //     console.log("afterfor");
-    //     console.log(d1);
-    //     if (d1) {
-    //       console.log("d1trueif");
-    //       await updateDoc(docRef, {
-    //         faculty_ID: [
-    //           {
-    //             faculty: email,
-    //             subject: classname[5],
-    //           },
-    //         ],
-    //       });
-    //     }
-    //     console.log("afterd1trueif");
-    //   } else {
-    //     console.log("doc not exist");
-    //     //setdoc
-    //     await setDoc(docRef, {
-    //       faculty_ID: [
-    //         {
-    //           faculty: email,
-    //           subject: classname[5],
-    //         },
-    //       ],
-    //     });
-    //   }
-    // }
     for(let i=0;i<enrolled_classes.length;i++){
-      console.log('nnnn');
       var classname = enrolled_classes[i].split("_");
       var fetchclass =
         classname[0] +
@@ -133,23 +65,16 @@ async function enrollHODClasses(email, enrolled_classes) {
         const docRef = doc(db,"classesinfo",fetchclass);
         const docData = await getDoc(docRef);
         if(docData.exists()){
-          console.log('nnnn');
           const facultyIDs = docData.data()["faculty_ID"];
-          console.log();
           if(facultyIDs!=null){
-            console.log("Not Null");
-            console.log('nnnn');
             for (let index=0;index<facultyIDs.length;index++){
-              console.log('nnnn');
               const ele = facultyIDs[index];
               if(ele.subject === classname[5]){
-                console.log('nnnn');
                 isAlreadyEnrolled = true;
               alreadyEnrolled=[...alreadyEnrolled,{ faculty: ele.faculty,
                   subject:enrolled_classes[i]}]
               }
               else{
-                console.log('nnnn');
                 await updateDoc(docRef, {
                   faculty_ID: arrayUnion({
                     faculty: email,
@@ -160,8 +85,6 @@ async function enrollHODClasses(email, enrolled_classes) {
             }
           }
           else{
-            console.log("Null Here");
-            console.log('nnnn');
             await updateDoc(docRef, {
               faculty_ID: [
                 {
@@ -173,7 +96,6 @@ async function enrollHODClasses(email, enrolled_classes) {
           }
         }
         else{
-          console.log('nnnn');
           await setDoc(docRef, {
             faculty_ID: [
               {
@@ -186,27 +108,23 @@ async function enrollHODClasses(email, enrolled_classes) {
     }
     await updateDoc(facultyRef, { isEnrolled: true });
     if(isAlreadyEnrolled){
-      console.log('nnnn');
-      console.log(alreadyEnrolled);
       return alreadyEnrolled;
     }
   } catch (error) {
-    return error.code;
+    console.log(error)
+    throw error.code;
   }
   return null;
 }
 
 
 async function enrollClasses(email,enrolled_classes){
-  console.log('nnnn');
   const facultyRef = doc(db,"faculty",email);
   let alreadyEnrolled = [];
   let isAlreadyEnrolled = false;
   try{
-    console.log('nnnn');
     await setDoc(facultyRef,{subjects:enrolled_classes,isEnrolled:false});
     for(let i=0;i<enrolled_classes.length;i++){
-      console.log('nnnn');
       var classname = enrolled_classes[i].split("_");
       var fetchclass =
         classname[0] +
@@ -221,23 +139,22 @@ async function enrollClasses(email,enrolled_classes){
         const docRef = doc(db,"classesinfo",fetchclass);
         const docData = await getDoc(docRef);
         if(docData.exists()){
-          console.log('nnnn');
           const facultyIDs = docData.data()["faculty_ID"];
-          console.log();
+       
           if(facultyIDs!=null){
-            console.log("Not Null");
-            console.log('nnnn');
+            
+           
             for (let index=0;index<facultyIDs.length;index++){
-              console.log('nnnn');
+         
               const ele = facultyIDs[index];
               if(ele.subject === classname[5]){
-                console.log('nnnn');
+        
                 isAlreadyEnrolled = true;
               alreadyEnrolled=[...alreadyEnrolled,{ faculty: ele.faculty,
                   subject:enrolled_classes[i]}]
               }
               else{
-                console.log('nnnn');
+
                 await updateDoc(docRef, {
                   faculty_ID: arrayUnion({
                     faculty: email,
@@ -248,8 +165,7 @@ async function enrollClasses(email,enrolled_classes){
             }
           }
           else{
-            console.log("Null Here");
-            console.log('nnnn');
+         
             await updateDoc(docRef, {
               faculty_ID: [
                 {
@@ -261,7 +177,7 @@ async function enrollClasses(email,enrolled_classes){
           }
         }
         else{
-          console.log('nnnn');
+
           await setDoc(docRef, {
             faculty_ID: [
               {
@@ -274,8 +190,7 @@ async function enrollClasses(email,enrolled_classes){
     }
     await updateDoc(facultyRef,{isEnrolled:true});
     if(isAlreadyEnrolled){
-      console.log('nnnn');
-      console.log(alreadyEnrolled);
+
       return alreadyEnrolled;
     }    
   }
@@ -285,90 +200,6 @@ async function enrollClasses(email,enrolled_classes){
   }
   return null;
 }
-
-// async function enrollClasses(email, enrolled_classes) {
-//   const facultyRef = doc(db, "faculty", email);
-// console.log(enrolled_classes)
-//   try {
-//     await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false });
-//     for (let i = 0; i < enrolled_classes.length; i++) {
-//       console.log(enrolled_classes[i]);
-//       var classname = enrolled_classes[i].split("_");
-//       var fetchclass =
-//         classname[0] +
-//         "_" +
-//         classname[1] +
-//         "_" +
-//         classname[2] +
-//         "_" +
-//         classname[3] +
-//         "_" +
-//         classname[4];
-//       console.log(fetchclass);
-//       const docRef = doc(db, "classesinfo", fetchclass);
-//       const docData = await getDoc(docRef);
-//       if (docData.exists()) {
-//         console.log("hi");
-//         let d1 = true;
-//         const facultyIDs = docData.data()["faculty_ID"];
-//         console.log(facultyIDs);
-//         console.log("hiiiiiiiiii");
-//         if (facultyIDs != null){
-//           for (let index = 0; index < facultyIDs.length; index++) {
-//             console.log("infor");
-//             const ele = facultyIDs[index];
-
-//             if (ele.subject === classname[5]) {
-//               console.log("insideeleif")
-//               d1 = false;
-//               console.log(ele.subject)
-//               //SHOW THAT SOME FACULTY ALREADY REGISTERED......
-//             } else {
-//               console.log("inelse")
-//               await updateDoc(docRef, {
-//                 faculty_ID: arrayUnion({
-//                   faculty: email,
-//                   subject: classname[5],
-//                 }),
-//               });
-//             }
-//             continue;
-//           }
-//         }
-//         else{
-//           await updateDoc(docRef, {
-//             faculty_ID: [
-//               {
-//                 faculty: email,
-//                 subject: classname[5],
-//               },
-//             ],
-//           });
-//         }
-//         console.log("afterfor");
-//         console.log(d1);
-//         console.log("afterd1trueif");
-//       } else {
-//         console.log("doc not exist");
-//         //setdoc
-//         await setDoc(docRef, {
-//           faculty_ID: [
-//             {
-//               faculty: email,
-//               subject: classname[5],
-//             },
-//           ],
-//         });
-//       }
-//     }
-//     await updateDoc(facultyRef, { isEnrolled: true });
-//   } catch (error) {
-//     console.log(error);
-//     return error.code;
-//   }
-//   return null;
-// }
-
 
 //CHANGE SEMESTER DONEEEEEEE!!!!!!!!!!!!!!
 export const getDepartments = async (course, year, semester) => {
@@ -476,7 +307,7 @@ export const getDepartments = async (course, year, semester) => {
         } else sections[e.id] = [{ value: element, label: element }];
       }
     });
-    console.log(departments, subjects, sections);
+
     return { departments: departments, subjects: subjects, sections: sections };
   } catch (error) {
     console.log(error);
@@ -507,7 +338,6 @@ export const setPRA = async (
   department,
   date,
   inst,
-  //email,
   isMid1,
   isMid2
 ) => {
@@ -528,7 +358,6 @@ export const setPRA = async (
           if (isMid1) {
             await updateDoc(docRef, {
               subjects: arrayUnion({
-                //facultyID: email,
                 deadline1: date,
                 instructions: inst,
                 subject: sub,
@@ -537,7 +366,6 @@ export const setPRA = async (
           } else if (isMid2) {
             await updateDoc(docRef, {
               subjects: arrayUnion({
-                //facultyID: email,
                 deadline1: ele.deadline1,
                 deadline2: date,
                 instructions: inst,
@@ -553,7 +381,6 @@ export const setPRA = async (
         if (isMid1) {
           await updateDoc(docRef, {
             subjects: arrayUnion({
-              //facultyID: email,
               deadline1: date,
               instructions: inst,
               subject: sub,
@@ -563,7 +390,6 @@ export const setPRA = async (
         if (isMid2) {
           await updateDoc(docRef, {
             subjects: arrayUnion({
-              //facultyID: email,
               deadline2: date,
               instructions: inst,
               subject: sub,
@@ -575,7 +401,6 @@ export const setPRA = async (
       await setDoc(docRef, {
         subjects: [
           {
-            //facultyID: email,
             deadline1: date,
             instructions: inst,
             subject: sub,
@@ -656,29 +481,16 @@ export const getSubjects = async (email) => {
 };
 
 async function getMarks(className, email) {
-  // console.log(email);
+
   const userRef= doc(db,"users", email+"@vbithyd.ac.in");
   try {
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
-      console.log(className.split('_').pop());
+     
       return {
         data: docSnap.data()["subjects"].find((e)=>e.subject===className.split('_').pop()),
         error: null,
       };
-      // if(docSnap.data()["isGraded"]){
-      //   return {
-      //     data:docSnap.data(),
-      //     status:"GRADED",
-      //     error:null
-      //   }
-      // }else{
-      //   return {
-      //     data:docSnap.data(),
-      //     status:"UNGRADED",
-      //     error:null
-      //   }
-      // }
     } else {
       return {
         data: null,
@@ -705,16 +517,11 @@ async function postMarks(
 ) {
   let error = null;
 
-  // const facultyRef = doc(db, `faculty/${facultyID}/${className}`, studentID);
 
   const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
 
   try {
     if (midNo === "1") {
-      // await updateDoc(facultyRef, {
-      //   mid1: marks,
-      //   remarks1: remarks,
-      // });
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
@@ -732,10 +539,6 @@ async function postMarks(
         error = "Unknown Error Occured";
       }
     } else if (midNo === "2") {
-      // await updateDoc(facultyRef, {
-      //   mid2: marks,
-      //   remarks2: remarks,
-      // });
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
         let subs = userDoc.data()["subjects"];
@@ -788,12 +591,11 @@ async function getCoeDeadline(midNo, course, year) {
       data: null,
       error: error,
     };
-    // console.log(error);
+ 
   }
 }
 
 async function getAllStudentsData(
-  // facultyID, this param is not necessary 
   className) {
   const subject = className.split('_').pop();
   const facultyRef = doc(db, "classesinfo",className.replace("_"+subject,""));  
@@ -807,7 +609,6 @@ async function getAllStudentsData(
       // let studentRef;
       studentList.forEach(async(student)=>{
         const studentSnap  = await getDoc(doc(db,'users',student));
-        //studentsInfo.push(studentSnap.data()['subjects'].find((e)=>e.subject===subject)); 
         studentsInfo.push({
           id:student,
           data:studentSnap.data()['subjects'].find((e)=>e.subject===subject)
@@ -825,13 +626,6 @@ async function getAllStudentsData(
         error: "Data Not Found",
       };
     }
-    // if (res.docs.length !== 0) {
-    //   return {
-    //     data: res.docs,
-    //     error: null,
-    //   };
-    // } else {
-    // }
   } catch (error) {
     return {
       data: null,
@@ -845,8 +639,7 @@ async function addClass(email, addedClass) {
   try {
     await updateDoc(facultyRef, { subjects: arrayUnion(addedClass) });
 
-    //let isAdded = false;
-    console.log(addedClass);
+  
     var classname = addedClass.split("_");
     var fetchclass =
       classname[0] +
@@ -858,7 +651,7 @@ async function addClass(email, addedClass) {
       classname[3] +
       "_" +
       classname[4];
-    console.log(fetchclass);
+
     const docRef = doc(db, "classesinfo", fetchclass);
     const docData = await getDoc(docRef);
     if (docData.exists()) {
@@ -897,7 +690,7 @@ async function addClass(email, addedClass) {
         });
       }
     } else {
-      console.log("doc not exist");
+    
       //setdoc
       await setDoc(docRef, {
         faculty_ID: [
@@ -916,55 +709,12 @@ async function addClass(email, addedClass) {
   return null;
 }
 
-
-//delete class 
-//deletes class from the faculty, although subject changes are persistent
-// async function deleteClass(email, deletedClass) {
-//     const subjectRef = collection(db, "faculty", email, deletedClass);
-//     const facultyRef = doc(db, "faculty", email);
-//     const docSnap = await getDoc(facultyRef);
-//     const alldocs = await getDocs(subjectRef);
-
-//     async function del(e) {
-//       await deleteDoc(doc(db, "faculty", email, deletedClass, e));
-//       console.log(docSnap.data());
-//     }
-  
-//     try {
-//       if (docSnap.exists()) {
-//         console.log(docSnap.data());
-//         const subjects = docSnap.data()["subjects"];
-//         console.log(subjects);
-//         for (let index = 0; index < subjects.length; index++) {
-//           const ele = subjects[index];
-
-//           if (ele === deletedClass) {
-//             await updateDoc(facultyRef, { subjects: arrayRemove(ele) });
-//           }
-//         }
-//       }
-//       alldocs.docs.forEach((d) => {
-//         del(d.id);
-//         console.log(d.id);
-//       });
-//       return true;
-//     } catch (err) {
-//       console.log(err);
-//     }
-
-//     return false;
-// }
-
 async function deleteClass(email,className) {
   let error =true;
   const subject = className.split('_').pop();
   const classesInfoRef = doc(db,'classesinfo',className.replace("_"+subject,""));
   const facultyRef = doc(db, "faculty", email);
-  //const subjectsRef = doc(db, "subjects", className.replace("_"+subject,""));
 
-  // console.log(subject);
-  // console.log(className);
-  // console.log(className.replace("_"+subject,""),10);
   try {
     //removes the object in classes info 
     await updateDoc(classesInfoRef,{
@@ -977,30 +727,7 @@ async function deleteClass(email,className) {
     //removes the value in faculty collection 
     await updateDoc(facultyRef,{
       subjects:arrayRemove(className)
-    })
-
-
-    //updates subject collection i.e remove faculty name - persists faculty changes
-    //const subjectDoc = await getDoc(subjectsRef)
-    // if (subjectDoc.exists()) {
-    //   console.log("Subject Collection Changed");
-    //   let data = subjectDoc.data()["subjects"];
-    //   console.log(subjectDoc);
-    //   console.log(data);
-    //   data = data.map(obj => {
-    //     if (obj.subject === subject) {
-    //       return {...obj, facultyID: ''};
-    //     }
-    //     return obj;
-    //   });
-    //   console.log(data,11);
-    //   await updateDoc(subjectsRef,{
-    //     subjects:data
-    //   })
-    // } else {
-    //   console.log("fjffh");
-    //   error=true
-    // }    
+    })   
   } catch (err) {
     console.log(err);
     error=true
