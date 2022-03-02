@@ -43,13 +43,82 @@ async function getEnrolledCourses(email) {
 
 async function enrollHODClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
+  let alreadyEnrolled = [];
+  let isAlreadyEnrolled = false;
   try {
     await updateDoc(facultyRef, {
       subjects: enrolled_classes,
       isEnrolled: false,
     });
-    for (let i = 0; i < enrolled_classes.length; i++) {
-      console.log(enrolled_classes[i]);
+    // for (let i = 0; i < enrolled_classes.length; i++) {
+    //   console.log(enrolled_classes[i]);
+    //   var classname = enrolled_classes[i].split("_");
+    //   var fetchclass =
+    //     classname[0] +
+    //     "_" +
+    //     classname[1] +
+    //     "_" +
+    //     classname[2] +
+    //     "_" +
+    //     classname[3] +
+    //     "_" +
+    //     classname[4];
+    //   console.log(fetchclass);
+    //   const docRef = doc(db, "classesinfo", fetchclass);
+    //   const docData = await getDoc(docRef);
+    //   if (docData.exists()) {
+    //     console.log("hi");
+    //     let d1 = true;
+    //     const facultyIDs = docData.data()["faculty_ID"];
+    //     console.log(facultyIDs);
+    //     console.log("hiiiiiiiiii");
+    //     if (facultyIDs != null)
+    //       for (let index = 0; index < facultyIDs.length; index++) {
+    //         console.log("infor");
+    //         const ele = facultyIDs[index];
+
+    //         if (ele.subject === classname[5]) {
+    //           d1 = false;
+    //           //SHOW THAT SOME FACULTY ALREADY REGISTERED......
+    //         } else {
+    //           await updateDoc(docRef, {
+    //             faculty_ID: arrayUnion({
+    //               faculty: email,
+    //               subject: classname[5],
+    //             }),
+    //           });
+    //           break;
+    //         }
+    //       }
+    //     console.log("afterfor");
+    //     console.log(d1);
+    //     if (d1) {
+    //       console.log("d1trueif");
+    //       await updateDoc(docRef, {
+    //         faculty_ID: [
+    //           {
+    //             faculty: email,
+    //             subject: classname[5],
+    //           },
+    //         ],
+    //       });
+    //     }
+    //     console.log("afterd1trueif");
+    //   } else {
+    //     console.log("doc not exist");
+    //     //setdoc
+    //     await setDoc(docRef, {
+    //       faculty_ID: [
+    //         {
+    //           faculty: email,
+    //           subject: classname[5],
+    //         },
+    //       ],
+    //     });
+    //   }
+    // }
+    for(let i=0;i<enrolled_classes.length;i++){
+      console.log('nnnn');
       var classname = enrolled_classes[i].split("_");
       var fetchclass =
         classname[0] +
@@ -61,34 +130,51 @@ async function enrollHODClasses(email, enrolled_classes) {
         classname[3] +
         "_" +
         classname[4];
-      console.log(fetchclass);
-      const docRef = doc(db, "classesinfo", fetchclass);
-      const docData = await getDoc(docRef);
-      if (docData.exists()) {
-        let d1 = true;
-        const facultyIDs = docData.data()["faculty_ID"];
-        if (facultyIDs != null)
-          for (let index = 0; index < facultyIDs.length; index++) {
-            const ele = facultyIDs[index];
-
-            if (ele.subject === classname[5]) {
-              d1 = false;
-              //SHOW THAT SOME FACULTY ALREADY REGISTERED......
-            } else {
-              await updateDoc(docRef, {
-                faculty_ID: arrayUnion({
-                  faculty: email,
-                  subject: classname[5],
-                }),
-              });
-              break;
+        const docRef = doc(db,"classesinfo",fetchclass);
+        const docData = await getDoc(docRef);
+        if(docData.exists()){
+          console.log('nnnn');
+          const facultyIDs = docData.data()["faculty_ID"];
+          console.log();
+          if(facultyIDs!=null){
+            console.log("Not Null");
+            console.log('nnnn');
+            for (let index=0;index<facultyIDs.length;index++){
+              console.log('nnnn');
+              const ele = facultyIDs[index];
+              if(ele.subject === classname[5]){
+                console.log('nnnn');
+                isAlreadyEnrolled = true;
+              alreadyEnrolled=[...alreadyEnrolled,{ faculty: ele.faculty,
+                  subject:enrolled_classes[i]}]
+              }
+              else{
+                console.log('nnnn');
+                await updateDoc(docRef, {
+                  faculty_ID: arrayUnion({
+                    faculty: email,
+                    subject: classname[5],
+                  }),
+                });
+              }
             }
           }
-        console.log("afterfor");
-        console.log(d1);
-        if (d1) {
-          console.log("d1trueif");
-          await updateDoc(docRef, {
+          else{
+            console.log("Null Here");
+            console.log('nnnn');
+            await updateDoc(docRef, {
+              faculty_ID: [
+                {
+                  faculty: email,
+                  subject: classname[5],
+                },
+              ],
+            });
+          }
+        }
+        else{
+          console.log('nnnn');
+          await setDoc(docRef, {
             faculty_ID: [
               {
                 faculty: email,
@@ -97,21 +183,13 @@ async function enrollHODClasses(email, enrolled_classes) {
             ],
           });
         }
-        console.log("afterd1trueif");
-      } else {
-        console.log("doc not exist");
-        //setdoc
-        await setDoc(docRef, {
-          faculty_ID: [
-            {
-              faculty: email,
-              subject: classname[5],
-            },
-          ],
-        });
-      }
     }
     await updateDoc(facultyRef, { isEnrolled: true });
+    if(isAlreadyEnrolled){
+      console.log('nnnn');
+      console.log(alreadyEnrolled);
+      return alreadyEnrolled;
+    }
   } catch (error) {
     return error.code;
   }
@@ -194,13 +272,12 @@ async function enrollClasses(email,enrolled_classes){
           });
         }
     }
+    await updateDoc(facultyRef,{isEnrolled:true});
     if(isAlreadyEnrolled){
       console.log('nnnn');
       console.log(alreadyEnrolled);
       return alreadyEnrolled;
-    }
-    await updateDoc(facultyRef,{isEnrolled:true});
-    
+    }    
   }
   catch(e){
     console.log(e);
@@ -579,10 +656,12 @@ export const getSubjects = async (email) => {
 };
 
 async function getMarks(className, email) {
-  const userRef= doc(db, `users`, email);
+  // console.log(email);
+  const userRef= doc(db,"users", email+"@vbithyd.ac.in");
   try {
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
+      console.log(className.split('_').pop());
       return {
         data: docSnap.data()["subjects"].find((e)=>e.subject===className.split('_').pop()),
         error: null,
@@ -604,7 +683,7 @@ async function getMarks(className, email) {
       return {
         data: null,
         // status:"UNGRADED",
-        error: null,
+        error:"Student Not Graded",
       };
     }
   } catch (error) {

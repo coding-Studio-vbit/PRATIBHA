@@ -24,7 +24,7 @@
     background:white;
     color: darkslategrey;
     width: 380px;
-    height: 200px;
+    min-height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
