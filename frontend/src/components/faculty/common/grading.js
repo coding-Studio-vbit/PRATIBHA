@@ -4,11 +4,10 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import Docviewer from "./docviewer";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { LoadingScreen, OverlayLoader } from "../../global_ui/spinner/spinner";
+import { LoadingScreen, } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
 import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
-import Download from './../../global_ui/download/download'
 
 import { useAuth } from "../../context/AuthContext";
 import Dialog from "../../global_ui/dialog/dialog";
@@ -212,26 +211,27 @@ const Grading = () => {
       location.state.className,
       location.state.path.split("/")[location.state.path.split("/").length-1]
     );
+    console.log(response,1010);
     if(response.error==null){  
-        if(response.data['mid1']){  
-        setIndividuality1(response.data["mid1"]["Individuality1"]);
-        setInnovation1(response.data["mid1"]["Innovation1"]);
-        setPreparation1(response.data["mid1"]["Preparation1"]);
-        setPresentation1(response.data["mid1"]["Presentation1"]);
-        setSubRel1(response.data["mid1"]["Subject_Relevance1"]);
+        if(response.data['mid1_marks']!=null){  
+        setIndividuality1(response.data["mid1_marks"]["Individuality1"]);
+        setInnovation1(response.data["mid1_marks"]["Innovation1"]);
+        setPreparation1(response.data["mid1_marks"]["Preparation1"]);
+        setPresentation1(response.data["mid1_marks"]["Presentation1"]);
+        setSubRel1(response.data["mid1_marks"]["Subject_Relevance1"]);
       }
-      if (response.data["mid2"]) {
-        setIndividuality2(response.data["mid2"]["Individuality2"]);
-        setInnovation2(response.data["mid2"]["Innovation2"]);
-        setPreparation2(response.data["mid2"]["Preparation2"]);
-        setPresentation2(response.data["mid2"]["Presentation2"]);
-        setSubRel2(response.data["mid2"]["Subject_Relevance2"]);
+      if (response.data["mid2_marks"]!=null) {
+        setIndividuality2(response.data["mid2_marks"]["Individuality2"]);
+        setInnovation2(response.data["mid2_marks"]["Innovation2"]);
+        setPreparation2(response.data["mid2_marks"]["Preparation2"]);
+        setPresentation2(response.data["mid2_marks"]["Presentation2"]);
+        setSubRel2(response.data["mid2_marks"]["Subject_Relevance2"]);
       }
-      if(response.data["remarks1"]!=null){
-        setRemarks1(response.data["remarks1"]);
+      if(response.data["mid1_remarks"]!=null){
+        setRemarks1(response.data["mid1_remarks"]);
       }
-      if(response.data["remarks2"]!=null){
-        setRemarks2(response.data["remarks2"])
+      if(response.data["mid2_remarks"]!=null){
+        setRemarks2(response.data["mid2_remarks"])
       }      
     }
     const res = await getUploadedFileByPath(
