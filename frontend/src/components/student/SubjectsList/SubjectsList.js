@@ -200,7 +200,7 @@ const SubjectsList = () => {
         logout={true}
         back={false}
       />
-      <p className="userDetails">Roll Number : {currentUser.email.slice(0,10)}</p>
+      <p className="userDetails">Roll Number : {currentUser.email.slice(0,10).toUpperCase()}</p>
       <p className="userDetails">Name : {currentUser.username}</p>
       {!loading ? (
         error == null ? (
