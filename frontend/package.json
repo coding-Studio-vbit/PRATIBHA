@@ -10,6 +10,7 @@
     "@mui/icons-material": "^5.2.1",
     "@mui/material": "^5.2.3",
     "@react-pdf-viewer/core": "^3.0.0",
+    "@react-pdf-viewer/zoom": "^3.1.1",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",

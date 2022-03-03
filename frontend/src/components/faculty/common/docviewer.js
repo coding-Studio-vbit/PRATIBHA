@@ -1,12 +1,18 @@
 import * as React from "react";
-import { Spinner, Viewer } from "@react-pdf-viewer/core";
+import { SpecialZoomLevel, Spinner, Viewer } from "@react-pdf-viewer/core";
 import { Worker } from "@react-pdf-viewer/core";
-import { getStorage, ref, getMetadata } from "firebase/storage";
+import { ref, getMetadata } from "firebase/storage";
 import { storage } from "../../../firebase";
 import { useEffect,useState } from "react";
 import Download from "../../global_ui/download/download";
 import { Component } from 'react';
+
+import { zoomPlugin } from '@react-pdf-viewer/zoom';
+import '@react-pdf-viewer/zoom/lib/styles/index.css';
+
+
 // import logger from 'logging-library';
+import './docViewer.css'
 import FileViewer from 'react-file-viewer';
 // import { CustomErrorComponent } from 'custom-error';
 
@@ -63,20 +69,42 @@ const ViewVideo=({object})=>{
 
 const ViewPdf=({object})=>{
     // console.log(object);
+    const zoomPluginInstance = zoomPlugin();
+    const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
+
+    useEffect(() => {
+        zoomPluginInstance.zoomTo(SpecialZoomLevel.PageWidth)
+    }, [])
+    
+
+
     return(
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
             {
                 object ? (
-                    <div
-                        style={{
-                            border: '3px dotted rgba(0, 0, 0, 0.3)',  
-                            paddingTop:'30px',  
-                            backgroundColor: '#fff',
-                            width: '100%',
-                            height:"600px"
-                        
-                        }}>
-                        <Viewer fileUrl={object}  />
+                    <div className="docModel">
+                        <div
+                            style={{
+                                alignItems: 'center',
+                                backgroundColor: '#eeeeee',
+                                borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                padding: '4px',
+                            }}
+                        >
+                            <ZoomOutButton />
+                            <ZoomPopover />
+                            <ZoomInButton />
+                        </div>
+                        <div
+                            style={{
+                                flex: 1,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <Viewer fileUrl={object} plugins={[zoomPluginInstance]} />
+                        </div>
                     </div>
                 ) : (
                 <div
