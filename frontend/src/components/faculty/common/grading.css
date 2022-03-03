@@ -118,7 +118,7 @@
 }
  
  
-input[type=number]:focus, textarea:focus {
+.inputStyle:focus {
   box-shadow: 0 0 5px #bbe8ff;
   background-color: #bbe8ff ;
 }

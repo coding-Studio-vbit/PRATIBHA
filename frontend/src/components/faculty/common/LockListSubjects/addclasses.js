@@ -80,6 +80,16 @@ export default function AddClasses() {
     { value: "2", label: "2" },
   ];
 
+  function addFailed(){
+  
+    setdisabledep(true);
+    setdisablesec(true);
+    setdisablesub(true);
+    setdisableadd(true);
+    setdisablereg(true);
+    setShowDialog(false);
+  }
+
   async function handleAddButton() {
     const adding =
       Course.value +
@@ -144,7 +154,7 @@ export default function AddClasses() {
                         { state: currentUser },
                         { replace: true }
                       )
-                  : (setShowDialog(false) )
+                  : (addFailed() )
               }}
             />
           )}
