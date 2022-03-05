@@ -30,6 +30,8 @@ const CreatePra = () => {
   const location = useLocation();
   const [DeadLine, setDeadLine] = useState("");
   const { currentUser } = useAuth();
+  
+  
 
   const parts = location.state.sub.split("_");
   const course = parts[0];
@@ -43,8 +45,7 @@ const CreatePra = () => {
   if (parts[3] === "Not Applicable") {
     title = parts[0] + " " + parts[2] + " " + parts[4];
   }
-
-  
+ 
   const deadline = async () => {
     const isMid1 = await fetchisMid1(course, year);
     const isMid2 = await fetchisMid2(course, year);
@@ -98,6 +99,11 @@ const CreatePra = () => {
       setisNewPra(false);
     }
   }, []);
+  const filterPassedTime = (time) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
+    return currentDate.getTime() < selectedDate.getTime();
+  };
   async function handleCreate() {
     setLoading(true);
     const isMid1 = await fetchisMid1(course, year);
@@ -174,6 +180,10 @@ const CreatePra = () => {
                 selected={date}
                 value={date}
                 minDate={new Date()}
+                filterTime={filterPassedTime}
+                excludeTimes={[
+                  new Date( new Date().setHours(0,0,0,0))
+                ]}
                 showTimeSelect
                 maxDate={CoeDate}
                 onChange={(newVal) => {
