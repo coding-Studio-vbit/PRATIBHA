@@ -23,6 +23,7 @@ const Grading = () => {
     location.state.path.split("/")[location.state.path.split("/").length - 1]
   );
   const [midNo, setMid] = React.useState("1");
+  const [tempRoll,setTempRoll] = useState(location.state.path.split("/")[location.state.path.split("/").length - 1]);
   const [isMid1,setisMid1]=useState(false);
   const [isMid2,setisMid2]=useState(false);
 
@@ -75,7 +76,7 @@ const Grading = () => {
   }
 
   function validateMarks(x) {
-    if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===3){
+    if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===0){
       return true;
     }
     else{
@@ -135,18 +136,20 @@ const Grading = () => {
     console.log(midNo,midX,val);
     setPageLoading(true);
     if(val!=null || val!==""){
-      let x=allStudents.find(element=>element.id===val)
+      let x=allStudents.find(element=>element.id.slice(0,10)==val)
       if(x==null){
+        setTempRoll(rollNo)
         alert("Student Not Found")
       }else{
         // console.log(x);
-        setRollNo(x.id);
-        if(x.data["mid1"]!=null){
-          setIndividuality1(x.data["mid1"]["Individuality1"]);
-          setInnovation1(x.data["mid1"]["Innovation1"]);
-          setPreparation1(x.data["mid1"]["Preparation1"]);
-          setPresentation1(x.data["mid1"]["Presentation1"]);
-          setSubRel1(x.data["mid1"]["Subject_Relevance1"]);          
+        setRollNo(x.id.slice(0,10));
+        setTempRoll(x.id.slice(0,10))
+        if(x.data["mid1_marks"]!=null){
+          setIndividuality1(x.data["mid1_marks"]["Individuality1"]);
+          setInnovation1(x.data["mid1_marks"]["Innovation1"]);
+          setPreparation1(x.data["mid1_marks"]["Preparation1"]);
+          setPresentation1(x.data["mid1_marks"]["Presentation1"]);
+          setSubRel1(x.data["mid1_marks"]["Subject_Relevance1"]);          
         }else{
           setIndividuality1();
           setInnovation1();
@@ -154,12 +157,12 @@ const Grading = () => {
           setPresentation1();
           setSubRel1(); 
         }
-        if(x.data["mid2"]!=null){
-          setIndividuality2(x.data["mid2"]["Individuality2"]);
-          setInnovation2(x.data["mid2"]["Innovation2"]);
-          setPreparation2(x.data["mid2"]["Preparation2"]);
-          setPresentation2(x.data["mid2"]["Presentation2"]);
-          setSubRel2(x.data["mid2"]["Subject_Relevance2"]);          
+        if(x.data["mid2_marks"]!=null){
+          setIndividuality2(x.data["mid2_marks"]["Individuality2"]);
+          setInnovation2(x.data["mid2_marks"]["Innovation2"]);
+          setPreparation2(x.data["mid2_marks"]["Preparation2"]);
+          setPresentation2(x.data["mid2_marks"]["Presentation2"]);
+          setSubRel2(x.data["mid2_marks"]["Subject_Relevance2"]);          
         }
         else{
           // console.log("fjf");
@@ -169,13 +172,13 @@ const Grading = () => {
           setPresentation2();
           setSubRel2();
         }
-        if(x.data["remarks1"]!=null){
-          setRemarks1(x.data["remarks1"]);
+        if(x.data["mid1_remarks"]!=null){
+          setRemarks1(x.data["mid1_remarks"]);
         }else{
           setRemarks1("")
         }
-        if(x.data["remarks2"]!=null ){
-          setRemarks2(x.data["remarks2"])
+        if(x.data["mid2_remarks"]!=null ){
+          setRemarks2(x.data["mid2_remarks"])
         }else{
           setRemarks2("")
         }
@@ -258,14 +261,14 @@ const Grading = () => {
     {
       let students=[];
       data.data.forEach(element => {
-          if(element.id===location.state.path.split("/")[location.state.path.split("/").length-1]){
-            //console.log(students.length);
+          if(element.id.slice(0,10)==location.state.path.split("/")[location.state.path.split("/").length-1]){
             setSwitchIndex(students.length);
           }
           students.push(element); 
                      
       });
-      setAllStudents(students);  
+      setAllStudents(students); 
+     
 
     }
     else{
@@ -286,8 +289,9 @@ const Grading = () => {
       }
       setTimeout(async() => {
         setSetDialog(null);
-        await searchRoll(allStudents[switchIndex-1].id);
-        setRollNo(allStudents[switchIndex-1].id); 
+        await searchRoll(allStudents[switchIndex-1].id.slice(0,10));
+        setRollNo(allStudents[switchIndex-1].id.slice(0,10)); 
+        setTempRoll(allStudents[switchIndex-1].id.slice(0,10)); 
         setSwitchIndex(switchIndex-1);
         console.log(rollNo); 
         setisMarksPosted(false);
@@ -299,10 +303,9 @@ const Grading = () => {
       }
       setTimeout(async() => {
         setSetDialog(null);
-        await searchRoll(allStudents[switchIndex+1].id);     
-        console.log(allStudents[switchIndex+1].id);
-        console.log(switchIndex+1);
-        setRollNo(allStudents[switchIndex+1].id);
+        await searchRoll(allStudents[switchIndex+1].id.slice(0,10));     
+        setRollNo(allStudents[switchIndex+1].id.slice(0,10));
+        setTempRoll(allStudents[switchIndex+1].id.slice(0,10));
         setSwitchIndex(switchIndex+1);
         console.log(rollNo);
         setisMarksPosted(false); 
@@ -355,10 +358,10 @@ const Grading = () => {
                       <input className="rollNo"
                         type="text"
                         maxLength={10}
-                        value={rollNo}
-                        onChange={(e) => setRollNo(e.target.value)}
+                        value={tempRoll}
+                        onChange={(e) => setTempRoll(e.target.value)}
                       ></input>
-                      <button className="searchBtn" onClick={()=>searchRoll(rollNo)}>
+                      <button className="searchBtn" onClick={()=>searchRoll(tempRoll)}>
                         <i className="fa fa-search"></i>
                       </button>
                     </div>
@@ -373,7 +376,6 @@ const Grading = () => {
                   <span style={{ fontWeight: "bold" }}>{subject}</span>
                 </div>
             </div>
-
             <div className="mid1">
                 <span className="mid1title" style={{marginTop:"10px"}}>MID-I</span>
                 <div>
@@ -509,7 +511,7 @@ const Grading = () => {
                 </div>
             </div>
 
-            {midNo === "2" && (
+            {midNo == "2" && (
               <div className="mid2">
                 <span className="mid1title" style={{marginTop:"10px"}}>MID-II</span>
                 <div>
@@ -657,10 +659,10 @@ const Grading = () => {
               (allStudents!=null && allStudents.length>1)
               &&
               <div className="footer">
-                <button disabled={isSwitchDisabled || switchIndex===0} className="searchBtn" onClick={()=>switchStudent(true)}>
+                <button disabled={isSwitchDisabled || switchIndex==0} className="searchBtn" onClick={()=>switchStudent(true)}>
                     <i className="fas fa-chevron-circle-left fa-2x" style={{cursor:"pointer" }}></i>
                 </button>
-                <button disabled={isSwitchDisabled || switchIndex===allStudents.length-1} className="searchBtn" onClick={()=>switchStudent(false)}>
+                <button disabled={isSwitchDisabled || switchIndex==allStudents.length-1} className="searchBtn" onClick={()=>switchStudent(false)}>
                     <i className="fas fa-chevron-circle-right fa-2x" style={{cursor:"pointer"}}></i>
                 </button>             
               </div>
@@ -717,13 +719,12 @@ const Grading = () => {
                   <div className="notSubmitted" >{`PRA not submitted yet`}</div>
                 )}
               </div>
-
                 <div className="remarksCon">
                   <span className="remarks-title">REMARKS</span>
                   <textarea 
-                  value={midNo==="1"?remarks1:remarks2}
+                  value={midNo=="1"?remarks1:remarks2}
                   onChange={
-                    (e)=>midNo==="1"?setRemarks1(e.target.value):setRemarks2(e.target.value)
+                    (e)=>midNo=="1"?setRemarks1(e.target.value):setRemarks2(e.target.value)
                   }
                   rows={4} className="remarks" style={{ resize: "none", backgroundColor:"#bbe8ff", opacity:"0.7"}} />
                   {/* {

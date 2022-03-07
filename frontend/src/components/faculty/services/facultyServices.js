@@ -603,18 +603,15 @@ async function getAllStudentsData(
   try {
     const res = await getDoc(facultyRef);
     if(res.exists()){
-      let studentList =  res.data()["students"]; 
+      let studentList =  res.data()["students"].sort(); 
       let studentsInfo = [];
-      
-      // let studentRef;
-      studentList.forEach(async(student)=>{
-        const studentSnap  = await getDoc(doc(db,'users',student));
-        studentsInfo.push({
-          id:student,
-          data:studentSnap.data()['subjects'].find((e)=>e.subject===subject)
-        })  
-      })
-
+    for await (const student of studentList) {
+      const studentSnap  = await getDoc(doc(db,'users',student));
+      studentsInfo.push({
+        id:student,
+        data:studentSnap.data()['subjects'].find((e)=>e.subject===subject)
+      })  
+    }
       return {
         data:studentsInfo,
         error: null,
