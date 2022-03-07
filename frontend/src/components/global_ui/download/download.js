@@ -11,7 +11,6 @@ function Download({
   isIcon = true,
   setShowDialog,
 }) {
-  console.log(userID);
   async function download() {
     if (url !== null) {
       if (url.slice(0, 5) == "https") {
@@ -26,7 +25,6 @@ function Download({
         method: "GET",
         responseType: "blob",
       }).then((response) => {
-        console.log(response.data.type.split("/").pop());
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;

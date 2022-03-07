@@ -141,44 +141,6 @@ async function fetchisMid2(course, year) {
   }
 }
 
-// ////CHANGE SEMESTER!!!!!!!!!!!!
-// async function getCurriculumDetails(course_details) {
-//   const curriculumRef = query(
-//     collection(db, `curriculum/${course_details.course}/${course_details.year}`)
-//   );
-//   try {
-//     const docs = await getDocs(curriculumRef);
-//     let docSnap = null;
-//     docs.forEach((doc) => {
-//       if (doc.id === `${course_details.department}`) {
-//         docSnap = doc;
-//       } // "doc1" and "doc2"
-//     });
-//     if (docSnap != null) {
-//       let result = {
-//         subjects: docSnap.data()["subjects"],
-//         sections: docSnap.data()["sections"],
-//       };
-//       if (docSnap.data()["OEs"] != null) {
-//         result.oe = docSnap.data()["OEs"];
-//         result.numberOEs = docSnap.data()["numberOEs"];
-//       }
-//       if (docSnap.data()["PEs"] != null) {
-//         result.pe = docSnap.data()["PEs"];
-//         result.numberPEs = docSnap.data()["numberPEs"];
-//       }
-//       return {
-//         document: result,
-//         error: null,
-//       };
-//     } else {
-//       return { document: null, error: "Give proper details to enroll" };
-//     }
-//   } catch (error) {
-//     return { document: null, error: error.toString() };
-//   }
-// }
-
 async function getSubjectsList(email) {
   const userRef = doc(db, "users", email);
   try {

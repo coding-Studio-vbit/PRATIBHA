@@ -6,7 +6,6 @@ function Announcement() {
 
     async function getData() {
         const data = await getAnnouncements();
-        console.log(data);
         if(data!=null){
             setdata(data);
         }else{
@@ -17,7 +16,6 @@ function Announcement() {
 
     const [data, setdata] = useState(null);
     useEffect(() => {
-        console.log("iogfg");
         getData();
         
     }, [])

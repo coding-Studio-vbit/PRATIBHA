@@ -29,7 +29,6 @@ const ListofStudents = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const val = location.state.sub;
-  // console.log(val);
   const subjectval = val.split("_");
   const course =
     subjectval[0] +
@@ -100,12 +99,10 @@ const ListofStudents = () => {
           false,
           val
         ).then((res) => {
-          // console.log(res);
           if (res) {
             setData(res.data);
             setStudent(res.student);
             setStudentTopic(res.studentTopic);
-            // console.log(res.data, res.student, res.studentTopic);
           } else {
             setError("ERROR OCCURED");
           }

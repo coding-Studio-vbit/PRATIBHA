@@ -14,7 +14,6 @@ import Dialog from "../../global_ui/dialog/dialog";
 
 const Grading = () => {
   let location = useLocation();
-  console.log(location.state.path)
   const { currentUser } = useAuth();
   const [subject, setSubject] = useState(
     location.state.path.split("/")[location.state.path.split("/").length - 3]
@@ -133,7 +132,6 @@ const Grading = () => {
 }
 
   async function searchRoll(val,midX=null){
-    console.log(midNo,midX,val);
     setPageLoading(true);
     if(val!=null || val!==""){
       let x=allStudents.find(element=>element.id.slice(0,10)==val)
@@ -141,7 +139,6 @@ const Grading = () => {
         setTempRoll(rollNo)
         alert("Student Not Found")
       }else{
-        // console.log(x);
         setRollNo(x.id.slice(0,10));
         setTempRoll(x.id.slice(0,10))
         if(x.data["mid1_marks"]!=null){
@@ -165,7 +162,6 @@ const Grading = () => {
           setSubRel2(x.data["mid2_marks"]["Subject_Relevance2"]);          
         }
         else{
-          // console.log("fjf");
           setIndividuality2();
           setInnovation2();
           setPreparation2();
@@ -184,12 +180,10 @@ const Grading = () => {
         }
         let res;
         if(midX==null){
-          console.log(location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+val );
           res = await getUploadedFileByPath(
             location.state.path.slice(0,location.state.path.length-12)+midNo+"/"+val    
           ); 
         }else{
-          console.log(location.state.path.slice(0,location.state.path.length-12)+midX+"/"+val );
           res = await getUploadedFileByPath(
             location.state.path.slice(0,location.state.path.length-12)+midX+"/"+val    
           );
@@ -202,7 +196,7 @@ const Grading = () => {
         }   
       }
     }else{
-      // console.log("Show Error");
+      console.log("Show Error");
     }
     setPageLoading(false)
   }    
@@ -214,7 +208,6 @@ const Grading = () => {
       location.state.className,
       location.state.path.split("/")[location.state.path.split("/").length-1]
     );
-    console.log(response,1010);
     if(response.error==null){  
         if(response.data['mid1_marks']!=null){  
         setIndividuality1(response.data["mid1_marks"]["Individuality1"]);
@@ -248,7 +241,7 @@ const Grading = () => {
     }
     let course = location.state.className.split("_")[0];
     let year = location.state.className.split("_")[1]
-    console.log(location.state)
+
 
     const coeDeadLine = await getCoeDeadline(midNo,course,year);
     if(coeDeadLine.error==null){
@@ -275,7 +268,6 @@ const Grading = () => {
       setAllStudents(null);
     }
     if(res.error!=null && response.error!=null && data.error!=null){
-      console.log(res.error,response.error);
       setPageLoadError("Error in Fetching details");
     }
     setPageLoading(false);
@@ -293,7 +285,6 @@ const Grading = () => {
         setRollNo(allStudents[switchIndex-1].id.slice(0,10)); 
         setTempRoll(allStudents[switchIndex-1].id.slice(0,10)); 
         setSwitchIndex(switchIndex-1);
-        console.log(rollNo); 
         setisMarksPosted(false);
       }, isMarksChanged?1000:0);
                  
@@ -307,7 +298,6 @@ const Grading = () => {
         setRollNo(allStudents[switchIndex+1].id.slice(0,10));
         setTempRoll(allStudents[switchIndex+1].id.slice(0,10));
         setSwitchIndex(switchIndex+1);
-        console.log(rollNo);
         setisMarksPosted(false); 
       }, isMarksChanged?1000:0);
                       

@@ -106,13 +106,11 @@ export default function AddClasses() {
     try {
       setdisableadd(true);
       setIsLoading(true);
-      console.log("Adding");
 
       const res = await addClass(currentUser.email, adding);
-      console.log(res);
-      console.log(typeof(res))
+
       if (res === null) {
-        console.log("Added.");
+
         setIsLoading(false);
         setIsSuccess(true);
         setShowDialog("Class added");

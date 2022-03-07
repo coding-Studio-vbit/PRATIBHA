@@ -97,7 +97,6 @@ const Upload = () => {
             ext !== "mov" &&
             ext !== "m4v"
           ) {
-            console.log(ext);
             setUrl(null);
             setFileError(
               `${ext} file extension is not supported. Convert into another format and submit again.`
@@ -164,7 +163,6 @@ const Upload = () => {
   async function getFile(val) {
     setloadExisting(true);
     try {
-      console.log(val);
       let res;
       if (val === "1") {
         res = await getFileUploadDetails(
@@ -173,7 +171,6 @@ const Upload = () => {
           val
         );
       } else {
-        console.log("efoiwoihfewoi");
         res = await getFileUploadDetails(
           location.state.rollno,
           location.state.subject,
@@ -185,7 +182,6 @@ const Upload = () => {
           "1"
         );
         if (mid1Res.error == null) {
-          console.log("rgogrougr");
           setMid1NotSubmitted(false);
         } else {
           setMid1NotSubmitted(true);
@@ -205,7 +201,6 @@ const Upload = () => {
         setFileName(" ");
       }
     } catch (error) {
-      console.log("Fed");
       setexistingFile(null);
       setloadExisting(false);
     }
@@ -261,7 +256,6 @@ const Upload = () => {
       if (res.error == null) {
         setShowUploadModule(true);
         setLoading(false);
-        console.log(res.data);
         setDeadLineInfo(res.data);
         await getFile(value);
       } else {

@@ -108,23 +108,7 @@ function EnrollClasses() {
         }
       
       }
-// async function foo(course,year){
-//     try{
-//         const f1=await fetchisSem1(course,year);
-//         const f2=await fetchisSem2(course,year);
-//         if(f1){
-//             console.log(f1,1);
-//         }
-//         if(f2){
-//             console.log(f2,2)
-//         }
-//         const f3 = await fetchSemNumber(course,year);
-//         console.log(f3);
-//     }
-//     catch(e){
-//         console.log(e);
-//     }
-// }
+
     async function fetchData(){
         if(departments==null && course!=="" && year!==""){
             setLoading(true);

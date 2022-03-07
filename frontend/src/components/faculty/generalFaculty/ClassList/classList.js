@@ -37,7 +37,6 @@ const ClassList = () => {
   }, [currentUser.email,subs]);
 
   function handleCard(sub) {
-    console.log('called1')
     if (subs.praSetSubs[sub]) {
       navigate("/faculty/studentlist", { state: { sub: sub } });
     } else {
@@ -47,12 +46,9 @@ const ClassList = () => {
 
   const [delSub, setdelSub] = useState(null);
  async function handledelete(sub){
-    console.log(sub);
     setdelSub(sub);
 
     setShowDialog("Are you sure you want to delete class ? All the data will be lost forever.")
-    console.log('called2')
-    console.log(showDialog)
   }
 
   

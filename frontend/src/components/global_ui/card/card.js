@@ -11,7 +11,6 @@ const Card = ({
   return (
     <div className="globalCardContainer"  onClick={()=>onclick(klass)}>
     {children&& <span className="delicon" onClick={function(e){
-      console.log("Prevent");
           e.stopPropagation()
           onClickchildren(klass)}
       }>{children}</span>}

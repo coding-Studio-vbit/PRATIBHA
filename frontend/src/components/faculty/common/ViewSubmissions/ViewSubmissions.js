@@ -97,7 +97,6 @@ const ViewSubmissions = () => {
           true,
           val
         ).then((res) => {
-          // console.log(res);
           if (res) {
             setData(res.data);
             setLinks(res.links);

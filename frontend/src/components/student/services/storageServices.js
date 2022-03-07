@@ -45,47 +45,7 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
                     await updateDoc(docRef,{
                         subjects:subs,                        
                     });
-                    // let faculty=null;
-                    // const subRef = doc(db,"subjects",`${course}_${regulation}_${year}_${department}_${section}`);
-                    // const docSnap = await getDoc(subRef);
-                    // if(docSnap.exists()){
-                    //     console.log("AB");
-                    //     subs = docSnap.data()["subjects"];
-                    //     for(var j=0;j<subs.length;j++){
-                    //         if(subs[j].subject===subject){
-                    //             console.log("CD");
-                    //             faculty = subs[j].facultyID;
-                    //             break;                                
-                    //         }              
-                    //     }                        
-                    // }else{
-                    //     return "Unknown Error Occured, Try Reuploading the file";
-                    // }
-                    // console.log(faculty); 
-                    // if(faculty!=null){
-                    //     console.log(`${course}_${year}_${department}_${section}_${subject}`);
-                    //     const facultyRef = doc(
-                    //         db,`faculty/${faculty}/${course}_${regulation}_${year}_${department}_${section}_${subject}`,email.split('@')[0]);
-                    //     if(midNo==="1"){
-                    //         //TODO if mid1 is not submitted then setdoc in mid2
-                    //         await setDoc(facultyRef,{
-                    //             isSubmitted1:true,
-                    //         })
-                    //     }else if(midNo==="2"){
-                    //         const doc =await getDoc(facultyRef);
-                    //         if(doc.exists()){
-                    //             await updateDoc(facultyRef,{
-                    //                 isSubmitted2:true,
-                    //             })
-                    //         }else{
-                    //             await setDoc(facultyRef,{
-                    //                 isSubmitted2:true,
-                    //             })
-                    //         }                            
-                    //     }
-                    // }else{
-                    //     return "Unknown Error Occured, Try Reuploading the file";
-                    // }
+                    
                 } catch (err) {
                     error=err.toString();
                 }
@@ -94,9 +54,7 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
             }            
         }catch(err){
             error = err.toString();            
-        }
-        console.log('Uploaded a file');        
-        console.log(snapshot.ref.fullPath);        
+        }      
     })
     .catch((err)=>{
       error=err.toString();
@@ -109,10 +67,8 @@ async function getUploadedFile(course,year,regulation,department,section,subject
         url:null,
         error:null,    
     }
-    //console.log(`${course}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`);
     await getDownloadURL(ref(storage,`${course}/${regulation}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`))
     .then((url) => {
-        //console.log(url);
         res.url=url;
     })
     .catch((error) => {
@@ -128,7 +84,6 @@ async function getUploadedFileByPath(path) {
     }
     await getDownloadURL(ref(storage,path))
     .then((url) => {
-        console.log(url);
         res.url=url;
     })
     .catch((error) => {
