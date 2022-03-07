@@ -31,9 +31,6 @@ class MyComponent extends Component {
 
 
 const ViewPPT=({object})=>{
-    useEffect(() => {
-        console.log(object);
-    }, [])
     
     const linkToPPTFile =
       "https://storage.googleapis.com/slidescarnival_powerpoints/Paulina%20%C2%B7%20SlidesCarnival.pptx";
@@ -52,7 +49,6 @@ const ViewPPT=({object})=>{
 
 const ViewImage=({object})=>{
     useEffect(() => {
-        console.log("vamos mahitha");
     }, [])
     return(
         <img height="510"
@@ -68,7 +64,6 @@ const ViewVideo=({object})=>{
 }
 
 const ViewPdf=({object})=>{
-    // console.log(object);
     const zoomPluginInstance = zoomPlugin();
     const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
 
@@ -132,16 +127,12 @@ function Docviewer({link,rollNo}){
     const [loading, setloading] = useState(true);
 
     useEffect(() => {
-        // console.log(link);
-        // console.log("XYZ");
         getMetadata(forestRef)
         .then((metadata) => {
-            console.log(metadata.contentType);
             setextension(metadata.contentType.split("/")[1]);
             setloading(false);
         })
         .catch((error) => {
-            // console.log(error,1010);
             setextension(null)
             setloading(false);
         });
@@ -174,7 +165,6 @@ function Docviewer({link,rollNo}){
 }
 
 function Module({extension,object}) {
-    console.log(extension,1010);
     switch(extension){
         case 'pdf':
             return <ViewPdf object={object} />
