@@ -56,27 +56,34 @@ const Upload = () => {
   const onChange = (e) => {
     let files = e.target.files[0];
     let size = 200000;
-    if (mid === "2") {
+    if (mid == "2") {
       size = 1048576000;
     }
     if (files != null) {
-      if (files.size > size) {
-        setUrl(null);
-        setFileError("File size limit exceeded");
-      } else {
+
         let ext;
         ext = files.name.split(".").pop();
-        if (mid === 1) {
-          if (ext === "pdf") {
-            setFileError("");
-            setFileName(files.name);
-            setUrl(e.target.files[0]);
+        if (mid == 1) {
+          //DONT CHANGE == to === plis
+          if (ext == "pdf") {
+            if (files.size > size) {
+              setUrl(null);
+              setFileError("File size limit exceeded");
+            } 
+            else{
+
+              setFileError("");
+              setFileName(files.name);
+              setUrl(e.target.files[0]);
+            }
           } else {
             setUrl(null);
             setFileError("File not in PDF format");
           }
-        } else if (mid === 2) {
-          if (ext === "pptx") {
+        } else if (mid == 2) {
+        
+            //DONT CHANGE == to === plis
+         if (ext == "pptx") {
             setUrl(null);
             setFileError("Convert PPT to PDF format for submission");
           } else if (
@@ -95,7 +102,11 @@ const Upload = () => {
             setFileError(
               `${ext} file extension is not supported. Convert into another format and submit again.`
             );
-          } else {
+          } else   if (files.size > size) {
+            setUrl(null);
+            setFileError("File size limit exceeded");
+          }
+          else {
             setFileError("");
             setFileName(files.name);
             setUrl(e.target.files[0]);
@@ -106,7 +117,7 @@ const Upload = () => {
           setFileName(files.name);
           setUrl(e.target.files[0]);
         }
-      }
+      
     } else {
       setUrl(null);
       setFileError("File not uploaded");
