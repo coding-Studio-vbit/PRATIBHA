@@ -21,7 +21,7 @@ import { Spinner } from "../../../global_ui/spinner/spinner.js";
 
 const CreatePra = () => {
   const navigate = useNavigate();
-  const [date, setDate] = useState(new Date(new Date().setHours(23,30)));
+  const [date, setDate] = useState(new Date(new Date().setHours(23,59)));
   const [dialog, setdialog] = useState(""); 
   const [isNewPra, setisNewPra] = useState(true);
   const [Loading, setLoading] = useState(true);
