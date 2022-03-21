@@ -50,7 +50,7 @@ async function enrollHODClasses(email, enrolled_classes) {
       subjects: enrolled_classes,
       isEnrolled: false,
     });
-    for(let i=0;i<enrolled_classes.length;i++){
+    for (let i = 0; i < enrolled_classes.length; i++) {
       var classname = enrolled_classes[i].split("_");
       var fetchclass =
         classname[0] +
@@ -62,41 +62,30 @@ async function enrollHODClasses(email, enrolled_classes) {
         classname[3] +
         "_" +
         classname[4];
-        const docRef = doc(db,"classesinfo",fetchclass);
-        const docData = await getDoc(docRef);
-        if(docData.exists()){
-          const facultyIDs = docData.data()["faculty_ID"];
-          if(facultyIDs!=null){
-            for (let index=0;index<facultyIDs.length;index++){
-              const ele = facultyIDs[index];
-              if(ele.subject === classname[5]){
-                isAlreadyEnrolled = true;
-              alreadyEnrolled=[...alreadyEnrolled,{ faculty: ele.faculty,
-                  subject:enrolled_classes[i]}]
-              }
-              else{
-                await updateDoc(docRef, {
-                  faculty_ID: arrayUnion({
-                    faculty: email,
-                    subject: classname[5],
-                  }),
-                });
-              }
-            }
-          }
-          else{
-            await updateDoc(docRef, {
-              faculty_ID: [
-                {
+      const docRef = doc(db, "classesinfo", fetchclass);
+      const docData = await getDoc(docRef);
+      if (docData.exists()) {
+        const facultyIDs = docData.data()["faculty_ID"];
+        if (facultyIDs != null) {
+          for (let index = 0; index < facultyIDs.length; index++) {
+            const ele = facultyIDs[index];
+            if (ele.subject === classname[5]) {
+              isAlreadyEnrolled = true;
+              alreadyEnrolled = [
+                ...alreadyEnrolled,
+                { faculty: ele.faculty, subject: enrolled_classes[i] },
+              ];
+            } else {
+              await updateDoc(docRef, {
+                faculty_ID: arrayUnion({
                   faculty: email,
                   subject: classname[5],
-                },
-              ],
-            });
+                }),
+              });
+            }
           }
-        }
-        else{
-          await setDoc(docRef, {
+        } else {
+          await updateDoc(docRef, {
             faculty_ID: [
               {
                 faculty: email,
@@ -105,26 +94,35 @@ async function enrollHODClasses(email, enrolled_classes) {
             ],
           });
         }
+      } else {
+        await setDoc(docRef, {
+          faculty_ID: [
+            {
+              faculty: email,
+              subject: classname[5],
+            },
+          ],
+        });
+      }
     }
     await updateDoc(facultyRef, { isEnrolled: true });
-    if(isAlreadyEnrolled){
+    if (isAlreadyEnrolled) {
       return alreadyEnrolled;
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw error.code;
   }
   return null;
 }
 
-
-async function enrollClasses(email,enrolled_classes){
-  const facultyRef = doc(db,"faculty",email);
+async function enrollClasses(email, enrolled_classes) {
+  const facultyRef = doc(db, "faculty", email);
   let alreadyEnrolled = [];
   let isAlreadyEnrolled = false;
-  try{
-    await setDoc(facultyRef,{subjects:enrolled_classes,isEnrolled:false});
-    for(let i=0;i<enrolled_classes.length;i++){
+  try {
+    await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false });
+    for (let i = 0; i < enrolled_classes.length; i++) {
       var classname = enrolled_classes[i].split("_");
       var fetchclass =
         classname[0] +
@@ -136,25 +134,22 @@ async function enrollClasses(email,enrolled_classes){
         classname[3] +
         "_" +
         classname[4];
-        const docRef = doc(db,"classesinfo",fetchclass);
-        const docData = await getDoc(docRef);
-        if(docData.exists()){
+      const docRef = doc(db, "classesinfo", fetchclass);
+      const docData = await getDoc(docRef);
+      if (docData.exists()) {
+        try {
           const facultyIDs = docData.data()["faculty_ID"];
-       
-          if(facultyIDs!=null){
-            
-           
-            for (let index=0;index<facultyIDs.length;index++){
-         
-              const ele = facultyIDs[index];
-              if(ele.subject === classname[5]){
-        
-                isAlreadyEnrolled = true;
-              alreadyEnrolled=[...alreadyEnrolled,{ faculty: ele.faculty,
-                  subject:enrolled_classes[i]}]
-              }
-              else{
 
+          if (facultyIDs != null) {
+            for (let index = 0; index < facultyIDs.length; index++) {
+              const ele = facultyIDs[index];
+              if (ele.subject === classname[5]) {
+                isAlreadyEnrolled = true;
+                alreadyEnrolled = [
+                  ...alreadyEnrolled,
+                  { faculty: ele.faculty, subject: enrolled_classes[i] },
+                ];
+              } else {
                 await updateDoc(docRef, {
                   faculty_ID: arrayUnion({
                     faculty: email,
@@ -163,9 +158,7 @@ async function enrollClasses(email,enrolled_classes){
                 });
               }
             }
-          }
-          else{
-         
+          } else {
             await updateDoc(docRef, {
               faculty_ID: [
                 {
@@ -175,26 +168,25 @@ async function enrollClasses(email,enrolled_classes){
               ],
             });
           }
+        } catch (e) {
+          console.log(e);
         }
-        else{
-
-          await setDoc(docRef, {
-            faculty_ID: [
-              {
-                faculty: email,
-                subject: classname[5],
-              },
-            ],
-          });
-        }
+      } else {
+        await setDoc(docRef, {
+          faculty_ID: [
+            {
+              faculty: email,
+              subject: classname[5],
+            },
+          ],
+        });
+      }
     }
-    await updateDoc(facultyRef,{isEnrolled:true});
-    if(isAlreadyEnrolled){
-
+    await updateDoc(facultyRef, { isEnrolled: true });
+    if (isAlreadyEnrolled) {
       return alreadyEnrolled;
-    }    
-  }
-  catch(e){
+    }
+  } catch (e) {
     console.log(e);
     throw e.code;
   }
@@ -333,14 +325,7 @@ export const getPRA = async (sub, department) => {
   }
 };
 
-export const setPRA = async (
-  sub,
-  department,
-  date,
-  inst,
-  isMid1,
-  isMid2
-) => {
+export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
   try {
     const docRef = doc(db, "subjects", department);
     const docData = await getDoc(docRef);
@@ -425,7 +410,7 @@ export const getSubjects = async (email) => {
     for (let index = 0; index < data.length; index++) {
       const sub = data[index];
 
-      //TODO :alter this 
+      //TODO :alter this
       const parts = sub.split("_");
       const idk =
         parts[0] +
@@ -481,21 +466,21 @@ export const getSubjects = async (email) => {
 };
 
 async function getMarks(className, email) {
-
-  const userRef= doc(db,"users", email+"@vbithyd.ac.in");
+  const userRef = doc(db, "users", email + "@vbithyd.ac.in");
   try {
     const docSnap = await getDoc(userRef);
     if (docSnap.exists()) {
-     
       return {
-        data: docSnap.data()["subjects"].find((e)=>e.subject===className.split('_').pop()),
+        data: docSnap
+          .data()
+          ["subjects"].find((e) => e.subject === className.split("_").pop()),
         error: null,
       };
     } else {
       return {
         data: null,
         // status:"UNGRADED",
-        error:"Student Not Graded",
+        error: "Student Not Graded",
       };
     }
   } catch (error) {
@@ -516,7 +501,6 @@ async function postMarks(
   remarks
 ) {
   let error = null;
-
 
   const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
 
@@ -591,33 +575,36 @@ async function getCoeDeadline(midNo, course, year) {
       data: null,
       error: error,
     };
- 
   }
 }
 
-async function getAllStudentsData(
-  className) {
-  const subject = className.split('_').pop();
-  const facultyRef = doc(db, "classesinfo",className.replace("_"+subject,""));  
+async function getAllStudentsData(className) {
+  const subject = className.split("_").pop();
+  const facultyRef = doc(
+    db,
+    "classesinfo",
+    className.replace("_" + subject, "")
+  );
 
   try {
     const res = await getDoc(facultyRef);
-    if(res.exists()){
-      let studentList =  res.data()["students"].sort(); 
+    if (res.exists()) {
+      let studentList = res.data()["students"].sort();
       let studentsInfo = [];
-    for await (const student of studentList) {
-      const studentSnap  = await getDoc(doc(db,'users',student));
-      studentsInfo.push({
-        id:student,
-        data:studentSnap.data()['subjects'].find((e)=>e.subject===subject)
-      })  
-    }
+      for await (const student of studentList) {
+        const studentSnap = await getDoc(doc(db, "users", student));
+        studentsInfo.push({
+          id: student,
+          data: studentSnap
+            .data()
+            ["subjects"].find((e) => e.subject === subject),
+        });
+      }
       return {
-        data:studentsInfo,
+        data: studentsInfo,
         error: null,
-      };     
-
-    }else{
+      };
+    } else {
       return {
         data: null,
         error: "Data Not Found",
@@ -636,7 +623,6 @@ async function addClass(email, addedClass) {
   try {
     await updateDoc(facultyRef, { subjects: arrayUnion(addedClass) });
 
-  
     var classname = addedClass.split("_");
     var fetchclass =
       classname[0] +
@@ -656,17 +642,17 @@ async function addClass(email, addedClass) {
       const facultyIDs = docData.data()["faculty_ID"];
       if (facultyIDs != null)
         for (let index = 0; index < facultyIDs.length; index++) {
-
           const ele = facultyIDs[index];
 
           if (ele.subject === classname[5]) {
             d1 = false;
             return {
-              data : ele.faculty,
-              className:addedClass.split('_').join('-')
-          }
+              data: ele.faculty,
+              className: addedClass.split("_").join("-"),
+            };
             //SHOW THAT SOME FACULTY ALREADY REGISTERED......
           } else {
+            d1 = false;
             await updateDoc(docRef, {
               faculty_ID: arrayUnion({
                 faculty: email,
@@ -687,7 +673,6 @@ async function addClass(email, addedClass) {
         });
       }
     } else {
-    
       //setdoc
       await setDoc(docRef, {
         faculty_ID: [
@@ -706,31 +691,35 @@ async function addClass(email, addedClass) {
   return null;
 }
 
-async function deleteClass(email,className) {
-  let error =true;
-  const subject = className.split('_').pop();
-  const classesInfoRef = doc(db,'classesinfo',className.replace("_"+subject,""));
+async function deleteClass(email, className) {
+  let error = true;
+  const subject = className.split("_").pop();
+  const classesInfoRef = doc(
+    db,
+    "classesinfo",
+    className.replace("_" + subject, "")
+  );
   const facultyRef = doc(db, "faculty", email);
 
   try {
-    //removes the object in classes info 
-    await updateDoc(classesInfoRef,{
-      faculty_ID:arrayRemove({
-        faculty:email,
-        subject:subject
-      })
-    })  
+    //removes the object in classes info
+    await updateDoc(classesInfoRef, {
+      faculty_ID: arrayRemove({
+        faculty: email,
+        subject: subject,
+      }),
+    });
 
-    //removes the value in faculty collection 
-    await updateDoc(facultyRef,{
-      subjects:arrayRemove(className)
-    })   
+    //removes the value in faculty collection
+    await updateDoc(facultyRef, {
+      subjects: arrayRemove(className),
+    });
   } catch (err) {
     console.log(err);
-    error=true
+    error = true;
   }
-    return error;
-  }
+  return error;
+}
 
 const Fetchlink = async (email, status, mid, fullcourse) => {
   const subjectval = fullcourse.split("_");
