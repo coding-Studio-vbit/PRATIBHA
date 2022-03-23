@@ -11,6 +11,16 @@
   margin-left: auto;
   margin-right: auto;
 }
+.btnflexcoe{
+  display: flex;
+  margin-top: 10px;
+}
+.deadlinesbtn{
+  align-self: flex-end;
+  margin-left: auto;
+  margin-right: 15px;
+}
+
 .coe-instruction{
   color: #0e72ab;
   font-weight: bold;
