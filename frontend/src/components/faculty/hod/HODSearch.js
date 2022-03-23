@@ -4,13 +4,17 @@ import Navbar from "../../global_ui/navbar/navbar.js";
 import Button from "../../global_ui/buttons/button";
 import "./HODSearch.css";
 import { useAuth } from "../../context/AuthContext.js";
-import { fetchRegulationOptions,fetchSemNumber } from "../../student/services/studentServices.js";
-import { getDepartments } from "../services/facultyServices.js";
+import {
+  fetchRegulationOptions,
+  fetchSemNumber,
+} from "../../student/services/studentServices.js";
+import { getDepartments, getIsEnrolled } from "../services/facultyServices.js";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 
 const HODSearch = () => {
   const [Course, setCourse] = useState({ value: "Loading", label: "Loading" });
+  const [isEnrolled, setisEnrolled] = useState(false);
   const [Year, setYear] = useState("");
   const { currentUser } = useAuth();
   const [Section, setSection] = useState("");
@@ -32,6 +36,11 @@ const HODSearch = () => {
   ]);
   const [showdep, setshowdep] = useState([]);
 
+  async function findIsEnrolled() {
+    const res = await getIsEnrolled(currentUser.email);
+
+    setisEnrolled(res.data);
+  }
   useEffect(() => {
     let klasses = [];
     let departments = [];
@@ -43,6 +52,7 @@ const HODSearch = () => {
     setLoading(false);
     setKlass(klasses);
     setDepartment(departments);
+    findIsEnrolled();
   }, []);
   function filterDep(course) {
     if (course.value !== "MBA" && !currentUser.isFirstYearHOD) {
@@ -60,8 +70,8 @@ const HODSearch = () => {
   useEffect(() => {
     const getLables = async () => {
       try {
-        const sem = await fetchSemNumber(Course.value,Year.value);
-        const res = await getDepartments(Course.value,Year.value,sem);
+        const sem = await fetchSemNumber(Course.value, Year.value);
+        const res = await getDepartments(Course.value, Year.value, sem);
         if (!res) return;
         setSubjects(res.subjects);
         setsections(res.sections);
@@ -86,6 +96,7 @@ const HODSearch = () => {
         console.log(error);
       }
     };
+
     getLables();
   }, [Course, Year]);
 
@@ -130,111 +141,9 @@ const HODSearch = () => {
         style={{ marginBottom: "30px" }}
         title={"HOD"}
         logout={true}
-        backURL={"/faculty/classlist"}
+        backURL={isEnrolled ? "/faculty/classlist" : "/faculty/enroll"}
       />
       <div className="root-hod">
-        {/* <div className="div-container-classesHOD">
-      {subs.btechSubs.length !== 0 && (
-          <div className="subjectsDivision">
-            <h4 className="courseTitle">B.Tech</h4>
-            <div className="cardList-HOD">
-              {subs.btechSubs.map((item) => {
-                var displayItem = item.split("_");
-                displayItem.splice(0, 1);
-                let newItem = displayItem[1];
-                let len = displayItem.length;
-                for (let i = 2; i < len; i++) {
-                  newItem = newItem + "-" + displayItem[i];
-                }
-                return (
-                  <Card
-                    key={newItem}
-                    onclick={handleCard}
-                    text={newItem}
-                    subText={
-                      subs.praSetSubs[item]
-                        ? subs.praSetSubs[item].date2
-                          ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
-                          : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
-                        : "PRA not created."
-                    }
-                    klass={item}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
-        {subs.mtechSubs.length !== 0 && (
-          <div className="subjectsDivision">
-            <h4 className="courseTitle"> M.Tech</h4>
-            <div className="cardList-HOD">
-              {subs.mtechSubs.map((item) => {
-                var displayItem = item.split("_");
-                displayItem.splice(0, 1);
-                let newItem = displayItem[1];
-                let len = displayItem.length;
-                for (let i = 2; i < len; i++) {
-                  newItem = newItem + "-" + displayItem[i];
-                }
-                return (
-                  <Card
-                    key={newItem}
-                    onclick={handleCard}
-                    text={newItem}
-                    subText={
-                      subs.praSetSubs[item]
-                        ? subs.praSetSubs[item].date2
-                          ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
-                          : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
-                        : "PRA not created."
-                    }
-                    klass={item}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
-        {subs.mbaSubs.length !== 0 && (
-          <div className="subjectsDivision">
-            <h4 className="courseTitle">MBA</h4>
-            <div className="cardList-HOD">
-              {subs.mbaSubs.map((item) => {
-                var displayItem = item.split("_");
-                displayItem.splice(0, 1);
-                let newItem = displayItem[1];
-                let len = displayItem.length;
-                if (displayItem[1] === "1")
-                  newItem =
-                    newItem + "-" + displayItem[3] + "-" + displayItem[4];
-                else {
-                  for (let i = 2; i < len; i++) {
-                    newItem = newItem + "-" + displayItem[i];
-                  }
-                }
-                return (
-                  <Card
-                    key={newItem}
-                    classname="card-container"
-                    onclick={handleCard}
-                    text={newItem}
-                    subText={
-                      subs.praSetSubs[item]
-                        ? subs.praSetSubs[item].date2
-                          ? `Mid 2: ${subs.praSetSubs[item].date2}`
-                          : ` Mid 1: ${subs.praSetSubs[item].date1}`
-                        : "PRA not created."
-                    }
-                    klass={item}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div> */}
-
         <p className="dep-title">
           <u>View Department Grades</u>
         </p>

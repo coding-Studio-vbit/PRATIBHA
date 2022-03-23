@@ -41,6 +41,31 @@ async function getEnrolledCourses(email) {
   }
 }
 
+
+async function getIsEnrolled(email) {
+  const docRef = doc(db, "faculty", email);
+  try {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return {
+        data: docSnap.data()["isEnrolled"],
+        error: null,
+      };
+    } else {
+      return {
+        data: null,
+        error: "Enroll Courses to get details",
+      };
+    }
+  } catch (error) {
+    return {
+      data: null,
+      error: error.code,
+    };
+  }
+}
+
+
 async function enrollHODClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
   let alreadyEnrolled = [];
@@ -896,4 +921,5 @@ export {
   addClass,
   deleteClass,
   getAllStudents,
+  getIsEnrolled
 };
