@@ -237,6 +237,10 @@ const LockList = () => {
       {currentUser.isFirstTime ? (
         <div className="lockList-container">
           <Navbar title="Classes List" back={false} logout={false} />
+          <div className="viewdep-flex">
+
+          {currentUser.isHOD?<Button className="viewdept-button-locklist normal" onClick={()=>{nav("/faculty/HODSearch")}}>View Department Grades</Button>:<p></p>}
+          </div>
           <p className="instruction">*Add your classes for this semester</p>
           {showDialog && (
             <Dialog

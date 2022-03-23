@@ -5,9 +5,9 @@
 .locklist-button {
   margin: 10px;
 }
-.btn-container{
+.btn-container {
   display: flex;
-justify-content: center;
+  justify-content: center;
 }
 .small {
   padding: 0px;
@@ -49,7 +49,7 @@ justify-content: center;
   letter-spacing: 0.4px;
 }
 .course-heading {
-text-align: center;
+  text-align: center;
   margin: 0px;
   color: #0e72ab;
   font-weight: bold;
@@ -84,8 +84,17 @@ text-align: center;
   padding: 0.5rem 0.7rem;
   background-color: rgb(176, 196, 222, 0.25);
 }
-
-
+.viewdept-button-locklist {
+  margin-top: 10px;
+  padding: 8.5px !important;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-left: auto;
+  margin-right: 10px;
+}
+.viewdep-flex {
+  display: flex;
+}
 
 @media screen and (max-width: 600px) {
   .li-tag-flex {
@@ -93,5 +102,15 @@ text-align: center;
   }
   .list-container {
     width: 80%;
+  }
+  .viewdept-button-locklist {
+    padding: 9px !important;
+    font-size: 1em;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  .viewdep-flex {
+    display: flex;
   }
 }
