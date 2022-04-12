@@ -14,7 +14,6 @@ import Dialog from "../../global_ui/dialog/dialog";
 
 const Grading = () => {
   let location = useLocation();
-  console.log(location.state.path)
   const { currentUser } = useAuth();
   const [subject, setSubject] = useState(
     location.state.path.split("/")[location.state.path.split("/").length - 3]
@@ -87,7 +86,7 @@ const Grading = () => {
     setisMid1(checkMid1);
     setisMid2(checkMid2);
   }
-  console.log(midNo)
+
 
   function validateMarks(x) {
     if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===0){
