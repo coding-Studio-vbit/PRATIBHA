@@ -105,7 +105,9 @@ setloading(true)
   return (
  
     <div>
-      <Navbar title={"Deadlines"}></Navbar>
+      <Navbar title={"Deadlines"}   backURL={
+          "/faculty/coesearch"
+        }></Navbar>
 
       {!dialog ? (
       <div className="full-page">
