@@ -87,6 +87,7 @@ const ListofStudents = () => {
     let semester = await fetchSemNumber();
     setSem(semester);
 
+
     let classDoc = await getDoc(studentref);
     if (classDoc.exists()) {
       let doc = classDoc.data();
@@ -148,6 +149,9 @@ const ListofStudents = () => {
     Fetchdata(Course, regulation, year, branch, section, subject, val);
     Fetchsubject();
   }, []);
+  if (mid==''){
+    setMid(2)
+  }
 
   return (
     <div>

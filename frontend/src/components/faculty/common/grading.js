@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { LoadingScreen, } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
-import { getAllStudentsData, getCoeDeadline, getMarks,postMarks} from "../services/facultyServices";
+import { getAllStudentsData, getCoeDeadline, getMarks,postMarks,getBeforeSemEnd} from "../services/facultyServices";
 import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
 
 import { useAuth } from "../../context/AuthContext";
@@ -14,6 +14,7 @@ import Dialog from "../../global_ui/dialog/dialog";
 
 const Grading = () => {
   let location = useLocation();
+  console.log(location.state.path)
   const { currentUser } = useAuth();
   const [subject, setSubject] = useState(
     location.state.path.split("/")[location.state.path.split("/").length - 3]
@@ -21,10 +22,11 @@ const Grading = () => {
   const [rollNo, setRollNo] = React.useState(
     location.state.path.split("/")[location.state.path.split("/").length - 1]
   );
-  const [midNo, setMid] = React.useState("1");
+  const [midNo, setMid] = React.useState("2");
   const [tempRoll,setTempRoll] = useState(location.state.path.split("/")[location.state.path.split("/").length - 1]);
   const [isMid1,setisMid1]=useState(false);
   const [isMid2,setisMid2]=useState(false);
+  const [isbeforesemend,setisbeforesemend]=useState(false);
 
   let navigate = useNavigate();
   const [setDialog, setSetDialog] = useState();
@@ -59,6 +61,18 @@ const Grading = () => {
 
   const [changeLoader, setChangeLoader] = useState(false);
 
+
+  async function isBeforeSemEnd(){
+    const parts = location.state.className.split('_');
+    let course = parts[0]
+    let year = parts[2]
+    if(getBeforeSemEnd(course,year)){
+     setisbeforesemend(true)
+    }
+    else{
+      setisbeforesemend(false)
+    }
+  }
   async function midboolean (){
     const parts = location.state.className.split('_');
     let course = parts[0]
@@ -73,6 +87,7 @@ const Grading = () => {
     setisMid1(checkMid1);
     setisMid2(checkMid2);
   }
+  console.log(midNo)
 
   function validateMarks(x) {
     if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===0){
@@ -308,6 +323,7 @@ const Grading = () => {
   useEffect(() => {
     midboolean();
     getUserData();
+    isBeforeSemEnd();
   }, []);
 
   return !pageLoading ? (
@@ -510,7 +526,7 @@ const Grading = () => {
                     className="inputStyle"
                     type="number"
                     maxLength={1}
-                    disabled={!isMid2}
+                    disabled={!isMid2 && !isbeforesemend}
                     value={innovation2}
                     onChange={(e) => {
                       if(!isMarksChanged){
@@ -529,7 +545,7 @@ const Grading = () => {
                   <span className="marksType">Subject Relevance (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!isMid2}
+                    disabled={!isMid2 && !isbeforesemend}
                     type="number"
                     maxLength={1}
                     value={subRel2}
@@ -550,7 +566,7 @@ const Grading = () => {
                   <span className="marksType">Individuality (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!isMid2}
+                    disabled={!isMid2 && !isbeforesemend}
                     type="number"
                     maxLength={1}
                     value={individuality2}
@@ -571,7 +587,7 @@ const Grading = () => {
                   <span className="marksType">Preparation (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!isMid2}
+                    disabled={!isMid2 && !isbeforesemend}  
                     type="number"
                     maxLength={1}
                     value={preparation2}
@@ -592,8 +608,8 @@ const Grading = () => {
                   <span className="marksType">Presentation (2M)</span>
                   <input
                     className="inputStyle"
-                    disabled={!isMid2}
-                    type="number"
+                    disabled={!isMid2 && !isbeforesemend}
+                       type="number"
                     maxLength={1}
                     value={presentation2}
                     onChange={(e) => {
@@ -697,8 +713,8 @@ const Grading = () => {
                         }}
                         className="selectList"
                         id="selectList">
-                        <option value="1">MID I</option> 
-                        {isMid2 && <option value="2">MID II</option>}
+                        <option value="1">MID I</option>
+                        {(isMid2 || isbeforesemend) && <option value="2">MID II</option>}
                       </select>
                   </div>
 
@@ -735,7 +751,7 @@ const Grading = () => {
                   {
                     <button className="savebutton"
                     onClick={()=>updateMarks()}
-                    disabled={!isMid1 && !isMid2}>{!isMid1 && !isMid2}SAVE</button>
+                    disabled={!isMid1 && !isMid2 && !isbeforesemend}>{!isMid1 && !isMid2 && !isbeforesemend}SAVE</button>
                   }
                   {/* {
                     allStudents && allStudents.map(e=>{

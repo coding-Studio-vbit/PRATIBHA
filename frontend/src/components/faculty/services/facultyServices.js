@@ -9,6 +9,7 @@ import {
   collection,
   query,
   getDocs,
+  Timestamp
 } from "firebase/firestore";
 import {
   fetchisMid1,
@@ -41,7 +42,6 @@ async function getEnrolledCourses(email) {
   }
 }
 
-
 async function getIsEnrolled(email) {
   const docRef = doc(db, "faculty", email);
   try {
@@ -64,7 +64,6 @@ async function getIsEnrolled(email) {
     };
   }
 }
-
 
 async function enrollHODClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
@@ -603,6 +602,45 @@ async function getCoeDeadline(midNo, course, year) {
   }
 }
 
+async function getBeforeSemEnd(course, year) {
+  const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
+  const semRef = doc(db, `adminData/semester/${course}`, `${year}`);
+let mid2={}
+let semEnd={}
+
+  let semNum = fetchSemNumber(course, year);
+  try {
+    //get mid2 deadline
+    const docSnap = await getDoc(adminRef);
+    if (docSnap.exists()) {
+      mid2 = new Timestamp(
+        docSnap.data()["mid2"]["seconds"],
+        docSnap.data()["mid2"]["nanoseconds"]
+      ).toDate();
+    }
+
+    //get semEnd date
+    const semSnap = await getDoc(semRef);
+    if (semSnap.exists()) {
+      semEnd = new Timestamp(
+        semSnap.data()[`sem${semNum}`]["seconds"],
+        semSnap.data()[`sem${semNum}`]["nanoseconds"]
+      ).toDate();
+    }
+    const currentdate = new Date();
+    if (mid2 < currentdate && semEnd > currentdate) {
+      return true;
+    }
+    return false;
+    //get current date and compare if mid2<currentdate<semEnd
+  } catch (error) {
+    return {
+      data: null,
+      error: error,
+    };
+  }
+}
+
 async function getAllStudentsData(className) {
   const subject = className.split("_").pop();
   const facultyRef = doc(
@@ -921,5 +959,6 @@ export {
   addClass,
   deleteClass,
   getAllStudents,
-  getIsEnrolled
+  getIsEnrolled,
+  getBeforeSemEnd
 };
