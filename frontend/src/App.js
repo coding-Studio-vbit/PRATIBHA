@@ -19,6 +19,7 @@ import ViewSubmissions from "./components/faculty/common/ViewSubmissions/ViewSub
 import CreatePra from "./components/faculty/common/createPRA/createPra";
 import HODSearch from "./components/faculty/hod/HODSearch";
 import AddClasses from "./components/faculty/common/LockListSubjects/addclasses";
+import Deadlines from "./components/faculty/coe/deadlines";
 // import { deleteClass } from "./components/faculty/services/facultyServices";
 
 const App = () => {
@@ -68,6 +69,7 @@ const AllRoutes = () => {
                 {currentUser.isCOE && (
                   <>
                     <Route exact path="/coesearch" element={<CoeSearch />} />
+                    <Route exact path="/coedeadlines" element={<Deadlines />} />
                   </>
                 )}
                  {(currentUser.isCOE || currentUser.isHOD) && (
@@ -76,6 +78,8 @@ const AllRoutes = () => {
                       path="/viewsubmissions"
                       element={<ViewSubmissions />}
                     />
+                 
+                  
 
                  )}   
 

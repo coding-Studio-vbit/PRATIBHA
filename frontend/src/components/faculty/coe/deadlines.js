@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../global_ui/navbar/navbar";
+import Button from "../../global_ui/buttons/button";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { Timestamp } from "firebase/firestore";
-import { getCoeDeadline, getSemDeadline } from "../services/facultyServices";
+import { getCoeDeadline, getSemDeadline,setCoeDeadlines } from "../services/facultyServices";
 import { fetchSemNumber } from "../../student/services/studentServices";
 import "./datepicker.css";
 import "./deadlines.css";
+import Dialog from "../../global_ui/dialog/dialog";
+import { Spinner } from "../../global_ui/spinner/spinner";
 
 export default function Deadlines() {
+  const [loading,setloading ] = useState(false);
+  const [dialog,setdialog] = useState(false)
   const [course, setCourse] = useState({ value: "BTech", label: "BTech" });
   const [year, setYear] = useState({ value: "1", label: "1" });
   const [semNumber, setSemNumber] = useState(1);
@@ -22,6 +27,7 @@ export default function Deadlines() {
   };
 
   useEffect(() => {
+    console.log(loading)
     async function semDeadline() {
       let n = await fetchSemNumber(course.value, year.value);
       console.log(n)
@@ -82,9 +88,29 @@ export default function Deadlines() {
     { value: "2", label: "2" },
   ];
 
+async function handleSave(){
+setloading(true)
+    const res = await setCoeDeadlines(course.value,year.value,date1,date2,date3,semNumber)
+    if (res.error==null){
+      setloading(false)
+      setdialog('Deadlines updated succesfully')
+    }
+    else {
+      setloading(false)
+      setdialog('Could not update deadlines')
+
+    }
+}
+
   return (
+ 
     <div>
       <Navbar title={"Deadlines"}></Navbar>
+
+      {!dialog ? (
+      <div className="full-page">
+
+    
       <p className="coeinstruction">Select course and year</p>
       <p className="dd-title-deadline">Course</p>
       <Select
@@ -105,8 +131,11 @@ export default function Deadlines() {
         isDisabled={!course}
         onChange={(selectedYear) => {
           setYear(selectedYear);
+          
         }}
       />
+      {console.log(loading)}
+      {loading ? <Spinner/>:<div className="deadlines-flex">
       <p className="dd-title-deadline"> MID-I </p>
       <div className="datepicker-flex">
         <DatePicker
@@ -155,6 +184,20 @@ export default function Deadlines() {
           className="datepicker-deadlines"
         />
       </div>
+      <Button
+            style={{ padding: "5px" }}
+            className="deadlines-button normal"
+          
+            
+            onClick={handleSave}
+           children={'Save'}
+          />
+          </div>}
+          </div>):(
+<Dialog message={dialog}   onOK={() => {
+            setdialog(false);
+          }}/>
+          )}
     </div>
   );
 }

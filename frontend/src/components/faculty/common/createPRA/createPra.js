@@ -3,7 +3,7 @@ import Navbar from "../../../global_ui/navbar/navbar.js";
 import "./createPra.css";
 import Button from "../../../global_ui/buttons/button.js";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import "../../coe/datepicker.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getPRA,

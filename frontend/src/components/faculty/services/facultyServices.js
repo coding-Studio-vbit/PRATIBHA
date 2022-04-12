@@ -140,6 +140,8 @@ async function enrollHODClasses(email, enrolled_classes) {
   return null;
 }
 
+
+
 async function enrollClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
   let alreadyEnrolled = [];
@@ -348,6 +350,8 @@ export const getPRA = async (sub, department) => {
     console.log(error);
   }
 };
+
+
 
 export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
   try {
@@ -981,6 +985,47 @@ async function getAllStudents(
   };
 }
 
+async function setCoeDeadlines(course,year,mid1,mid2,sem){
+  console.log(sem)
+  const midRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
+  const semRef = doc(db,`adminData/semester/${course}`,`${year}`)
+  const semnum = await fetchSemNumber(course,year)
+  try{
+    const midDoc = await getDoc(midRef)
+    if (midDoc.exists()){
+      await updateDoc(midRef, {
+        mid1 : mid1,
+        mid2:mid2
+        });
+    }
+    const semDoc = await getDoc(semRef)
+    if (semDoc.exists()){
+      console.log(semnum)
+     if (semnum==1){
+       await updateDoc(semRef,{
+          sem1 : sem
+       })
+     }
+     if (semnum ==2){
+       await updateDoc(semRef,{
+         sem2:sem
+       })
+     }
+    }
+    return {
+      error:null
+    }
+
+    }
+    catch(e){
+      return {
+        error : e
+      }
+    }
+  }
+
+
+
 export {
   getEnrolledCourses,
   enrollClasses,
@@ -994,5 +1039,6 @@ export {
   getAllStudents,
   getIsEnrolled,
   getBeforeSemEnd,
-  getSemDeadline
+  getSemDeadline,
+  setCoeDeadlines
 };
