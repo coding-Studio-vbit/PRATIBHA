@@ -602,6 +602,39 @@ async function getCoeDeadline(midNo, course, year) {
   }
 }
 
+
+async function getSemDeadline(semNo, course, year) {
+  console.log(semNo,course,year)
+  const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
+
+  try {
+    const docSnap = await getDoc(adminRef);
+    if (docSnap.exists()) {
+      if (semNo == 1) {
+        return {
+          data: docSnap.data()["sem1"],
+          error: null,
+        };
+      } else if (semNo == 2) {
+        return {
+          data: docSnap.data()["sem2"],
+          error: null,
+        };
+      }
+    } else {
+      return {
+        data: null,
+        error: "DEADLINE_NOT_SET",
+      };
+    }
+  } catch (error) {
+    return {
+      data: null,
+      error: error,
+    };
+  }
+}
+
 async function getBeforeSemEnd(course, year) {
   const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
   const semRef = doc(db, `adminData/semester/${course}`, `${year}`);
@@ -960,5 +993,6 @@ export {
   deleteClass,
   getAllStudents,
   getIsEnrolled,
-  getBeforeSemEnd
+  getBeforeSemEnd,
+  getSemDeadline
 };

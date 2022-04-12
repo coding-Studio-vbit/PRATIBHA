@@ -408,6 +408,8 @@ async function fetchSemNumber(course, year) {
   }
 }
 
+
+
 async function getAnnouncements() {
   const announceRef = doc(db, "announcements", "announce");
   const announce = await getDoc(announceRef);

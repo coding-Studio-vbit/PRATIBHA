@@ -1,0 +1,55 @@
+.select-deadlines {
+
+        max-width: 300px;
+        min-width: 270px;
+        margin-bottom: 5px;
+        margin-top: 10px;
+        margin-right: auto;
+        margin-left: auto;
+      
+  }
+  .full-page{
+    display: flex;
+    flex-direction: column;
+  }
+  .deadlines-flex{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .coeinstruction{
+      margin-bottom: 10px;
+      color: #0e72ab;
+      font-weight: bold;
+      letter-spacing: 0.4px;
+      text-align: center;
+  }
+  .dd-title-deadline{
+      font-weight: medium;
+      font-size: 17px;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 10px;
+  }
+  .datepicker-deadlines{
+    margin-top: 10px;
+    font-size: 23px;
+   margin-left: auto;
+   margin-right: auto;
+    border: none;
+    text-align: center;
+    padding: 4px;
+    border-radius: 7px;
+    background-color: rgba(176, 196, 222, 0.43);
+  }
+  .datepicker-flex{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }
+  .deadlines-button{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+  }
