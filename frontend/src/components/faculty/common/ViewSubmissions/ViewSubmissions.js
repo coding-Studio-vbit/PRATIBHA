@@ -84,7 +84,6 @@ const ViewSubmissions = () => {
 
     let semester = await fetchSemNumber();
     setSem(semester);
-
     let classDoc = await getDoc(studentref);
     if (classDoc.exists()) {
       let doc = classDoc.data();
@@ -123,7 +122,7 @@ const ViewSubmissions = () => {
         title={title}
         backURL={
           currentUser.isHOD
-            ? "/faculty/classlist"
+            ?  currentUser.isFirstTime?"/faculty/HODSearch":"/faculty/classlist"
             : currentUser.isCOE
             ? "/faculty/coesearch"
             : ""
