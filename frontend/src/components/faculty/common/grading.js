@@ -65,7 +65,8 @@ const Grading = () => {
     const parts = location.state.className.split('_');
     let course = parts[0]
     let year = parts[2]
-    if(getBeforeSemEnd(course,year)){
+    let bool = await  getBeforeSemEnd(course,year)
+    if(bool.data){
      setisbeforesemend(true)
     }
     else{

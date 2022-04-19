@@ -645,7 +645,7 @@ async function getBeforeSemEnd(course, year) {
 let mid2={}
 let semEnd={}
 
-  let semNum = fetchSemNumber(course, year);
+  let semNum = await fetchSemNumber(course, year);
   try {
     //get mid2 deadline
     const docSnap = await getDoc(adminRef);
@@ -666,9 +666,15 @@ let semEnd={}
     }
     const currentdate = new Date();
     if (mid2 < currentdate && semEnd > currentdate) {
-      return true;
+      return {
+        data: true,
+        error: null,
+      };
     }
-    return false;
+    return {
+      data: false,
+      error: null,
+    };
     //get current date and compare if mid2<currentdate<semEnd
   } catch (error) {
     return {
