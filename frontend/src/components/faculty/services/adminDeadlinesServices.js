@@ -3,17 +3,11 @@ import {
   doc,
   getDoc,
   updateDoc,
-  collection,
-  query,
-  getDocs,
   Timestamp,
 } from "firebase/firestore";
 import {
-  fetchRegulationOptions,
   fetchSemNumber,
-  getStudentData,
 } from "../../student/services/studentServices";
-import { getUploadedFileByPath } from "../../student/services/storageServices";
 
 
 
