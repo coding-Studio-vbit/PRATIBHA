@@ -5,10 +5,9 @@ import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import {
-  enrollClasses,
-  enrollHODClasses,
   getCurriculumData,
 } from "../../services/facultyServices";
+import { enrollClasses ,enrollHODClasses} from "../../services/enrollFacultyServices";
 import { fetchRegulationOptions,fetchSemNumber } from "../../../student/services/studentServices";
 import "./lockList.css";
 import { useAuth } from "../../../context/AuthContext";

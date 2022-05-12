@@ -5,7 +5,7 @@ import Button from "../../../global_ui/buttons/button";
 import Dialog from "../../../global_ui/dialog/dialog";
 import "./classList.css";
 import { useNavigate } from "react-router-dom";
-import { deleteClass, getSubjects } from "../../services/facultyServices";
+import { deleteClass, getEnrolledSubjects } from "../../services/facultyServices";
 import { useAuth } from "../../../context/AuthContext";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 
@@ -22,7 +22,7 @@ const ClassList = () => {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const res = await getSubjects(currentUser.email);
+        const res = await getEnrolledSubjects(currentUser.email);
         if (res === -1) {
           //display error
         } else {

@@ -45,159 +45,9 @@ async function getIsEnrolled(email) {
   }
 }
 
-async function enrollHODClasses(email, enrolled_classes) {
-  //in locklist.js
-  const facultyRef = doc(db, "faculty", email);
-  let alreadyEnrolled = [];
-  let isAlreadyEnrolled = false;
-  try {
-    await updateDoc(facultyRef, {
-      subjects: enrolled_classes,
-      isEnrolled: false,
-    });
-    for (let i = 0; i < enrolled_classes.length; i++) {
-      var classname = enrolled_classes[i].split("_");
-      var fetchclass =
-        classname[0] +
-        "_" +
-        classname[1] +
-        "_" +
-        classname[2] +
-        "_" +
-        classname[3] +
-        "_" +
-        classname[4];
-      const docRef = doc(db, "classesinfo", fetchclass);
-      const docData = await getDoc(docRef);
-      if (docData.exists()) {
-        const facultyIDs = docData.data()["faculty_ID"];
-        if (facultyIDs != null) {
-          for (let index = 0; index < facultyIDs.length; index++) {
-            const ele = facultyIDs[index];
-            if (ele.subject === classname[5]) {
-              isAlreadyEnrolled = true;
-              alreadyEnrolled = [
-                ...alreadyEnrolled,
-                { faculty: ele.faculty, subject: enrolled_classes[i] },
-              ];
-            } else {
-              await updateDoc(docRef, {
-                faculty_ID: arrayUnion({
-                  faculty: email,
-                  subject: classname[5],
-                }),
-              });
-            }
-          }
-        } else {
-          await updateDoc(docRef, {
-            faculty_ID: [
-              {
-                faculty: email,
-                subject: classname[5],
-              },
-            ],
-          });
-        }
-      } else {
-        await setDoc(docRef, {
-          faculty_ID: [
-            {
-              faculty: email,
-              subject: classname[5],
-            },
-          ],
-        });
-      }
-    }
-    await updateDoc(facultyRef, { isEnrolled: true });
-    if (isAlreadyEnrolled) {
-      return alreadyEnrolled;
-    }
-  } catch (error) {
-    console.log(error);
-    throw error.code;
-  }
-  return null;
-}
 
-async function enrollClasses(email, enrolled_classes) {
-  //in locklist.js
-  const facultyRef = doc(db, "faculty", email);
-  let alreadyEnrolled = [];
-  let isAlreadyEnrolled = false;
-  try {
-    await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false });
-    for (let i = 0; i < enrolled_classes.length; i++) {
-      var classname = enrolled_classes[i].split("_");
-      var fetchclass =
-        classname[0] +
-        "_" +
-        classname[1] +
-        "_" +
-        classname[2] +
-        "_" +
-        classname[3] +
-        "_" +
-        classname[4];
-      const docRef = doc(db, "classesinfo", fetchclass);
-      const docData = await getDoc(docRef);
-      if (docData.exists()) {
-        try {
-          const facultyIDs = docData.data()["faculty_ID"];
 
-          if (facultyIDs != null) {
-            for (let index = 0; index < facultyIDs.length; index++) {
-              const ele = facultyIDs[index];
-              if (ele.subject === classname[5]) {
-                isAlreadyEnrolled = true;
-                alreadyEnrolled = [
-                  ...alreadyEnrolled,
-                  { faculty: ele.faculty, subject: enrolled_classes[i] },
-                ];
-              } else {
-                await updateDoc(docRef, {
-                  faculty_ID: arrayUnion({
-                    faculty: email,
-                    subject: classname[5],
-                  }),
-                });
-              }
-            }
-          } else {
-            await updateDoc(docRef, {
-              faculty_ID: [
-                {
-                  faculty: email,
-                  subject: classname[5],
-                },
-              ],
-            });
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        await setDoc(docRef, {
-          faculty_ID: [
-            {
-              faculty: email,
-              subject: classname[5],
-            },
-          ],
-        });
-      }
-    }
-    await updateDoc(facultyRef, { isEnrolled: true });
-    if (isAlreadyEnrolled) {
-      return alreadyEnrolled;
-    }
-  } catch (e) {
-    console.log(e);
-    throw e.code;
-  }
-  return null;
-}
+
 
 //Params are course, year and semester and this returns an object containing departments, sections and subjects of that course and year. (Example : Btech 2nd year 1st semester)
 export const getCurriculumData = async (course, year, semester) => {
@@ -313,6 +163,7 @@ export const getCurriculumData = async (course, year, semester) => {
 };
 
 export const getPRA = async (sub, department) => {
+  //in createPra.js
   try {
     const docRef = doc(db, "subjects", department);
     const docData = await getDoc(docRef);
@@ -332,6 +183,7 @@ export const getPRA = async (sub, department) => {
 };
 
 export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
+  //in createPRA.js
   try {
     const docRef = doc(db, "subjects", department);
     const docData = await getDoc(docRef);
@@ -403,7 +255,8 @@ export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
   }
 };
 
-export const getSubjects = async (email) => {
+export const getEnrolledSubjects = async (email) => {
+  //classlist.js
   try {
     const docRef = await getDoc(doc(db, "faculty", email));
     const data = docRef.data()["subjects"];
@@ -471,6 +324,7 @@ export const getSubjects = async (email) => {
 };
 
 async function getMarks(className, email) {
+  //grading.js
   const userRef = doc(db, "users", email + "@vbithyd.ac.in");
   try {
     const docSnap = await getDoc(userRef);
@@ -498,13 +352,13 @@ async function getMarks(className, email) {
 }
 
 async function postMarks(
-  facultyID,
   className,
   studentID,
   midNo,
   marks,
   remarks
 ) {
+  //grading
   let error = null;
 
   const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
@@ -661,6 +515,7 @@ async function getBeforeSemEnd(course, year) {
 }
 
 async function getAllStudentsData(className) {
+  //grading
   const subject = className.split("_").pop();
   const facultyRef = doc(
     db,
@@ -774,6 +629,7 @@ async function addClass(email, addedClass) {
 }
 
 async function deleteClass(email, className) {
+  //claslist
   let error = true;
   const subject = className.split("_").pop();
   const classesInfoRef = doc(
@@ -968,6 +824,7 @@ async function getAllStudents(
 }
 
 async function setCoeDeadlines(course, year, mid1, mid2, sem) {
+  //deadlines.js
   console.log(sem);
   const midRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
   const semRef = doc(db, `adminData/semester/${course}`, `${year}`);
@@ -1082,8 +939,6 @@ async function getFirstYearStatistics() {
 
 export {
   getFirstYearStatistics,
-  enrollClasses,
-  enrollHODClasses,
   postMarks,
   getMarks,
   getCoeDeadline,
