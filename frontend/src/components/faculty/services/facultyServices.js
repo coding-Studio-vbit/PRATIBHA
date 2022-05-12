@@ -20,30 +20,9 @@ import {
 } from "../../student/services/studentServices";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 
-async function getEnrolledCourses(email) {
-  const docRef = doc(db, "faculty", email);
-  try {
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return {
-        data: docSnap.data()["subjects"],
-        error: null,
-      };
-    } else {
-      return {
-        data: null,
-        error: "Enroll Courses to get details",
-      };
-    }
-  } catch (error) {
-    return {
-      data: null,
-      error: error.code,
-    };
-  }
-}
 
 async function getIsEnrolled(email) {
+  //in HODSearch screen
   const docRef = doc(db, "faculty", email);
   try {
     const docSnap = await getDoc(docRef);
@@ -67,6 +46,7 @@ async function getIsEnrolled(email) {
 }
 
 async function enrollHODClasses(email, enrolled_classes) {
+  //in locklist.js
   const facultyRef = doc(db, "faculty", email);
   let alreadyEnrolled = [];
   let isAlreadyEnrolled = false;
@@ -142,6 +122,7 @@ async function enrollHODClasses(email, enrolled_classes) {
 }
 
 async function enrollClasses(email, enrolled_classes) {
+  //in locklist.js
   const facultyRef = doc(db, "faculty", email);
   let alreadyEnrolled = [];
   let isAlreadyEnrolled = false;
@@ -218,8 +199,8 @@ async function enrollClasses(email, enrolled_classes) {
   return null;
 }
 
-//CHANGE SEMESTER DONEEEEEEE!!!!!!!!!!!!!!
-export const getDepartments = async (course, year, semester) => {
+//Params are course, year and semester and this returns an object containing departments, sections and subjects of that course and year. (Example : Btech 2nd year 1st semester)
+export const getCurriculumData = async (course, year, semester) => {
   if (year === 0) return;
   try {
     const q = query(collection(db, "curriculum", course, year));
@@ -1100,7 +1081,6 @@ async function getFirstYearStatistics() {
 }
 
 export {
-  getEnrolledCourses,
   getFirstYearStatistics,
   enrollClasses,
   enrollHODClasses,

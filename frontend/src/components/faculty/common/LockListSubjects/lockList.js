@@ -7,7 +7,7 @@ import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import {
   enrollClasses,
   enrollHODClasses,
-  getDepartments,
+  getCurriculumData,
 } from "../../services/facultyServices";
 import { fetchRegulationOptions,fetchSemNumber } from "../../../student/services/studentServices";
 import "./lockList.css";
@@ -56,7 +56,7 @@ const LockList = () => {
     const getLables = async () => {
       try {
         const sem = await fetchSemNumber(Course.value,Year.value);
-        const res = await getDepartments(Course.value,Year.value,sem);
+        const res = await getCurriculumData(Course.value,Year.value,sem);
         if (!res) return;
         setSubjects(res.subjects);
         setDepartments(res.departments);

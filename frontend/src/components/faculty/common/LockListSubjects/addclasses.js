@@ -3,7 +3,7 @@ import Select from "react-select";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
-import { addClass, getDepartments } from "../../services/facultyServices";
+import { addClass, getCurriculumData } from "../../services/facultyServices";
 import "./addclasses.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +50,7 @@ export default function AddClasses() {
     const getLables = async () => {
       try {
         const sem = await fetchSemNumber(Course.value,Year.value);
-        const res = await getDepartments(Course.value,Year.value,sem);
+        const res = await getCurriculumData(Course.value,Year.value,sem);
         if (!res) return;
         setSubjects(res.subjects);
         setDepartments(res.departments);
@@ -68,14 +68,12 @@ export default function AddClasses() {
     { value: "MBA", label: "MBA" },
   ];
   const Years = [
-    //fetch from db for the selected course
     { value: "1", label: "1" },
     { value: "2", label: "2" },
     { value: "3", label: "3" },
     { value: "4", label: "4" },
   ];
   const MYears = [
-    //fetch from db for the selected course
     { value: "1", label: "1" },
     { value: "2", label: "2" },
   ];

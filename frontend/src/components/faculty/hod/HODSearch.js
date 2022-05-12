@@ -10,7 +10,7 @@ import {
 } from "../../student/services/studentServices.js";
 import {
   getFirstYearCurriculumData,
-  getDepartments,
+  getCurriculumData,
   getIsEnrolled,
   getFirstYearStatistics,
 } from "../services/facultyServices.js";
@@ -80,7 +80,7 @@ const HODSearch = () => {
     const getLables = async () => {
       try {
         const sem = await fetchSemNumber(Course.value, Year.value);
-        const res = await getDepartments(Course.value, Year.value, sem);
+        const res = await getCurriculumData(Course.value, Year.value, sem);
         if (!res) return;
         setSubjects(res.subjects);
         setsections(res.sections);
@@ -136,9 +136,11 @@ const HODSearch = () => {
   }
 
  async function report(){
+   console.log(user.isFirstYearHOD)
    if (user.isFirstYearHOD){
      const res = await getFirstYearStatistics();
      setnotCreatedClasses(res);
+     console.log(notCreatedClasses)
    }
    else{
      //code here
