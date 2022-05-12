@@ -12,7 +12,7 @@ import {
   fetchisMid2,
   fetchSemNumber,
 } from "../../../student/services/studentServices";
-import { getAllStudents } from "../../services/facultyServices";
+import { getAllStudents } from "../../services/studentsDataServices";
 import Download from "../../../global_ui/download/download";
 import { useAuth } from "../../../context/AuthContext";
 

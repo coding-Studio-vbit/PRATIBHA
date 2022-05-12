@@ -4,7 +4,7 @@ import Button from "../../global_ui/buttons/button";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { Timestamp } from "firebase/firestore";
-import { getCoeDeadline, getSemDeadline,setCoeDeadlines } from "../services/facultyServices";
+import { getCoeDeadline, getSemDeadline,setCoeDeadlines } from "../services/adminDeadlinesServices";
 import { fetchSemNumber } from "../../student/services/studentServices";
 import "./datepicker.css";
 import "./deadlines.css";

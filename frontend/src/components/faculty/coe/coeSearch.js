@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
-import { getCurriculumData} from "../services/facultyServices";
+import { getCurriculumData} from "../services/adminDeadlinesServices";
 import { fetchRegulationOptions, fetchSemNumber } from "../../student/services/studentServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";

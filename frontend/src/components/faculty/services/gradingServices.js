@@ -107,8 +107,9 @@ export async function postMarks(
     return error;
   }
 
+
+  //returns all the data about all the students of a particular class (Example: BTech_21_1_CSE_A)
   export async function getAllStudentsData(className) {
-    //grading
     const subject = className.split("_").pop();
     const facultyRef = doc(
       db,

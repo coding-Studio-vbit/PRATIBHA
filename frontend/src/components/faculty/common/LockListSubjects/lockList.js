@@ -6,7 +6,7 @@ import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 import {
   getCurriculumData,
-} from "../../services/facultyServices";
+} from "../../services/adminDeadlinesServices";
 import { enrollClasses ,enrollHODClasses} from "../../services/enrollFacultyServices";
 import { fetchRegulationOptions,fetchSemNumber } from "../../../student/services/studentServices";
 import "./lockList.css";

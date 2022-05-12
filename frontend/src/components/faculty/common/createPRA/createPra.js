@@ -5,7 +5,7 @@ import Button from "../../../global_ui/buttons/button.js";
 import DatePicker from "react-datepicker";
 import "../../coe/datepicker.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getCoeDeadline } from "../../services/facultyServices.js";
+import { getCoeDeadline } from "../../services/adminDeadlinesServices.js";
 import { getPRA, setPRA } from "../../services/praServices.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import Dialog from "../../../global_ui/dialog/dialog";

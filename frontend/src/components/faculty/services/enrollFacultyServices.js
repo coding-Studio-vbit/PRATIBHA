@@ -6,19 +6,7 @@ import {
   setDoc,
   arrayUnion,
   arrayRemove,
-  collection,
-  query,
-  getDocs,
-  Timestamp,
 } from "firebase/firestore";
-import {
-  fetchisMid1,
-  fetchisMid2,
-  fetchRegulationOptions,
-  fetchSemNumber,
-  getStudentData,
-} from "../../student/services/studentServices";
-import { getUploadedFileByPath } from "../../student/services/storageServices";
 
 //post faculty enrolled classes
 export async function enrollClasses(email, enrolled_classes) {

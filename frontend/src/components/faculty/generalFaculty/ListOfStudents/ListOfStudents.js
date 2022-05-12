@@ -13,7 +13,7 @@ import {
   fetchisMid2,
   fetchSemNumber,
 } from "../../../student/services/studentServices";
-import { getAllStudents } from "../../services/facultyServices";
+import { getAllStudents } from "../../services/studentsDataServices";
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);

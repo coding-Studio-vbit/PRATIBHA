@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { LoadingScreen, } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
-import { getCoeDeadline, getBeforeSemEnd} from "../services/facultyServices";
+import { getCoeDeadline, getBeforeSemEnd} from "../services/adminDeadlinesServices";
 import { getAllStudentsData, getMarks,postMarks } from "../services/gradingServices";
 import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
 

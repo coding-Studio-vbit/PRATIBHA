@@ -14,7 +14,7 @@ import { LoadingScreen } from "../../global_ui/spinner/spinner";
 import Card_ from "../../global_ui/card/card_";
 import "./SubjectlistStyles.css";
 import Dialog from "../../global_ui/dialog/dialog";
-import { getCoeDeadline } from "../../faculty/services/facultyServices";
+import { getCoeDeadline } from "../../faculty/services/adminDeadlinesServices";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
