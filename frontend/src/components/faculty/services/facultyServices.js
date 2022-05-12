@@ -257,88 +257,8 @@ export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
 
 
 
-async function getMarks(className, email) {
-  //grading.js
-  const userRef = doc(db, "users", email + "@vbithyd.ac.in");
-  try {
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      return {
-        data: docSnap
-          .data()
-          ["subjects"].find((e) => e.subject === className.split("_").pop()),
-        error: null,
-      };
-    } else {
-      return {
-        data: null,
-        // status:"UNGRADED",
-        error: "Student Not Graded",
-      };
-    }
-  } catch (error) {
-    return {
-      data: null,
-      status: null,
-      error: error.code,
-    };
-  }
-}
 
-async function postMarks(
-  className,
-  studentID,
-  midNo,
-  marks,
-  remarks
-) {
-  //grading
-  let error = null;
 
-  const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
-
-  try {
-    if (midNo === "1") {
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        let subs = userDoc.data()["subjects"];
-        subs.find((e) => {
-          if (e.subject === className.split("_")[5]) {
-            e.gradeStatus1 = "GRADED";
-            e.mid1_marks = marks;
-            e.mid1_remarks = remarks;
-          }
-        });
-        await updateDoc(userRef, {
-          subjects: subs,
-        });
-      } else {
-        error = "Unknown Error Occured";
-      }
-    } else if (midNo === "2") {
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        let subs = userDoc.data()["subjects"];
-        subs.find((e) => {
-          if (e.subject === className.split("_")[5]) {
-            e.gradeStatus2 = "GRADED";
-            e.mid2_marks = marks;
-            e.mid2_remarks = remarks;
-          }
-        });
-        await updateDoc(userRef, {
-          subjects: subs,
-        });
-      } else {
-        error = "Unknown Error Occured";
-      }
-    }
-  } catch (e) {
-    console.log(e);
-    error = e.code;
-  }
-  return error;
-}
 
 async function getCoeDeadline(midNo, course, year) {
   const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
@@ -448,119 +368,6 @@ async function getBeforeSemEnd(course, year) {
   }
 }
 
-async function getAllStudentsData(className) {
-  //grading
-  const subject = className.split("_").pop();
-  const facultyRef = doc(
-    db,
-    "classesinfo",
-    className.replace("_" + subject, "")
-  );
-
-  try {
-    const res = await getDoc(facultyRef);
-    if (res.exists()) {
-      let studentList = res.data()["students"].sort();
-      let studentsInfo = [];
-      for await (const student of studentList) {
-        const studentSnap = await getDoc(doc(db, "users", student));
-        studentsInfo.push({
-          id: student,
-          data: studentSnap
-            .data()
-            ["subjects"].find((e) => e.subject === subject),
-        });
-      }
-      return {
-        data: studentsInfo,
-        error: null,
-      };
-    } else {
-      return {
-        data: null,
-        error: "Data Not Found",
-      };
-    }
-  } catch (error) {
-    return {
-      data: null,
-      error: error.toString(),
-    };
-  }
-}
-
-async function addClass(email, addedClass) {
-  const facultyRef = doc(db, "faculty", email);
-  try {
-    await updateDoc(facultyRef, { subjects: arrayUnion(addedClass) });
-
-    var classname = addedClass.split("_");
-    var fetchclass =
-      classname[0] +
-      "_" +
-      classname[1] +
-      "_" +
-      classname[2] +
-      "_" +
-      classname[3] +
-      "_" +
-      classname[4];
-
-    const docRef = doc(db, "classesinfo", fetchclass);
-    const docData = await getDoc(docRef);
-    if (docData.exists()) {
-      let d1 = true;
-      const facultyIDs = docData.data()["faculty_ID"];
-      if (facultyIDs != null)
-        for (let index = 0; index < facultyIDs.length; index++) {
-          const ele = facultyIDs[index];
-
-          if (ele.subject === classname[5]) {
-            d1 = false;
-            return {
-              data: ele.faculty,
-              className: addedClass.split("_").join("-"),
-            };
-            //SHOW THAT SOME FACULTY ALREADY REGISTERED......
-          } else {
-            d1 = false;
-            await updateDoc(docRef, {
-              faculty_ID: arrayUnion({
-                faculty: email,
-                subject: classname[5],
-              }),
-            });
-            break;
-          }
-        }
-      if (d1) {
-        await updateDoc(docRef, {
-          faculty_ID: [
-            {
-              faculty: email,
-              subject: classname[5],
-            },
-          ],
-        });
-      }
-    } else {
-      //setdoc
-      await setDoc(docRef, {
-        faculty_ID: [
-          {
-            faculty: email,
-            subject: classname[5],
-          },
-        ],
-      });
-    }
-    //isAdded = true;
-  } catch (error) {
-    console.log(error);
-    return error.code;
-  }
-  return null;
-}
 
 
 
@@ -844,12 +651,7 @@ async function getFirstYearStatistics() {
 
 export {
   getFirstYearStatistics,
-  postMarks,
-  getMarks,
   getCoeDeadline,
-  getAllStudentsData,
-  addClass,
-  deleteClass,
   getAllStudents,
   getIsEnrolled,
   getBeforeSemEnd,

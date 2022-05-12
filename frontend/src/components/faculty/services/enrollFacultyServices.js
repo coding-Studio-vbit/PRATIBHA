@@ -276,3 +276,79 @@ export async function enrollClasses(email, enrolled_classes) {
     }
     return error;
   }
+
+
+  
+//enrolls to a single class (or) adds a class to enrolled classes
+export async function addClass(email, addedClass) {
+  const facultyRef = doc(db, "faculty", email);
+  try {
+    await updateDoc(facultyRef, { subjects: arrayUnion(addedClass) });
+
+    var classname = addedClass.split("_");
+    var fetchclass =
+      classname[0] +
+      "_" +
+      classname[1] +
+      "_" +
+      classname[2] +
+      "_" +
+      classname[3] +
+      "_" +
+      classname[4];
+
+    const docRef = doc(db, "classesinfo", fetchclass);
+    const docData = await getDoc(docRef);
+    if (docData.exists()) {
+      let d1 = true;
+      const facultyIDs = docData.data()["faculty_ID"];
+      if (facultyIDs != null)
+        for (let index = 0; index < facultyIDs.length; index++) {
+          const ele = facultyIDs[index];
+
+          if (ele.subject === classname[5]) {
+            d1 = false;
+            return {
+              data: ele.faculty,
+              className: addedClass.split("_").join("-"),
+            };
+            //SHOW THAT SOME FACULTY ALREADY REGISTERED......
+          } else {
+            d1 = false;
+            await updateDoc(docRef, {
+              faculty_ID: arrayUnion({
+                faculty: email,
+                subject: classname[5],
+              }),
+            });
+            break;
+          }
+        }
+      if (d1) {
+        await updateDoc(docRef, {
+          faculty_ID: [
+            {
+              faculty: email,
+              subject: classname[5],
+            },
+          ],
+        });
+      }
+    } else {
+      //setdoc
+      await setDoc(docRef, {
+        faculty_ID: [
+          {
+            faculty: email,
+            subject: classname[5],
+          },
+        ],
+      });
+    }
+    //isAdded = true;
+  } catch (error) {
+    console.log(error);
+    return error.code;
+  }
+  return null;
+}

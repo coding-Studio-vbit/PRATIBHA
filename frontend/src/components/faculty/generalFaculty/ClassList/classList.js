@@ -5,8 +5,7 @@ import Button from "../../../global_ui/buttons/button";
 import Dialog from "../../../global_ui/dialog/dialog";
 import "./classList.css";
 import { useNavigate } from "react-router-dom";
-import { deleteClass} from "../../services/facultyServices";
-import { getEnrolledSubjects } from "../../services/enrollFacultyServices";
+import { getEnrolledSubjects,deleteClass } from "../../services/enrollFacultyServices";
 import { useAuth } from "../../../context/AuthContext";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 
