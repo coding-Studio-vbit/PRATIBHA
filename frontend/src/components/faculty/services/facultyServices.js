@@ -9,11 +9,12 @@ import {
   collection,
   query,
   getDocs,
-  Timestamp
+  Timestamp,
 } from "firebase/firestore";
 import {
   fetchisMid1,
   fetchisMid2,
+  fetchRegulationOptions,
   fetchSemNumber,
   getStudentData,
 } from "../../student/services/studentServices";
@@ -139,8 +140,6 @@ async function enrollHODClasses(email, enrolled_classes) {
   }
   return null;
 }
-
-
 
 async function enrollClasses(email, enrolled_classes) {
   const facultyRef = doc(db, "faculty", email);
@@ -351,8 +350,6 @@ export const getPRA = async (sub, department) => {
   }
 };
 
-
-
 export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
   try {
     const docRef = doc(db, "subjects", department);
@@ -390,7 +387,6 @@ export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
         }
       }
       if (d1) {
-        // await setDoc(docRef,{subjects:[{ facultyID:email, deadline1:date,instructions:inst,subject:sub}]})
         if (isMid1) {
           await updateDoc(docRef, {
             subjects: arrayUnion({
@@ -606,9 +602,8 @@ async function getCoeDeadline(midNo, course, year) {
   }
 }
 
-
 async function getSemDeadline(semNo, course, year) {
-  console.log(semNo,course,year)
+  console.log(semNo, course, year);
   const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
 
   try {
@@ -642,8 +637,8 @@ async function getSemDeadline(semNo, course, year) {
 async function getBeforeSemEnd(course, year) {
   const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
   const semRef = doc(db, `adminData/semester/${course}`, `${year}`);
-let mid2={}
-let semEnd={}
+  let mid2 = {};
+  let semEnd = {};
 
   let semNum = await fetchSemNumber(course, year);
   try {
@@ -991,49 +986,122 @@ async function getAllStudents(
   };
 }
 
-async function setCoeDeadlines(course,year,mid1,mid2,sem){
-  console.log(sem)
+async function setCoeDeadlines(course, year, mid1, mid2, sem) {
+  console.log(sem);
   const midRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
-  const semRef = doc(db,`adminData/semester/${course}`,`${year}`)
-  const semnum = await fetchSemNumber(course,year)
-  try{
-    const midDoc = await getDoc(midRef)
-    if (midDoc.exists()){
+  const semRef = doc(db, `adminData/semester/${course}`, `${year}`);
+  const semnum = await fetchSemNumber(course, year);
+  try {
+    const midDoc = await getDoc(midRef);
+    if (midDoc.exists()) {
       await updateDoc(midRef, {
-        mid1 : mid1,
-        mid2:mid2
+        mid1: mid1,
+        mid2: mid2,
+      });
+    }
+    const semDoc = await getDoc(semRef);
+    if (semDoc.exists()) {
+      console.log(semnum);
+      if (semnum == 1) {
+        await updateDoc(semRef, {
+          sem1: sem,
         });
-    }
-    const semDoc = await getDoc(semRef)
-    if (semDoc.exists()){
-      console.log(semnum)
-     if (semnum==1){
-       await updateDoc(semRef,{
-          sem1 : sem
-       })
-     }
-     if (semnum ==2){
-       await updateDoc(semRef,{
-         sem2:sem
-       })
-     }
-    }
-    return {
-      error:null
-    }
-
-    }
-    catch(e){
-      return {
-        error : e
+      }
+      if (semnum == 2) {
+        await updateDoc(semRef, {
+          sem2: sem,
+        });
       }
     }
+    return {
+      error: null,
+    };
+  } catch (e) {
+    return {
+      error: e,
+    };
   }
+}
 
+export const getFirstYearCurriculumData = async (semester) => {
+  const regArray = await fetchRegulationOptions();
+  let regulation = regArray.data[0].value;
 
+  try {
+    const q = query(collection(db, "curriculum", "BTech", "1"));
+    const alldocs = await getDocs(q);
+
+    let courses = [];
+    let str = "";
+    alldocs.docs.forEach((e) => {
+      for (let i = 0; i < e.data()["sections"].length; i++) {
+        if (semester === 1) {
+          for (let j = 0; j < e.data()["subjects"].length; j++) {
+            str =
+              "BTech" +
+              "_" +
+              regulation +
+              "_1_" +
+              e.id +
+              "_" +
+              e.data()["sections"][i] +
+              "_" +
+              e.data()["subjects"][j].subject;
+
+            courses.push(str);
+          }
+        }
+        if (semester === 2) {
+          console.log("hi");
+          for (let j = 0; j < e.data()["subjects2"].length; j++) {
+            str =
+              "BTech" +
+              "_" +
+              regulation +
+              "_1_" +
+              e.id +
+              "_" +
+              e.data()["sections"][i] +
+              "_" +
+              e.data()["subjects2"][j].subject;
+            courses.push(str);
+          }
+        }
+      }
+    });
+    return courses;
+  } catch (error) {
+    console.log(error);
+  }
+};
+async function getFirstYearStatistics() {
+  try {
+    let arr1 = await getFirstYearCurriculumData(1);
+    let createdPRA = [];
+    let str = "";
+    const regArray = await fetchRegulationOptions();
+    let regulation = regArray.data[0].value;
+    const q = query(collection(db, "subjects"));
+    const allDocs = await getDocs(q);
+    allDocs.docs.forEach((e) => {
+      let arr = e.id.split("_");
+      if (arr[0] == "BTech" && arr[1] == regulation && arr[2] == "1") {
+        for (let i = 0; i < e.data()["subjects"].length; i++) {
+          str = e.id + "_" + e.data()["subjects"][i].subject;
+          createdPRA.push(str);
+        }
+      }
+    });
+    let difference = arr1.filter((x) => !createdPRA.includes(x));
+    return difference;
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 export {
   getEnrolledCourses,
+  getFirstYearStatistics,
   enrollClasses,
   enrollHODClasses,
   postMarks,
@@ -1046,5 +1114,5 @@ export {
   getIsEnrolled,
   getBeforeSemEnd,
   getSemDeadline,
-  setCoeDeadlines
+  setCoeDeadlines,
 };
