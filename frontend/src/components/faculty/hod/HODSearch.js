@@ -8,11 +8,8 @@ import {
   fetchRegulationOptions,
   fetchSemNumber,
 } from "../../student/services/studentServices.js";
-import {
-  getFirstYearCurriculumData,
-  getCurriculumData,
-  getFirstYearStatistics,
-} from "../services/adminDeadlinesServices.js";
+import { getFirstYearCurriculumData,getCurriculumData } from "../services/curriculumServices.js";
+import { getFirstYearStatistics } from "../services/hodServices.js";
 import { getIsEnrolled } from "../services/enrollFacultyServices.js";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";

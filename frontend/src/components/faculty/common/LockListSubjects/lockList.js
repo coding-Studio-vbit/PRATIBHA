@@ -4,9 +4,7 @@ import Button from "../../../global_ui/buttons/button";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
-import {
-  getCurriculumData,
-} from "../../services/adminDeadlinesServices";
+import { getCurriculumData } from "../../services/curriculumServices";
 import { enrollClasses ,enrollHODClasses} from "../../services/enrollFacultyServices";
 import { fetchRegulationOptions,fetchSemNumber } from "../../../student/services/studentServices";
 import "./lockList.css";

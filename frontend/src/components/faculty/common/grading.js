@@ -7,7 +7,8 @@ import { useState, useEffect } from "react";
 import { LoadingScreen, } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getCoeDeadline, getBeforeSemEnd} from "../services/adminDeadlinesServices";
-import { getAllStudentsData, getMarks,postMarks } from "../services/gradingServices";
+import {  getMarks,postMarks } from "../services/gradingServices";
+import { getAllStudentsData } from "../services/studentsDataServices";
 import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
 
 import { useAuth } from "../../context/AuthContext";

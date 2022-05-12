@@ -3,22 +3,7 @@ import {
   doc,
   getDoc,
   updateDoc,
-  setDoc,
-  arrayUnion,
-  arrayRemove,
-  collection,
-  query,
-  getDocs,
-  Timestamp,
 } from "firebase/firestore";
-import {
-  fetchisMid1,
-  fetchisMid2,
-  fetchRegulationOptions,
-  fetchSemNumber,
-  getStudentData,
-} from "../../student/services/studentServices";
-import { getUploadedFileByPath } from "../../student/services/storageServices";
 
 
 export async function getMarks(className, email) {
@@ -108,43 +93,3 @@ export async function postMarks(
   }
 
 
-  //returns all the data about all the students of a particular class (Example: BTech_21_1_CSE_A)
-  export async function getAllStudentsData(className) {
-    const subject = className.split("_").pop();
-    const facultyRef = doc(
-      db,
-      "classesinfo",
-      className.replace("_" + subject, "")
-    );
-  
-    try {
-      const res = await getDoc(facultyRef);
-      if (res.exists()) {
-        let studentList = res.data()["students"].sort();
-        let studentsInfo = [];
-        for await (const student of studentList) {
-          const studentSnap = await getDoc(doc(db, "users", student));
-          studentsInfo.push({
-            id: student,
-            data: studentSnap
-              .data()
-              ["subjects"].find((e) => e.subject === subject),
-          });
-        }
-        return {
-          data: studentsInfo,
-          error: null,
-        };
-      } else {
-        return {
-          data: null,
-          error: "Data Not Found",
-        };
-      }
-    } catch (error) {
-      return {
-        data: null,
-        error: error.toString(),
-      };
-    }
-  }

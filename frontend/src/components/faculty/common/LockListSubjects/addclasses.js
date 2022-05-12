@@ -3,7 +3,7 @@ import Select from "react-select";
 import Navbar from "../../../global_ui/navbar/navbar";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
-import {  getCurriculumData } from "../../services/adminDeadlinesServices";
+import { getCurriculumData } from "../../services/curriculumServices";
 import { addClass } from "../../services/enrollFacultyServices";
 import "./addclasses.css";
 import { useAuth } from "../../../context/AuthContext";
