@@ -38,6 +38,7 @@ export async function getMarks(className, email) {
 
   
 export async function postMarks(
+  facultyID,
     className,
     studentID,
     midNo,
@@ -85,6 +86,7 @@ export async function postMarks(
           error = "Unknown Error Occured";
         }
       }
+      console.log(error)
     } catch (e) {
       console.log(e);
       error = e.code;
