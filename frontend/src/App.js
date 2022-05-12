@@ -20,14 +20,8 @@ import CreatePra from "./components/faculty/common/createPRA/createPra";
 import HODSearch from "./components/faculty/hod/HODSearch";
 import AddClasses from "./components/faculty/common/LockListSubjects/addclasses";
 import Deadlines from "./components/faculty/coe/deadlines";
-// import { deleteClass } from "./components/faculty/services/facultyServices";
 
 const App = () => {
-  // React.useEffect(() => {
-  //   deleteClass('vsridharreddy@vbithyd.ac.in',"BTech_21_1_CE_A_Mathematics1")
-  
-   
-  // }, [])
   
   return (
     <div className="App">

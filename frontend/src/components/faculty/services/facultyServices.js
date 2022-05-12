@@ -255,73 +255,7 @@ export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
   }
 };
 
-export const getEnrolledSubjects = async (email) => {
-  //classlist.js
-  try {
-    const docRef = await getDoc(doc(db, "faculty", email));
-    const data = docRef.data()["subjects"];
 
-    let btechSubs = [];
-    let mtechSubs = [];
-    let mbaSubs = [];
-    let praSetSubs = {};
-    for (let index = 0; index < data.length; index++) {
-      const sub = data[index];
-
-      //TODO :alter this
-      const parts = sub.split("_");
-      const idk =
-        parts[0] +
-        "_" +
-        parts[1] +
-        "_" +
-        parts[2] +
-        "_" +
-        parts[3] +
-        "_" +
-        parts[4];
-
-      const subRef = await getDoc(doc(db, "subjects", idk));
-      if (subRef.exists()) {
-        const subsData = subRef.data()["subjects"];
-
-        for (let i = 0; i < subsData.length; i++) {
-          if (parts[5] === subsData[i].subject) {
-            praSetSubs[sub] = subsData[i];
-            let date1 = praSetSubs[sub].deadline1.toDate();
-            date1 = date1.toLocaleDateString("en-GB");
-            praSetSubs[sub].date1 = date1;
-            if (praSetSubs[sub].deadline2) {
-              let date2 = praSetSubs[sub].deadline2.toDate();
-              date2 = date2.toLocaleDateString("en-GB");
-              praSetSubs[sub].date2 = date2;
-            }
-          }
-        }
-      }
-
-      const klass = parts[0];
-
-      if (klass === "BTech") {
-        btechSubs.push(sub);
-      } else if (klass === "MTech") {
-        mtechSubs.push(sub);
-      } else {
-        mbaSubs.push(sub);
-      }
-    }
-
-    return {
-      praSetSubs: praSetSubs,
-      btechSubs: btechSubs,
-      mtechSubs: mtechSubs,
-      mbaSubs: mbaSubs,
-    };
-  } catch (error) {
-    console.log(error);
-    return -1;
-  }
-};
 
 async function getMarks(className, email) {
   //grading.js
@@ -628,36 +562,7 @@ async function addClass(email, addedClass) {
   return null;
 }
 
-async function deleteClass(email, className) {
-  //claslist
-  let error = true;
-  const subject = className.split("_").pop();
-  const classesInfoRef = doc(
-    db,
-    "classesinfo",
-    className.replace("_" + subject, "")
-  );
-  const facultyRef = doc(db, "faculty", email);
 
-  try {
-    //removes the object in classes info
-    await updateDoc(classesInfoRef, {
-      faculty_ID: arrayRemove({
-        faculty: email,
-        subject: subject,
-      }),
-    });
-
-    //removes the value in faculty collection
-    await updateDoc(facultyRef, {
-      subjects: arrayRemove(className),
-    });
-  } catch (err) {
-    console.log(err);
-    error = true;
-  }
-  return error;
-}
 
 const Fetchlink = async (email, status, mid, fullcourse) => {
   const subjectval = fullcourse.split("_");
