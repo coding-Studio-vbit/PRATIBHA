@@ -20,35 +20,6 @@ import {
 } from "../../student/services/studentServices";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 
-
-async function getIsEnrolled(email) {
-  //in HODSearch screen
-  const docRef = doc(db, "faculty", email);
-  try {
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return {
-        data: docSnap.data()["isEnrolled"],
-        error: null,
-      };
-    } else {
-      return {
-        data: null,
-        error: "Enroll Courses to get details",
-      };
-    }
-  } catch (error) {
-    return {
-      data: null,
-      error: error.code,
-    };
-  }
-}
-
-
-
-
-
 //Params are course, year and semester and this returns an object containing departments, sections and subjects of that course and year. (Example : Btech 2nd year 1st semester)
 export const getCurriculumData = async (course, year, semester) => {
   if (year === 0) return;
@@ -162,104 +133,6 @@ export const getCurriculumData = async (course, year, semester) => {
   }
 };
 
-export const getPRA = async (sub, department) => {
-  //in createPra.js
-  try {
-    const docRef = doc(db, "subjects", department);
-    const docData = await getDoc(docRef);
-    const subjects = docData.data()["subjects"];
-
-    let res = {};
-    subjects.forEach((v) => {
-      if (sub === v.subject) {
-        res = v;
-        return;
-      }
-    });
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
-  //in createPRA.js
-  try {
-    const docRef = doc(db, "subjects", department);
-    const docData = await getDoc(docRef);
-    if (docData.exists()) {
-      let d1 = true;
-      const subjects = docData.data()["subjects"];
-
-      for (let index = 0; index < subjects.length; index++) {
-        const ele = subjects[index];
-
-        if (ele.subject === sub) {
-          d1 = false;
-
-          await updateDoc(docRef, { subjects: arrayRemove(ele) });
-          if (isMid1) {
-            await updateDoc(docRef, {
-              subjects: arrayUnion({
-                deadline1: date,
-                instructions: inst,
-                subject: sub,
-              }),
-            });
-          } else if (isMid2) {
-            await updateDoc(docRef, {
-              subjects: arrayUnion({
-                deadline1: ele.deadline1,
-                deadline2: date,
-                instructions: inst,
-                subject: sub,
-              }),
-            });
-          }
-          break;
-        }
-      }
-      if (d1) {
-        if (isMid1) {
-          await updateDoc(docRef, {
-            subjects: arrayUnion({
-              deadline1: date,
-              instructions: inst,
-              subject: sub,
-            }),
-          });
-        }
-        if (isMid2) {
-          await updateDoc(docRef, {
-            subjects: arrayUnion({
-              deadline2: date,
-              instructions: inst,
-              subject: sub,
-            }),
-          });
-        }
-      }
-    } else {
-      await setDoc(docRef, {
-        subjects: [
-          {
-            deadline1: date,
-            instructions: inst,
-            subject: sub,
-          },
-        ],
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
-
-
-
-
 async function getCoeDeadline(midNo, course, year) {
   const adminRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
 
@@ -367,9 +240,6 @@ async function getBeforeSemEnd(course, year) {
     };
   }
 }
-
-
-
 
 const Fetchlink = async (email, status, mid, fullcourse) => {
   const subjectval = fullcourse.split("_");
@@ -653,7 +523,6 @@ export {
   getFirstYearStatistics,
   getCoeDeadline,
   getAllStudents,
-  getIsEnrolled,
   getBeforeSemEnd,
   getSemDeadline,
   setCoeDeadlines,

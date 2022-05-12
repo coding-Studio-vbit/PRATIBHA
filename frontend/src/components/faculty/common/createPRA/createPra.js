@@ -5,11 +5,8 @@ import Button from "../../../global_ui/buttons/button.js";
 import DatePicker from "react-datepicker";
 import "../../coe/datepicker.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  getPRA,
-  setPRA,
-  getCoeDeadline,
-} from "../../services/facultyServices.js";
+import { getCoeDeadline } from "../../services/facultyServices.js";
+import { getPRA, setPRA } from "../../services/praServices.js";
 import { useAuth } from "../../../context/AuthContext.js";
 import Dialog from "../../../global_ui/dialog/dialog";
 import { Timestamp } from "firebase/firestore";
@@ -21,17 +18,15 @@ import { Spinner } from "../../../global_ui/spinner/spinner.js";
 
 const CreatePra = () => {
   const navigate = useNavigate();
-  const [date, setDate] = useState(new Date(new Date().setHours(23,59)));
-  const [dialog, setdialog] = useState(""); 
+  const [date, setDate] = useState(new Date(new Date().setHours(23, 59)));
+  const [dialog, setdialog] = useState("");
   const [isNewPra, setisNewPra] = useState(true);
   const [Loading, setLoading] = useState(true);
   const [mid, setmid] = useState("");
-  const [inst, setInst] = useState(""); 
+  const [inst, setInst] = useState("");
   const location = useLocation();
   const [DeadLine, setDeadLine] = useState("");
   const { currentUser } = useAuth();
-  
-  
 
   const parts = location.state.sub.split("_");
   const course = parts[0];
@@ -39,14 +34,21 @@ const CreatePra = () => {
 
   const sub = parts[5];
   const department =
-    parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3]+"_"+parts[4];
+    parts[0] +
+    "_" +
+    parts[1] +
+    "_" +
+    parts[2] +
+    "_" +
+    parts[3] +
+    "_" +
+    parts[4];
 
   let title = parts[0] + " " + parts[2] + " " + parts[3] + " " + parts[4];
   if (parts[3] === "Not Applicable") {
     title = parts[0] + " " + parts[2] + " " + parts[4];
   }
 
- 
   const deadline = async () => {
     const isMid1 = await fetchisMid1(course, year);
     const isMid2 = await fetchisMid2(course, year);
@@ -61,13 +63,13 @@ const CreatePra = () => {
     midNumber();
 
     const coeDeadline = await getCoeDeadline(mid, course, year);
-    try{
+    try {
       if (coeDeadline) {
         setDeadLine(coeDeadline.data.seconds);
       } else {
         setDeadLine(false);
       }
-    }catch{
+    } catch {
       console.log(coeDeadline.error);
     }
     setLoading(false);
@@ -112,8 +114,16 @@ const CreatePra = () => {
     const parts = location.state.sub.split("_");
     const sub = parts[5];
     const department =
-      parts[0] + "_" + parts[1] + "_" + parts[2] + "_" + parts[3]+"_"+parts[4];
-    setdialog("PRA created");  
+      parts[0] +
+      "_" +
+      parts[1] +
+      "_" +
+      parts[2] +
+      "_" +
+      parts[3] +
+      "_" +
+      parts[4];
+    setdialog("PRA created");
     await setPRA(
       sub,
       department,
@@ -133,12 +143,7 @@ const CreatePra = () => {
       }}
     >
       <Navbar
-        backURL={
-          isNewPra
-            ? 
-               "/faculty/classlist"
-            : "/faculty/studentlist"
-        }
+        backURL={isNewPra ? "/faculty/classlist" : "/faculty/studentlist"}
         props={isNewPra ? false : { state: { sub: location.state.sub } }}
         title={title}
       />
@@ -154,12 +159,11 @@ const CreatePra = () => {
         />
       )}
 
-      {    Loading ? (
-      <div className='createspinnerload'>
-      <Spinner radius={1.5} />
-      </div>
-    ) : 
-(
+      {Loading ? (
+        <div className="createspinnerload">
+          <Spinner radius={1.5} />
+        </div>
+      ) : (
         <div className="div-container">
           <span className="text-style">Enter instructions (if any):</span>
           <textarea
@@ -182,9 +186,7 @@ const CreatePra = () => {
                 value={date}
                 minDate={new Date()}
                 filterTime={filterPassedTime}
-                excludeTimes={[
-                  new Date( new Date().setHours(0,0,0,0))
-                ]}
+                excludeTimes={[new Date(new Date().setHours(0, 0, 0, 0))]}
                 showTimeSelect
                 maxDate={CoeDate}
                 onChange={(newVal) => {
@@ -193,7 +195,7 @@ const CreatePra = () => {
                 className="select-dd"
               />
             </span>
-          </span> 
+          </span>
 
           <Button
             style={{ padding: "5px" }}

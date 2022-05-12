@@ -11,14 +11,14 @@ import {
 import {
   getFirstYearCurriculumData,
   getCurriculumData,
-  getIsEnrolled,
   getFirstYearStatistics,
 } from "../services/facultyServices.js";
+import { getIsEnrolled } from "../services/enrollFacultyServices.js";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 
 const HODSearch = () => {
-  const {user}=useAuth();
+  const { user } = useAuth();
   getFirstYearCurriculumData(1);
   getFirstYearStatistics();
   const [Course, setCourse] = useState({ value: "Loading", label: "Loading" });
@@ -33,7 +33,7 @@ const HODSearch = () => {
   const [disabledep, setdisabledep] = useState(true);
   const [disablesec, setdisablesec] = useState(true);
   const [dep, setDep] = useState("");
-  const [notCreatedClasses,setnotCreatedClasses ]=useState(null);
+  const [notCreatedClasses, setnotCreatedClasses] = useState(null);
   const [department, setDepartment] = useState([
     { value: "Loading", label: "Loading" },
   ]);
@@ -135,16 +135,15 @@ const HODSearch = () => {
     });
   }
 
- async function report(){
-   console.log(user.isFirstYearHOD)
-   if (user.isFirstYearHOD){
-     const res = await getFirstYearStatistics();
-     setnotCreatedClasses(res);
-     console.log(notCreatedClasses)
-   }
-   else{
-     //code here
-   }
+  async function report() {
+    console.log(user.isFirstYearHOD);
+    if (user.isFirstYearHOD) {
+      const res = await getFirstYearStatistics();
+      setnotCreatedClasses(res);
+      console.log(notCreatedClasses);
+    } else {
+      //code here
+    }
   }
   const [Regulation, setRegulation] = useState("");
   const [disablereg, setdisablereg] = useState(true);
