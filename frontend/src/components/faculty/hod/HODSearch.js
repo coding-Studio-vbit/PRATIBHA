@@ -8,16 +8,13 @@ import {
   fetchRegulationOptions,
   fetchSemNumber,
 } from "../../student/services/studentServices.js";
-import { getFirstYearCurriculumData,getCurriculumData } from "../services/curriculumServices.js";
-import { getFirstYearStatistics } from "../services/hodServices.js";
+import { getFirstYearCurriculumData,getCurriculumData, getDeptCurriculum } from "../services/curriculumServices.js";
+import { getFirstYearStatistics, getStatistics } from "../services/hodServices.js";
 import { getIsEnrolled } from "../services/enrollFacultyServices.js";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
 
 const HODSearch = () => {
-  const { user } = useAuth();
-  getFirstYearCurriculumData(1);
-  getFirstYearStatistics();
   const [Course, setCourse] = useState({ value: "Loading", label: "Loading" });
   const [isEnrolled, setisEnrolled] = useState(false);
   const [Year, setYear] = useState("");
@@ -31,6 +28,8 @@ const HODSearch = () => {
   const [disablesec, setdisablesec] = useState(true);
   const [dep, setDep] = useState("");
   const [notCreatedClasses, setnotCreatedClasses] = useState(null);
+
+
   const [department, setDepartment] = useState([
     { value: "Loading", label: "Loading" },
   ]);
@@ -132,16 +131,6 @@ const HODSearch = () => {
     });
   }
 
-  async function report() {
-    console.log(user.isFirstYearHOD);
-    if (user.isFirstYearHOD) {
-      const res = await getFirstYearStatistics();
-      setnotCreatedClasses(res);
-      console.log(notCreatedClasses);
-    } else {
-      //code here
-    }
-  }
   const [Regulation, setRegulation] = useState("");
   const [disablereg, setdisablereg] = useState(true);
   const [regoptionss, setregoptionss] = useState([]);
@@ -160,6 +149,12 @@ const HODSearch = () => {
         logout={true}
         backURL={isEnrolled ? "/faculty/classlist" : "/faculty/enroll"}
       />
+         <div className="report-button">
+          <Button className="normal"
+                onClick={() => {
+                nav("/faculty/deptReport");
+              }}>Department Report</Button>
+        </div>
       <div className="root-hod">
         <p className="dep-title">
           <u>View Department Grades</u>
@@ -254,6 +249,7 @@ const HODSearch = () => {
           onClick={handleClick}
           children="View"
         />
+         
       </div>
     </>
   );

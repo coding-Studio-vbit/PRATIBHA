@@ -38,3 +38,10 @@
   cursor: pointer;
   margin: 20px;
 }
+.report-button{
+  margin-top: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 20px;
+}
