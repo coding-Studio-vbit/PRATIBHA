@@ -150,6 +150,7 @@ const ViewSubmissions = () => {
           <table>
             <thead>
               <tr>
+              <th>S.NO</th>
                 <th>ROLL NO</th>
                 <th>STUDENT NAME</th>
                 <th>TOPIC NAME</th>
@@ -162,8 +163,9 @@ const ViewSubmissions = () => {
               {data &&
                 data
                   .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
-                  .map((dataitem) => (
+                  .map((dataitem,index) => (
                     <tr key={dataitem.ROLL_NO}>
+                    <td>{index+1}</td>
                       <td>{dataitem.ROLL_NO}</td>
                       <td>{dataitem.STUDENT_NAME}</td>
                       <td>{dataitem.TOPIC_NAME}</td>
