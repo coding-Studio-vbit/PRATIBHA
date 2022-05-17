@@ -62,10 +62,16 @@ else if (course == "MTech"||course=="MBA"){
         setisEnrolled(res.data);
       }
       useEffect(()=>{
-          const department = currentUser.roles[0].split("_")[1]
-          setDep(department);
           const courseRole = currentUser.roles[0].split("_")[0]
           setCourse(courseRole);
+          if (course=="MBA"){
+              setDep("MBA")
+          }
+          else {
+
+              const department = currentUser.roles[0].split("_")[1]
+              setDep(department);
+          }
           findIsEnrolled();
           notCreated();
       
@@ -141,7 +147,7 @@ else if (course == "MTech"||course=="MBA"){
                           <ol>
 
                           {firstyear.map((value, index) => {
-        return <li key={index}>{value.split('_')[4]+" "+value.split('_')[5]}</li>
+        return <li key={index}>{value.split('_')[5]}</li>
       })}
                           </ol>
 
@@ -166,7 +172,7 @@ else if (course == "MTech"||course=="MBA"){
                           <ol>
 
                           {secondyear.map((value, index) => {
-        return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+" "+value.split('_')[5]}</li>
+        return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+"-"+value.split('_')[5]}</li>
       })}
                           </ol>
 
