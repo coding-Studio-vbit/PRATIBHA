@@ -177,7 +177,7 @@ export async function getDeptCurriculum(dept, course, year) {
   let regArray = await fetchRegulationsArray();
   let reg = regArray[year - 1];
   let curriculumArray = [];
-  if (course === "BTech") {
+
     try {
       let semester = await fetchSemNumber(course, year);
       const docRef = doc(db, `curriculum/${course}/${year}`, dept);
@@ -232,5 +232,6 @@ export async function getDeptCurriculum(dept, course, year) {
     } catch (e) {
       console.log(e);
     }
-  }
+  
+  
 }
