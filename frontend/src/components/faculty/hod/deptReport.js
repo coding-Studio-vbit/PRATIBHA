@@ -44,6 +44,7 @@ else if (course == "MTech"||course=="MBA"){
         setfirstyear(res1)
     }
     const res2 = await getStatistics(course,dep,'2');
+    console.log(res2)
     if (res2.length!=0){
         setsecondyear(res2);
     }
@@ -99,6 +100,54 @@ else if (course == "MTech"||course=="MBA"){
           </div>
       ):
       (<>
+      {
+         course=="MTech"&&(
+              <>
+              <div className='year'>
+          {
+              firstyear!=null && (
+                  <>
+                      <div>
+                      <p className='dep-title'>
+                             FIRST YEAR
+                          </p>
+                          {firstyear.map((value, index) => {
+        return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+" "+value.split('_')[5]}</li>
+      })}
+
+                      </div>
+                  </>
+              )
+          }
+          </div>
+
+              </>
+          )
+      }
+      {
+         course=="MBA"&&(
+              <>
+              <div className='year'>
+          {
+              firstyear!=null && (
+                  <>
+                      <div>
+                      <p className='dep-title'>
+                             FIRST YEAR
+                          </p>
+                          {firstyear.map((value, index) => {
+        return <li key={index}>{value.split('_')[4]+" "+value.split('_')[5]}</li>
+      })}
+
+                      </div>
+                  </>
+              )
+          }
+          </div>
+
+              </>
+          )
+      }
 
           <div className='year'>
           {
