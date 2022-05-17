@@ -20,6 +20,7 @@ import CreatePra from "./components/faculty/common/createPRA/createPra";
 import HODSearch from "./components/faculty/hod/HODSearch";
 import AddClasses from "./components/faculty/common/LockListSubjects/addclasses";
 import Deadlines from "./components/faculty/coe/deadlines";
+import DeptReport from "./components/faculty/hod/deptReport";
 
 const App = () => {
   
@@ -85,7 +86,10 @@ const AllRoutes = () => {
                   <Route path="/classlist" element={<ClassList />} />
                 
                 {currentUser.isHOD && (
+                  <>
                   <Route path="/hodsearch" element={<HODSearch />} />
+                  <Route path ="/deptReport" element={<DeptReport/>}/>
+                  </>
                 )}
                 <Route path="/studentlist" element={<ListofStudents />} />
                 <Route path="/grading" element={<Grading />} />
