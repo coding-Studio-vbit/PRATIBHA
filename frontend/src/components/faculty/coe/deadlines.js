@@ -30,16 +30,13 @@ export default function Deadlines() {
     console.log(loading)
     async function semDeadline() {
       let n = await fetchSemNumber(course.value, year.value);
-      console.log(n)
      setSemNumber(n);
-      console.log(n)
 
     }
     semDeadline();
-    console.log(semNumber)
+  
     const fetchDeadlines = async () => {
       const res = await getCoeDeadline("1", course.value, year.value);
-      console.log(res);
       if (res.data != null) {
         setDate1(
           new Timestamp(res.data.seconds, res.data.nanoseconds).toDate()
@@ -47,27 +44,22 @@ export default function Deadlines() {
       }
       const res2 = await getCoeDeadline("2", course.value, year.value);
       if (res2.data != null) {
-        console.log(res2);
         setDate2(
           new Timestamp(res2.data.seconds, res2.data.nanoseconds).toDate()
         );
       }
-      console.log(semNumber);
       const res3 = await getSemDeadline(
         semNumber,
         course.value,
         year.value
       );
-      console.log(res3);
       if (res3.data != null) {
-        console.log(res3);
         setDate3(
           new Timestamp(res3.data.seconds, res3.data.nanoseconds).toDate()
         );
       }
     };
     fetchDeadlines();
-    console.log(date1, date2);
   }, [course, year,semNumber]);
 
   const Years = [
@@ -136,7 +128,6 @@ setloading(true)
           
         }}
       />
-      {console.log(loading)}
       {loading ? <Spinner/>:<div className="deadlines-flex">
       <p className="dd-title-deadline"> MID-I </p>
       <div className="datepicker-flex">

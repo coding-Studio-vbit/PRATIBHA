@@ -177,6 +177,9 @@ export async function getDeptCurriculum(dept, course, year) {
   let regArray = await fetchRegulationsArray();
   let reg = regArray[year - 1];
   let curriculumArray = [];
+  if (course=="BTech"||course=="MTech"){
+
+
 
     try {
       let semester = await fetchSemNumber(course, year);
@@ -195,7 +198,7 @@ export async function getDeptCurriculum(dept, course, year) {
           }
           if (docSnap.data()["PEs"]) {
             let PEs = docSnap.data()["PEs"];
-
+  
             for (let i = 0; i < docSnap.data()["PEs"].length; i++) {
               const ele = PEs[i];
               subjects.push(ele);
@@ -203,7 +206,7 @@ export async function getDeptCurriculum(dept, course, year) {
           }
         } else if (semester == 2) {
           subjects = docSnap.data()["subjects2"];
-
+  
           if (docSnap.data()["OEs2"]) {
             let OEs2 = docSnap.data()["OEs2"];
             for (let i = 0; i < docSnap.data()["OEs2"]; i++) {
@@ -227,11 +230,72 @@ export async function getDeptCurriculum(dept, course, year) {
           curriculumArray.push(str);
         }
       }
-
+  
       return curriculumArray;
     } catch (e) {
       console.log(e);
     }
+  }
+  else if (course=="MBA"){
+    try{
+      let semester = await fetchSemNumber(course, year);
+      const q = query(collection(db, "curriculum", course, year));
+      const alldocs = await getDocs(q);
+      alldocs.docs.forEach((e)=>{
+         sections = e.data()["sections"];
+        if (semester == 1) {
+          subjects = e.data()["subjects"];
+          if (e.data()["OEs"]) {
+            let OEs = e.data()["OEs"];
+            for (let i = 0; i < e.data()["OEs"].length; i++) {
+              const ele = OEs[i];
+              subjects.push(ele);
+            }
+          }
+          if (e.data()["PEs"]) {
+            let PEs = e.data()["PEs"];
+  
+            for (let i = 0; i < e.data()["PEs"].length; i++) {
+              const ele = PEs[i];
+              subjects.push(ele);
+            }
+          }
+        } else if (semester == 2) {
+          subjects = e.data()["subjects2"];
+  
+          if (e.data()["OEs2"]) {
+            let OEs2 = e.data()["OEs2"];
+            for (let i = 0; i < e.data()["OEs2"]; i++) {
+              const ele = OEs2[i];
+              subjects.push(ele);
+            }
+          }
+          if (e.data()["PEs2"]) {
+            let PEs2 = e.data()["PEs2"];
+            for (let i = 0; i < e.data()["PEs2"]; i++) {
+              const ele = PEs2[i];
+              subjects.push(ele);
+            }
+          }
+        }
+
+        for (let i = 0; i < e.data()["sections"].length; i++) {
+          for (let j = 0; j < subjects.length; j++) {
+            let str = course + "_" + reg + "_" + year + "_" + e.id;
+            str = str + "_" + sections[i] + "_" + subjects[j].subject;
+            curriculumArray.push(str);
+          }
+        }
+      })
+  
+      return curriculumArray;
+    }
+    catch(e){
+      console.log(e)
+    }
+
+  }
+
   
   
 }

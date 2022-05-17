@@ -38,13 +38,11 @@ export default function DeptReport() {
 }         
 else if (course == "MTech"||course=="MBA"){
     const res1 = await getStatistics(course,dep,'1');
-    console.log(res1)
     if(res1.length!=0){
 
         setfirstyear(res1)
     }
     const res2 = await getStatistics(course,dep,'2');
-    console.log(res2)
     if (res2.length!=0){
         setsecondyear(res2);
     }
@@ -88,10 +86,13 @@ else if (course == "MTech"||course=="MBA"){
               firstyear!=null && (
                   <>
                       <div>
-                          
+                          <ol>
+
+
                           {firstyear.map((value, index) => {
         return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+" "+value.split('_')[5]}</li>
       })}
+                          </ol>
 
                       </div>
                   </>
@@ -111,9 +112,11 @@ else if (course == "MTech"||course=="MBA"){
                       <p className='dep-title'>
                              FIRST YEAR
                           </p>
+                          <ol>
                           {firstyear.map((value, index) => {
         return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+" "+value.split('_')[5]}</li>
       })}
+      </ol>
 
                       </div>
                   </>
@@ -135,9 +138,12 @@ else if (course == "MTech"||course=="MBA"){
                       <p className='dep-title'>
                              FIRST YEAR
                           </p>
+                          <ol>
+
                           {firstyear.map((value, index) => {
         return <li key={index}>{value.split('_')[4]+" "+value.split('_')[5]}</li>
       })}
+                          </ol>
 
                       </div>
                   </>
@@ -157,9 +163,12 @@ else if (course == "MTech"||course=="MBA"){
                           <p className='dep-title'>
                               SECOND YEAR
                           </p>
+                          <ol>
+
                           {secondyear.map((value, index) => {
         return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+" "+value.split('_')[5]}</li>
       })}
+                          </ol>
 
                       </div>
                   </>
@@ -175,9 +184,12 @@ else if (course == "MTech"||course=="MBA"){
                           <p className='dep-title'>
                               THIRD YEAR
                           </p>
+                          <ol>
+
                           {thirdyear.map((value, index) => {
         return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+" "+value.split('_')[5]}</li>
       })}
+                          </ol>
 
                       </div>
                   </>
@@ -193,9 +205,12 @@ else if (course == "MTech"||course=="MBA"){
                           <p className='dep-title'>
                               FOURTH YEAR
                           </p>
+                          <ol>
+
                           {fourthyear.map((value, index) => {
         return <li key={index}>{value.split('_')[3]+" "+value.split('_')[4]+" "+value.split('_')[5]}</li>
       })}
+                          </ol>
 
                       </div>
                   </>

@@ -43,7 +43,6 @@ async function getCoeDeadline(midNo, course, year) {
 }
 
 async function getSemDeadline(semNo, course, year) {
-  console.log(semNo, course, year);
   const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
 
   try {
@@ -124,8 +123,7 @@ async function getBeforeSemEnd(course, year) {
 
 
 async function setCoeDeadlines(course, year, mid1, mid2, sem) {
-  //deadlines.js
-  console.log(sem);
+
   const midRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
   const semRef = doc(db, `adminData/semester/${course}`, `${year}`);
   const semnum = await fetchSemNumber(course, year);
@@ -139,7 +137,6 @@ async function setCoeDeadlines(course, year, mid1, mid2, sem) {
     }
     const semDoc = await getDoc(semRef);
     if (semDoc.exists()) {
-      console.log(semnum);
       if (semnum == 1) {
         await updateDoc(semRef, {
           sem1: sem,
