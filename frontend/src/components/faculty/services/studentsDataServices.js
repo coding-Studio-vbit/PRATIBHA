@@ -17,12 +17,9 @@ import { getUploadedFileByPath } from "../../student/services/storageServices";
 
 
 
-export const Fetchlink = async (email, status, mid, fullcourse) => {
+export const Fetchlink = async (email, mid, fullcourse) => {
     const subjectval = fullcourse.split("_");
     let result;
-    if (status === "Not Submitted" || status === " ") {
-      result = null;
-    } else {
       const res = await getUploadedFileByPath(
         subjectval[0] +
           "/" +
@@ -41,7 +38,6 @@ export const Fetchlink = async (email, status, mid, fullcourse) => {
           email.split("@")[0]
       );
       result = res.url;
-    }
   
     return result;
   };
@@ -52,11 +48,8 @@ export const Fetchlink = async (email, status, mid, fullcourse) => {
     subject,
     ismid1,
     ismid2,
-    files,
-    fullcourse
   ) {
     var data = new Array();
-    var dict = {};
     var student = "";
     var studentTopic = "";
     for (var sd = 0; sd < students.length; sd++) {
@@ -133,18 +126,7 @@ export const Fetchlink = async (email, status, mid, fullcourse) => {
                 ? "Not Submitted"
                 : " ";
   
-              if (files == true) {
-                if (ismid1) {
-                  await Fetchlink(sEmail, mid1, "1", fullcourse).then((res) => {
-                    dict[sEmail.split("@")[0]] = res;
-                  });
-                }
-                if (ismid2) {
-                  await Fetchlink(sEmail, mid2, "2", fullcourse).then((res) => {
-                    dict[sEmail.split("@")[0]] = res;
-                  });
-                }
-              }
+              
             }
             const dataobj = {
               ROLL_NO: sEmail.split("@")[0],
@@ -178,10 +160,8 @@ export const Fetchlink = async (email, status, mid, fullcourse) => {
       data: data,
       student: student,
       studentTopic: studentTopic,
-      links: dict,
     };
   }
-
 
 
     //returns all the data about all the students of a particular class (Example: BTech_21_1_CSE_A)
