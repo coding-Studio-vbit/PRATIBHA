@@ -6,6 +6,7 @@ import Dialog from "../../../global_ui/dialog/dialog";
 import "./classList.css";
 import { useNavigate } from "react-router-dom";
 import { getEnrolledSubjects,deleteClass } from "../../services/enrollFacultyServices";
+import { updateSubs } from "../../services/adminDeadlinesServices";
 import { useAuth } from "../../../context/AuthContext";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
 
@@ -44,6 +45,14 @@ const ClassList = () => {
     }
   }
 
+   // use this function to update the subjects curriculum collection
+   async function up(){
+    const set1 = [{"subject":"Mathematics2"}, {"subject":"Engineering Chemistry"}, {"subject":"Python Programming"},{"subject":"Basic Electrical Engineering"}];
+    const set2 = [{"subject":"Mathematics2"}, {"subject":"Applied Chemistry"}, {"subject":"English"},{"subject":"Python Programming"}];
+    //parameters: course, year, department, updation array, semester number  
+    await updateSubs("BTech",2,"CSB",set2,2);
+  }
+  // up()
   const [delSub, setdelSub] = useState(null);
  async function handledelete(sub){
     setdelSub(sub);

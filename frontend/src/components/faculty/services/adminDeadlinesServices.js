@@ -158,6 +158,19 @@ async function setCoeDeadlines(course, year, mid1, mid2, sem) {
   }
 }
 
+async function updateSubs(course,year,dept,subs,subno){
+  const depref = doc(db,`curriculum/${course}/${year}/`,dept);
+  try{
+    const depsnap = await getDoc(depref);
+  const update = [...subs] 
+  if(depsnap.exists()){
+    await updateDoc(depref,{[`subjects${subno}`]:update})
+  }
+  }
+  catch(error){
+    console.log(error)
+  }
+}
 
 
 
@@ -167,4 +180,5 @@ export {
   getBeforeSemEnd,
   getSemDeadline,
   setCoeDeadlines,
+  updateSubs
 };
