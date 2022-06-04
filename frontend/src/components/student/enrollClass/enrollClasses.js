@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Navbar from '../../global_ui/navbar/navbar';
 import Select from "react-select";
 import { enrollCourse, fetchDepartments, fetchRegulationOptions,fetchisMid1,fetchisMid2, fetchisSem1, fetchisSem2, fetchSemNumber } from '../services/studentServices';
@@ -21,6 +21,7 @@ function EnrollClasses() {
     const[isSuccess,setisSuccess]=useState(false);
 
     const [course, setCourse] = useState("");
+    const [sem,setSem] = useState(null);
     const courses = [
         { value: "BTech", label: "B.Tech" },
         { value: "MTech", label: "M.Tech" },
@@ -73,24 +74,49 @@ function EnrollClasses() {
         let sect=[];
         data.forEach((e)=>{
             if(e.id===val){ 
-                setSubjects(e.data()['subjects'])              
-                e.data()['sections'].forEach((s)=>{
-                    sect.push({value:s,label:s});  
-                })
-                if(e.data()["OEs"]!=null){
-                    setOpenElectives(e.data()["OEs"]);
-                }else{
-                    setOpenElectives(null);
+                console.log(sem);
+                if (sem==1){
+
+                    console.log(e);
+                    console.log(e.data()['subjects2'])
+                    setSubjects(e.data()['subjects'])              
+                    e.data()['sections'].forEach((s)=>{
+                        sect.push({value:s,label:s});  
+                    })
+                    if(e.data()["OEs"]!=null){
+                        setOpenElectives(e.data()["OEs"]);
+                    }else{
+                        setOpenElectives(null);
+                    }
+                    if(e.data()["PEs"]!=null){
+                        setProfessionalElectives(e.data()["PEs"]);
+                    }
+                    else{
+                        setProfessionalElectives(null);
+                    }
                 }
-                if(e.data()["PEs"]!=null){
-                    setProfessionalElectives(e.data()["PEs"]);
+                else if(sem ==2)
+                {
+                    setSubjects(e.data()['subjects2'])              
+                    e.data()['sections'].forEach((s)=>{
+                        sect.push({value:s,label:s});  
+                    })
+                    if(e.data()["OEs2"]!=null){
+                        setOpenElectives(e.data()["OEs2"]);
+                    }else{
+                        setOpenElectives(null);
+                    }
+                    if(e.data()["PEs2"]!=null){
+                        setProfessionalElectives(e.data()["PEs2"]);
+                    }
+                    else{
+                        setProfessionalElectives(null);
+                    }
+
                 }
-                else{
-                    setProfessionalElectives(null);
-                }
+                setSections(sect);  
             }
         })
-        setSections(sect);  
     }
     async function isEnrollValid(course,year){
         try{
@@ -185,6 +211,19 @@ function EnrollClasses() {
             }          
         }
     }
+
+    async function semNum (){
+        let semester = await fetchSemNumber(course.value,year.value);
+        setSem(semester);
+        console.log(semester);
+    }
+        useEffect(() => {
+            semNum();
+            console.log(sem);
+        }, [course.value,year.value])
+    
+
+    
 
     return (
         <div>
