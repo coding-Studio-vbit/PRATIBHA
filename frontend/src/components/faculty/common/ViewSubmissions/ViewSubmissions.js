@@ -12,17 +12,19 @@ import {
   fetchisMid2,
   fetchSemNumber,
 } from "../../../student/services/studentServices";
-import { getAllStudents } from "../../services/studentsDataServices";
+import { getAllStudents, Fetchlink } from "../../services/studentsDataServices";
 import Download from "../../../global_ui/download/download";
 import { useAuth } from "../../../context/AuthContext";
 
 const ViewSubmissions = () => {
   const { currentUser } = useAuth();
   const [data, setData] = useState([]);
-  const [links, setLinks] = useState({});
   const [sem, setSem] = useState("");
   const location = useLocation();
   const [showDialog, setShowDialog] = useState(null);
+  const [mid, setMid] = useState("");
+  const [fileLink, setFileLink] = useState("");
+  const [student, setStudent] = useState("");
 
   const passedData = location.state;
   let title =
@@ -64,14 +66,27 @@ const ViewSubmissions = () => {
     section = passedData.Section,
     subject = passedData.Subject;
 
+  const getFileLink = async (rollno, mid1_status, mid2_status) => {
+      setStudent(rollno);
+      const res = await Fetchlink(rollno, mid, course);
+      if(res === null){
+        setStudent(null);
+        setShowDialog("File does not exist");
+      }else{
+        setFileLink(res);
+        setShowDialog("Download the File");
+      }
+      console.log(res);
+      
+  };
+
   const Fetchdata = async (
     Course,
     regulation,
     year,
     branch,
     section,
-    subject,
-    val
+    subject
   ) => {
     const studentref = query(
       doc(
@@ -81,6 +96,14 @@ const ViewSubmissions = () => {
     );
     let ismid1 = await fetchisMid1(Course, year);
     let ismid2 = await fetchisMid2(Course, year);
+
+    if (ismid1) {
+      setMid("1");
+    }
+
+    if (ismid2) {
+      setMid("2");
+    }
 
     let semester = await fetchSemNumber();
     setSem(semester);
@@ -93,12 +116,9 @@ const ViewSubmissions = () => {
           subject,
           ismid1,
           ismid2,
-          true,
-          val
         ).then((res) => {
           if (res) {
             setData(res.data);
-            setLinks(res.links);
           } else {
             setError("ERROR OCCURED");
           }
@@ -122,7 +142,9 @@ const ViewSubmissions = () => {
         title={title}
         backURL={
           currentUser.isHOD
-            ?  currentUser.isFirstTime?"/faculty/HODSearch":"/faculty/classlist"
+            ? currentUser.isFirstTime
+              ? "/faculty/HODSearch"
+              : "/faculty/classlist"
             : currentUser.isCOE
             ? "/faculty/coesearch"
             : ""
@@ -142,6 +164,10 @@ const ViewSubmissions = () => {
           {showDialog && (
             <Dialog
               message={showDialog}
+              url={fileLink}
+              rollNo={student}
+              download={true}
+              setShowDialog={setShowDialog}
               onOK={() => {
                 setShowDialog(false);
               }}
@@ -150,7 +176,7 @@ const ViewSubmissions = () => {
           <table>
             <thead>
               <tr>
-              <th>S.NO</th>
+                <th>S.NO</th>
                 <th>ROLL NO</th>
                 <th>STUDENT NAME</th>
                 <th>TOPIC NAME</th>
@@ -163,9 +189,9 @@ const ViewSubmissions = () => {
               {data &&
                 data
                   .sort((a, b) => (a.ROLL_NO < b.ROLL_NO ? -1 : 1))
-                  .map((dataitem,index) => (
+                  .map((dataitem, index) => (
                     <tr key={dataitem.ROLL_NO}>
-                    <td>{index+1}</td>
+                      <td>{index + 1}</td>
                       <td>{dataitem.ROLL_NO}</td>
                       <td>{dataitem.STUDENT_NAME}</td>
                       <td>{dataitem.TOPIC_NAME}</td>
@@ -173,24 +199,32 @@ const ViewSubmissions = () => {
                       <td>{dataitem.MID_2}</td>
                       <td>
                         <center>
-                          <Download
+                          {/* <Download
                             className="viewsub-download"
                             url={links[dataitem.ROLL_NO]}
                             userID={dataitem.ROLL_NO}
                             setShowDialog={setShowDialog}
-                          />
+                          /> */}
+                          <button
+                            className="btn_download"
+                            onClick={() =>
+                              getFileLink(
+                                dataitem.ROLL_NO,
+                                dataitem.MID_1,
+                                dataitem.MID_2
+                              )
+                            }
+                          >
+                            <i
+                              class="fas fa-cloud-download-alt downloadIcon"
+                              style={{
+                                color: "#0E72AB",
+                                fontSize: "28px",
+                              }}
+                            ></i>
+                          </button>
                         </center>
-                        {/* <a
-                          href={links[dataitem.ROLL_NO]}
-                          target="_blank"
-                          style={{ textDecoration: "none" }}
-                        >
-                          <i
-                            className="fa fa-download"
-                            aria-hidden="true"
-                            style={{ color: "rgba(11, 91, 138, 1)" }}
-                          ></i>
-                        </a> */}
+
                       </td>
                     </tr>
                   ))}

@@ -49,10 +49,18 @@ function Download({
       setShowDialog("File does not exist");
     }
   }
+
+  const getDownload = async() => {
+    await download();
+    if(setShowDialog){
+      setShowDialog(false);
+    }
+  }
+
   return (
     <button
       className="download"
-      onClick={() => download()}
+      onClick={() => getDownload()}
       style={{
         display: "flex",
         alignItems: "center",

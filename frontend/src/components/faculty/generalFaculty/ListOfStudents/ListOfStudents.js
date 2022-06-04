@@ -65,8 +65,7 @@ const ListofStudents = () => {
     year,
     branch,
     section,
-    subject,
-    val
+    subject
   ) => {
     const studentref = query(
       doc(
@@ -97,8 +96,6 @@ const ListofStudents = () => {
           subject,
           ismid1,
           ismid2,
-          false,
-          val
         ).then((res) => {
           if (res) {
             setData(res.data);
