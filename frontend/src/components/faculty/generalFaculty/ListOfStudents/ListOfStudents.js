@@ -90,10 +90,10 @@ const ListofStudents = () => {
     let classDoc = await getDoc(studentref);
     if (classDoc.exists()) {
       let doc = classDoc.data();
-      console.log(semester)
+
       if(semester==1)
       {
-        console.log('its 1')
+  
         if (doc["students"]) {
           await getAllStudents(
             doc["students"],
