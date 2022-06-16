@@ -27,34 +27,68 @@ async function checkEnrollment(email) {
   return error;
 }
 
-export const addStudent = async (studentID, department) => {
+export const addStudent = async (studentID, department,course,year) => {
   try {
+    const sem = await fetchSemNumber(course,year);
     const docRef = doc(db, "classesinfo", department);
     const docData = await getDoc(docRef);
-    if (docData.exists()) {
-      // let d1 = true;
-      const students = docData.data()["students"];
-      if (students != null) {
-        for (let index = 0; index < students.length; index++) {
-          const ele = students[index];
-
-          if (ele === studentID) {
-            // d1 = false;
-            break;
-          } else {
-            await updateDoc(docRef, { students: arrayUnion(studentID) });
+    
+      if(sem==1)
+      {
+        if (docData.exists()) {
+        
+        const students = docData.data()["students"];
+        
+        if (students != null) {
+          for (let index = 0; index < students.length; index++) {
+            const ele = students[index];
+  
+            if (ele === studentID) {
+              // d1 = false;
+              break;
+            } else {
+              await updateDoc(docRef, { students: arrayUnion(studentID) });
+            }
           }
+        } else {
+          await updateDoc(docRef, {
+            students: [studentID],
+          });
         }
       } else {
-        await updateDoc(docRef, {
+        await setDoc(docRef, {
           students: [studentID],
         });
       }
-    } else {
-      await setDoc(docRef, {
-        students: [studentID],
-      });
-    }
+      }
+      else if(sem==2)
+      {
+        if (docData.exists()) {
+        
+          const students = docData.data()["students2"];
+          
+          if (students != null) {
+            for (let index = 0; index < students.length; index++) {
+              const ele = students[index];
+    
+              if (ele === studentID) {
+                // d1 = false;
+                break;
+              } else {
+                await updateDoc(docRef, { students2: arrayUnion(studentID) });
+              }
+            }
+          } else {
+            await updateDoc(docRef, {
+              students2: [studentID],
+            });
+          }
+        } else {
+          await setDoc(docRef, {
+            students2: [studentID],
+          });
+        }
+      }
   } catch (error) {
     console.log(error);
   }
@@ -76,7 +110,7 @@ async function enrollCourse(email, course_details) {
 
   try {
     await setDoc(userRef, course_details);
-    await addStudent(email, dep);
+    await addStudent(email, dep,course_details.course,course_details.year);
   } catch (e) {
     error = e.code;
   }
