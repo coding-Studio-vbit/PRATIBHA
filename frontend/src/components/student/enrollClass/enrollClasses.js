@@ -17,6 +17,7 @@ function EnrollClasses() {
     
     const [loading, setLoading] = useState(false);
     const [buttonTitle, setButtonTitle] = useState("Get Departments");
+    //setData is the list of all docs of departments under a specific course and year
     const [data, setData] = useState();
     const[isSuccess,setisSuccess]=useState(false);
 
@@ -36,6 +37,7 @@ function EnrollClasses() {
         { value: "4", label: "4" }
     ];
 
+    //Year options based on course
     const yearsList=(type)=>{
         if(type==="BTech" ){
             return years;
@@ -48,6 +50,8 @@ function EnrollClasses() {
     }
     const [regulation,setRegulation]=useState('');
     const[regoptionss,setregoptionss]=useState([]);
+
+    //options for regulations
    async function regoptions(){
     const res = await fetchRegulationOptions();
   setregoptionss(res.data);
@@ -55,7 +59,9 @@ function EnrollClasses() {
 
 
     const [department, setDepartment] = useState("");
+    //sets departments options for the department dropdown
     const [departments, setDepartments] = useState(null);
+    //setdeplock disables previous dropdowns (course,year and reg)
     const [depLock, setdepLock] = useState(false);
 
     const [section, setSection] = useState("");
@@ -68,18 +74,21 @@ function EnrollClasses() {
     const [pe, setPe] = useState("");
 
     const [subjects, setSubjects] = useState();
-    // const [oeCount, setoeCount] = useState();
-    // const [peCount, setpeCount] = useState();
-    function getData(val){
+
+
+    //parameter is department, (ex.CSE) and it fetches subjects and sections for a given department. 
+    async function getData(val){
+        const sem = await fetchSemNumber(course.value,year.value);
+        console.log(subjects)
+        console.log("getData is called")
         let sect=[];
         data.forEach((e)=>{
             if(e.id===val){ 
                 console.log(sem);
                 if (sem==1){
-
-                    console.log(e);
-                    console.log(e.data()['subjects2'])
-                    setSubjects(e.data()['subjects'])              
+                    //setSubjects as subjects array in db
+                    setSubjects(e.data()['subjects'])     
+                    //from sections array in db, we are fetching sections options         
                     e.data()['sections'].forEach((s)=>{
                         sect.push({value:s,label:s});  
                     })
@@ -94,6 +103,7 @@ function EnrollClasses() {
                     else{
                         setProfessionalElectives(null);
                     }
+                    console.log(subjects)
                 }
                 else if(sem ==2)
                 {
@@ -117,7 +127,10 @@ function EnrollClasses() {
                 setSections(sect);  
             }
         })
+        console.log(subjects)
     }
+
+    //to check the time of enrollment. Either mid1 or mid2 should be true for a student to enroll.
     async function isEnrollValid(course,year){
         try{
           const f1=await fetchisMid1(course,year);
@@ -134,8 +147,9 @@ function EnrollClasses() {
         }
       
       }
-
+//this function is called when the "get departments" button is clicked, later button title is changed
     async function fetchData(){
+        console.log('fetch data is called')
         if(departments==null && course!=="" && year!==""){
             setLoading(true);
             const res = await fetchDepartments(course.value,year.value);
@@ -143,20 +157,24 @@ function EnrollClasses() {
                 console.log("Error",res.error);
             }else{
                 setdepLock(true);
+                console.log(res.data);
                 setData(res.data);
-                let depObj=[];
+                let depOptions=[];
                 res.data.forEach(element => {
-                    depObj.push({value:element.id,label:element.id});
+                    depOptions.push({value:element.id,label:element.id});
                 });
-                setDepartments(depObj);
+                setDepartments(depOptions);
             }
             setLoading(false); 
             setButtonTitle("Enroll");
         }else if(departments!=null){ 
+            console.log(subjects)
             setLoading(true);
-            let isValid=true;
+            let isValid=true; //checks if all the dropdowns have valid values
             if(course!=="" && year!=="" && department!=="" && section!==""){
                 let subs=subjects;
+                console.log(subs)
+                console.log(subjects)
                 if(professionalElectives==null){
                     //
                 }else{
@@ -194,6 +212,9 @@ function EnrollClasses() {
                             setisSuccess(true);
                             setLoading(false);
                             setdialog("Enrolled Successfully")
+                        }
+                        else {
+                            console.log(res)
                         }
                     }
                     else{
