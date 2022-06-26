@@ -9,6 +9,10 @@ import { getEnrolledSubjects,deleteClass } from "../../services/enrollFacultySer
 import { updateSubs } from "../../services/adminDeadlinesServices";
 import { useAuth } from "../../../context/AuthContext";
 import { LoadingScreen } from "../../../global_ui/spinner/spinner";
+import { enrollCourse } from "../../../student/services/studentServices";
+
+import { seeErrors } from "../../services/curriculumServices";
+
 
 const ClassList = () => {
   const { currentUser } = useAuth();
@@ -38,6 +42,7 @@ const ClassList = () => {
   }, [currentUser.email,subs]);
 
   function handleCard(sub) {
+    // errorSubs()
     if (subs.praSetSubs[sub]) {
       navigate("/faculty/studentlist", { state: { sub: sub } });
     } else {
@@ -58,6 +63,49 @@ const ClassList = () => {
     setdelSub(sub);
 
     setShowDialog("Are you sure you want to delete class ? All the data will be lost forever.")
+  }
+
+  async function errorSubs() {
+    const data = await seeErrors();
+
+    const sem2students = [] // Array of students who have enrolled in semester 2
+
+    data.forEach(e => { // checking the students Semester number.
+      if (e.data()["semester"] !== 1)
+        sem2students.push([e.data(), e.id]) // pushing student data and id to the array
+     
+    })
+    const faultystudents = [] // Array for students with faulty subjects
+    sem2students.forEach(e => { 
+      if (e[0].subjects[0].subject !== "Mathematics2") {
+        faultystudents.push(e)
+      }
+    })
+    console.log(faultystudents)
+
+    const DeptFilteredStudents = faultystudents.filter(e => { return e[0].department === "ME" ? e: null }) // filtering faulty students according to department
+    console.log(DeptFilteredStudents)
+
+    const set1 = [{"subject":"Mathematics2"}, {"subject":"Engineering Chemistry"}, {"subject":"Python Programming"},{"subject":"Basic Electrical Engineering"}];
+    const set2 = [{"subject":"Mathematics2"}, {"subject":"Applied Chemistry"},{"subject":"English"},{"subject":"Python Programming"} ];
+    const set3 = [{"subject":"Mathematics2"}, {"subject":"Applied Physics"}, {"subject":"English"}, {"subject":"Python Programming"}];
+
+
+    DeptFilteredStudents.forEach(e => {
+      enrollCourse(
+        e[1], {
+        name: e[0].name,
+        course: e[0].course,
+        year: e[0].year,
+        regulation: e[0].regulation,
+        department: e[0].department,
+        subjects: set2, // change the set according to what the Dept has in its curriculum
+        section: e[0].section,
+        semester: 2 // used the semester number here manually
+      }
+      )
+      console.log(`done ${e[0].name}`);
+    })
   }
 
   
