@@ -65,7 +65,7 @@ const ClassList = () => {
     setShowDialog("Are you sure you want to delete class ? All the data will be lost forever.")
   }
 
-  async function errorSubs() {
+  async function errorSubs() { // This function triggers when a card in classlist is clicked. Function Called in line no. 45
     const data = await seeErrors();
 
     const sem2students = [] // Array of students who have enrolled in semester 2
