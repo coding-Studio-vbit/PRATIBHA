@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { auth, db } from "../../firebase";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
-import { deleteDoc, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 import { fetchSemNumber } from "../student/services/studentServices";
 

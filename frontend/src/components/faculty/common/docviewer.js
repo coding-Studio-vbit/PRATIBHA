@@ -32,8 +32,8 @@ class MyComponent extends Component {
 
 const ViewPPT=({object})=>{
     
-    const linkToPPTFile =
-      "https://storage.googleapis.com/slidescarnival_powerpoints/Paulina%20%C2%B7%20SlidesCarnival.pptx";
+    // const linkToPPTFile =
+    //   "https://storage.googleapis.com/slidescarnival_powerpoints/Paulina%20%C2%B7%20SlidesCarnival.pptx";
     return (
         <>
           <iframe

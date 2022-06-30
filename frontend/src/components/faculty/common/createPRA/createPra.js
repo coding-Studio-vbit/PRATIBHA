@@ -25,8 +25,7 @@ const CreatePra = () => {
   const [mid, setmid] = useState("");
   const [inst, setInst] = useState("");
   const location = useLocation();
-  const [DeadLine, setDeadLine] = useState("");
-  const { currentUser } = useAuth();
+  const [DeadLine, setDeadLine] = useState(""); 
 
   const parts = location.state.sub.split("_");
   const course = parts[0];

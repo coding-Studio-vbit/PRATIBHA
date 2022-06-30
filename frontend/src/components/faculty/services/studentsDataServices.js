@@ -320,3 +320,30 @@ export const Fetchlink = async (email, mid, fullcourse) => {
           };
         }
       }
+
+
+export async function getStudents (course,year,dept,sec,sem)
+{
+
+  try{
+    let arr=[]
+
+    const collectionRef = collection(db,"users");
+    const allDocs = await getDocs(collectionRef);
+    (allDocs).docs.forEach((e)=>{
+      const data = e.data()
+      if (data.course==course && data.year==year && data.department==dept && data.section==sec && data.semester==sem){
+        arr.push(e.id)
+      }
+    })
+    return arr
+  }
+  catch(e)
+  {
+    console.log(e);
+  }
+}
+
+
+
+

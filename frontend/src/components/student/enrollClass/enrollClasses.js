@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Navbar from '../../global_ui/navbar/navbar';
 import Select from "react-select";
-import { enrollCourse, fetchDepartments, fetchRegulationOptions,fetchisMid1,fetchisMid2, fetchisSem1, fetchisSem2, fetchSemNumber } from '../services/studentServices';
+import { enrollCourse, fetchDepartments, fetchRegulationOptions,fetchisMid1,fetchisMid2,  fetchSemNumber } from '../services/studentServices';
 import Button from '../../global_ui/buttons/button';
 import { Spinner } from '../../global_ui/spinner/spinner';
 import { useAuth } from '../../context/AuthContext';
