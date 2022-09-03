@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./uploadpra.module.css";
+import axios from "axios";
 
 import cx from "classnames";
 import { useAuth } from "../../context/AuthContext";
@@ -38,6 +39,8 @@ const Upload = () => {
 
   const { currentUser } = useAuth();
 
+  // for internet time
+  const [InternetTime, setInternetTime] = useState(null);
   function handleTitle(e) {
     let value = e;
     setPraTitle(value);
@@ -64,7 +67,7 @@ const Upload = () => {
         let ext;
         ext = files.name.split(".").pop();
         if (mid == 1) {
-          //DONT CHANGE == to === plis
+          //DONT CHANGE == to === plis //lol
           if (ext == "pdf") {
             if (files.size > size) {
               setUrl(null);
@@ -234,12 +237,30 @@ const Upload = () => {
     setisMid2(isMid2);
   }
 
+  // for fetching Internet time from online API
+  useEffect(() => {
+    axios.get(`http://worldtimeapi.org/api/timezone/Asia/Kolkata`).then(
+      (res) => {
+        if (res)
+          console.log(res.data.datetime);
+        setInternetTime(new Date(res.data.datetime));
+        console.log(new Date())
+
+      }
+    ).catch(err => { console.log(err) })
+
+    
+    // console.log(InternetTime);
+  }, []);
+  
   async function handleSelect(value) {
     setPraTitle("");
     setFileName("");
     setShowUploadModule(false);
     setError(null);
     setMid(value);
+
+    
 
     if (value !== "SELECT_MID") {
       setSelectError(null);
@@ -253,6 +274,7 @@ const Upload = () => {
         location.state.subject,
         value
       );
+      
       if (res.error == null) {
         setShowUploadModule(true);
         setLoading(false);
@@ -266,6 +288,7 @@ const Upload = () => {
       setLoading(false);
       setSelectError("select mid to continue");
     }
+
   }
 
   function dialogClose(x) {
@@ -297,6 +320,7 @@ const Upload = () => {
   useEffect(() => {
     getUserData();
     midboolean();
+    
   }, []);
 
   return pageLoad ? (
@@ -397,7 +421,7 @@ const Upload = () => {
                   {mid == 1 ? (
                     <div>
                       {deadLineInfo != null &&
-                      new Date() < deadLineInfo.lastDate.toDate() ? (
+                              (new Date() < deadLineInfo.lastDate.toDate() && InternetTime < deadLineInfo.lastDate.toDate() ) ? (
                         <div>
                           <ul className={styles.praInfo}>
                             <li
@@ -482,7 +506,7 @@ const Upload = () => {
                       </p>
                       <div>
                         {deadLineInfo != null &&
-                        new Date() < deadLineInfo.lastDate.toDate() ? (
+                        (new Date() < deadLineInfo.lastDate.toDate() && InternetTime < deadLineInfo.lastDate.toDate())? (
                           <div>
                             {mid1NotSubmitted ? (
                               <div>
@@ -533,11 +557,13 @@ const Upload = () => {
                                 className={styles.downloadBtn}
                                 style={{ margin: "0%", alignSelf: "center" }}
                               >
-                                <Download
+                                {/* <Download
                                   isIcon={true}
                                   url={existingFile}
                                   userID={currentUser.email.slice(0, 10)}
-                                />
+                                />  leads to errors. the download option is not required when nothing is submitted.
+                                after submitting grading is must and student cant access PRA after graded.
+                                once test the usage of this component and make changes.*/} 
                               </p>
                             </p>
 
@@ -555,7 +581,7 @@ const Upload = () => {
                   )}
                   {deadLineInfo != null && (
                     <div>
-                      {new Date() < deadLineInfo.lastDate.toDate() && (
+                      {(new Date() < deadLineInfo.lastDate.toDate() && InternetTime < deadLineInfo.lastDate.toDate()) && (
                         <div className={styles.customflex}>
                           <div
                             className={styles.fileContainer}
