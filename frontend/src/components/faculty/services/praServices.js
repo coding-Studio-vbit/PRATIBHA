@@ -71,11 +71,23 @@ export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
     console.log(error);
   }
 };
-
+//TODO
+//remove dept declaration
 export const getPRA = async (sub, department) => {
   //in createPra.js
+  department = "BTech_2021-22_3_CSE_D";
+  console.log(department.split("_"));
+  let course = department.split("_")[0];
+  let acadYear = department.split("_")[1];
+  let classroom =
+    department.split("_")[2] +
+    "_" +
+    department.split("_")[3] +
+    "_" +
+    department.split("_")[4];
+  console.log(sub,department)
   try {
-    const docRef = doc(db, "subjects", department);
+    const docRef = doc(db, "classesinfo", course, acadYear, classroom);
     const docData = await getDoc(docRef);
     const subjects = docData.data()["subjects"];
 
