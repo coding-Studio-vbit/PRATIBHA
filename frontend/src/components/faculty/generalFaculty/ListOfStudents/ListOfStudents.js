@@ -58,7 +58,6 @@ const ListofStudents = () => {
     branch = subjectval[3],
     section = subjectval[4],
     subject = subjectval[5];
-
   const Fetchdata = async (
     Course,
     regulation,
@@ -146,14 +145,19 @@ const ListofStudents = () => {
 //change subs collection
   const Fetchsubject = async () => {
     try {
-      const subjectRef = doc(db, "subjects", `${course}`);
+      const acadYear = subjectval[1]
+      console.log(subjectval[5])
+      let classroom = year+'_'+branch+'_'+section;
+      const subjectRef = doc(db, "classesinfo", Course,acadYear,classroom); 
       const subjectDoc = await getDoc(subjectRef);
       if (subjectDoc.exists()) {
+        console.log("doc exists")
         let document = subjectDoc.data();
         if (document["subjects"]) {
           let obj = document["subjects"].find(
             (o) => o.subject === subjectval[5]
           );
+     
           if (obj) {
             setButtonText("EDIT PRA");
             let ismid2 = await fetchisMid2(subjectval[0], subjectval[2]);
