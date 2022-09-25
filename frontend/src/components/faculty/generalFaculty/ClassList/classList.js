@@ -28,7 +28,7 @@ const ClassList = () => {
     const fetchSubjects = async () => {
       try {
         const res = await getEnrolledSubjects(currentUser.email);
-        console.log(res)
+ 
         if (res === -1) {
           //display error
         } else {

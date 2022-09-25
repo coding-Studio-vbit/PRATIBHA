@@ -87,6 +87,8 @@ const SubjectsList = () => {
     setloading(false);
   };
 
+
+  //change subs collection
   const fetchsubject = async (document, coedeadLine, course, midvalue) => {
     let mid;
     let date, dateConv;

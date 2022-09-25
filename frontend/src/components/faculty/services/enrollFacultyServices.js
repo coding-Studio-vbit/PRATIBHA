@@ -178,7 +178,7 @@ export const getEnrolledSubjects = async (email) => {
     let praSetSubs = {};
     for (let index = 0; index < data.length; index++) {
       let sub = data[index];
-console.log(sub);
+
 sub = "BTech_2021-22_3_CSE_D_Computer Networks";
 let course = sub.split("_")[0];
   let acadYear = sub.split("_")[1];
@@ -190,7 +190,6 @@ let course = sub.split("_")[0];
     sub.split("_")[4];
     //TODO :alter this
     const parts = sub.split("_");
-    console.log(course,acadYear,classroom,parts[5])
 
 
         const subRef = doc(db, "classesinfo", course, acadYear, classroom);

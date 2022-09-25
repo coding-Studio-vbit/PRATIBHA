@@ -20,6 +20,8 @@ import {
   getDeptCurriculum,
 } from "./curriculumServices";
 
+
+//change subs collection
 export async function getFirstYearStatistics() {
   try {
     let arr1 = await getFirstYearCurriculumData(1);
@@ -45,6 +47,8 @@ export async function getFirstYearStatistics() {
   }
 }
 
+
+//change subs collection
 export async function getStatistics(course, dept, year) {
   try {
     let arr1 = await getDeptCurriculum(dept, course, year);
