@@ -13,7 +13,7 @@ import { enrollCourse } from "../../../student/services/studentServices";
 
 import { seeErrors } from "../../services/curriculumServices";
 
-
+//the screen where faculty sees the list of all their classes in the form of cards. 
 const ClassList = () => {
   const { currentUser } = useAuth();
   const [subs, setSubs] = useState();
@@ -28,6 +28,7 @@ const ClassList = () => {
     const fetchSubjects = async () => {
       try {
         const res = await getEnrolledSubjects(currentUser.email);
+        console.log(res)
         if (res === -1) {
           //display error
         } else {

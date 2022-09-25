@@ -143,7 +143,7 @@ const ListofStudents = () => {
     }
     setloading(false);
   };
-
+//change subs collection
   const Fetchsubject = async () => {
     try {
       const subjectRef = doc(db, "subjects", `${course}`);

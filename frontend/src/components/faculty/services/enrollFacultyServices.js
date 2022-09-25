@@ -163,6 +163,10 @@ export async function enrollHODClasses(email, enrolled_classes) {
 }
 
 //get faculty enrolled classes
+/*TODO
+REMOVE SUB DECLARATION
+CHECK FUNCTION ONCE MORE
+*/
 export const getEnrolledSubjects = async (email) => {
   try {
     const docRef = await getDoc(doc(db, "faculty", email));
@@ -173,24 +177,26 @@ export const getEnrolledSubjects = async (email) => {
     let mbaSubs = [];
     let praSetSubs = {};
     for (let index = 0; index < data.length; index++) {
-      const sub = data[index];
+      let sub = data[index];
+console.log(sub);
+sub = "BTech_2021-22_3_CSE_D_Computer Networks";
+let course = sub.split("_")[0];
+  let acadYear = sub.split("_")[1];
+  let classroom =
+    sub.split("_")[2] +
+    "_" +
+    sub.split("_")[3] +
+    "_" +
+    sub.split("_")[4];
+    //TODO :alter this
+    const parts = sub.split("_");
+    console.log(course,acadYear,classroom,parts[5])
 
-      //TODO :alter this
-      const parts = sub.split("_");
-      const idk =
-        parts[0] +
-        "_" +
-        parts[1] +
-        "_" +
-        parts[2] +
-        "_" +
-        parts[3] +
-        "_" +
-        parts[4];
 
-      const subRef = await getDoc(doc(db, "subjects", idk));
-      if (subRef.exists()) {
-        const subsData = subRef.data()["subjects"];
+        const subRef = doc(db, "classesinfo", course, acadYear, classroom);
+        const docSnap = await getDoc(subRef);
+      if (docSnap.exists()) {
+        const subsData = docSnap.data()["subjects"];
 
         for (let i = 0; i < subsData.length; i++) {
           if (parts[5] === subsData[i].subject) {
