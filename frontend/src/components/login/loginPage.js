@@ -68,7 +68,7 @@ export default function LoginPage() {
 
         {
         showNotEnrolledDialog && 
-        <Dialog message={"You are not enrolled. Please contact the faculty."} setShowDialog={setShowNotEnrolledDialog} onOK={()=>{
+        <Dialog message={"You are not enrolled. Please contact your department co-ordinator."} setShowDialog={setShowNotEnrolledDialog} onOK={()=>{
           setShowNotEnrolledDialog(false)
         }}/>
         }
