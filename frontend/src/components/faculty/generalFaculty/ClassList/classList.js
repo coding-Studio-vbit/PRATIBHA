@@ -159,7 +159,7 @@ const ClassList = () => {
                     onclick={handleCard}
                     text={newItem}
                     subText={
-                      subs.praSetSubs[item]
+                      subs.praSetSubs[item].date1
                         ? subs.praSetSubs[item].date2
                           ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
                           : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
@@ -192,7 +192,7 @@ const ClassList = () => {
                     onclick={handleCard}
                     text={newItem}
                     subText={
-                      subs.praSetSubs[item]
+                      subs.praSetSubs[item].date1
                         ? subs.praSetSubs[item].date2
                           ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
                           : `MID 1 Deadline: ${subs.praSetSubs[item].date1}`
@@ -230,7 +230,7 @@ const ClassList = () => {
                     onclick={handleCard}
                     text={newItem}
                     subText={
-                      subs.praSetSubs[item]
+                      subs.praSetSubs[item].date1
                         ? subs.praSetSubs[item].date2
                           ? `MID 2 Deadline: ${subs.praSetSubs[item].date2}`
                           : ` MID 1 Deadline: ${subs.praSetSubs[item].date1}`

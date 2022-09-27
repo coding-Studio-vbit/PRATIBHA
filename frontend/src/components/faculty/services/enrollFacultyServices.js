@@ -7,31 +7,60 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import { getAcademicYear } from "./adminDeadlinesServices";
+
+export async function modifySubjectName(subjects){
+  let modSubjects = [];
+  if(subjects.length){
+    for(let i=0; i<subjects.length; i++){
+      let Sub = subjects[i].split("_");
+      let newSub = "";
+      if(Sub.length == 6){
+        let acadYear = await getAcademicYear(Sub[0], Sub[2]);
+        console.log(acadYear.data);
+        newSub = Sub[0]+"_"+acadYear.data+"_"+Sub[2]+"_"+Sub[3]+"_"+Sub[4]+"_"+Sub[5];
+      }else{
+        let acadYear = await getAcademicYear(Sub[0], Sub[1]);
+        console.log(acadYear);
+        newSub = Sub[0]+"_"+acadYear.data+"_"+Sub[1]+"_"+Sub[2]+"_"+Sub[3]+"_"+Sub[4];
+      }      
+      modSubjects.push(newSub);
+    } 
+  }
+  return modSubjects;
+}
 
 //post faculty enrolled classes
 export async function enrollClasses(email, enrolled_classes) {
+
+  let mod_enrolled_classes = await modifySubjectName(enrolled_classes);
   const facultyRef = doc(db, "faculty", email);
   let alreadyEnrolled = [];
   let isAlreadyEnrolled = false;
   try {
-    await setDoc(facultyRef, { subjects: enrolled_classes, isEnrolled: false });
-    for (let i = 0; i < enrolled_classes.length; i++) {
-      var classname = enrolled_classes[i].split("_");
-      var fetchclass =
-        classname[0] +
-        "_" +
-        classname[1] +
-        "_" +
-        classname[2] +
-        "_" +
-        classname[3] +
-        "_" +
-        classname[4];
-      const docRef = doc(db, "classesinfo", fetchclass);
+    await setDoc(facultyRef, { subjects: mod_enrolled_classes, isEnrolled: false });
+    for (let i = 0; i < mod_enrolled_classes.length; i++) {
+      var classname = mod_enrolled_classes[i].split("_");
+      // classname like "BTech_2022-23_4_IT_B_MACHINE LEARNING"
+      // var fetchclass =
+      //   classname[0] +
+      //   "_" +
+      //   classname[1] +
+      //   "_" +
+      //   classname[2] +
+      //   "_" +
+      //   classname[3] +
+      //   "_" +
+      //   classname[4];
+      //const docRef = doc(db, "classesinfo", fetchclass);
+      let course = classname[0];
+      let acadYear = classname[1];
+      let classroom = classname[2]+"_"+classname[3]+"_"+classname[4];      
+      const docRef = doc(db, "classesinfo", course, acadYear, classroom);
       const docData = await getDoc(docRef);
       if (docData.exists()) {
         try {
-          const facultyIDs = docData.data()["faculty_ID"];
+          const facultyIDs = docData.data()["subjects"];
 
           if (facultyIDs != null) {
             for (let index = 0; index < facultyIDs.length; index++) {
@@ -40,11 +69,11 @@ export async function enrollClasses(email, enrolled_classes) {
                 isAlreadyEnrolled = true;
                 alreadyEnrolled = [
                   ...alreadyEnrolled,
-                  { faculty: ele.faculty, subject: enrolled_classes[i] },
+                  { faculty: ele.faculty, subject: mod_enrolled_classes[i] },
                 ];
               } else {
                 await updateDoc(docRef, {
-                  faculty_ID: arrayUnion({
+                  subjects: arrayUnion({
                     faculty: email,
                     subject: classname[5],
                   }),
@@ -53,7 +82,7 @@ export async function enrollClasses(email, enrolled_classes) {
             }
           } else {
             await updateDoc(docRef, {
-              faculty_ID: [
+              subjects: [
                 {
                   faculty: email,
                   subject: classname[5],
@@ -66,7 +95,7 @@ export async function enrollClasses(email, enrolled_classes) {
         }
       } else {
         await setDoc(docRef, {
-          faculty_ID: [
+          subjects: [
             {
               faculty: email,
               subject: classname[5],
@@ -88,30 +117,35 @@ export async function enrollClasses(email, enrolled_classes) {
 
 //post hod enrolled classes
 export async function enrollHODClasses(email, enrolled_classes) {
+  let mod_enrolled_classes = await modifySubjectName(enrolled_classes);
   const facultyRef = doc(db, "faculty", email);
   let alreadyEnrolled = [];
   let isAlreadyEnrolled = false;
   try {
     await updateDoc(facultyRef, {
-      subjects: enrolled_classes,
+      subjects: mod_enrolled_classes,
       isEnrolled: false,
     });
-    for (let i = 0; i < enrolled_classes.length; i++) {
-      var classname = enrolled_classes[i].split("_");
-      var fetchclass =
-        classname[0] +
-        "_" +
-        classname[1] +
-        "_" +
-        classname[2] +
-        "_" +
-        classname[3] +
-        "_" +
-        classname[4];
-      const docRef = doc(db, "classesinfo", fetchclass);
+    for (let i = 0; i < mod_enrolled_classes.length; i++) {
+      var classname = mod_enrolled_classes[i].split("_");
+      // var fetchclass =
+      //   classname[0] +
+      //   "_" +
+      //   classname[1] +
+      //   "_" +
+      //   classname[2] +
+      //   "_" +
+      //   classname[3] +
+      //   "_" +
+      //   classname[4];
+      // const docRef = doc(db, "classesinfo", fetchclass);
+      let course = classname[0];
+      let acadYear = classname[1];
+      let classroom = classname[2]+"_"+classname[3]+"_"+classname[4];      
+      const docRef = doc(db, "classesinfo", course, acadYear, classroom);
       const docData = await getDoc(docRef);
       if (docData.exists()) {
-        const facultyIDs = docData.data()["faculty_ID"];
+        const facultyIDs = docData.data()["subjects"];
         if (facultyIDs != null) {
           for (let index = 0; index < facultyIDs.length; index++) {
             const ele = facultyIDs[index];
@@ -119,11 +153,11 @@ export async function enrollHODClasses(email, enrolled_classes) {
               isAlreadyEnrolled = true;
               alreadyEnrolled = [
                 ...alreadyEnrolled,
-                { faculty: ele.faculty, subject: enrolled_classes[i] },
+                { faculty: ele.faculty, subject: mod_enrolled_classes[i] },
               ];
             } else {
               await updateDoc(docRef, {
-                faculty_ID: arrayUnion({
+                subjects: arrayUnion({
                   faculty: email,
                   subject: classname[5],
                 }),
@@ -132,7 +166,7 @@ export async function enrollHODClasses(email, enrolled_classes) {
           }
         } else {
           await updateDoc(docRef, {
-            faculty_ID: [
+            subjects: [
               {
                 faculty: email,
                 subject: classname[5],
@@ -142,7 +176,7 @@ export async function enrollHODClasses(email, enrolled_classes) {
         }
       } else {
         await setDoc(docRef, {
-          faculty_ID: [
+          subjects: [
             {
               faculty: email,
               subject: classname[5],
@@ -179,7 +213,7 @@ export const getEnrolledSubjects = async (email) => {
     for (let index = 0; index < data.length; index++) {
       let sub = data[index];
 
-sub = "BTech_2021-22_3_CSE_D_Computer Networks";
+//sub = "BTech_2021-22_3_CSE_D_Computer Networks";
 let course = sub.split("_")[0];
   let acadYear = sub.split("_")[1];
   let classroom =
@@ -200,9 +234,11 @@ let course = sub.split("_")[0];
         for (let i = 0; i < subsData.length; i++) {
           if (parts[5] === subsData[i].subject) {
             praSetSubs[sub] = subsData[i];
+            if(praSetSubs[sub].deadline1){            
             let date1 = praSetSubs[sub].deadline1.toDate();
             date1 = date1.toLocaleDateString("en-GB");
             praSetSubs[sub].date1 = date1;
+            }
             if (praSetSubs[sub].deadline2) {
               let date2 = praSetSubs[sub].deadline2.toDate();
               date2 = date2.toLocaleDateString("en-GB");
@@ -268,27 +304,33 @@ export async function deleteClass(email, className) {
 
 //enrolls to a single class (or) adds a class to enrolled classes
 export async function addClass(email, addedClass) {
+  let arr = [addedClass]
+  let modarr_addedClass = await modifySubjectName(arr);
+  let mod_addedClass = modarr_addedClass[0];
   const facultyRef = doc(db, "faculty", email);
   try {
-    await updateDoc(facultyRef, { subjects: arrayUnion(addedClass) });
+    await updateDoc(facultyRef, { subjects: arrayUnion(mod_addedClass) });
 
-    var classname = addedClass.split("_");
-    var fetchclass =
-      classname[0] +
-      "_" +
-      classname[1] +
-      "_" +
-      classname[2] +
-      "_" +
-      classname[3] +
-      "_" +
-      classname[4];
-
-    const docRef = doc(db, "classesinfo", fetchclass);
+    var classname = mod_addedClass.split("_");
+    // var fetchclass =
+    //   classname[0] +
+    //   "_" +
+    //   classname[1] +
+    //   "_" +
+    //   classname[2] +
+    //   "_" +
+    //   classname[3] +
+    //   "_" +
+    //   classname[4];
+    // const docRef = doc(db, "classesinfo", fetchclass);
+    let course = classname[0];
+    let acadYear = classname[1];
+    let classroom = classname[2]+"_"+classname[3]+"_"+classname[4];      
+    const docRef = doc(db, "classesinfo", course, acadYear, classroom);
     const docData = await getDoc(docRef);
     if (docData.exists()) {
       let d1 = true;
-      const facultyIDs = docData.data()["faculty_ID"];
+      const facultyIDs = docData.data()["subjects"];
       if (facultyIDs != null)
         for (let index = 0; index < facultyIDs.length; index++) {
           const ele = facultyIDs[index];
@@ -297,13 +339,13 @@ export async function addClass(email, addedClass) {
             d1 = false;
             return {
               data: ele.faculty,
-              className: addedClass.split("_").join("-"),
+              className: mod_addedClass.split("_").join("-"),
             };
             //SHOW THAT SOME FACULTY ALREADY REGISTERED......
           } else {
             d1 = false;
             await updateDoc(docRef, {
-              faculty_ID: arrayUnion({
+              subjects: arrayUnion({
                 faculty: email,
                 subject: classname[5],
               }),
@@ -313,7 +355,7 @@ export async function addClass(email, addedClass) {
         }
       if (d1) {
         await updateDoc(docRef, {
-          faculty_ID: [
+          subjects: [
             {
               faculty: email,
               subject: classname[5],
@@ -324,7 +366,7 @@ export async function addClass(email, addedClass) {
     } else {
       //setdoc
       await setDoc(docRef, {
-        faculty_ID: [
+        subjects: [
           {
             faculty: email,
             subject: classname[5],
