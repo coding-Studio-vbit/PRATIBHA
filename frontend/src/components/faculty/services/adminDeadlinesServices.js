@@ -172,7 +172,29 @@ async function updateSubs(course,year,dept,subs,subno){
   }
 }
 
+async function getAcademicYear(course, year){
+  const ayref = doc(db, `adminData/academic_year/${course}`,`${year}`);
+  try{
+    const docSnap = await getDoc(ayref);
+    if(docSnap.exists()){
+      return {
+        data: docSnap.data()["ay"],
+        error: null,
+      };
+    }else{
+      return {
+        data: null,
+        error: "ACADEMIC_YEAR_NOT_SET",
+      };
+    }
 
+  }catch (error) {
+    return {
+      data: null,
+      error: error,
+    };
+  }
+}
 
 
 export {
@@ -180,5 +202,6 @@ export {
   getBeforeSemEnd,
   getSemDeadline,
   setCoeDeadlines,
-  updateSubs
+  updateSubs,
+  getAcademicYear
 };
