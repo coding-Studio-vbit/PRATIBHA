@@ -175,6 +175,22 @@ async function fetchisMid2(course, year) {
   }
 }
 
+async function fetchMidNumber(course,year)  {
+  const isMid1 = await fetchisMid1(course, year);
+  const isMid2 = await fetchisMid2(course, year);
+
+
+    if (isMid1) {
+      return("1");
+    } else if (isMid2) {
+      return("2");
+    }
+    else return -1;
+
+
+
+}
+
 async function getSubjectsList(email) {
   const userRef = doc(db, "users", email);
   try {
@@ -476,6 +492,7 @@ export {
   getFileUploadDetails,
   fetchisMid1,
   fetchisMid2,
+  fetchMidNumber,
   fetchisSem1,
   fetchisSem2,
   fetchSemNumber,

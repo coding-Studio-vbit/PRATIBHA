@@ -13,30 +13,57 @@ import {
   fetchRegulationsArray,
   fetchSemNumber,
   getStudentData,
+  fetchMidNumber
 } from "../../student/services/studentServices";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import {
   getFirstYearCurriculumData,
   getDeptCurriculum,
 } from "./curriculumServices";
+import { getAcademicYear } from "./adminDeadlinesServices";
 
 
 //change subs collection
 export async function getFirstYearStatistics() {
   try {
-    let arr1 = await getFirstYearCurriculumData(1);
+    let semNumber = await fetchSemNumber('BTech','1');
+
+    let arr1 = await getFirstYearCurriculumData(semNumber);
+    let mid = await fetchMidNumber("BTech",'1');
     let createdPRA = [];
     let str = "";
-    const regArray = await fetchRegulationOptions();
-    let regulation = regArray.data[0].value;
-    const q = query(collection(db, "subjects"));
+    let acadYearData = await getAcademicYear('BTech','1');
+    let acadYear = acadYearData.data;
+
+    const q = query(collection(db, `classesinfo/BTech/${acadYear}`));
+
     const allDocs = await getDocs(q);
+   
     allDocs.docs.forEach((e) => {
       let arr = e.id.split("_");
-      if (arr[0] == "BTech" && arr[1] == regulation && arr[2] == "1") {
+      if (arr[0] == "1" ) {
         for (let i = 0; i < e.data()["subjects"].length; i++) {
-          str = e.id + "_" + e.data()["subjects"][i].subject;
-          createdPRA.push(str);
+          let sub = e.data()["subjects"][i];
+          if (mid=='1')
+          {
+            
+            if(sub.deadline1)
+            {
+
+              str = "BTech"+"_"+acadYear+"_"+e.id + "_" + sub.subject;
+              createdPRA.push(str);
+            }
+
+          }
+          if (mid=='2')
+          {
+            if(sub.deadline2)
+            {
+              str = "BTech"+"_"+acadYear+"_"+e.id + "_" + sub.subject;
+              createdPRA.push(str);
+            }
+          }
+
         }
       }
     });
