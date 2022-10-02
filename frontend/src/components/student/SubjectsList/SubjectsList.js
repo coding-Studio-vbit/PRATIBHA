@@ -87,13 +87,24 @@ const SubjectsList = () => {
     setloading(false);
   };
 
+
+  //change subs collection
+  //TODO REMOVE ACADYEAR DECLARATIONS!!
   const fetchsubject = async (document, coedeadLine, course, midvalue) => {
+    console.log(document,course,midvalue);
+    let Course = course.split("_")[0];
+    let acadYear = course.split("_")[1];
+    acadYear = "2021-22"
+    let classroom = course.split("_")[2]+"_"+course.split("_")[3]+"_"+course.split("_")[4]
     let mid;
     let date, dateConv;
-    const subjectRef = doc(db, "subjects", course);
+    console.log(Course,acadYear,classroom)
+    const subjectRef = doc(db, "classesinfo", Course,acadYear,classroom);
     await getDoc(subjectRef).then(async (subjectDoc) => {
       if (subjectDoc.exists()) {
+        console.log(subjectDoc.data());
         const res = subjectDoc.data()["subjects"];
+        console.log(res)
         await res.map(async (item, index) => {
           let date1 = new Timestamp(
             item["deadline1"].seconds,

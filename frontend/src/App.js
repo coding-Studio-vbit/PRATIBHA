@@ -49,7 +49,6 @@ const AllRoutes = () => {
             path="/student/*"
             element={
               <Routes>
-                <Route exact path="/enroll" element={<EnrollClasses />} />
                 <Route path="/subjectslist" element={<SubjectsList />} />
                 <Route path="/uploadPRA" element={<Upload />} />
               </Routes>

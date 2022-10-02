@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 import Footer from "./footer/footer";
+import Dialog from "../global_ui/dialog/dialog";
 
 
 // import Announcement from "./announcements/announcements";
@@ -11,6 +12,9 @@ import Footer from "./footer/footer";
 export default function LoginPage() {
   const { signInWithGoogle, currentUser, loading } = useAuth();
   const nav = useNavigate();
+
+  const [showNotEnrolledDialog, setShowNotEnrolledDialog] = useState(false);
+
   const text="Participatory Report Assessment of Theme and Innovation Based Harmonic Activities";
   
   const [displayText, setdisplayText] = useState("");
@@ -31,7 +35,7 @@ export default function LoginPage() {
     if (currentUser) {
       if (currentUser.userType === "STUDENT") {
         if (currentUser.isFirstTime) {
-          nav("/student/enroll", { replace: true });
+          setShowNotEnrolledDialog(true);
         } else {
           nav("/student/subjectslist", { replace: true });
         }
@@ -61,6 +65,13 @@ export default function LoginPage() {
           <img alt="vbit" className="vbit" src="/vbit.png" />       
           <img alt="codingStudio" className="cs_logo" src="/cs_logo.png" />
         </div>
+
+        {
+        showNotEnrolledDialog && 
+        <Dialog message={"You are not enrolled. Please contact your department co-ordinator."} setShowDialog={setShowNotEnrolledDialog} onOK={()=>{
+          setShowNotEnrolledDialog(false)
+        }}/>
+        }
 
         <div className="landingCard">
             <div className="titleLogin">

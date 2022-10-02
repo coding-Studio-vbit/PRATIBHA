@@ -29,6 +29,7 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       await signInWithPopup(auth, provider);
+      setLoading(false)
     } catch (e) {
       console.log(e);
       setCurrentUser(null);
@@ -54,22 +55,20 @@ export function AuthProvider({ children }) {
       let isCOE = false
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
-         
-
           if (checkStudent(user.email.split("@")[0])) {
             userType = "STUDENT";
             const docRef = doc(db, "users", user.email);
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-              const  semester = docSnap.data().semester;
+              const semester = docSnap.data().semester;
               const semcheck = await fetchSemNumber(docSnap.data().course,docSnap.data().year);
               if(semester==semcheck){
                 isFirstTime=false;
               }else{
                 isFirstTime = true;
               }
-               
+
               }
             } catch (e) {
               //Display it

@@ -5,12 +5,13 @@ import {
   fetchRegulationsArray,
   fetchSemNumber,
 } from "../../student/services/studentServices";
+import { getAcademicYear } from "./adminDeadlinesServices";
 
 //get the whole BTech first Year curriculum details.
 export const getFirstYearCurriculumData = async (semester) => {
-  const regArray = await fetchRegulationOptions();
-  let regulation = regArray.data[0].value;
-
+  console.log(semester)
+  let acadYearData = await getAcademicYear('BTech','1');
+  let acadYear = acadYearData.data;
   try {
     const q = query(collection(db, "curriculum", "BTech", "1"));
     const alldocs = await getDocs(q);
@@ -19,12 +20,12 @@ export const getFirstYearCurriculumData = async (semester) => {
     let str = "";
     alldocs.docs.forEach((e) => {
       for (let i = 0; i < e.data()["sections"].length; i++) {
-        if (semester === 1) {
+        if (semester == 1) {
           for (let j = 0; j < e.data()["subjects"].length; j++) {
             str =
               "BTech" +
               "_" +
-              regulation +
+              acadYear +
               "_1_" +
               e.id +
               "_" +
@@ -35,12 +36,12 @@ export const getFirstYearCurriculumData = async (semester) => {
             courses.push(str);
           }
         }
-        if (semester === 2) {
+        if (semester ==2) {
           for (let j = 0; j < e.data()["subjects2"].length; j++) {
             str =
               "BTech" +
               "_" +
-              regulation +
+           acadYear +
               "_1_" +
               e.id +
               "_" +
