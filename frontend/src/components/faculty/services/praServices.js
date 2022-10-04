@@ -16,7 +16,7 @@ export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
   //in createPRA.js
   //if the faculty is coming to createPRA page, it means that the faculty has enrollled. So, in the doc(BTech/2021-22/3_CSE_D), a subjects array exists and the particular subject element also exists. While setting PRA deadline, just update the array element.
   console.log(sub, department, date, inst);
-  department = "BTech_2021-22_3_CSE_D";
+ // department = "BTech_2021-22_3_CSE_D";
   console.log(department.split("_"));
   let course = department.split("_")[0];
   let acadYear = department.split("_")[1];
@@ -75,7 +75,7 @@ export const setPRA = async (sub, department, date, inst, isMid1, isMid2) => {
 //remove dept declaration
 export const getPRA = async (sub, department) => {
   //in createPra.js
-  department = "BTech_2021-22_3_CSE_D";
+  //department = "BTech_2021-22_3_CSE_D";
   console.log(department.split("_"));
   let course = department.split("_")[0];
   let acadYear = department.split("_")[1];

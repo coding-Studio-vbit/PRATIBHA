@@ -15,6 +15,7 @@ import Card_ from "../../global_ui/card/card_";
 import "./SubjectlistStyles.css";
 import Dialog from "../../global_ui/dialog/dialog";
 import { getCoeDeadline } from "../../faculty/services/adminDeadlinesServices";
+import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
@@ -27,7 +28,8 @@ const SubjectsList = () => {
   const [userDoc, setuserDoc] = useState(null);
   const [courseTitle, setCourseTitle] = useState(" ");
   const [course, setcourse] = useState("");
-  const[regulation,setregulation]=useState("");
+  const [regulation,setregulation]=useState("");
+  const [acadYear, setAcadYear] = useState("");
   const [year, setyear] = useState("");
 
   const { currentUser } = useAuth();
@@ -38,11 +40,16 @@ const SubjectsList = () => {
       setuserDoc(document);
       setcourse(document.course);
       setyear(document.year);
-      setregulation(document.regulation);
+      let academic_year = '';
+      await getAcademicYear(document.course, document.year)
+      .then((res)=> {
+        academic_year = res.data;
+        setAcadYear(res.data);
+      });
       let course =
         document.course +
         "_" +
-        document.regulation+
+        academic_year+
         "_"+
         document.year +
         "_" +
@@ -94,12 +101,12 @@ const SubjectsList = () => {
     console.log(document,course,midvalue);
     let Course = course.split("_")[0];
     let acadYear = course.split("_")[1];
-    acadYear = "2021-22"
+   // acadYear = "2021-22"
     let classroom = course.split("_")[2]+"_"+course.split("_")[3]+"_"+course.split("_")[4]
     let mid;
     let date, dateConv;
     console.log(Course,acadYear,classroom)
-    const subjectRef = doc(db, "classesinfo", Course,acadYear,classroom);
+    const subjectRef = doc(db, "classesinfo", Course, acadYear, classroom);
     await getDoc(subjectRef).then(async (subjectDoc) => {
       if (subjectDoc.exists()) {
         console.log(subjectDoc.data());
@@ -130,8 +137,6 @@ const SubjectsList = () => {
               dateConv = date2.toLocaleDateString("en-US");
             }
           }
-
-         
 
           var dateint = new Date(dateConv).getTime();
           var currdate = new Date(currentDateConv).getTime();
@@ -228,7 +233,7 @@ const SubjectsList = () => {
             <div className="list-grid">
               {data &&
                 data.map((dataitem) => (
-                  <div
+                  <div key={dataitem.SUBJECT}
                     onClick={() => {
                       if (dataitem.STATUS !== "Graded") {
                         navigate("/student/uploadPRA", {
@@ -236,7 +241,7 @@ const SubjectsList = () => {
                             rollno: `${currentUser.email}`,
                             subject: dataitem.SUBJECT,
                             course: course,
-                            regulation:regulation,
+                            acadYear:acadYear,
                             year: year,
                           },
                         });
