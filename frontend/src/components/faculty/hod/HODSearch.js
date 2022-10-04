@@ -13,6 +13,7 @@ import { getFirstYearStatistics, getStatistics } from "../services/hodServices.j
 import { getIsEnrolled } from "../services/enrollFacultyServices.js";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../../global_ui/spinner/spinner";
+import { getAcademicYear } from "../services/adminDeadlinesServices.js";
 
 const HODSearch = () => {
   const [Course, setCourse] = useState({ value: "Loading", label: "Loading" });
@@ -28,6 +29,7 @@ const HODSearch = () => {
   const [disablesec, setdisablesec] = useState(true);
   const [dep, setDep] = useState("");
   const [notCreatedClasses, setnotCreatedClasses] = useState(null);
+  const [acadYear, setAcadYear] = useState("");
 
 
   const [department, setDepartment] = useState([
@@ -46,6 +48,12 @@ const HODSearch = () => {
 
     setisEnrolled(res.data);
   }
+
+  async function setAcademicYear(course, year) {
+    let academic_year = await getAcademicYear(course, year);
+    setAcadYear(academic_year.data);
+  }
+
   useEffect(() => {
     let klasses = [];
     let departments = [];
@@ -103,6 +111,7 @@ const HODSearch = () => {
     };
 
     getLables();
+    setAcademicYear(Course.value, Year.value);
   }, [Course, Year]);
 
   const [button, setButton] = useState(true);
@@ -124,6 +133,7 @@ const HODSearch = () => {
         Course: Course.value,
         Year: Year.value,
         Regulation: Regulation.value,
+        AcademicYear: acadYear,
         Dept: dep.label,
         Section: Section.value,
         Subject: Subject.value,

@@ -411,6 +411,50 @@ export async function fetchRegulationsArray() {
   }
 }
 
+async function fetchAcademicYearOptions() {
+  try {
+    const adminRef = doc(db, `adminData/acadyears`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let arr = [];
+      let ayarray = adminDoc.data()["acadYears"];
+      for (let i = 0; i < ayarray.length; i++) {
+        let match = false;
+        if (arr.length === 0) {
+          arr = [...arr, { value: `${ayarray[i]}`, label: `AY${ayarray[i]}` }];
+        }
+        for (let j = 0; j < arr.length; j++) {
+          if (arr[j].value == ayarray[i]) {
+            match = true;
+          }
+        }
+        if (!match) {
+          arr = [...arr, { value: `${ayarray[i]}`, label: `AY${ayarray[i]}` }];
+        }
+      }
+      return {
+        data: arr,
+        error: null,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function fetchAcademicYearArray() {
+  try {
+    const adminRef = doc(db, `adminData/acadyears`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let ayarray = adminDoc.data()["acadYears"];
+      return ayarray;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 async function fetchisSem1(course, year) {
   try {
     const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
@@ -498,4 +542,6 @@ export {
   fetchSemNumber,
   fetchRegulationOptions,
   getAnnouncements,
+  fetchAcademicYearOptions,
+  fetchAcademicYearArray,
 };
