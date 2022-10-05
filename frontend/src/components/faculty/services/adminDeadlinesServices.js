@@ -6,7 +6,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import {
-  fetchSemNumber,
+  fetchSemNumber, fetchToSetSem,
 } from "../../student/services/studentServices";
 
 
@@ -126,7 +126,8 @@ async function setCoeDeadlines(course, year, mid1, mid2, sem) {
 
   const midRef = doc(db, `adminData/coeDeadline/${course}`, `${year}`);
   const semRef = doc(db, `adminData/semester/${course}`, `${year}`);
-  const semnum = await fetchSemNumber(course, year);
+  //const semnum = await fetchSemNumber(course, year);
+  const semnum = await fetchToSetSem(course, year);
   try {
     const midDoc = await getDoc(midRef);
     if (midDoc.exists()) {
