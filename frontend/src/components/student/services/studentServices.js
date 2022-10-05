@@ -421,7 +421,7 @@ async function fetchAcademicYearOptions() {
       for (let i = 0; i < ayarray.length; i++) {
         let match = false;
         if (arr.length === 0) {
-          arr = [...arr, { value: `${ayarray[i]}`, label: `AY${ayarray[i]}` }];
+          arr = [...arr, { value: `${ayarray[i]}`, label: `${ayarray[i]}` }];
         }
         for (let j = 0; j < arr.length; j++) {
           if (arr[j].value == ayarray[i]) {
@@ -429,7 +429,7 @@ async function fetchAcademicYearOptions() {
           }
         }
         if (!match) {
-          arr = [...arr, { value: `${ayarray[i]}`, label: `AY${ayarray[i]}` }];
+          arr = [...arr, { value: `${ayarray[i]}`, label: `${ayarray[i]}` }];
         }
       }
       return {
