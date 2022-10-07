@@ -77,6 +77,7 @@ const HODSearch = () => {
       try {
         const sem = await fetchSemNumber(Course.value, Year.value);
         const res = await getCurriculumData(Course.value, Year.value, sem);
+        console.log(res)
         if (!res) return;
         setSubjects(res.subjects);
         setsections(res.sections);
@@ -123,7 +124,7 @@ const HODSearch = () => {
       state: {
         Course: Course.value,
         Year: Year.value,
-        Regulation: Regulation.value,
+        // Regulation: Regulation.value,
         Dept: dep.label,
         Section: Section.value,
         Subject: Subject.value,
@@ -131,7 +132,7 @@ const HODSearch = () => {
     });
   }
 
-  const [Regulation, setRegulation] = useState("");
+  // const [Regulation, setRegulation] = useState("");
   const [disablereg, setdisablereg] = useState(true);
   const [regoptionss, setregoptionss] = useState([]);
   async function regoptions() {
@@ -186,10 +187,12 @@ const HODSearch = () => {
           isDisabled={!Course}
           onChange={async (selectedYear) => {
             setYear(selectedYear);
+            console.log(selectedYear)
             setdisablereg(false);
+            setdisabledep(false);
           }}
         />
-        <span className="dd-text">Regulation</span>
+        {/* <span className="dd-text">Regulation</span>
         <Select
           placeholder=""
           value={Regulation}
@@ -200,7 +203,7 @@ const HODSearch = () => {
             setRegulation(r);
             setdisabledep(false);
           }}
-        />
+        /> */}
 
         <span className="dd-text">Department</span>
         <Select
@@ -231,6 +234,7 @@ const HODSearch = () => {
         />
 
         <span className="dd-text">Subject</span>
+        {console.log(subjects)}
         <Select
           className="selectHOD"
           placeholder=""
