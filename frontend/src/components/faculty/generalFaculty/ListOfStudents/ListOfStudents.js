@@ -53,23 +53,23 @@ const ListofStudents = () => {
   }
 
   let Course = subjectval[0],
-    regulation = subjectval[1],
+    acadYear = subjectval[1],
     year = subjectval[2],
     branch = subjectval[3],
     section = subjectval[4],
     subject = subjectval[5];
   const Fetchdata = async (
     Course,
-    regulation,
+    acadYear,
     year,
     branch,
     section,
     subject
   ) => {
+    let classname = year+'_'+branch+'_'+section;
     const studentref = query(
       doc(
-        db,
-        `classesinfo/${Course}_${regulation}_${year}_${branch}_${section}`
+        db, "classesinfo", Course, acadYear, classname
       )
     );
     let ismid1 = await fetchisMid1(Course, year);
@@ -177,7 +177,7 @@ const ListofStudents = () => {
   };
 
   useEffect(() => {
-    Fetchdata(Course, regulation, year, branch, section, subject, val);
+    Fetchdata(Course, acadYear, year, branch, section, subject, val);
     Fetchsubject();
   }, []);
   if (mid==''){

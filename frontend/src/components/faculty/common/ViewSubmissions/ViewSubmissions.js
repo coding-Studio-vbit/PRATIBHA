@@ -15,6 +15,7 @@ import {
 import { getAllStudents, Fetchlink } from "../../services/studentsDataServices";
 import Download from "../../../global_ui/download/download";
 import { useAuth } from "../../../context/AuthContext";
+import { getAcademicYear } from "../../services/adminDeadlinesServices";
 
 const ViewSubmissions = () => {
   const { currentUser } = useAuth();
@@ -42,7 +43,7 @@ const ViewSubmissions = () => {
   const DepartmentForFaculty =
     passedData.Course +
     "_" +
-    passedData.Regulation +
+    passedData.AcademicYear +
     "_" +
     passedData.Year +
     "_" +
@@ -60,7 +61,8 @@ const ViewSubmissions = () => {
   const [loading, setloading] = useState(true);
 
   let Course = passedData.Course,
-    regulation = passedData.Regulation,
+  //  regulation = passedData.Regulation,
+    acadYear = passedData.AcademicYear,
     year = passedData.Year,
     branch = passedData.Dept,
     section = passedData.Section,
@@ -82,16 +84,16 @@ const ViewSubmissions = () => {
 
   const Fetchdata = async (
     Course,
-    regulation,
+    acadYear,
     year,
     branch,
     section,
     subject
   ) => {
+    let classname = year+'_'+branch+'_'+section;
     const studentref = query(
       doc(
-        db,
-        `classesinfo/${Course}_${regulation}_${year}_${branch}_${section}`
+        db, "classesinfo", Course, acadYear, classname 
       )
     );
     let ismid1 = await fetchisMid1(Course, year);
@@ -105,7 +107,7 @@ const ViewSubmissions = () => {
       setMid("2");
     }
 
-    let semester = await fetchSemNumber();
+    let semester = await fetchSemNumber(Course, year);
     setSem(semester);
     let classDoc = await getDoc(studentref);
     if (classDoc.exists()) {
@@ -133,7 +135,7 @@ const ViewSubmissions = () => {
   };
 
   useEffect(() => {
-    Fetchdata(Course, regulation, year, branch, section, subject, course);
+    Fetchdata(Course, acadYear, year, branch, section, subject, course);
   }, []);
 
   return (

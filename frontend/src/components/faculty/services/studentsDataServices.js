@@ -283,10 +283,12 @@ export const Fetchlink = async (email, mid, fullcourse) => {
     //returns all the data about all the students of a particular class (Example: BTech_21_1_CSE_A)
     export async function getAllStudentsData(className) {
         const subject = className.split("_").pop();
+        let classdetails = className.split("_")
+        let Klass  = classdetails[2]+'_'+classdetails[3]+'_'+classdetails[4];       
+
         const facultyRef = doc(
           db,
-          "classesinfo",
-          className.replace("_" + subject, "")
+          "classesinfo", classdetails[0], classdetails[1], Klass
         );
       
         try {

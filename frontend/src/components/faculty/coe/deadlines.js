@@ -5,7 +5,7 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { Timestamp } from "firebase/firestore";
 import { getCoeDeadline, getSemDeadline,setCoeDeadlines } from "../services/adminDeadlinesServices";
-import { fetchSemNumber } from "../../student/services/studentServices";
+import { fetchSemNumber, fetchToSetSem } from "../../student/services/studentServices";
 import "./datepicker.css";
 import "./deadlines.css";
 import Dialog from "../../global_ui/dialog/dialog";
@@ -17,6 +17,7 @@ export default function Deadlines() {
   const [course, setCourse] = useState({ value: "BTech", label: "BTech" });
   const [year, setYear] = useState({ value: "1", label: "1" });
   const [semNumber, setSemNumber] = useState(1);
+  const [semToSet, setSemToSet] = useState(1);
   const [date1, setDate1] = useState(new Date(new Date().setHours(23, 59)));
   const [date2, setDate2] = useState(new Date(new Date().setHours(23, 59)));
   const [date3, setDate3] = useState(new Date(new Date().setHours(23, 59)));
@@ -30,8 +31,9 @@ export default function Deadlines() {
     console.log(loading)
     async function semDeadline() {
       let n = await fetchSemNumber(course.value, year.value);
-     setSemNumber(n);
-
+      setSemNumber(n);
+      let val = await fetchToSetSem(course.value, year.value);
+      setSemToSet(val);
     }
     semDeadline();
   
@@ -48,16 +50,22 @@ export default function Deadlines() {
           new Timestamp(res2.data.seconds, res2.data.nanoseconds).toDate()
         );
       }
-      const res3 = await getSemDeadline(
-        semNumber,
-        course.value,
-        year.value
-      );
-      if (res3.data != null) {
-        setDate3(
-          new Timestamp(res3.data.seconds, res3.data.nanoseconds).toDate()
+
+      let res3;
+      if(semNumber != -1){
+        res3 = await getSemDeadline(
+          semNumber,
+          course.value,
+          year.value
         );
       }
+      if(res3 != undefined){
+        if (res3.data != null) {
+          setDate3(
+            new Timestamp(res3.data.seconds, res3.data.nanoseconds).toDate()
+          );
+        }
+      }    
     };
     fetchDeadlines();
   }, [course, year,semNumber]);
@@ -161,7 +169,12 @@ setloading(true)
           className="datepicker-deadlines"
         />
       </div>
-      <p className="dd-title-deadline"> SEM-{semNumber}</p>
+      {
+      semNumber !== -1 ? 
+      ( <p className="dd-title-deadline"> SEM-{semNumber}</p>) :
+      ( <p className="dd-title-deadline"> set SEM-{semToSet}</p>)
+      }
+
       <div className="datepicker-flex">
         <DatePicker
           dateFormat="dd/MM/yyyy h:mm aa"

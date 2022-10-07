@@ -3,7 +3,7 @@ import Select from "react-select";
 import Navbar from "../../global_ui/navbar/navbar";
 import Button from "../../global_ui/buttons/button";
 import { getCurriculumData } from "../services/curriculumServices";
-import { fetchRegulationOptions, fetchSemNumber } from "../../student/services/studentServices";
+import { fetchRegulationOptions, fetchSemNumber, fetchAcademicYearOptions } from "../../student/services/studentServices";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../../global_ui/dialog/dialog";
 import "./coeSearch.css";
@@ -29,10 +29,19 @@ export default function CoeSearch() {
 
   const [showDialog, setShowDialog] = useState(null);
   const [Regulation,setRegulation]=useState('');
-  const[regoptionss,setregoptionss]=useState([]);
-   async function regoptions(){
+  const [acadYear, setAcadYear] = useState('');
+  const [regoptionss,setregoptionss]=useState([]);
+  const [ayoptions, setAyoptions] = useState([]);
+
+   async function regoptions(){ 
     const res = await fetchRegulationOptions();
   setregoptionss(res.data);
+   }
+
+   async function getAYOptions(){ 
+    const res = await fetchAcademicYearOptions();
+    setAyoptions(res.data);
+    console.log(res.data);
    }
 
   const nav = useNavigate();
@@ -53,7 +62,8 @@ export default function CoeSearch() {
     if (
       Course.value != null &&
       Year.value != null &&
-      Regulation.value!=null&&
+     // Regulation.value!=null&&
+      acadYear.value != null &&
       Department.value != null &&
       Section.value != null &&
       Subject.value != null
@@ -62,6 +72,7 @@ export default function CoeSearch() {
         Course: Course.value,
         Year: Year.value,
         Regulation:Regulation.value,
+        AcademicYear:acadYear.value,
         Dept: Department.value,
         Section: Section.value,
         Subject: Subject.value,
@@ -118,6 +129,7 @@ export default function CoeSearch() {
           onChange={(selectedCourse) => {
             setCourse(selectedCourse);
             regoptions();
+            getAYOptions()
           }}
         />
         <p className="dropdown-title">Year</p>
@@ -130,17 +142,17 @@ export default function CoeSearch() {
                 setYear(selectedYear);
               }}
             />
-             <p className="dropdown-title">Regulation</p>
+             <p className="dropdown-title">Academic Year</p>
                         <Select
                         placeholder=""
-                        value={Regulation}
+                        value={acadYear}
                         isDisabled={!Year}
                         className="selectCOE"
-                        options={regoptionss}
+                        options={ayoptions}
                         onChange={(r) => {
                          
                            
-                            setRegulation(r);
+                            setAcadYear(r);
                         }}
                         />
         <p className="dropdown-title">Department</p>
@@ -148,7 +160,7 @@ export default function CoeSearch() {
               placeholder=""
               options={departments}
               className="selectCOE"
-              isDisabled={!Regulation}
+              isDisabled={!acadYear}
               onChange={(selectedDepartment) => {
                 setDepartment(selectedDepartment);
                 setSections((c)=>{return {...c}})
