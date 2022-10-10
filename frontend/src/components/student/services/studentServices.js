@@ -411,6 +411,50 @@ export async function fetchRegulationsArray() {
   }
 }
 
+async function fetchAcademicYearOptions() {
+  try {
+    const adminRef = doc(db, `adminData/acadyears`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let arr = [];
+      let ayarray = adminDoc.data()["acadYears"];
+      for (let i = 0; i < ayarray.length; i++) {
+        let match = false;
+        if (arr.length === 0) {
+          arr = [...arr, { value: `${ayarray[i]}`, label: `${ayarray[i]}` }];
+        }
+        for (let j = 0; j < arr.length; j++) {
+          if (arr[j].value == ayarray[i]) {
+            match = true;
+          }
+        }
+        if (!match) {
+          arr = [...arr, { value: `${ayarray[i]}`, label: `${ayarray[i]}` }];
+        }
+      }
+      return {
+        data: arr,
+        error: null,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function fetchAcademicYearArray() {
+  try {
+    const adminRef = doc(db, `adminData/acadyears`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let ayarray = adminDoc.data()["acadYears"];
+      return ayarray;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 async function fetchisSem1(course, year) {
   try {
     const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
@@ -449,6 +493,59 @@ async function fetchisSem2(course, year) {
         return true;
       }
       return false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function fetchToSetSem(course, year){
+  try {
+    const adminRef = doc(db, `adminData/semester/${course}`, `${year}`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let date1, date2, currentdate;
+      currentdate = new Date();
+
+      if(adminDoc.data()["sem1"]){
+        date1 = new Timestamp(
+          adminDoc.data()["sem1"]["seconds"],
+          adminDoc.data()["sem1"]["nanoseconds"]
+        ).toDate();
+
+        if (date1 > currentdate) {
+          return 1;
+        }
+
+        if(adminDoc.data()["sem2"]){
+          date2 = new Timestamp(
+            adminDoc.data()["sem2"]["seconds"],
+            adminDoc.data()["sem2"]["nanoseconds"]
+          ).toDate();
+
+          if (date1 < currentdate && date2 > currentdate) {
+            return 2;
+          }
+          if (date1 < currentdate && date2 < currentdate){
+            if(date1 < date2){
+              return 1;
+            }
+            if(date1 > date2){
+              return 2;
+            }
+          }
+        }else{
+          return 2;
+        }
+      }else{
+        return 1;
+      }      
+      
+      if(date1 === undefined){
+        if(date2 === undefined){
+          return 1;
+        }
+      }
     }
   } catch (error) {
     console.log(error);
@@ -498,4 +595,7 @@ export {
   fetchSemNumber,
   fetchRegulationOptions,
   getAnnouncements,
+  fetchAcademicYearOptions,
+  fetchAcademicYearArray,
+  fetchToSetSem,
 };

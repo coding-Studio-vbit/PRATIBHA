@@ -9,7 +9,6 @@ import { getAcademicYear } from "./adminDeadlinesServices";
 
 //get the whole BTech first Year curriculum details.
 export const getFirstYearCurriculumData = async (semester) => {
-  console.log(semester)
   let acadYearData = await getAcademicYear('BTech','1');
   let acadYear = acadYearData.data;
   try {
