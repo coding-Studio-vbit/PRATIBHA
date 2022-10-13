@@ -1,0 +1,105 @@
+.bodyContainer{
+      height: 90vh;
+      width:100vw;
+      display: flex;
+}
+
+.nav{
+      width: 100vw;
+}
+
+
+.enrollcontainer{
+      width: 40vw;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
+      /* justify-content: center; */
+      align-items: center;
+      border: 1px solid black;
+      /* gap:10rem; */
+}
+
+.inputbox{
+      margin-top: 1em;
+      min-width: 18rem;
+}
+
+.fileinput{
+      text-align: center;
+      border: 0.5em solid #0E72AB;
+      height: auto;
+      padding:1em;
+      display: flex;
+      flex-direction: column;
+}
+
+.fileupload{
+      cursor: pointer;
+      color:#0E72AB;
+      display: flex;
+      font-size: larger;
+      font-weight: bold;
+      flex-direction: column;
+      margin-top: 3rem;
+      min-width: 20rem;
+}
+
+.progress{
+      width: 50vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5em;
+      padding : 2rem;
+}
+.segment{
+      display: flex;
+      width: 100%;
+      /* gap: 2em; */
+      justify-content: flex-start;
+      align-items: center;
+      /* align-content: space-between; */
+}
+.bars{
+      display: flex;
+      border: 1px black solid;
+      min-width: 30rem;
+      height: 1.5rem;
+      padding:0;
+      margin:0;
+      border-radius: 2em;
+      color: transparent;
+      overflow: hidden;
+      justify-self: flex-start;
+}
+
+.lol{
+      display: flex;
+      width: 0%;
+       /* display: flex; */
+      cursor: pointer;
+      offset: 0;
+      margin:0;
+      padding:0;
+      background-color: blue;
+      animation: fill 1000ms ease-in-out forwards ;
+      transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.info{
+      text-align: center;
+      min-width: 10em;
+      margin-right: 1em;
+}
+
+@keyframes fill {
+      0% {width: 0%;background-color: blue;}
+      /* 25% {width: 25%;background-color: blue;}
+      50% {width: 50%; background-color: blue;} */
+      75% {width: 90%;background-color: blue;} 
+      /* 90% {width:100%;background-color: blue;} */
+      100% {width:100%;background-color:green}
+}
+
