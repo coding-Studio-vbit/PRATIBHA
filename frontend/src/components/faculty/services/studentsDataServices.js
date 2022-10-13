@@ -14,6 +14,7 @@ import {
   getStudentData,
 } from "../../student/services/studentServices";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
+import { getAcademicYear } from "./adminDeadlinesServices";
 
 
 export const Fetchlink = async (email, mid, fullcourse) => {
@@ -62,7 +63,9 @@ export const Fetchlink = async (email, mid, fullcourse) => {
             Presentation2 = "";
   
           if (error == null) {
-            let obj = returndata["subjects"].find((o) => o.subject === subject);
+            const academicYear = await getAcademicYear(document.course, document.year)
+            const semNo = await fetchSemNumber(document.course, document.year)
+            let obj = returndata[academicYear.data][`sem${semNo}`].find((o) => o.subject === subject);
             if (obj) {
               topic = obj.topic;
               name = returndata.name;

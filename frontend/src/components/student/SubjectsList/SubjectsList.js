@@ -5,6 +5,7 @@ import { db } from "../../../firebase";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import {
   getStudentData,
+  fetchSemNumber,
   fetchisMid1,
   fetchisMid2,
 } from "../services/studentServices";
@@ -16,6 +17,7 @@ import "./SubjectlistStyles.css";
 import Dialog from "../../global_ui/dialog/dialog";
 import { getCoeDeadline } from "../../faculty/services/adminDeadlinesServices";
 import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
+
 
 const SubjectsList = () => {
   const [data, setData] = useState([]);
@@ -111,8 +113,9 @@ const SubjectsList = () => {
       if (subjectDoc.exists()) {
         console.log(subjectDoc.data());
         const res = subjectDoc.data()["subjects"];
-        console.log(res)
+        console.log(res)    
         await res.map(async (item, index) => {
+          console.log(item);
           let date1 = new Timestamp(
             item["deadline1"].seconds,
             item["deadline1"].nanoseconds
@@ -158,8 +161,10 @@ const SubjectsList = () => {
 
   const fetchusersubject = async (document, date, mid, subject, isWeek) => {
     try {
-      const subjectsdata = document["subjects"];
+      console.log(currentUser.academicYear);
+      const subjectsdata = document[currentUser.academicYear][`sem${currentUser.currentSem}`]
       await subjectsdata.map(async (item, index) => {
+        console.log(item.subject, subject);
         if (item.subject === subject) {
           let gradetype,
             isSubmitted = false;
@@ -200,7 +205,8 @@ const SubjectsList = () => {
           setData((data) => [...data, resdata]);
         }
       });
-    } catch {
+    } catch (err) {
+      console.log(err);
       setError("ERROR OCCURED");
     }
   };
