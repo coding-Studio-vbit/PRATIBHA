@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import * as XLSX from "xlsx";
 import rip from './bulkenrolls.module.css';
 import Navbar from '../global_ui/navbar/navbar';
-import axios from 'axios';
 import Select from "react-select";
-import { enrollCourse, fetchDepartments, fetchSemNumber } from "../student/services/studentServices.js";
+import { fetchDepartments, fetchSemNumber } from "../student/services/studentServices.js";
 import Dialog from '../global_ui/dialog/dialog';
-// import { getDeptCurriculum } from '../faculty/services/curriculumServices';
 import { db } from "../../firebase";
 import {
     doc,
@@ -27,6 +25,7 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
     if (course == "BTech" || course == "MTech") {
         try {
             let semester = await fetchSemNumber(course, year);
+            console.log(semester)
             const docRef = doc(db, `curriculum/${course}/${year}`, dept);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
@@ -36,14 +35,13 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
 
                 } else if (semester == 2) {
                     subjects = docSnap.data()["subjects2"];
-
                 }
             }
-                for (let j = 0; j < subjects.length; j++) {
-                    let str = course + "_" + year + "_" + dept;
-                    str = str + "_" + subjects[j].subject;
-                    curriculumArray.push(str);
-                }
+            for (let j = 0; j < subjects.length; j++) {
+                let str = course + "_" + year + "_" + dept;
+                str = str + "_" + subjects[j].subject;
+                curriculumArray.push(str);
+            }
 
             return curriculumArray;
         } catch (e) {
@@ -59,7 +57,7 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
                 sections = e.data()["sections"];
                 if (semester == 1) {
                     subjects = e.data()["subjects"];
-                    
+
                 } else if (semester == 2) {
                     subjects = e.data()["subjects2"];
 
@@ -85,11 +83,10 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
 export const addStudenttoClassesInfo = async (studentID, section, department, course, year, range) => {
     try {
         const sem = await fetchSemNumber(course, year);
-        const docRef = doc(db, `classesinfo/${course}/${range}/`,`${year}_${department}_${section}`);
+        const docRef = doc(db, `classesinfo/${course}/${range}/`, `${year}_${department}_${section}`);
         const docData = await getDoc(docRef);
 
         if (!docData.exists()) {
-            console.log(666)
             await setDoc(docRef, {
                 students: [studentID]
             })
@@ -97,74 +94,21 @@ export const addStudenttoClassesInfo = async (studentID, section, department, co
         else {
             await updateDoc(docRef, { students: arrayUnion(studentID) });
         }
-        
-        // if (sem == 1) {
-        //     if (docData.exists()) {
 
-        //         const students = docData.data()["students"];
-
-        //         if (students != null) {
-        //             for (let index = 0; index < students.length; index++) {
-        //                 const ele = students[index];
-
-        //                 if (ele === studentID) {
-        //                     // d1 = false;
-        //                     break;
-        //                 } else {
-        //                     await updateDoc(docRef, { students: arrayUnion(studentID) });
-        //                 }
-        //             }
-        //         } else {
-        //             await updateDoc(docRef, {
-        //                 students: [studentID],
-        //             });
-        //         }
-        //     } else {
-        //         await setDoc(docRef, {
-        //             students: [studentID],
-        //         });
-        //     }
-        // }
-        // else if (sem == 2) {
-        //     if (docData.exists()) {
-
-        //         const students = docData.data()["students2"];
-
-        //         if (students != null) {
-        //             for (let index = 0; index < students.length; index++) {
-        //                 const ele = students[index];
-
-        //                 if (ele === studentID) {
-        //                     // d1 = false;
-        //                     break;
-        //                 } else {
-        //                     await updateDoc(docRef, { students2: arrayUnion(studentID) });
-        //                 }
-        //             }
-        //         } else {
-        //             await updateDoc(docRef, {
-        //                 students2: [studentID],
-        //             });
-        //         }
-        //     } else {
-        //         await setDoc(docRef, {
-        //             students2: [studentID],
-        //         });
-        //     }
-        // }
     } catch (error) {
         console.log(error);
     }
 };
 
-const newEnroll = async (name,mail,year,course,department,section,subjects) => {
-    const docRef = doc(db, "usersdummy", `${mail}`);
-    const docSnap = await getDoc(docRef);
+const newEnroll = async (name, mail, year, course, department, section, subjects) => {
     let date = new Date();
     let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
-    // let semester = await fetchSemNumber(course, year);
-    let semester = 1;
-    // console.log(range)
+    await addStudenttoClassesInfo(mail, section, department, course, year, range); // query call to add student to classes info
+    const docRef = doc(db, "usersdummy", `${mail}`);
+    const docSnap = await getDoc(docRef);
+    let semester = await fetchSemNumber(course, year);
+    // let semester = 1; //use this temp sem value for testing
+    // console.log(range) 
     let map = {}
     if (docSnap.exists()) {
         if (semester == 1) {
@@ -175,7 +119,7 @@ const newEnroll = async (name,mail,year,course,department,section,subjects) => {
                 year: year,
             };
         }
-        else if (semester == 2) { 
+        else if (semester == 2) {
             const data = docSnap.data();
             map["" + range] = data["" + range];
             map["" + range]["sem2"] = {
@@ -190,15 +134,15 @@ const newEnroll = async (name,mail,year,course,department,section,subjects) => {
         }
         return 1;
     }
-try {
-    if (semester == 1) {
-        map["" + range] = {
-            sem1: {
-                "subjects": subjects,
-            },
-            year: year,
-        };
-    }
+    try {
+        if (semester == 1) {
+            map["" + range] = {
+                sem1: {
+                    "subjects": subjects,
+                },
+                year: year,
+            };
+        }
         await setDoc(docRef, {
             name: name,
             email: mail,
@@ -212,9 +156,9 @@ try {
         alert(err);
     }
     return 2;
-   
-    
-    
+
+
+
 }
 
 const BulkEnrolls = () => {
@@ -225,17 +169,15 @@ const BulkEnrolls = () => {
     const [signal, setSignal] = useState(false);
     const [students, setStudents] = useState([]);
     const years = [{ value: "1", label: "1" },
-                    { value: "2", label: "2" },
-                    { value: "3", label: "3" },
-                    { value: "4", label: "4" },
-                    { value: "5", label: "5" }]
-    
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+    { value: "5", label: "5" }]
+
     const courses = [{ value: "BTech", label: "BTech" },
-                    { value: "MTech", label: "MTech" },
-        { value: "MBA", label: "MBA" }]
-    let date = new Date();
-    let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
-    
+    { value: "MTech", label: "MTech" },
+    { value: "MBA", label: "MBA" }]
+
 
     async function getDepartments(course, year) {
         let deptlist;
@@ -255,7 +197,7 @@ const BulkEnrolls = () => {
     const readFile = (e) => {
         const file = e.target.files["0"];
         const reader = new FileReader();
-        
+
         reader.onload = () => {
             const bstr = reader.result;
             const wb = XLSX.read(bstr, { type: "array" });
@@ -268,7 +210,7 @@ const BulkEnrolls = () => {
 
             intervals(tempdata);
             reader.abort();
-            
+
         };
         // reader.readAsBinaryString(file);
         reader.readAsArrayBuffer(file)
@@ -277,54 +219,52 @@ const BulkEnrolls = () => {
 
 
     const intervals = async (data) => {
-        let temp = [],subjects = [];
-        console.log(data);
+        let temp = [], subjects = [];
+        // console.log(data);
         let subs = await getDeptCurriculumSubsOnly(dept.value, course.value, year.value);
         console.log(subs)
         subjects = subs.map((e) => {
             let sub = e.split("_");
-            return { subject: sub[sub.length-1] }
+            return { subject: sub[sub.length - 1] }
         })
 
         // variable i to track the current row
         // variable j to modify the temp array and change the animation in the screen
-            for (let i = 1,j=7;i<data.length;i++) { // consider the i value dude.
-                let temparr = data[i].split(",");
-                if (temparr[0]) {
-                    try {
-                        temp.push([temparr[0], temparr[1]]);
-                    }
-                    catch (err) {
-                        alert("Please check the excel sheet for format errors");
-                        break;
-                    }
-                    if (temp.length < 8) // when the length of array isnt greater than 8, we keep pushing new rows of excel data
-                        setStudents([...temp]);
-                    // console.log(students,i,j)
+        for (let i = 1, j = 7; i < data.length; i++) { // consider the i value dude.
+            let temparr = data[i].split(",");
+            if (temparr[0]) {
+                try {
+                    temp.push([temparr[0], temparr[1]]);
+                }
+                catch (err) {
+                    alert("Please check the excel sheet for format errors");
+                    break;
+                }
+                if (temp.length < 8) // when the length of array isnt greater than 8, we keep pushing new rows of excel data
+                    setStudents([...temp]);
+                // console.log(students,i,j)
 
-                    await newEnroll(temparr[1], temparr[2], year.value, course.value, dept.value, temparr[3], subjects); // query call to enroll student
-                    await addStudenttoClassesInfo(temparr[2], temparr[3], dept.value, course.value, year.value, range); // query call to add student to classes info
+                await newEnroll(temparr[1], temparr[2], year.value, course.value, dept.value, temparr[3], subjects); // query call to enroll student
 
-                    try {
-                        const ele = document.getElementById(i);
-                        ele?.classList.add(rip.lol) // adding the animation class to the element containing the current student/ row data
+                try {
+                    const ele = document.getElementById(i);
+                    ele?.classList.add(rip.lol) // adding the animation class to the element containing the current student/ row data
 
-                        if (i > j && window?.getComputedStyle(document.getElementById(j)).backgroundColor === "rgb(0, 128, 0)") { // condition to check the if the progress bars are filled.
-                            temp = temp.slice(i + 1, temp.length);
-                            j += 8;
-                        }
-                    }
-                    catch (err) {
-                        alert("An error has occured, please try again");
-                        break;
+                    if (i > j && window?.getComputedStyle(document.getElementById(j)).backgroundColor === "rgb(0, 128, 0)") { // condition to check the if the progress bars are filled.
+                        temp = temp.slice(i + 1, temp.length);
+                        j += 8;
                     }
                 }
+                catch (err) {
+                    alert("An error has occured, please try again");
+                    break;
+                }
+            }
         }
-        // window?.location.reload();
         setSignal(true);
     }
 
-    
+
     return (
         <>
             <Navbar className={rip.nav} back={false} title={"Bulk Enrolls"} logout={true} />
@@ -342,7 +282,7 @@ const BulkEnrolls = () => {
                             backspaceRemovesValue={true}
                         />
                     </div>
-                    {signal && <Dialog message={"Enrolled Successfully"} onOK={ ()=>window?.location.reload()} />}
+                    {signal && <Dialog message={"Enrolled Successfully"} onOK={() => window?.location.reload()} />}
                     <div className={rip.inputbox} >
                         <p className="enroll-dropdown-title">Select Year</p>
                         <Select
@@ -372,7 +312,7 @@ const BulkEnrolls = () => {
 
                     {course && year && dept && <p id="class">{"Please upload Excel sheet of " + course.value + " " + year.value + " " + dept.value}</p>}
                     <label For="fileinput" className={rip.fileupload}>
-                        <span className={rip.fileinput} onClick={ async () => {
+                        <span className={rip.fileinput} onClick={async () => {
                             if (!(course && year && dept)) {
                                 console.log("HI")
                                 alert("Please select course, year and department first");
@@ -390,8 +330,8 @@ const BulkEnrolls = () => {
 
                 <div className={rip.progress}>
                     {students?.map((e) => {
-                        return (    
-                            <div key={e} id={"parent "+e} className={rip.segment}>
+                        return (
+                            <div key={e} id={"parent " + e} className={rip.segment}>
                                 {<p className={rip.info} key={e}>{e[1]}</p>}
                                 <span className={rip.bars} >
                                     <span id={e[0]}></span>
