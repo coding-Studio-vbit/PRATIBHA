@@ -10,6 +10,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
 
 async function checkEnrollment(email) {
   let error = null;
@@ -247,6 +248,8 @@ async function getDeadLines(
   subject,
   midNo
 ) {
+  const academic_year = await getAcademicYear(course, year)
+  
   const deadLinesRef = doc(
     db,
     `/classesinfo/${course}/${academicYear}/${year}_${department}_${section}`
@@ -255,14 +258,16 @@ async function getDeadLines(
     const deadLineDoc = await getDoc(deadLinesRef);
     if (deadLineDoc.exists()) {
       let subs = deadLineDoc.data()["subjects"];
+
       let deadline = {};
       let dataFetch = false;
-      for (let i = 0; i < subs.length; i++) {
+      for (let i = 0; i < subs.length; i++) {        
         if (subs[i].subject === subject) {
           if (midNo === "1") {
             if (subs[i].deadline1 != null) {
               deadline.lastDate = subs[i].deadline1;
               deadline.instructions = subs[i].instructions;
+              deadline.faculty = subs[i].faculty;
               dataFetch = true;
             } else {
               return {
@@ -274,6 +279,7 @@ async function getDeadLines(
             if (subs[i].deadline2 != null) {
               deadline.lastDate = subs[i].deadline2;
               deadline.instructions = subs[i].instructions;
+              deadline.faculty = subs[i].faculty;
               dataFetch = true;
             } else {
               return {
