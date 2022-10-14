@@ -17,6 +17,7 @@ import {
 import { useLocation } from "react-router-dom";
 import { fetchisMid1, fetchisMid2 } from "../services/studentServices";
 import Download from "../../global_ui/download/download";
+import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
 
 const Upload = () => {
   //DATA FROM THE PREVIOUS SCREEN
@@ -129,12 +130,13 @@ const Upload = () => {
   async function submit() {
     setfileUploadLoading(true);
     let res;
+    const academicYear = await getAcademicYear(user.course, user.year)
     if ((url != null) & handleTitle(praTitle)) {
       res = await uploadFile(
         url,
         user.course,
         user.year,
-        user.regulation,
+        academicYear.data,
         user.department,
         user.section,
         location.state.subject,
@@ -268,7 +270,7 @@ const Upload = () => {
       const res = await getDeadLines(
         user.course,
         user.year,
-        user.regulation,
+        user.academicYear,
         user.department,
         user.section,
         location.state.subject,
@@ -299,13 +301,14 @@ const Upload = () => {
   async function getUserData() {
     setPageLoad(true);
     const res = await getStudentData(location.state.rollno);
+    const academicYear = await getAcademicYear(res.document["course"], res.document["year"])
     if (res.error == null) {
       setUser({
         course: res.document["course"],
         year: res.document["year"],
         department: res.document["department"],
         section: res.document["section"],
-        regulation: res.document["regulation"],
+        academicYear: academicYear.data,
       });
       setPageLoad(false);
       setPageLoadError(null);

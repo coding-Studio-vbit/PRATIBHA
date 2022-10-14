@@ -1,14 +1,16 @@
 import { db, storage } from "../../../firebase";
 import { ref,uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, getDoc,updateDoc } from "firebase/firestore"; 
+import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
+import { fetchSemNumber } from "./studentServices";
 
-async function uploadFile(fileObj,course,year,regulation,department,section,subject,midNo,email,title,fileName){
+async function uploadFile(fileObj,course,year,academicYear,department,section,subject,midNo,email,title,fileName){
     let error=null;
 
     //referring to the storage location | creating path
     const pra_ref= ref(
         storage,
-        `${course}/${regulation}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
+        `${course}/${academicYear}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
     );
 
     //uploading files to storage 
@@ -16,12 +18,14 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
     .then(async(snapshot) => {
         try {
             let subs=null;
+            const semNo = await fetchSemNumber(course, year)
+            const updateSubs = {}
             const docRef = doc(db, "users",email);
             //refers userdoc
             const docSnap = await getDoc(docRef);
             //checking doc exists to verify enrollment
             if(docSnap.exists()){
-                subs = docSnap.data()["subjects"];
+                subs = docSnap.data()[academicYear][`sem${semNo}`];
                 //finding the subject and updating 
                 for(var i=0;i<subs.length;i++){
                     if(subs[i].subject===subject){
@@ -38,21 +42,22 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
                             subs[i]=s;
                         }
                         break;                        
-                    }                
+                    }
                 }
                 try {
                     //updating the user doc
-                    await updateDoc(docRef,{
-                        subjects:subs,                        
-                    });
+                    updateSubs[`${academicYear}.sem${semNo}`] = subs                
+                    await updateDoc(docRef,updateSubs       
+                    );
                     
-                } catch (err) {
+                } catch (err) {                    
                     error=err.toString();
                 }
             }else{
                 error = "Student Enrollment Failed";             
             }            
         }catch(err){
+
             error = err.toString();            
         }      
     })
@@ -62,12 +67,13 @@ async function uploadFile(fileObj,course,year,regulation,department,section,subj
     return error;
 }
 
-async function getUploadedFile(course,year,regulation,department,section,subject,midNo,email) {
+async function getUploadedFile(course,year,department,section,subject,midNo,email) {
+    let academicYear = await getAcademicYear(course, year)
     let res={
         url:null,
         error:null,    
     }
-    await getDownloadURL(ref(storage,`${course}/${regulation}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`))
+    await getDownloadURL(ref(storage,`${course}/${academicYear}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`))
     .then((url) => {
         res.url=url;
     })
