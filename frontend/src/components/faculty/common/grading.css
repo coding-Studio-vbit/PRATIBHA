@@ -12,6 +12,7 @@
 .left {
   width: 25%;
   display: flex;
+  position: fixed;
   gap: 4px;
   flex-direction: column;
   justify-content: start;
@@ -24,6 +25,7 @@
 
 .right {
   width: 75%;
+  margin-left: 320px;
   height: max-content;
   background-color: #ffffff;
   padding: 0px;
