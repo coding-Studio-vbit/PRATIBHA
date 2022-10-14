@@ -99,6 +99,8 @@ const ListofStudents = () => {
             subject,
             ismid1,
             ismid2,
+            1,
+            acadYear,
           ).then((res) => {
             if (res) {
               setData(res.data);
@@ -121,6 +123,8 @@ const ListofStudents = () => {
             subject,
             ismid1,
             ismid2,
+            2,
+            acadYear,
           ).then((res) => {
             if (res) {
               setData(res.data);
