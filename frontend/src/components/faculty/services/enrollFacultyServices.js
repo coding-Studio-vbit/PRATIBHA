@@ -69,12 +69,12 @@ export async function enrollClasses(email, enrolled_classes) {
                 isAlreadyEnrolled = true;
                 alreadyEnrolled = [
                   ...alreadyEnrolled,
-                  { faculty: ele.faculty, subject: mod_enrolled_classes[i] },
+                  { facultyID: ele.faculty, subject: mod_enrolled_classes[i] },
                 ];
               } else {
                 await updateDoc(docRef, {
                   subjects: arrayUnion({
-                    faculty: email,
+                    facultyID: email,
                     subject: classname[5],
                   }),
                 });
@@ -84,7 +84,7 @@ export async function enrollClasses(email, enrolled_classes) {
             await updateDoc(docRef, {
               subjects: [
                 {
-                  faculty: email,
+                  facultyID: email,
                   subject: classname[5],
                 },
               ],
@@ -97,7 +97,7 @@ export async function enrollClasses(email, enrolled_classes) {
         await setDoc(docRef, {
           subjects: [
             {
-              faculty: email,
+              facultyID: email,
               subject: classname[5],
             },
           ],
@@ -153,12 +153,12 @@ export async function enrollHODClasses(email, enrolled_classes) {
               isAlreadyEnrolled = true;
               alreadyEnrolled = [
                 ...alreadyEnrolled,
-                { faculty: ele.faculty, subject: mod_enrolled_classes[i] },
+                { facultyID: ele.faculty, subject: mod_enrolled_classes[i] },
               ];
             } else {
               await updateDoc(docRef, {
                 subjects: arrayUnion({
-                  faculty: email,
+                  facultyID: email,
                   subject: classname[5],
                 }),
               });
@@ -168,7 +168,7 @@ export async function enrollHODClasses(email, enrolled_classes) {
           await updateDoc(docRef, {
             subjects: [
               {
-                faculty: email,
+                facultyID: email,
                 subject: classname[5],
               },
             ],
@@ -178,7 +178,7 @@ export async function enrollHODClasses(email, enrolled_classes) {
         await setDoc(docRef, {
           subjects: [
             {
-              faculty: email,
+              facultyID: email,
               subject: classname[5],
             },
           ],
@@ -274,19 +274,21 @@ let course = sub.split("_")[0];
 //deletes an enrolled class
 export async function deleteClass(email, className) {
   let error = true;
-  const subject = className.split("_").pop();
-  const classesInfoRef = doc(
-    db,
-    "classesinfo",
-    className.replace("_" + subject, "")
-  );
+  console.log(className)
+  const arrSub = className.split("_")
+  const course = arrSub[0]
+  const acadYear = arrSub[1]
+  const classroom = arrSub[2]+"_"+arrSub[3]+"_"+arrSub[4]
+  const subject = arrSub[5]
+
+  const classesInfoRef = doc(db, "classesinfo", course, acadYear, classroom);
   const facultyRef = doc(db, "faculty", email);
 
   try {
     //removes the object in classes info
     await updateDoc(classesInfoRef, {
-      faculty_ID: arrayRemove({
-        faculty: email,
+      subjects: arrayRemove({
+        facultyID: email,
         subject: subject,
       }),
     });
@@ -346,7 +348,7 @@ export async function addClass(email, addedClass) {
             d1 = false;
             await updateDoc(docRef, {
               subjects: arrayUnion({
-                faculty: email,
+                facultyID: email,
                 subject: classname[5],
               }),
             });
@@ -357,7 +359,7 @@ export async function addClass(email, addedClass) {
         await updateDoc(docRef, {
           subjects: [
             {
-              faculty: email,
+              facultyID: email,
               subject: classname[5],
             },
           ],
@@ -368,7 +370,7 @@ export async function addClass(email, addedClass) {
       await setDoc(docRef, {
         subjects: [
           {
-            faculty: email,
+            facultyID: email,
             subject: classname[5],
           },
         ],
