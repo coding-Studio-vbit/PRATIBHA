@@ -28,7 +28,6 @@ const SubjectsList = () => {
   const [userDoc, setuserDoc] = useState(null);
   const [courseTitle, setCourseTitle] = useState(" ");
   const [course, setcourse] = useState("");
-  const [regulation,setregulation]=useState("");
   const [acadYear, setAcadYear] = useState("");
   const [year, setyear] = useState("");
 

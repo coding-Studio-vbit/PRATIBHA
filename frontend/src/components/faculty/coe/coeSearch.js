@@ -71,7 +71,7 @@ export default function CoeSearch() {
       var passing = {
         Course: Course.value,
         Year: Year.value,
-        Regulation:Regulation.value,
+       // Regulation:Regulation.value,
         AcademicYear:acadYear.value,
         Dept: Department.value,
         Section: Section.value,
