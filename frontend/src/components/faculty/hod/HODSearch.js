@@ -133,7 +133,7 @@ const HODSearch = () => {
       state: {
         Course: Course.value,
         Year: Year.value,
-        //Regulation: Regulation.value,
+        // Regulation: Regulation.value,
         AcademicYear: acadYear,
         Dept: dep.label,
         Section: Section.value,
