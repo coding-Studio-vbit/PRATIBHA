@@ -98,7 +98,7 @@ const ClassList = () => {
         name: e[0].name,
         course: e[0].course,
         year: e[0].year,
-        regulation: e[0].regulation,
+       // regulation: e[0].regulation,
         department: e[0].department,
         subjects: set2, // change the set according to what the Dept has in its curriculum
         section: e[0].section,

@@ -9,7 +9,6 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import {
-  fetchRegulationOptions,
   fetchSemNumber,
   getStudentData,
 } from "../../student/services/studentServices";

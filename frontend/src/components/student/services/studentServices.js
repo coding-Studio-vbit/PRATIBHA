@@ -94,6 +94,8 @@ export const addStudent = async (studentID, department,course,year) => {
   }
 };
 
+
+//mostly no need
 async function enrollCourse(email, course_details) {
   let error = null;
   const userRef = doc(db, "users", email);
@@ -367,6 +369,7 @@ async function getFileUploadDetails(email, subject, midNo) {
   }
 }
 
+//no need, remove later
 async function fetchRegulationOptions() {
   try {
     const adminRef = doc(db, `adminData/regulations`);
@@ -398,6 +401,7 @@ async function fetchRegulationOptions() {
   }
 }
 
+// no need, remove later
 export async function fetchRegulationsArray() {
   try {
     const adminRef = doc(db, `adminData/regulations`);

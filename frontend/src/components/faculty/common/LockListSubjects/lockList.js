@@ -92,8 +92,6 @@ const LockList = () => {
     if (Course.value === "BTech") {
       const newBTech =
         "BTech_" +
-        Regulation.value +
-        "_" +
         Year.value +
         "_" +
         Department.value +
@@ -113,8 +111,6 @@ const LockList = () => {
     } else if (Course.value === "MTech") {
       const newMTech =
         "MTech_" +
-        Regulation.value +
-        "_" +
         Year.value +
         "_" +
         Department.value +
@@ -134,8 +130,6 @@ const LockList = () => {
     } else if (Course.value === "MBA") {
       const newMBA =
         "MBA_" +
-        Regulation.value +
-        "_" +
         Year.value +
         "_" +
         Department.value +
@@ -274,10 +268,10 @@ const LockList = () => {
                 isDisabled={!Course}
                 onChange={(selectedYear) => {
                   setYear(selectedYear);
-                  setdisablereg(false);
+                  setdisabledep(false);
                 }}
               />
-              <p className="locklist-dropdown-title">Regulation</p>
+              {/* <p className="locklist-dropdown-title">Regulation</p>
               <Select
                 placeholder=""
                 value={Regulation}
@@ -289,7 +283,7 @@ const LockList = () => {
 
                   setRegulation(r);
                 }}
-              />
+              /> */}
               <p className="locklist-dropdown-title">Department</p>
               <Select
                 placeholder=""

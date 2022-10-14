@@ -1,3 +1,5 @@
+// this entire file is not going to be used. just ignore this file
+
 import React,{useState,useEffect} from 'react'
 import Navbar from '../../global_ui/navbar/navbar';
 import Select from "react-select";
