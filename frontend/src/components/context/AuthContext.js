@@ -50,6 +50,8 @@ export function AuthProvider({ children }) {
       let userType = "";
       let isFirstTime = true;
       let isHOD = false;
+      let isAdmin = false;
+
       let roles = [];
       let isFirstYearHOD = false
       let isCOE = false
@@ -90,6 +92,9 @@ export function AuthProvider({ children }) {
                   isCOE = true
                   isFirstTime= false
                 }
+                if (docSnap.data().isAdmin) {
+                  isAdmin = true
+                }
                 if (docSnap.data().isEnrolled) {
                   isFirstTime = false;
                 }
@@ -108,7 +113,8 @@ export function AuthProvider({ children }) {
             userType: userType,
             isFirstTime: isFirstTime,
             isHOD: isHOD,
-            isCOE:isCOE,
+            isCOE: isCOE,
+            isAdmin: isAdmin,
             isFirstYearHOD:isFirstYearHOD,
             roles: roles,
       

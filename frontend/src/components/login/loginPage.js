@@ -44,7 +44,11 @@ export default function LoginPage() {
           nav("/faculty/enroll", { replace: true });
         }  else if (currentUser.isCOE) {
           nav("/faculty/coesearch", { replace: true });
-        } else {
+        }
+        else if (currentUser.isAdmin) {
+          nav("/faculty/admin", { replace: true });
+        }
+        else {
           nav("/faculty/classlist", { replace: true });
         }}
     }

@@ -61,7 +61,13 @@ const AllRoutes = () => {
           <Route
           path="/faculty/*"
           element={
-              <Routes>
+            <Routes>
+              {currentUser.isAdmin && (
+                <>
+                <Route exact path="/admin" element={<AdminPage />} />
+                <Route exact path="/admin/BulkEnrolls" element={<BulkEnrolls />} />
+                </>
+              )}
                 {currentUser.isCOE && (
                   <>
                     <Route exact path="/coesearch" element={<CoeSearch />} />
@@ -99,8 +105,6 @@ const AllRoutes = () => {
           }
         />
         )}
-        <Route exact path="/admin" element={<AdminPage />} />
-        <Route exact path="/admin/BulkEnrolls" element={<BulkEnrolls />} />
       </Routes>
     </Router>
   );

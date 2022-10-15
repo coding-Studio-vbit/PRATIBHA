@@ -12,7 +12,7 @@ const AdminPage = () => {
         <div>
             <Navbar back={false} title={"Admin Page"} logout={true} />
             <div className="container">
-                <Card text={"Bulk Enrolls"} onclick={()=>{navigate("/admin/bulkenrolls")}} />
+                <Card text={"Bulk Enrolls"} onclick={()=>{navigate("/faculty/admin/bulkenrolls")}} />
             </div>
         </div>
     );

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import * as XLSX from "xlsx";
 import rip from './bulkenrolls.module.css';
 import Navbar from '../global_ui/navbar/navbar';
+import { Spinner , LoadingScreen} from '../global_ui/spinner/spinner';
 import Select from "react-select";
 import { fetchDepartments, fetchSemNumber } from "../student/services/studentServices.js";
 import Dialog from '../global_ui/dialog/dialog';
 import { db } from "../../firebase";
+import { useNavigate } from 'react-router-dom';
+
 import {
     doc,
     getDoc,
@@ -60,9 +63,8 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
 
                 } else if (semester == 2) {
                     subjects = e.data()["subjects2"];
-
                 }
-                for (let j = 0; j < subjects.length; j++) {
+                for (let j = 0; j < subjects.length; j++){
                     let str = course + "_" + year + "_" + e.id;
                     str = str + "_" + subjects[j].subject;
                     curriculumArray.push(str);
@@ -80,7 +82,7 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
 
 
 }
-export const addStudenttoClassesInfo = async (studentID, section, department, course, year, range) => {
+export const addStudentstoClassesInfo = async (studentID, section, department, course, year, range) => {
     try {
         const sem = await fetchSemNumber(course, year);
         const docRef = doc(db, `classesinfo/${course}/${range}/`, `${year}_${department}_${section}`);
@@ -88,43 +90,61 @@ export const addStudenttoClassesInfo = async (studentID, section, department, co
 
         if (!docData.exists()) {
             await setDoc(docRef, {
-                students: [studentID]
+                students: studentID
             })
         }
-        else {
-            await updateDoc(docRef, { students: arrayUnion(studentID) });
-        }
+        // else {
+        //     await updateDoc(docRef, { students: (studentID) });
+        // }
 
     } catch (error) {
         console.log(error);
     }
 };
 
-const newEnroll = async (name, mail, year, course, department, section, subjects) => {
-    let date = new Date();
-    let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
-    await addStudenttoClassesInfo(mail, section, department, course, year, range); // query call to add student to classes info
+const newEnroll = async (name, mail, year, course, department, section, subjects,OE=[],PE=[]) => {
+     // query call to add student to classes info
     const docRef = doc(db, "usersdummy", `${mail}`);
     const docSnap = await getDoc(docRef);
+    let date = new Date();
+    let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
     let semester = await fetchSemNumber(course, year);
     // let semester = 1; //use this temp sem value for testing
     // console.log(range) 
     let map = {}
+    let localsubs = [...subjects]
+    if (OE.length > 0) {
+        OE.forEach((e) => {
+            if(e!=="")
+            localsubs.push({ subject: e });
+        })
+        console.log(localsubs)
+    }
+    if (PE.length > 0) {
+        
+        PE.forEach((e) => {
+            if (e !== "")
+            localsubs.push({ subject: e });
+        })
+        console.log(localsubs)
+    }
     if (docSnap.exists()) {
         if (semester == 1) {
+            map["year"] = year;
             map["" + range] = {
-                sem1: {
-                    "subjects": subjects,
-                },
+                sem1: [
+                    ...localsubs
+                ],
                 year: year,
             };
         }
         else if (semester == 2) {
             const data = docSnap.data();
+            map["year"] = year;
             map["" + range] = data["" + range];
-            map["" + range]["sem2"] = {
-                "subjects": subjects,
-            }
+            map["" + range]["sem2"] = [
+                ...localsubs,
+            ]
         }
         try {
             await updateDoc(docRef, map);
@@ -137,9 +157,9 @@ const newEnroll = async (name, mail, year, course, department, section, subjects
     try {
         if (semester == 1) {
             map["" + range] = {
-                sem1: {
-                    "subjects": subjects,
-                },
+                sem1: [
+                    ...localsubs,
+                ],
                 year: year,
             };
         }
@@ -148,7 +168,7 @@ const newEnroll = async (name, mail, year, course, department, section, subjects
             email: mail,
             department: department,
             section: section,
-            current_year: year,
+            year: year,
             ...map
         })
     }
@@ -157,12 +177,11 @@ const newEnroll = async (name, mail, year, course, department, section, subjects
     }
     return 2;
 
-
-
 }
 
 const BulkEnrolls = () => {
     const [year, setYear] = useState("");
+    const [load, setLoad] = useState(false);
     const [dept, setDept] = useState("");
     const [depts, setDepts] = useState([]);
     const [course, setCourse] = useState("");
@@ -171,13 +190,13 @@ const BulkEnrolls = () => {
     const years = [{ value: "1", label: "1" },
     { value: "2", label: "2" },
     { value: "3", label: "3" },
-    { value: "4", label: "4" },
-    { value: "5", label: "5" }]
+    { value: "4", label: "4" }]
 
     const courses = [{ value: "BTech", label: "BTech" },
     { value: "MTech", label: "MTech" },
-    { value: "MBA", label: "MBA" }]
-
+        { value: "MBA", label: "MBA" }]
+    
+    const navigate = useNavigate();
 
     async function getDepartments(course, year) {
         let deptlist;
@@ -188,6 +207,7 @@ const BulkEnrolls = () => {
         console.log(deptlist)
         setDepts(deptlist);
     }
+
     const handleYearChange = () => {
         if (course.value === "BTech")
             return years;
@@ -209,6 +229,7 @@ const BulkEnrolls = () => {
             // setData([...tempdata]);
 
             intervals(tempdata);
+            setLoad(true)
             reader.abort();
 
         };
@@ -219,7 +240,7 @@ const BulkEnrolls = () => {
 
 
     const intervals = async (data) => {
-        let temp = [], subjects = [];
+        let enrollArray = [],classInfo=[], subjects = [];
         // console.log(data);
         let subs = await getDeptCurriculumSubsOnly(dept.value, course.value, year.value);
         console.log(subs)
@@ -227,119 +248,95 @@ const BulkEnrolls = () => {
             let sub = e.split("_");
             return { subject: sub[sub.length - 1] }
         })
-
-        // variable i to track the current row
-        // variable j to modify the temp array and change the animation in the screen
-        for (let i = 1, j = 7; i < data.length; i++) { // consider the i value dude.
-            let temparr = data[i].split(",");
-            if (temparr[0]) {
-                try {
-                    temp.push([temparr[0], temparr[1]]);
-                }
-                catch (err) {
-                    alert("Please check the excel sheet for format errors");
-                    break;
-                }
-                if (temp.length < 8) // when the length of array isnt greater than 8, we keep pushing new rows of excel data
-                    setStudents([...temp]);
-                // console.log(students,i,j)
-
-                await newEnroll(temparr[1], temparr[2], year.value, course.value, dept.value, temparr[3], subjects); // query call to enroll student
-
-                try {
-                    const ele = document.getElementById(i);
-                    ele?.classList.add(rip.lol) // adding the animation class to the element containing the current student/ row data
-
-                    if (i > j && window?.getComputedStyle(document.getElementById(j)).backgroundColor === "rgb(0, 128, 0)") { // condition to check the if the progress bars are filled.
-                        temp = temp.slice(i + 1, temp.length);
-                        j += 8;
-                    }
-                }
-                catch (err) {
-                    alert("An error has occured, please try again");
-                    break;
+        let date = new Date();
+        let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
+        await 
+        data.forEach((e,index) => {
+            if (index > 0) {
+                let student = e.split(",")
+                // console.log(student)
+                if (student[0]) {
+                    enrollArray.push(newEnroll(student[1], student[2], year.value, course.value, dept.value, "A", subjects,[student[4],student[5]],[student[6],student[7]]));
+                    classInfo.push(student[2]);
                 }
             }
-        }
-        setSignal(true);
+        })
+        const res = await addStudentstoClassesInfo(classInfo, "A", dept.value, course.value, year.value, range)
+        console.log(res)
+        Promise.all(enrollArray).then((values) => { 
+            setLoad(false)
+            setSignal(true);
+        });
     }
 
 
-    return (
+    return ( 
         <>
             <Navbar className={rip.nav} back={false} title={"Bulk Enrolls"} logout={true} />
             <div className={rip.bodyContainer}>
-                <div className={rip.enrollcontainer}>
-                    <div className={rip.inputbox} >
-                        <p className="enroll-dropdown-title">Select Course</p>
-                        <Select
-                            placeholder="Course"
-                            value={course}
-                            onChange={(e) => { setCourse(e); console.log(e) }}
-                            isDisabled={year}
-                            className="select"
-                            options={courses}
-                            backspaceRemovesValue={true}
-                        />
-                    </div>
-                    {signal && <Dialog message={"Enrolled Successfully"} onOK={() => window?.location.reload()} />}
-                    <div className={rip.inputbox} >
-                        <p className="enroll-dropdown-title">Select Year</p>
-                        <Select
-                            placeholder="Year"
-                            value={year}
-                            onChange={e => {
-                                getDepartments(course, e);
-                                setYear(e);
-                            }}
-                            isDisabled={!course || dept}
-                            className="select"
-                            options={handleYearChange()}
-                        />
-                    </div>
+                {load ? <LoadingScreen isTransparent={true} height={"90vh"}  /> : 
+                    <div className={rip.enrollcontainer}>
+                        <h2>Please input Excel file in following format:</h2>
+                        <h3>S.no,Name,Mail,Section, Open Electives, Professional Electives</h3>
+                        <div className={rip.inputbox} >
+                            <p className="enroll-dropdown-title">Select Course</p>
+                            <Select
+                                placeholder="Course"
+                                value={course}
+                                onChange={(e) => { setCourse(e); console.log(e) }}
+                                isDisabled={year}
+                                className="select"
+                                options={courses}
+                                backspaceRemovesValue={true}
+                            />
+                        </div>
+                        {signal && <Dialog message={"Enrolled Successfully"} onOK={() => window?.location.reload()} />}
 
-                    <div className={rip.inputbox} >
-                        <p className="enroll-dropdown-title">Select Department</p>
-                        <Select
-                            placeholder="Department"
-                            value={dept}
-                            onChange={(e) => { setDept(e) }}
-                            isDisabled={!depts.length}
-                            className="select"
-                            options={depts}
-                        />
+                        <div className={rip.inputbox} >
+                            <p className="enroll-dropdown-title">Select Year</p>
+                            <Select
+                                placeholder="Year"
+                                value={year}
+                                onChange={e => {
+                                    getDepartments(course, e);
+                                    setYear(e);
+                                }}
+                                isDisabled={!course || dept}
+                                className="select"
+                                options={handleYearChange()}
+                            />
+                        </div>
+
+                        <div className={rip.inputbox} >
+                            <p className="enroll-dropdown-title">Select Department</p>
+                            <Select
+                                placeholder="Department"
+                                value={dept}
+                                onChange={(e) => { setDept(e) }}
+                                isDisabled={!depts.length}
+                                className="select"
+                                options={depts}
+                            />
+                        </div>
+
+                        {course && year && dept && <p id="class">{"Please upload Excel sheet of " + course.value + " " + year.value + " " + dept.value}</p>}
+                        <label For="fileinput" className={rip.fileupload}>
+                            <span className={rip.fileinput} onClick={async () => {
+                                if (!(course && year && dept)) {
+                                    console.log("HI")
+                                    alert("Please select course, year and department first");
+                                    return;
+                                }
+                                ;
+                                // subjects = data.subjects;
+                            }}>
+                                Choose Excel File to Upload
+                                {(course && year && dept) && <input id="fileinput" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" size={40} onChange={readFile} />}
+                                <i className="fa fa-upload fa-2x"></i>
+                            </span>
+                        </label>
                     </div>
-
-                    {course && year && dept && <p id="class">{"Please upload Excel sheet of " + course.value + " " + year.value + " " + dept.value}</p>}
-                    <label For="fileinput" className={rip.fileupload}>
-                        <span className={rip.fileinput} onClick={async () => {
-                            if (!(course && year && dept)) {
-                                console.log("HI")
-                                alert("Please select course, year and department first");
-                                return;
-                            }
-                            ;
-                            // subjects = data.subjects;
-                        }}>
-                            Choose Excel File to Upload
-                            {(course && year && dept) && <input id="fileinput" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" size={40} onChange={readFile} />}
-                            <i className="fa fa-upload fa-2x"></i>
-                        </span>
-                    </label>
-                </div>
-
-                <div className={rip.progress}>
-                    {students?.map((e) => {
-                        return (
-                            <div key={e} id={"parent " + e} className={rip.segment}>
-                                {<p className={rip.info} key={e}>{e[1]}</p>}
-                                <span className={rip.bars} >
-                                    <span id={e[0]}></span>
-                                </span>
-                            </div>
-                        )
-                    })}
-                </div>
+                }
             </div>
         </>
     );
