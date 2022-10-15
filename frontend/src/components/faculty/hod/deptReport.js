@@ -14,6 +14,8 @@ export default function DeptReport() {
     const [thirdyear, setthirdyear] = useState(null);
     const [fourthyear, setfourthyear] = useState(null);
 
+
+    //notCreated() function returns an array of classes& subjects that did not create a PRA yet
     async function notCreated(){
         if (currentUser.isFirstYearHOD){
             const res = await getFirstYearStatistics();
