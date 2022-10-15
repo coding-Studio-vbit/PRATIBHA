@@ -90,7 +90,7 @@ const ListofStudents = () => {
     if (classDoc.exists()) {
       let doc = classDoc.data();
 
-      if(semester==1)
+      if(semester===1)
       {
   
         if (doc["students"]) {
@@ -99,6 +99,8 @@ const ListofStudents = () => {
             subject,
             ismid1,
             ismid2,
+            1,
+            acadYear,
           ).then((res) => {
             if (res) {
               setData(res.data);
@@ -113,7 +115,7 @@ const ListofStudents = () => {
           setError("NO STUDENTS HAVE ENROLLED TO THIS CLASS");
         }
       }
-      else if (semester==2)
+      else if (semester===2)
       {
         if (doc["students2"]) {
           await getAllStudents(
@@ -121,6 +123,8 @@ const ListofStudents = () => {
             subject,
             ismid1,
             ismid2,
+            2,
+            acadYear,
           ).then((res) => {
             if (res) {
               setData(res.data);

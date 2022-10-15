@@ -78,8 +78,7 @@ const ViewSubmissions = () => {
         setFileLink(res);
         setShowDialog("Download the File");
       }
-      console.log(res);
-      
+      console.log(res);      
   };
 
   const Fetchdata = async (
@@ -112,21 +111,52 @@ const ViewSubmissions = () => {
     let classDoc = await getDoc(studentref);
     if (classDoc.exists()) {
       let doc = classDoc.data();
-      if (doc["students"]) {
-        await getAllStudents(
-          doc["students"],
-          subject,
-          ismid1,
-          ismid2,
-        ).then((res) => {
-          if (res) {
-            setData(res.data);
-          } else {
-            setError("ERROR OCCURED");
-          }
-        });
-      } else {
-        setError("NO STUDENTS HAVE TO ENROLLED THIS CLASS");
+
+      if(semester===1)
+      {
+  
+        if (doc["students"]) {
+          await getAllStudents(
+            doc["students"],
+            subject,
+            ismid1,
+            ismid2,
+            1,
+            acadYear,
+          ).then((res) => {
+            if (res) {
+              setData(res.data);
+            } else {
+              setError("ERROR OCCURED");
+            }
+          });
+        }
+        else {
+          setError("NO STUDENTS HAVE ENROLLED TO THIS CLASS");
+        }
+      }
+      else if (semester===2)
+      {
+        if (doc["students2"]) {
+          await getAllStudents(
+            doc["students2"],
+            subject,
+            ismid1,
+            ismid2,
+            2,
+            acadYear,
+          ).then((res) => {
+            if (res) {
+              setData(res.data);
+            } else {
+              setError("ERROR OCCURED");
+            }
+          });
+        }
+        else {
+          setError("NO STUDENTS HAVE ENROLLED TO THIS CLASS");
+        }
+
       }
     } else {
       setError("THIS CLASS DOES NOT EXIST");

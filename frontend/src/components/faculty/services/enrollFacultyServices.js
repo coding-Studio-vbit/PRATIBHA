@@ -69,7 +69,7 @@ export async function enrollClasses(email, enrolled_classes) {
                 isAlreadyEnrolled = true;
                 alreadyEnrolled = [
                   ...alreadyEnrolled,
-                  { facultyID: ele.faculty, subject: mod_enrolled_classes[i] },
+                  { facultyID: ele.facultyID, subject: mod_enrolled_classes[i] },
                 ];
               } else {
                 await updateDoc(docRef, {
@@ -153,7 +153,7 @@ export async function enrollHODClasses(email, enrolled_classes) {
               isAlreadyEnrolled = true;
               alreadyEnrolled = [
                 ...alreadyEnrolled,
-                { facultyID: ele.faculty, subject: mod_enrolled_classes[i] },
+                { facultyID: ele.facultyID, subject: mod_enrolled_classes[i] },
               ];
             } else {
               await updateDoc(docRef, {
@@ -340,7 +340,7 @@ export async function addClass(email, addedClass) {
           if (ele.subject === classname[5]) {
             d1 = false;
             return {
-              data: ele.faculty,
+              data: ele.facultyID,
               className: mod_addedClass.split("_").join("-"),
             };
             //SHOW THAT SOME FACULTY ALREADY REGISTERED......

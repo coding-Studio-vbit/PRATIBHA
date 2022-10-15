@@ -93,8 +93,6 @@ export default function AddClasses() {
     const adding =
       Course.value +
       "_"+
-      Regulation.value+
-      "_" +
       Year.value +
       "_" +
       Department.value +
@@ -178,7 +176,7 @@ export default function AddClasses() {
                 setdisablereg(false);
               }}
             />
-            <p className="addclasses-dropdown-title">Regulation</p>
+            {/* <p className="addclasses-dropdown-title">Regulation</p>
             <Select
               placeholder=""
               isDisabled={disablereg}
@@ -189,7 +187,7 @@ export default function AddClasses() {
 
                 setRegulation(r);
               }}
-            />
+            /> */}
             <p className="addclasses-dropdown-title">Department</p>
             <Select
               placeholder=""
