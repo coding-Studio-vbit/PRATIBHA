@@ -1,8 +1,6 @@
 import { db } from "../../../firebase";
 import { collection, doc, query, getDocs, getDoc } from "firebase/firestore";
 import {
-  fetchRegulationOptions,
-  fetchRegulationsArray,
   fetchSemNumber,
 } from "../../student/services/studentServices";
 import { getAcademicYear } from "./adminDeadlinesServices";
@@ -174,8 +172,7 @@ export const getCurriculumData = async (course, year, semester) => {
 export async function getDeptCurriculum(dept, course, year) {
   let subjects = [];
   let sections = [];
-  let regArray = await fetchRegulationsArray();
-  let reg = regArray[year - 1];
+  let acadYear = await getAcademicYear(course,year)
   let curriculumArray = [];
   if (course=="BTech"||course=="MTech"){
 
@@ -225,12 +222,11 @@ export async function getDeptCurriculum(dept, course, year) {
       }
       for (let i = 0; i < sections.length; i++) {
         for (let j = 0; j < subjects.length; j++) {
-          let str = course + "_" + reg + "_" + year + "_" + dept;
+          let str = course + "_" + acadYear.data + "_" + year + "_" + dept;
           str = str + "_" + sections[i] + "_" + subjects[j].subject;
           curriculumArray.push(str);
         }
       }
-  
       return curriculumArray;
     } catch (e) {
       console.log(e);
@@ -281,7 +277,7 @@ export async function getDeptCurriculum(dept, course, year) {
 
         for (let i = 0; i < e.data()["sections"].length; i++) {
           for (let j = 0; j < subjects.length; j++) {
-            let str = course + "_" + reg + "_" + year + "_" + e.id;
+            let str = course + "_" + acadYear.data + "_" + year + "_" + e.id;
             str = str + "_" + sections[i] + "_" + subjects[j].subject;
             curriculumArray.push(str);
           }
