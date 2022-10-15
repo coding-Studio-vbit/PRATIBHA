@@ -28,6 +28,7 @@ async function checkEnrollment(email) {
   return error;
 }
 
+//deprecated, no need this function
 export const addStudent = async (studentID, department,course,year) => {
   try {
     const sem = await fetchSemNumber(course,year);

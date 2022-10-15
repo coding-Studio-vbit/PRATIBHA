@@ -60,7 +60,7 @@ const SubjectsList = () => {
       setCourseTitle(document.course + "_"+ document.year +"_"+document.department+  "_" + document.section);
 
       //should check with mba
-      if (document.course === "MBA") {
+      if (document.course === "MBA" && document.year==='1') {
         setCourseTitle(
           document.course + "_" + document.year + "_" + document.section
         );
