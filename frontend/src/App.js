@@ -21,6 +21,8 @@ import HODSearch from "./components/faculty/hod/HODSearch";
 import AddClasses from "./components/faculty/common/LockListSubjects/addclasses";
 import Deadlines from "./components/faculty/coe/deadlines";
 import DeptReport from "./components/faculty/hod/deptReport";
+import AdminPage from "./components/admin/adminPage.js";
+import BulkEnrolls from "./components/admin/BulkEnrolls.js";
 
 const App = () => {
   
@@ -59,7 +61,13 @@ const AllRoutes = () => {
           <Route
           path="/faculty/*"
           element={
-              <Routes>
+            <Routes>
+              {currentUser.isAdmin && (
+                <>
+                <Route exact path="/admin" element={<AdminPage />} />
+                <Route exact path="/admin/BulkEnrolls" element={<BulkEnrolls />} />
+                </>
+              )}
                 {currentUser.isCOE && (
                   <>
                     <Route exact path="/coesearch" element={<CoeSearch />} />
@@ -97,7 +105,6 @@ const AllRoutes = () => {
           }
         />
         )}
-        
       </Routes>
     </Router>
   );

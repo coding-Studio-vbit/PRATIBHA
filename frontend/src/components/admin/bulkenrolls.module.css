@@ -1,0 +1,45 @@
+.bodyContainer{
+      width:100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
+
+.nav{
+      width: 100vw;
+}
+
+
+.enrollcontainer{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
+      align-items: center;
+}
+
+.inputbox{
+      margin-top: 1em;
+      min-width: 18rem;
+}
+
+.fileinput{
+      text-align: center;
+      border: 0.5em solid #0E72AB;
+      height: auto;
+      padding:1em;
+      display: flex;
+      flex-direction: column;
+}
+
+.fileupload{
+      cursor: pointer;
+      color:#0E72AB;
+      display: flex;
+      font-size: larger;
+      font-weight: bold;
+      flex-direction: column;
+      margin-top: 3rem;
+      min-width: 20rem;
+}
+
