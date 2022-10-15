@@ -10,6 +10,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
 
 async function checkEnrollment(email) {
   let error = null;
@@ -314,8 +315,20 @@ async function getFileUploadDetails(email, subject, midNo) {
   const userRef = doc(db, "users", email);
   try {
     const doc = await getDoc(userRef);
+    const current_year = doc.data().year
+    console.log(current_year)
+    const course = doc.data().course
+    console.log(course)
+    let acadYear = await getAcademicYear(course,current_year)
+    console.log(acadYear)
+    let sem = await fetchSemNumber(course,current_year)
+    console.log(sem)
     if (doc.exists()) {
-      let subs = doc.data()["subjects"];
+      console.log(true,327)
+
+let acadYearObject = doc.data()[acadYear.data]
+
+      let subs = acadYearObject[`sem${sem}`];
       for (let i = 0; i < subs.length; i++) {
         if (subject === subs[i].subject) {
           if (midNo === "1") {
