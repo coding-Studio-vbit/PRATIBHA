@@ -151,7 +151,7 @@ const Grading = () => {
   async function searchRoll(val,midX=null){
     setPageLoading(true);
     if(val!=null || val!==""){
-      let x=allStudents.find(element=>element.id.slice(0,10)==val)
+      let x=allStudents.find(element=>element.id.slice(0,10)===val)
       if(x==null){
         setTempRoll(rollNo)
         alert("Student Not Found")
@@ -275,7 +275,7 @@ const Grading = () => {
             setSwitchIndex(students.length);
           }
           students.push(element); 
-                     
+
       });
       setAllStudents(students); 
      

@@ -5,6 +5,7 @@ import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { LoadingScreen } from "../global_ui/spinner/spinner";
 import { fetchSemNumber } from "../student/services/studentServices";
+import { getAcademicYear } from "../faculty/services/adminDeadlinesServices";
 
 const AuthContext = React.createContext();
 
@@ -53,6 +54,8 @@ export function AuthProvider({ children }) {
       let roles = [];
       let isFirstYearHOD = false
       let isCOE = false
+      let academicYear = null
+      let currentSem = null
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
@@ -61,9 +64,11 @@ export function AuthProvider({ children }) {
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-              const semester = docSnap.data().semester;
-              const semcheck = await fetchSemNumber(docSnap.data().course,docSnap.data().year);
-              if(semester==semcheck){
+              const data = docSnap.data()
+              academicYear = (await getAcademicYear(data.course, data.year)).data
+              const semester = data.semester;
+              currentSem = await fetchSemNumber(data.course,data.year);
+              if(semester==currentSem){
                 isFirstTime=false;
               }else{
                 isFirstTime = true;
@@ -111,6 +116,8 @@ export function AuthProvider({ children }) {
             isCOE:isCOE,
             isFirstYearHOD:isFirstYearHOD,
             roles: roles,
+            academicYear,
+            currentSem,
       
           });
           setLoading(false);

@@ -4,18 +4,24 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
+import { getAcademicYear } from "./adminDeadlinesServices";
+import { fetchSemNumber } from "../../student/services/studentServices";
 
 
 export async function getMarks(className, email) {
+
+  
     //grading.js
     const userRef = doc(db, "users", email + "@vbithyd.ac.in");
     try {
       const docSnap = await getDoc(userRef);
+      const data = docSnap.data()
+      const acadYear =( await getAcademicYear(data.course,data.current_year)).data
+      const semNo = await fetchSemNumber(data.course,data.current_year)
       if (docSnap.exists()) {
         return {
-          data: docSnap
-            .data()
-            ["subjects"].find((e) => e.subject === className.split("_").pop()),
+          data:data
+            [acadYear][`sem${semNo}`].find((e) => e.subject === className.split("_").pop()),
           error: null,
         };
       } else {
@@ -50,11 +56,16 @@ export async function postMarks(
   
     const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
   
+    const userDoc = await getDoc(userRef);
+    const data = userDoc.data()
+    const acadYear = (await getAcademicYear(data.course,data.current_year)).data
+    const semNo = await fetchSemNumber(data.course,data.current_year)
+
     try {
       if (midNo === "1") {
-        const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {
-          let subs = userDoc.data()["subjects"];
+          let subs = data[acadYear][`sem${semNo}`];
+          let updateSubs = {}
           subs.find((e) => {
             if (e.subject === className.split("_")[5]) {
               e.gradeStatus1 = "GRADED";
@@ -62,16 +73,16 @@ export async function postMarks(
               e.mid1_remarks = remarks;
             }
           });
-          await updateDoc(userRef, {
-            subjects: subs,
-          });
+          updateSubs[`${acadYear}.sem${semNo}`] = subs
+          await updateDoc(userRef, updateSubs );
         } else {
           error = "Unknown Error Occured";
         }
       } else if (midNo === "2") {
-        const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {
-          let subs = userDoc.data()["subjects"];
+          let subs = data[acadYear][`sem${semNo}`];
+          let updateSubs = {}
+
           subs.find((e) => {
             if (e.subject === className.split("_")[5]) {
               e.gradeStatus2 = "GRADED";
@@ -79,9 +90,9 @@ export async function postMarks(
               e.mid2_remarks = remarks;
             }
           });
-          await updateDoc(userRef, {
-            subjects: subs,
-          });
+          updateSubs[`${acadYear}.sem${semNo}`] = subs
+
+          await updateDoc(userRef,updateSubs);
         } else {
           error = "Unknown Error Occured";
         }

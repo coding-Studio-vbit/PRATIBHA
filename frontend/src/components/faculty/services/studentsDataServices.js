@@ -13,6 +13,7 @@ import {
   getStudentData,
 } from "../../student/services/studentServices";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
+import { getAcademicYear } from "./adminDeadlinesServices";
 
 
 export const Fetchlink = async (email, mid, fullcourse) => {
@@ -184,6 +185,8 @@ export const Fetchlink = async (email, mid, fullcourse) => {
     export async function getAllStudentsData(className) {
         const subject = className.split("_").pop();
         let classdetails = className.split("_")
+        let acadYear = classdetails[1];
+        let sem = await fetchSemNumber(classdetails[0], classdetails[2]);
         let Klass  = classdetails[2]+'_'+classdetails[3]+'_'+classdetails[4];       
 
         const facultyRef = doc(
@@ -202,7 +205,7 @@ export const Fetchlink = async (email, mid, fullcourse) => {
                 id: student,
                 data: studentSnap
                   .data()
-                  ["subjects"].find((e) => e.subject === subject),
+                  [acadYear][`sem${sem}`].find((e) => e.subject === subject),
               });
             }
             return {
