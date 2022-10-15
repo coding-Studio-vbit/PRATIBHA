@@ -99,6 +99,7 @@ export function AuthProvider({ children }) {
                 }
                 if (docSnap.data().isAdmin) {
                   isAdmin = true
+                  isFirstTime=false
                 }
                 if (docSnap.data().isEnrolled) {
                   isFirstTime = false;
