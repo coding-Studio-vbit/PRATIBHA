@@ -8,7 +8,6 @@ import {
   fetchSemNumber,
   fetchisMid1,
   fetchisMid2,
-  fetchSemNumber,
 } from "../services/studentServices";
 import { useAuth } from "./../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
