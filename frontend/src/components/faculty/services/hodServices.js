@@ -78,19 +78,17 @@ export async function getFirstYearStatistics() {
 //change subs collection
 export async function getStatistics(course, dept, year) {
   try {
+    let acadYear = await getAcademicYear(course,year)
     let arr1 = await getDeptCurriculum(dept, course, year);
     let createdPRA = [];
     let str = "";
-    const regArray = await fetchRegulationsArray();
-    let regulation = regArray[year - 1];
-    const q = query(collection(db, "subjects"));
+    const q = query(collection(db, "classesinfo",course,acadYear.data));
     const allDocs = await getDocs(q);
     allDocs.docs.forEach((e) => {
       let arr = e.id.split("_");
       if (
-        arr[0] == course &&
-        arr[1] == regulation.toString() &&
-        arr[2] == year.toString()
+        arr[0] == year &&
+        arr[1] == dept 
       ) {
         for (let i = 0; i < e.data()["subjects"].length; i++) {
           str = e.id + "_" + e.data()["subjects"][i].subject;

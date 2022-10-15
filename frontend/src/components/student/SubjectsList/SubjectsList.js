@@ -8,6 +8,7 @@ import {
   fetchSemNumber,
   fetchisMid1,
   fetchisMid2,
+  fetchSemNumber,
 } from "../services/studentServices";
 import { useAuth } from "./../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +31,6 @@ const SubjectsList = () => {
   const [userDoc, setuserDoc] = useState(null);
   const [courseTitle, setCourseTitle] = useState(" ");
   const [course, setcourse] = useState("");
-  const [regulation,setregulation]=useState("");
   const [acadYear, setAcadYear] = useState("");
   const [year, setyear] = useState("");
 
@@ -48,6 +48,7 @@ const SubjectsList = () => {
         academic_year = res.data;
         setAcadYear(res.data);
       });
+      let semester = await fetchSemNumber(document.course,document.year);
       let course =
         document.course +
         "_" +
@@ -60,7 +61,8 @@ const SubjectsList = () => {
         document.section;
       setCourseTitle(document.course + "_"+ document.year +"_"+document.department+  "_" + document.section);
 
-      if (document.course === "MBA"&&document.year==='1') {
+      //should check with mba
+      if (document.course === "MBA" && document.year==='1') {
         setCourseTitle(
           document.course + "_" + document.year + "_" + document.section
         );
@@ -78,14 +80,12 @@ const SubjectsList = () => {
         mid = 2;
       }
       if(dlDate!=null){
-
-
         coeDeadLine = new Timestamp(
           dlDate.data["seconds"],
           dlDate.data["nanoseconds"]
         ).toDate();
   
-        await fetchsubject(document, coeDeadLine, course, mid);
+        await fetchsubject(document, coeDeadLine, course, mid, semester);
       }
       else{
         setError("Cannot Enroll");
@@ -99,7 +99,7 @@ const SubjectsList = () => {
 
   //change subs collection
   //TODO REMOVE ACADYEAR DECLARATIONS!!
-  const fetchsubject = async (document, coedeadLine, course, midvalue) => {
+  const fetchsubject = async (document, coedeadLine, course, midvalue, semester) => {
     console.log(document,course,midvalue);
     let Course = course.split("_")[0];
     let acadYear = course.split("_")[1];
@@ -151,7 +151,7 @@ const SubjectsList = () => {
           if (Difference_In_Days <= 7) {
             isWeek = true;
           }
-          await fetchusersubject(document, date, mid, item.subject, isWeek);
+          await fetchusersubject(document, date, mid, item.subject, isWeek, acadYear, semester);
         });
       } else {
         setError("Submissions are not open for any subject.");
@@ -159,10 +159,16 @@ const SubjectsList = () => {
     });
   };
 
-  const fetchusersubject = async (document, date, mid, subject, isWeek) => {
+  const fetchusersubject = async (document, date, mid, subject, isWeek, acadYear, semester) => {
     try {
-      console.log(currentUser.academicYear);
-      const subjectsdata = document[currentUser.academicYear][`sem${currentUser.currentSem}`]
+      let sem;
+      if(semester === 1){
+        sem = "sem1";
+      }
+      if(semester === 2){
+        sem = "sem2";
+      }
+      const subjectsdata = document[acadYear][sem];
       await subjectsdata.map(async (item, index) => {
         console.log(item.subject, subject);
         if (item.subject === subject) {
