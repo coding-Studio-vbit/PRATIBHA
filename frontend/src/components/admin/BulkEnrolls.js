@@ -87,10 +87,13 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
         const sem = await fetchSemNumber(course, year);
         const docRef = doc(db, `classesinfo/${course}/${range}/`, `${year}_${department}_${section}`);
         const docData = await getDoc(docRef);
-
+        let students = []
+        studentID.forEach((e) => {
+            students.push(e[0]);
+        })
         if (!docData.exists()) {
             await setDoc(docRef, {
-                students: studentID
+                students: students
             })
         }
         // else {
@@ -102,7 +105,7 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
     }
 };
 
-const newEnroll = async (name, mail, year, course, department, section, subjects,OE=[],PE=[]) => {
+export const newEnroll = async (name, mail, year, course, department, section, subjects,OE=[],PE=[]) => {
      // query call to add student to classes info
     const docRef = doc(db, "usersdummy", `${mail}`);
     const docSnap = await getDoc(docRef);
@@ -115,7 +118,7 @@ const newEnroll = async (name, mail, year, course, department, section, subjects
     let localsubs = [...subjects]
     if (OE.length > 0) {
         OE.forEach((e) => {
-            if(e!=="")
+            if(e)
             localsubs.push({ subject: e });
         })
         console.log(localsubs)
@@ -123,7 +126,7 @@ const newEnroll = async (name, mail, year, course, department, section, subjects
     if (PE.length > 0) {
         
         PE.forEach((e) => {
-            if (e !== "")
+            if (e)
             localsubs.push({ subject: e });
         })
         console.log(localsubs)
@@ -250,19 +253,31 @@ const BulkEnrolls = () => {
         })
         let date = new Date();
         let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
-        await 
-        data.forEach((e,index) => {
+
+        data.forEach((e, index) => {
             if (index > 0) {
                 let student = e.split(",")
                 // console.log(student)
                 if (student[0]) {
-                    enrollArray.push(newEnroll(student[1], student[2], year.value, course.value, dept.value, "A", subjects,[student[4],student[5]],[student[6],student[7]]));
-                    classInfo.push(student[2]);
+                    enrollArray.push(newEnroll(student[1], student[2], year.value, course.value, dept.value, student[3], subjects,[student[4],student[5]],[student[6],student[7]]));
+                    
+                    classInfo.push([student[2], student[3]])
                 }
             }
         })
-        const res = await addStudentstoClassesInfo(classInfo, "A", dept.value, course.value, year.value, range)
-        console.log(res)
+        let iter = 0,start = 0
+        let sections = []
+        let section = classInfo[iter++][1];
+        while (classInfo.length > iter) {
+            if (section !== classInfo[iter][1] || iter === classInfo.length - 1) {
+                console.log(classInfo.slice(start, iter), section)
+                const res = await addStudentstoClassesInfo(classInfo.slice(start, iter), section, dept.value, course.value, year.value, range)
+                start = iter;
+                section = classInfo[iter][1];
+            }
+            iter++;
+        }
+        
         Promise.all(enrollArray).then((values) => { 
             setLoad(false)
             setSignal(true);
@@ -272,7 +287,7 @@ const BulkEnrolls = () => {
 
     return ( 
         <>
-            <Navbar className={rip.nav} back={false} title={"Bulk Enrolls"} logout={true} />
+            <Navbar backURL={"/faculty/admin/"} className={rip.nav} back={true} title={"Bulk Enrolls"} logout={true} />
             <div className={rip.bodyContainer}>
                 {load ? <LoadingScreen isTransparent={true} height={"90vh"}  /> : 
                     <div className={rip.enrollcontainer}>
@@ -283,7 +298,7 @@ const BulkEnrolls = () => {
                             <Select
                                 placeholder="Course"
                                 value={course}
-                                onChange={(e) => { setCourse(e); console.log(e) }}
+                                onChange={(e) => { setCourse(e) }}
                                 isDisabled={year}
                                 className="select"
                                 options={courses}
@@ -320,7 +335,7 @@ const BulkEnrolls = () => {
                         </div>
 
                         {course && year && dept && <p id="class">{"Please upload Excel sheet of " + course.value + " " + year.value + " " + dept.value}</p>}
-                        <label For="fileinput" className={rip.fileupload}>
+                        <label htmlFor="fileinput" className={rip.fileupload}>
                             <span className={rip.fileinput} onClick={async () => {
                                 if (!(course && year && dept)) {
                                     console.log("HI")

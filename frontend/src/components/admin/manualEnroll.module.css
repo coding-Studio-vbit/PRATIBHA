@@ -1,0 +1,30 @@
+.nav{
+      width: 100vw;
+}
+.input{
+    width: fit-content;
+    size: 10px;
+}
+.body{
+    width:100vw;
+    /* height: 90vh; */
+    display: flex;
+    margin-top: 2%;
+    gap: 2em;
+    justify-content: center;
+    /* align-items: center; */
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.selectcontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    min-width: 18rem;
+}
