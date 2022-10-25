@@ -16,8 +16,8 @@ export async function getMarks(className, email) {
     try {
       const docSnap = await getDoc(userRef);
       const data = docSnap.data()
-      const acadYear =( await getAcademicYear(data.course,data.current_year)).data
-      const semNo = await fetchSemNumber(data.course,data.current_year)
+      const acadYear =( await getAcademicYear(data.course,data.year)).data
+      const semNo = await fetchSemNumber(data.course,data.year)
       if (docSnap.exists()) {
         return {
           data:data
@@ -58,8 +58,8 @@ export async function postMarks(
   
     const userDoc = await getDoc(userRef);
     const data = userDoc.data()
-    const acadYear = (await getAcademicYear(data.course,data.current_year)).data
-    const semNo = await fetchSemNumber(data.course,data.current_year)
+    const acadYear = (await getAcademicYear(data.course,data.year)).data
+    const semNo = await fetchSemNumber(data.course,data.year)
 
     try {
       if (midNo === "1") {

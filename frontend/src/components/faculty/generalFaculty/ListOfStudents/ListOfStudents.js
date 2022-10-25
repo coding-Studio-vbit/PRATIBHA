@@ -14,6 +14,10 @@ import {
   fetchSemNumber,
 } from "../../../student/services/studentServices";
 import { getAllStudents } from "../../services/studentsDataServices";
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
+import { app, storage } from "./../../../../firebase";
+import { listAll, ref, getDownloadURL } from "firebase/storage";
 
 const ListofStudents = () => {
   const [data, setData] = useState([]);
@@ -58,6 +62,37 @@ const ListofStudents = () => {
     branch = subjectval[3],
     section = subjectval[4],
     subject = subjectval[5];
+
+    const downloadFolderAsZip = async () => {
+      
+      let folderPath = Course+'/'+acadYear+'/'+year+'/'+branch+'/'+section+'/'+subject+`/${mid}`;
+      const jszip = new JSZip();
+      const folderRef = ref(storage, folderPath);
+      const filesres = await listAll(folderRef)
+      const files = filesres.items;
+      console.log(files)
+      const downloadUrls = await Promise.all(
+          files.map(({ name }) => getDownloadURL(ref(storage, folderRef+'/'+name)))
+      );
+      const downloadedFiles = await Promise.all(downloadUrls.map(url => fetch(url).then(res => res.blob())));
+      console.log(downloadedFiles)
+      downloadedFiles.forEach((file, i) => {
+        let type;
+        if (
+          file.type.split("/").pop() ==
+          "vnd.openxmlformats-officedocument.presentationml.presentation"
+        ) {
+          type =  ".pptx";
+        } else if (file.type.split("/").pop() === "vnd.ms-powerpoint") {
+          type =  ".ppt";
+        } else {
+          type =  file.type.split("/").pop();          
+        }
+        console.log(file)
+        jszip.file((files[i].name) +'.' +type, file)});
+      const content = await jszip.generateAsync({ type: 'blob' });
+      saveAs(content, folderPath);
+  };
   const Fetchdata = async (
     Course,
     acadYear,
@@ -121,12 +156,10 @@ const ListofStudents = () => {
   const Fetchsubject = async () => {
     try {
       const acadYear = subjectval[1]
-      console.log(subjectval[5])
       let classroom = year+'_'+branch+'_'+section;
       const subjectRef = doc(db, "classesinfo", Course,acadYear,classroom); 
       const subjectDoc = await getDoc(subjectRef);
       if (subjectDoc.exists()) {
-        console.log("doc exists")
         let document = subjectDoc.data();
         if (document["subjects"]) {
           let obj = document["subjects"].find(
@@ -274,6 +307,14 @@ const ListofStudents = () => {
                 }}
                 width="200"
                 className="rare grade-button"
+              />
+            </div>
+            <div>
+            <Button
+              children="BULK DOWNLOAD"
+              onClick={() => downloadFolderAsZip()}
+              width="200"
+              className="rare grade-button"
               />
             </div>
           </div>
