@@ -68,9 +68,21 @@ const ViewSubmissions = () => {
     section = passedData.Section,
     subject = passedData.Subject;
 
+    let midval;
+    let ismid1 =  fetchisMid1(Course, year);
+    let ismid2 =  fetchisMid2(Course, year);
+
+    if (ismid1) {
+      midval='1';
+    }
+
+    if (ismid2) {
+      midval='2';
+    }
+
   const getFileLink = async (rollno, mid1_status, mid2_status) => {
       setStudent(rollno);
-      const res = await Fetchlink(rollno, mid, course);
+      const res = await Fetchlink(rollno, midval, course);
       if(res === null){
         setStudent(null);
         setShowDialog("File does not exist");
