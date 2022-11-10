@@ -81,7 +81,7 @@ export const Fetchlink = async (email, mid, fullcourse) => {
                 Preparation1 = obj.mid1_marks.Preparation1;
                 Presentation1 = obj.mid1_marks.Presentation1;
               } else {
-                if (student === "" && ismid1) {
+                if ((student === "" && ismid1) && obj.mid_1) {
                   student = sEmail.split("@")[0];
                   studentTopic = topic;
                 }
@@ -94,7 +94,7 @@ export const Fetchlink = async (email, mid, fullcourse) => {
                 Preparation2 = obj.mid2_marks.Preparation2;
                 Presentation2 = obj.mid2_marks.Presentation2;
               } else {
-                if (student === "" && ismid2) {
+                if ((student === "" && ismid2) && obj.mid_2) {
                   student = student + sEmail.split("@")[0];
                   studentTopic = studentTopic + topic;
                 }
