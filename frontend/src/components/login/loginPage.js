@@ -35,7 +35,8 @@ export default function LoginPage() {
     if (currentUser) {
       if (currentUser.userType === "STUDENT") {
         if (currentUser.isFirstTime) {
-          setShowNotEnrolledDialog(true);
+          // setShowNotEnrolledDialog(true);
+          nav("/student/subjectslist", { replace: true });
         } else {
           nav("/student/subjectslist", { replace: true });
         }

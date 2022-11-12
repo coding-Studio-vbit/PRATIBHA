@@ -206,8 +206,7 @@ const ManualEnroll = () => {
                                 onChange={(e) => { setPE2(e) }}
                             />
                         </div>
-                        <button type={"button"} onClick={(e) => handleSubmit()} value={"Submit"}>submit</button>
-
+                        <button className={styles.submitbutton} type={"button"} onClick={(e) => handleSubmit()} value={"Submit"}>Submit</button>
                     </div>
                 </form>
             </div>

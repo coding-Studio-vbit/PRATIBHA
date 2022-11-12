@@ -35,7 +35,6 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
                 sections = docSnap.data()["sections"];
                 if (semester == 1) {
                     subjects = docSnap.data()["subjects"];
-
                 } else if (semester == 2) {
                     subjects = docSnap.data()["subjects2"];
                 }
@@ -76,7 +75,6 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
         catch (e) {
             console.log(e)
         }
-
     }
 
 
@@ -87,18 +85,15 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
         const sem = await fetchSemNumber(course, year);
         const docRef = doc(db, `classesinfo/${course}/${range}/`, `${year}_${department}_${section}`);
         const docData = await getDoc(docRef);
-        let students = []
-        studentID.forEach((e) => {
-            students.push(e[0]);
-        })
+       
         if (!docData.exists()) {
             await setDoc(docRef, {
-                students: students
+                students: studentID
             })
         }
-        // else {
-        //     await updateDoc(docRef, { students: (studentID) });
-        // }
+        else {
+            await updateDoc(docRef, { students: (studentID) });
+        }
 
     } catch (error) {
         console.log(error);
@@ -107,7 +102,7 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
 
 export const newEnroll = async (name, mail, year, course, department, section, subjects,OE=[],PE=[]) => {
      // query call to add student to classes info
-    const docRef = doc(db, "usersdummy", `${mail}`);
+    const docRef = doc(db, "users", `${mail}`);
     const docSnap = await getDoc(docRef);
     let date = new Date();
     let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
@@ -172,6 +167,7 @@ export const newEnroll = async (name, mail, year, course, department, section, s
             department: department,
             section: section,
             year: year,
+            course: course,
             ...map
         })
     }
@@ -243,7 +239,7 @@ const BulkEnrolls = () => {
 
 
     const intervals = async (data) => {
-        let enrollArray = [],classInfo=[], subjects = [];
+        let enrollArray = [],classArray=[],classInfo=[], subjects = [];
         // console.log(data);
         let subs = await getDeptCurriculumSubsOnly(dept.value, course.value, year.value);
         console.log(subs)
@@ -265,20 +261,20 @@ const BulkEnrolls = () => {
                 }
             }
         })
-        let iter = 0,start = 0
-        let sections = []
-        let section = classInfo[iter++][1];
-        while (classInfo.length > iter) {
-            if (section !== classInfo[iter][1] || iter === classInfo.length - 1) {
-                console.log(classInfo.slice(start, iter), section)
-                const res = await addStudentstoClassesInfo(classInfo.slice(start, iter), section, dept.value, course.value, year.value, range)
-                start = iter;
-                section = classInfo[iter][1];
-            }
-            iter++;
-        }
         
-        Promise.all(enrollArray).then((values) => { 
+        let sections = [[]];
+        classInfo.forEach((e) => {
+            if (e[1].charCodeAt(0) % 65 > sections.length - 1) {
+                sections.push([]);
+            }
+            sections[e[1].charCodeAt(0) % 65].push(e[0]);
+        })
+        sections.forEach((e, index) => {
+            if (e.length > 0) {
+                classArray.push(addStudentstoClassesInfo(e, String.fromCharCode(65+index), dept.value, course.value, year.value, range));
+            }
+        })
+        Promise.all(enrollArray, classArray).then((values) => { 
             setLoad(false)
             setSignal(true);
         });
