@@ -175,7 +175,7 @@ const CreatePra = () => {
           ></textarea>
           <span className="coe-deadline">
             <span>CoE Deadline: </span>
-            {CoeDate.toLocaleDateString("en-IN")}
+              {CoeDate && CoeDate > new Date() ? CoeDate.toLocaleDateString("en-IN") : <p style={{color:"red", display:"inline-block"}}>CoE Deadline is not available right now</p>}
           </span>
           <span className="text-style2">
             Set mid-{mid} PRA Deadline:
@@ -197,7 +197,8 @@ const CreatePra = () => {
             </span>
           </span>
 
-          <Button
+            <Button
+              disabled={new Date() > CoeDate}
             style={{ padding: "5px" }}
             className="create-button normal"
             icon={

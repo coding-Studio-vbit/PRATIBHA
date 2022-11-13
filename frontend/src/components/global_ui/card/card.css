@@ -21,6 +21,12 @@
   align-self: flex-end;
   font-size: small;
 }
+.delicon:hover{
+  color: red;
+  scale: 1.2;
+  font-weight: bolder;
+  transition: color 1s cubic-bezier(0.075, 0.82, 0.165, 1) 500ms;
+}
 .globalCardContainer:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
