@@ -66,7 +66,7 @@ export function AuthProvider({ children }) {
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-              const data = docSnap.data()
+                const data = docSnap.data()
               academicYear = (await getAcademicYear(data.course, data.year)).data
               const semester = data.semester;
               currentSem = await fetchSemNumber(data.course,data.year);
@@ -75,7 +75,10 @@ export function AuthProvider({ children }) {
               }else{
                 isFirstTime = true;
               }
-
+              }
+              else {
+                console.log(user);
+                user.email  = null
               }
             } catch (e) {
               //Display it

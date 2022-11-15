@@ -34,14 +34,20 @@ export default function LoginPage() {
     animate()
     if (currentUser) {
       if (currentUser.userType === "STUDENT") {
-        if (currentUser.isFirstTime) {
+        
+        if (!currentUser.email) { 
+          setShowNotEnrolledDialog(true);
+        }
+        else if (currentUser.isFirstTime) {
           // setShowNotEnrolledDialog(true);
           nav("/student/subjectslist", { replace: true });
-        } else {
+        }
+        else {
           nav("/student/subjectslist", { replace: true });
         }
       } else if (currentUser.userType === "FACULTY") {
         if (currentUser.isFirstTime) {
+          console.log("first time");
           nav("/faculty/enroll", { replace: true });
         }  else if (currentUser.isCOE) {
           nav("/faculty/coesearch", { replace: true });
