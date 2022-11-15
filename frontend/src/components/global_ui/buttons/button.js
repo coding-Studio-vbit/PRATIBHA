@@ -5,7 +5,7 @@ const Button = ({ children, disabled, onClick, width, height, icon, className })
   return (
     <button
       className={`root ${className}`}
-      style={{ width: `${width}px`, height: `${height}px` }}
+      style={{ width: `${width}px`, height: `${height}px`, cursor: disabled ? "not-allowed" : "pointer" }}
       onClick={onClick} disabled={disabled}
     >
       {" "}

@@ -23,6 +23,7 @@ import Deadlines from "./components/faculty/coe/deadlines";
 import DeptReport from "./components/faculty/hod/deptReport";
 import AdminPage from "./components/admin/adminPage.js";
 import BulkEnrolls from "./components/admin/BulkEnrolls.js";
+import ManualEnroll from "./components/admin/manualEnroll.js";
 
 const App = () => {
   
@@ -66,6 +67,7 @@ const AllRoutes = () => {
                 <>
                 <Route exact path="/admin" element={<AdminPage />} />
                 <Route exact path="/admin/BulkEnrolls" element={<BulkEnrolls />} />
+                <Route exact path="/admin/ManualEnroll" element={<ManualEnroll />} />
                 </>
               )}
                 {currentUser.isCOE && (

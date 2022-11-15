@@ -25,23 +25,21 @@ export default function DeptReport() {
             if (course == "BTech")
 {
     const res2 = await getStatistics(course,dep,'2');
-    if (res2.length!=0){
+    if (res2 && res2.length!=0){
         setsecondyear(res2)
     }
     const res3 = await getStatistics(course,dep,'3');
-    if (res3.length!=0){
+    if (res3 && res3.length!=0){
         setthirdyear(res3)
     }
     const res4 = await getStatistics(course,dep,'4');
-    if(res4.length!=0){
-        
+    if(res4 && res4.length!=0){
         setfourthyear(res4);
     }
 }         
 else if (course == "MTech"||course=="MBA"){
     const res1 = await getStatistics(course,dep,'1');
     if(res1.length!=0){
-
         setfirstyear(res1)
     }
     const res2 = await getStatistics(course,dep,'2');
@@ -49,8 +47,6 @@ else if (course == "MTech"||course=="MBA"){
         setsecondyear(res2);
     }
 }
-    
-
         }
     }
 
@@ -234,3 +230,7 @@ else if (course == "MTech"||course=="MBA"){
     </div>
   )
 }
+
+
+
+

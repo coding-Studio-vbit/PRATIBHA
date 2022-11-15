@@ -2,7 +2,7 @@
     position : relative;
     font-size: 1rem;
     height: fit-content;
-    width: 100%;
+    /* width: 100%; */
     --label-top:calc(23%);
 }
 .label {
@@ -23,9 +23,10 @@
     box-sizing:border-box;
     border       : 2px solid #ddd;
     padding      : 0.6em;
-    font-size    : 1.1em;
+    font-size    : 1em;
     border-radius: 4px;
-    width: 100%;
+    margin-left : 1em;
+    /* width: 100%; */
     outline      : none;
     transition   : border-color 0.3s ease,
     border-color 0.2s ease

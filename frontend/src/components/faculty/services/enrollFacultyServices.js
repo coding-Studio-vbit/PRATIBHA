@@ -61,7 +61,7 @@ export async function enrollClasses(email, enrolled_classes) {
       if (docData.exists()) {
         try {
           const facultyIDs = docData.data()["subjects"];
-
+          // if the subjects array in claasesinfo is empty, then facultyIDs will not be added. 
           if (facultyIDs != null) {
             for (let index = 0; index < facultyIDs.length; index++) {
               const ele = facultyIDs[index];

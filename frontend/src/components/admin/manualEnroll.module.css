@@ -1,0 +1,40 @@
+.nav{
+      width: 100vw;
+}
+.input{
+    width: fit-content;
+    size: 10px;
+}
+.body{
+    width:100vw;
+    /* height: 90vh; */
+    display: flex;
+    margin-top: 2%;
+    gap: 2em;
+    justify-content: center;
+    /* align-items: center; */
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.selectcontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    min-width: 18rem;
+}
+.submitbutton{
+    text-align: center;
+  border-radius: 7px !important;
+  border: none;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  font-size: large;
+  width: 100px;
+  height: 50px;
+  cursor: pointer;
+}
