@@ -12,7 +12,7 @@ export async function getMarks(className, email) {
 
   
     //grading.js
-    const userRef = doc(db, "users", email + "@vbithyd.ac.in");
+    const userRef = doc(db, "students", email + "@vbithyd.ac.in");
     try {
       const docSnap = await getDoc(userRef);
       const data = docSnap.data()
@@ -54,7 +54,7 @@ export async function postMarks(
     //grading
     let error = null;
   
-    const userRef = doc(db, `users`, studentID + "@vbithyd.ac.in");
+    const userRef = doc(db, `students`, studentID + "@vbithyd.ac.in");
   
     const userDoc = await getDoc(userRef);
     const data = userDoc.data()
