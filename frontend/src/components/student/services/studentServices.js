@@ -14,7 +14,7 @@ import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
 
 async function checkEnrollment(email) {
   let error = null;
-  const userRef = doc(db, "users", email);
+  const userRef = doc(db, "students", email);
   try {
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
@@ -100,7 +100,7 @@ export const addStudent = async (studentID, department,course,year) => {
 //mostly no need
 async function enrollCourse(email, course_details) {
   let error = null;
-  const userRef = doc(db, "users", email);
+  const userRef = doc(db, "students", email);
   const dep =
     course_details.course +
     "_" +
@@ -123,7 +123,7 @@ async function enrollCourse(email, course_details) {
 
 async function getStudentData(email) {
   try {
-    const userRef = doc(db, "users", email);
+    const userRef = doc(db, "students", email);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       return { document: userDoc.data(), error: null };
@@ -196,7 +196,7 @@ async function fetchMidNumber(course,year)  {
 }
 
 async function getSubjectsList(email) {
-  const userRef = doc(db, "users", email);
+  const userRef = doc(db, "students", email);
   try {
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
@@ -313,7 +313,7 @@ async function getDeadLines(
 }
 
 async function getFileUploadDetails(email, subject, midNo) {
-  const userRef = doc(db, "users", email);
+  const userRef = doc(db, "students", email);
   try {
     const doc = await getDoc(userRef);
     const current_year = doc.data().year

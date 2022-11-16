@@ -20,7 +20,7 @@ async function uploadFile(fileObj,course,year,academicYear,department,section,su
             let subs=null;
             const semNo = await fetchSemNumber(course, year)
             const updateSubs = {}
-            const docRef = doc(db, "users",email);
+            const docRef = doc(db, "students",email);
             //refers userdoc
             const docSnap = await getDoc(docRef);
             //checking doc exists to verify enrollment
