@@ -11,7 +11,7 @@ const AuthContext = React.createContext();
 
 // const hasNumber=(myString)=> /\d/.test(myString);
 function checkStudent(myString) {
-  if (myString.slice(2, 6) === "p61a") {
+  if (myString.slice(2, 4) === "p6") {
     return true;
   } else {
     return false;
