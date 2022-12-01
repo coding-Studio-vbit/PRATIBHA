@@ -297,7 +297,7 @@ export async function getDeptCurriculum(dept, course, year) {
 }
 
 export const seeErrors = async () => {
-  const docref = query(collection(db, "users"));
+  const docref = query(collection(db, "students"));
 
   const docSnap = await getDocs(docref);
 

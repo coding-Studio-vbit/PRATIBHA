@@ -62,7 +62,7 @@ export function AuthProvider({ children }) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
             userType = "STUDENT";
-            const docRef = doc(db, "users", user.email);
+            const docRef = doc(db, "students", user.email);
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {

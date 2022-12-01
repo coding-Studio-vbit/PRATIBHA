@@ -102,7 +102,7 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
 
 export const newEnroll = async (name, mail, year, course, department, section, subjects,OE=[],PE=[]) => {
      // query call to add student to classes info
-    const docRef = doc(db, "users", `${mail}`);
+    const docRef = doc(db, "students", `${mail}`);
     const docSnap = await getDoc(docRef);
     let date = new Date();
     let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;

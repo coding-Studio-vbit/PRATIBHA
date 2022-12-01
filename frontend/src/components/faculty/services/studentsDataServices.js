@@ -200,7 +200,7 @@ export const Fetchlink = async (email, mid, fullcourse) => {
             let studentList = res.data()["students"].sort();
             let studentsInfo = [];
             for await (const student of studentList) {
-              const studentSnap = await getDoc(doc(db, "users", student));
+              const studentSnap = await getDoc(doc(db, "students", student));
               studentsInfo.push({
                 id: student,
                 data: studentSnap
@@ -233,7 +233,7 @@ export async function getStudents (course,year,dept,sec,sem)
   try{
     let arr=[]
 
-    const collectionRef = collection(db,"users");
+    const collectionRef = collection(db,"students");
     const allDocs = await getDocs(collectionRef);
     (allDocs).docs.forEach((e)=>{
       const data = e.data()
