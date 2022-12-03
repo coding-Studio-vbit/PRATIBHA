@@ -164,7 +164,11 @@ async function updateSubs(course,year,dept,subs,subno){
   try{
     const depsnap = await getDoc(depref);
   const update = [...subs] 
-  if(depsnap.exists()){
+    if (depsnap.exists()) {
+      if (subno == 1) {
+        await updateDoc(depref, { ["subjects"]: update })
+        return
+      }
     await updateDoc(depref,{[`subjects${subno}`]:update})
   }
   }
