@@ -4,7 +4,7 @@ import styles from "./manualEnroll.module.css";
 import Select from "react-select";
 import Input from '../global_ui/input/input.js';
 import { fetchDepartments, fetchSemNumber } from "../student/services/studentServices.js";
-import {newEnroll, getDeptCurriculumSubsOnly} from "./BulkEnrolls.js"
+import {newEnroll, getDeptCurriculumSubsOnly, getRanges} from "./BulkEnrolls.js"
 import { db } from "../../firebase";
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +31,8 @@ const getElectives = async (course, year, dept) => {
 const ManualEnroll = () => {
     
     const [name,setName] = useState("")
-    const [mail,setMail] = useState("")
+    const [mail, setMail] = useState("")
+    const [range, setRange] = useState("");
     const [course, setCourse] = useState("");
     const [dept, setDept] = useState("");
     const [year, setYear] = useState("");
@@ -44,7 +45,7 @@ const ManualEnroll = () => {
     const [PE1, setPE1] = useState("");
     const [PE2, setPE2] = useState("");
 
-
+    let ranges = [];
     const years = [{ value: "1", label: "1" },
     { value: "2", label: "2" },
     { value: "3", label: "3" },
@@ -70,16 +71,24 @@ const ManualEnroll = () => {
         return years.slice(0, 2);
     }
 
+    const handleRanges = async () => {
+        const rangelist = await getRanges();
+        rangelist.data.forEach((e) => {
+            ranges.push({ value: e, label: e })
+        })
+        return ranges;
+    }
+    window.onload = handleRanges();
     const handleElectives = async () => {
         console.log(course.value, year.value,dept)
         const map = await getElectives(course.value, year.value, dept.value)
         let array = []
-        map.OEs.forEach((e) => {
+        map?.OEs.forEach((e) => {
             array.push({ value: e.subject, label: e.subject })
         })
         setOEs(array)
         array = []
-        map.PEs.forEach((e) => {
+        map?.PEs.forEach((e) => {
             array.push({ value: e.subject, label: e.subject })
         })
         setPEs(array)
@@ -97,24 +106,18 @@ const ManualEnroll = () => {
     
     const handleSubmit = async (e) => {
         let subjects = [];
-        console.log(666)
         let subs = await getDeptCurriculumSubsOnly(dept.value, course.value, year.value);
-        console.log(subs)
         subjects = subs.map((e) => {
             let sub = e.split("_");
             return { subject: sub[sub.length - 1] }
         })
-        await newEnroll(name,mail,year.value,course.value,dept.value,section.toUpperCase(),subjects,[OE1?.value,OE2?.value],[PE1?.value,PE2?.value])
-        console.log(e)
+        await newEnroll(name, mail, year.value, course.value, dept.value, section.toUpperCase(), range.value, subjects, [OE1?.value, OE2?.value], [PE1?.value, PE2?.value]);
         
-        let date = new Date();
-        let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
         const docRef = doc(db, `classesinfo/${course.value}/${range}/`, `${year.value}_${dept.value}_${section.toUpperCase()}`);
         const docData = await getDoc(docRef);
-        console.log(docData.exists())
         if (docData.exists()) {
             return await updateDoc(docRef, {
-                students: arrayUnion(mail)
+                students: arrayUnion(mail)  
             });
         }
         await setDoc(docRef, {
@@ -147,11 +150,18 @@ const ManualEnroll = () => {
                             textAlign={"center"}
                             size={28}
                             onChange={(e) => {
-                                setMail(e.target.value)
+                                setMail(e.target.value);
                             }}
                         />
                         
                         <div className={styles.selectcontainer}>
+                            <Select
+                                options={ranges}
+                                placeholder={"Select current Academic Year"}
+                                value={range}
+                                className="select"
+                                onChange={(e) => { setRange(e) }}
+                            />
                             <Select
                                 options={courses}
                                 placeholder={"Select Course"}

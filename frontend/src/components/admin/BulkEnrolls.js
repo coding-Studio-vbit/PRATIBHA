@@ -128,21 +128,22 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
     let semester = await fetchSemNumber(course, year);
     let map = {}
     let localsubs = [...subjects]
+    console.log(subjects)
     if (OE.length > 0) {
         OE.forEach((e) => {
-            if(e)
-            localsubs.push({ subject: e });
+            console.log(e);
+            if (e !== undefined) {
+                localsubs.push({ subject: e });
+            }
         })
-        console.log(localsubs)
     }
     if (PE.length > 0) {
-        
         PE.forEach((e) => {
-            if (e)
+            if (e!==undefined)
             localsubs.push({ subject: e });
         })
-        console.log(localsubs)
     }
+    console.log(localsubs)
     if (docSnap.exists()) {
         if (semester == 1) {
             map["year"] = year;
@@ -229,7 +230,7 @@ const BulkEnrolls = () => {
     }
 
     const handleYearChange = () => {
-        handleRanges()
+        handleRanges();
         if (course.value === "BTech")
             return years;
         return years.slice(0, 2);
@@ -291,9 +292,11 @@ const BulkEnrolls = () => {
         })
         
         let sections = [[]];
+        console.log( )
         classInfo.forEach((e) => {
+            console.log(e[1].charCodeAt(0),e[1].charCodeAt(0) % 65)
             if (e[1].charCodeAt(0) % 65 > sections.length - 1) {
-                sections.push([]);
+                sections[e[1].charCodeAt(0) % 65] = [];
             }
             sections[e[1].charCodeAt(0) % 65].push(e[0]);
         })
