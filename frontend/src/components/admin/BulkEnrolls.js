@@ -132,14 +132,15 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
     if (OE.length > 0) {
         OE.forEach((e) => {
             console.log(e);
-            if (e !== undefined) {
+            if (e !== undefined && e !== "") {
+                console.log("lmaooo")
                 localsubs.push({ subject: e });
             }
         })
     }
     if (PE.length > 0) {
         PE.forEach((e) => {
-            if (e!==undefined)
+            if (e !== undefined && e !== "")
             localsubs.push({ subject: e });
         })
     }
@@ -295,7 +296,7 @@ const BulkEnrolls = () => {
         console.log( )
         classInfo.forEach((e) => {
             console.log(e[1].charCodeAt(0),e[1].charCodeAt(0) % 65)
-            if (e[1].charCodeAt(0) % 65 > sections.length - 1) {
+            if (!sections[e[1].charCodeAt(0) % 65]) {
                 sections[e[1].charCodeAt(0) % 65] = [];
             }
             sections[e[1].charCodeAt(0) % 65].push(e[0]);
