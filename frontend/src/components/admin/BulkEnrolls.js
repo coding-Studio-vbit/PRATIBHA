@@ -285,9 +285,9 @@ const BulkEnrolls = () => {
                 let student = e.split(",")
                 // console.log(student)
                 if (student[0]) {
-                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase(), year.value, course.value, dept.value, student[3],range.value, subjects,[student[4],student[5]],[student[6],student[7]]));
+                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase(), year.value, course.value, dept.value, student[3].toUpperCase(),range.value, subjects,[student[4],student[5]],[student[6],student[7]]));
                     
-                    classInfo.push([student[2], student[3]])
+                    classInfo.push([student[2].toLowerCase(), student[3].toUpperCase()])
                 }
             }
         })
@@ -303,7 +303,7 @@ const BulkEnrolls = () => {
         })
         sections.forEach((e, index) => {
             if (e.length > 0) {
-                classArray.push(addStudentstoClassesInfo(e.toLowerCase(), String.fromCharCode(65+index), dept.value, course.value, year.value, range.value));
+                classArray.push(addStudentstoClassesInfo(e, String.fromCharCode(65+index), dept.value, course.value, year.value, range.value));
             }
         })
         Promise.all(enrollArray, classArray).then((values) => { 
