@@ -274,7 +274,7 @@ const BulkEnrolls = () => {
         let enrollArray = [],classArray=[],classInfo=[], subjects = [];
         // console.log(data);
         let subs = await getDeptCurriculumSubsOnly(dept.value, course.value, year.value);
-        console.log(subs)
+        // console.log(subs)
         subjects = subs.map((e) => {
             let sub = e.split("_");
             return { subject: sub[sub.length - 1] }
@@ -282,20 +282,20 @@ const BulkEnrolls = () => {
 
         data.forEach((e, index) => {
             if (index > 0) {
+                console.log(e)
                 let student = e.split(",")
-                // console.log(student)
+                console.log(student)
                 if (student[0]) {
-                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase(), year.value, course.value, dept.value, student[3].toUpperCase(),range.value, subjects,[student[4],student[5]],[student[6],student[7]]));
+                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase().trim(), year.value, course.value, dept.value, student[3].toUpperCase(),range.value, subjects,[student[4],student[5]],[student[6],student[7]]));
                     
-                    classInfo.push([student[2].toLowerCase(), student[3].toUpperCase()])
+                    classInfo.push([student[2].toLowerCase().trim(), student[3].toUpperCase()])
                 }
             }
         })
         
         let sections = [[]];
-        console.log( )
         classInfo.forEach((e) => {
-            console.log(e[1].charCodeAt(0),e[1].charCodeAt(0) % 65)
+            // console.log(e[1].charCodeAt(0),e[1].charCodeAt(0) % 65)
             if (!sections[e[1].charCodeAt(0) % 65]) {
                 sections[e[1].charCodeAt(0) % 65] = [];
             }
