@@ -1,70 +1,76 @@
 import { db, storage } from "../../../firebase";
-import { ref,uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref,uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, getDoc,updateDoc } from "firebase/firestore"; 
 import { getAcademicYear } from "../../faculty/services/adminDeadlinesServices";
 import { fetchSemNumber } from "./studentServices";
 
-async function uploadFile(fileObj,course,year,academicYear,department,section,subject,midNo,email,title,fileName){
-    let error=null;
+async function uploadFile(fileObj, course, year, academicYear, department, section, subject, midNo, email, title, fileName) {
+    let error = null;
 
     //referring to the storage location | creating path
-    const pra_ref= ref(
+    const pra_ref = ref(
         storage,
         `${course}/${academicYear}/${year}/${department}/${section}/${subject}/${midNo}/${email.split('@')[0]}`
     );
 
     //uploading files to storage 
-    await uploadBytes(pra_ref,fileObj)
-    .then(async(snapshot) => {
-        try {
-            let subs=null;
-            const semNo = await fetchSemNumber(course, year)
-            const updateSubs = {}
-            const docRef = doc(db, "students",email);
-            //refers userdoc
-            const docSnap = await getDoc(docRef);
-            //checking doc exists to verify enrollment
-            if(docSnap.exists()){
-                subs = docSnap.data()[academicYear][`sem${semNo}`];
-                //finding the subject and updating 
-                for(var i=0;i<subs.length;i++){
-                    if(subs[i].subject===subject){
-                        let s=subs[i];
-                        if(midNo==="1"){
-                            s.fileName1=fileName
-                            s.topic=title
-                            s.mid_1=snapshot.ref.fullPath;
-                            subs[i]=s;
-                        }else if(midNo==="2"){
-                            s.fileName2=fileName
-                            s.topic=title
-                            s.mid_2=snapshot.ref.fullPath;
-                            subs[i]=s;
-                        }
-                        break;                        
-                    }
-                }
+    return new Promise(async (resolve, reject) => {
+        await uploadBytesResumable(pra_ref, fileObj)
+            .then(async (snapshot) => {
+                console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
                 try {
-                    //updating the user doc
-                    updateSubs[`${academicYear}.sem${semNo}`] = subs                
-                    await updateDoc(docRef,updateSubs       
-                    );
-                    
-                } catch (err) {                    
-                    error=err.toString();
-                }
-            }else{
-                error = "Student Enrollment Failed";             
-            }            
-        }catch(err){
+                    let subs = null;
+                    const semNo = await fetchSemNumber(course, year)
+                    const updateSubs = {}
+                    const docRef = doc(db, "students", email);
+                    //refers userdoc
+                    const docSnap = await getDoc(docRef);
+                    //checking doc exists to verify enrollment
+                    if (docSnap.exists()) {
+                        subs = docSnap.data()[academicYear][`sem${semNo}`];
+                        //finding the subject and updating 
+                        for (var i = 0; i < subs.length; i++) {
+                            if (subs[i].subject === subject) {
+                                let s = subs[i];
+                                if (midNo === "1") {
+                                    s.fileName1 = fileName
+                                    s.topic = title
+                                    s.mid_1 = snapshot.ref.fullPath;
+                                    subs[i] = s;
+                                } else if (midNo === "2") {
+                                    s.fileName2 = fileName
+                                    s.topic = title
+                                    s.mid_2 = snapshot.ref.fullPath;
+                                    subs[i] = s;
+                                }
+                                break;
+                            }
+                        }
+                        try {
+                            //updating the user doc
+                            updateSubs[`${academicYear}.sem${semNo}`] = subs
+                            await updateDoc(docRef, updateSubs
+                            );
 
-            error = err.toString();            
-        }      
-    })
-    .catch((err)=>{
-      error=err.toString();
-    })
-    return error;
+                        } catch (err) {
+                            error = err.toString();
+                        }
+                    } else {
+                        error = "Student Enrollment Failed";
+                    }
+                } catch (err) {
+                    error = err.toString();
+                }
+            })
+            .catch((err) => {
+                error = err.toString();
+            })
+        if (error) {
+            reject(error);
+        } else {
+            resolve(null);
+        }
+    });
 }
 
 async function getUploadedFile(course,year,department,section,subject,midNo,email) {

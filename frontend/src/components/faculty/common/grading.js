@@ -668,10 +668,10 @@ const Grading = () => {
               &&
               <div className="footer">
                 <button disabled={isSwitchDisabled || switchIndex==0} className="searchBtn" onClick={()=>switchStudent(true)}>
-                    <i className="fas fa-chevron-circle-left fa-2x" style={{cursor:"pointer" }}></i>
+                  <h2>Go to Previous Student</h2><i className="fas fa-chevron-circle-left fa-2x" style={{cursor:"pointer" }}></i>
                 </button>
                 <button disabled={isSwitchDisabled || switchIndex==allStudents.length-1} className="searchBtn" onClick={()=>switchStudent(false)}>
-                    <i className="fas fa-chevron-circle-right fa-2x" style={{cursor:"pointer"}}></i>
+                  <h2>Go to Next Student</h2><i className="fas fa-chevron-circle-right fa-2x" style={{cursor:"pointer"}}></i>
                 </button>             
               </div>
             }            

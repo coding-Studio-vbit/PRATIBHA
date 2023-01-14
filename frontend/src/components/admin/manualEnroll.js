@@ -111,17 +111,25 @@ const ManualEnroll = () => {
             let sub = e.split("_");
             return { subject: sub[sub.length - 1] }
         })
-        await newEnroll(name, mail.toLowerCase(), year.value, course.value, dept.value, section.toUpperCase(), range.value, subjects, [OE1?.value, OE2?.value], [PE1?.value, PE2?.value]);
+        await newEnroll(name, mail.toLowerCase().trim(), year.value, course.value, dept.value, section.toUpperCase().trim(), range.value, subjects, [OE1?.value, OE2?.value], [PE1?.value, PE2?.value]);
         
-        const docRef = doc(db, `classesinfo/${course.value}/${range.value}/`, `${year.value}_${dept.value}_${section.toUpperCase()}`);
+        const docRef = doc(db, `classesinfo/${course.value}/${range.value}/`, `${year.value}_${dept.value}_${section.toUpperCase().trim()}`);
         const docData = await getDoc(docRef);
         if (docData.exists()) {
             return await updateDoc(docRef, {
-                students: arrayUnion(mail.toLowerCase())  
+                students: arrayUnion(mail.toLowerCase().trim())  
+            }).then(() => {
+                alert("Enrolled Successfully");
+            }).catch((error) => {
+                alert(error);
             });
         }
         await setDoc(docRef, {
-            students: [mail.toLowerCase()]
+            students: [mail.toLowerCase().trim()]
+        }).then(() => {
+            alert("Enrolled Successfully");
+        }).catch((error) => {
+            alert(error);
         })
     }
     
