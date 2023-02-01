@@ -21,6 +21,27 @@ import {
     arrayUnion,
 } from "firebase/firestore";
 
+export async function getRanges() {
+    const ref = doc(db, "adminData", "acadyears");
+
+    try {
+        const docSnap = await getDoc(ref);
+        if (docSnap.exists()) {
+            return {
+                data: docSnap.data().acadYears,
+                error: null,
+            };
+        } else {
+            return {
+                data: null,
+                error: "RANGES_NOT_SET",
+            };
+        }
+    }
+    catch{
+        console.log("ranges not set");
+    }
+}
 export async function getDeptCurriculumSubsOnly(dept, course, year) {
     let subjects = [];
     let sections = [];
@@ -100,31 +121,28 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
     }
 };
 
-export const newEnroll = async (name, mail, year, course, department, section, subjects,OE=[],PE=[]) => {
+export const newEnroll = async (name, mail, year, course, department, section,range, subjects,OE=[],PE=[]) => {
      // query call to add student to classes info
     const docRef = doc(db, "students", `${mail}`);
     const docSnap = await getDoc(docRef);
-    let date = new Date();
-    let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
     let semester = await fetchSemNumber(course, year);
-    // let semester = 1; //use this temp sem value for testing
-    // console.log(range) 
     let map = {}
     let localsubs = [...subjects]
+    console.log(subjects)
     if (OE.length > 0) {
         OE.forEach((e) => {
-            if(e)
-            localsubs.push({ subject: e });
+            console.log(e);
+            if (e !== undefined && e !== "") {
+                console.log("lmaooo")
+                localsubs.push({ subject: e });
+            }
         })
-        console.log(localsubs)
     }
     if (PE.length > 0) {
-        
         PE.forEach((e) => {
-            if (e)
+            if (e !== undefined && e !== "")
             localsubs.push({ subject: e });
         })
-        console.log(localsubs)
     }
     if (docSnap.exists()) {
         if (semester == 1) {
@@ -183,6 +201,7 @@ const BulkEnrolls = () => {
     const [load, setLoad] = useState(false);
     const [dept, setDept] = useState("");
     const [depts, setDepts] = useState([]);
+    const [range, setRange] = useState("");
     const [course, setCourse] = useState("");
     const [signal, setSignal] = useState(false);
     const [students, setStudents] = useState([]);
@@ -195,11 +214,14 @@ const BulkEnrolls = () => {
     { value: "MTech", label: "MTech" },
         { value: "MBA", label: "MBA" }]
     
+    let ranges = []
+
     const navigate = useNavigate();
 
     async function getDepartments(course, year) {
         let deptlist;
         const departments = await fetchDepartments(course.value, year.value);
+        
         deptlist = departments.data.map(element => {
             return { value: element.id, label: element.id }
         });
@@ -208,10 +230,19 @@ const BulkEnrolls = () => {
     }
 
     const handleYearChange = () => {
+        handleRanges();
         if (course.value === "BTech")
             return years;
         return years.slice(0, 2);
     }
+    const handleRanges = async () => {
+        const rangelist = await getRanges();
+        rangelist.data.forEach((e) => {
+            ranges.push({ value: e, label: e })
+        })
+        return ranges;
+    }
+
 
     const readFile = (e) => {
         const file = e.target.files["0"];
@@ -240,38 +271,35 @@ const BulkEnrolls = () => {
 
     const intervals = async (data) => {
         let enrollArray = [],classArray=[],classInfo=[], subjects = [];
-        // console.log(data);
         let subs = await getDeptCurriculumSubsOnly(dept.value, course.value, year.value);
-        console.log(subs)
         subjects = subs.map((e) => {
             let sub = e.split("_");
             return { subject: sub[sub.length - 1] }
         })
-        let date = new Date();
-        let range = `${date.getFullYear()}-${date.getFullYear() % 2000 + 1}`;
 
         data.forEach((e, index) => {
             if (index > 0) {
+                console.log(e)
                 let student = e.split(",")
-                // console.log(student)
+                console.log(student)
                 if (student[0]) {
-                    enrollArray.push(newEnroll(student[1], student[2], year.value, course.value, dept.value, student[3], subjects,[student[4],student[5]],[student[6],student[7]]));
+                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase().trim(), year.value, course.value, dept.value, student[3].toUpperCase().trim(),range.value, subjects,[student[4],student[5]],[student[6],student[7]]));
                     
-                    classInfo.push([student[2], student[3]])
+                    classInfo.push([student[2].toLowerCase().trim(), student[3].toUpperCase().trim()])
                 }
             }
         })
         
         let sections = [[]];
         classInfo.forEach((e) => {
-            if (e[1].charCodeAt(0) % 65 > sections.length - 1) {
-                sections.push([]);
+            if (!sections[e[1].charCodeAt(0) % 65]) {
+                sections[e[1].charCodeAt(0) % 65] = [];
             }
             sections[e[1].charCodeAt(0) % 65].push(e[0]);
         })
         sections.forEach((e, index) => {
             if (e.length > 0) {
-                classArray.push(addStudentstoClassesInfo(e, String.fromCharCode(65+index), dept.value, course.value, year.value, range));
+                classArray.push(addStudentstoClassesInfo(e, String.fromCharCode(65+index), dept.value, course.value, year.value, range.value));
             }
         })
         Promise.all(enrollArray, classArray).then((values) => { 
@@ -315,6 +343,20 @@ const BulkEnrolls = () => {
                                 isDisabled={!course || dept}
                                 className="select"
                                 options={handleYearChange()}
+                            />
+                        </div>
+                        <div className={rip.inputbox} >
+                            <p className="enroll-dropdown-title">Select Academic Year</p>
+                            <Select
+                                placeholder="Range"
+                                value={range}
+                                onChange={e => {
+                                    // getDepartments(course, e);
+                                    setRange(e);
+                                }}
+                                isDisabled={!course || dept}
+                                className="select"
+                                options={ranges}
                             />
                         </div>
 

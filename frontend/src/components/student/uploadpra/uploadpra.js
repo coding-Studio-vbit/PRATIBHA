@@ -144,19 +144,22 @@ const Upload = () => {
         location.state.rollno,
         praTitle,
         fileName
-      );
-
-      if (res == null) {
-        setfileUploadLoading(false);
-        setError(null);
-        setshowDialog(true);
-      } else {
-        setfileUploadLoading(false);
-        setError(res);
-        setTimeout(() => {
+      ).then((res) => {
+        console.log(res);
+        if (res == null) {
+          setfileUploadLoading(false);
           setError(null);
-        }, 2000);
-      }
+          setshowDialog(true);
+        } else {
+          setfileUploadLoading(false);
+          setError(res);
+          alert(error);
+          setTimeout(() => {
+            setError(null);
+          }, 2000);
+        };
+      return res;
+    });
     } else {
       if (url == null) {
         setFileError("File not Uploaded");
@@ -242,7 +245,7 @@ const Upload = () => {
 
   // for fetching Internet time from online API
   useEffect(() => {
-    axios.get(`http://worldtimeapi.org/api/timezone/Asia/Kolkata`).then(
+    axios.get(`https://worldtimeapi.org/api/timezone/Asia/Kolkata`).then(
       (res) => {
         if (res)
           console.log(res.data.datetime);

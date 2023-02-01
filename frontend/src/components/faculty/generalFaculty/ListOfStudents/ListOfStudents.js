@@ -243,6 +243,7 @@ const ListofStudents = () => {
                       <tr
                         key={dataitem.ROLL_NO}
                         onClick={() => {
+                          if(dataitem.MID_1 !== "Not Submitted")
                           navigate("/faculty/grading", {
                             state: {
                               studentmail: dataitem.ROLL_NO + "@vbithyd.ac.in",
