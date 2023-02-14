@@ -248,16 +248,13 @@ const Upload = () => {
     axios.get(`https://worldtimeapi.org/api/timezone/Asia/Kolkata`).then(
       (res) => {
         if (res)
-          console.log(res.data.datetime);
-        setInternetTime(new Date(res.data.datetime));
-        console.log(new Date())
-
+        setInternetTime(new Date(res.data.split(" ")[13].split('\n')[0]));
+        
       }
-    ).catch(err => { console.log(err) })
-
-    
-    // console.log(InternetTime);
-  }, []);
+      ).catch(err => { console.log(err) })
+      
+      
+    }, []);
   
   async function handleSelect(value) {
     setPraTitle("");

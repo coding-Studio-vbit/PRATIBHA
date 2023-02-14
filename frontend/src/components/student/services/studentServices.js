@@ -415,18 +415,18 @@ async function fetchRegulationOptions() {
 }
 
 // no need, remove later
-export async function fetchRegulationsArray() {
-  try {
-    const adminRef = doc(db, `adminData/regulations`);
-    const adminDoc = await getDoc(adminRef);
-    if (adminDoc.exists()) {
-      let regarray = adminDoc.data()["regarray"];
-      return regarray;
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
+// export async function fetchRegulationsArray() {
+//   try {
+//     const adminRef = doc(db, `adminData/regulations`);
+//     const adminDoc = await getDoc(adminRef);
+//     if (adminDoc.exists()) {
+//       let regarray = adminDoc.data()["regarray"];
+//       return regarray;
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
 
 async function fetchAcademicYearOptions() {
   try {
