@@ -87,6 +87,7 @@ const Upload = () => {
         } else if (mid == 2) {
         
             //DONT CHANGE == to === plis
+          ext = ext.toLowerCase();
          if (ext == "pptx") {
             setUrl(null);
             setFileError("Convert PPT to PDF format for submission");

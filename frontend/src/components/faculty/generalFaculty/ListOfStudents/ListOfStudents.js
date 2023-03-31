@@ -187,6 +187,7 @@ const ListofStudents = () => {
   useEffect(() => {
     Fetchdata(Course, acadYear, year, branch, section, subject, val);
     Fetchsubject();
+    console.log(student)
   }, []);
   if (mid==''){
     setMid(2)
@@ -243,7 +244,7 @@ const ListofStudents = () => {
                       <tr
                         key={dataitem.ROLL_NO}
                         onClick={() => {
-                          if(dataitem.MID_1 !== "Not Submitted")
+                          // if(dataitem.MID_1 !== "Not Submitted")
                           navigate("/faculty/grading", {
                             state: {
                               studentmail: dataitem.ROLL_NO + "@vbithyd.ac.in",
