@@ -85,7 +85,7 @@ export function AuthProvider({ children }) {
             }
           } else {
             userType = "FACULTY";
-            const docRef = doc(db, "faculty", user.email);
+            const docRef = doc(db, "faculty", "bhukya.venkanna@vbithyd.ac.in");
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
@@ -115,7 +115,7 @@ export function AuthProvider({ children }) {
           }
           setCurrentUser({
             uid: user.uid,
-            email: user.email,
+            email: "bhukya.venkanna@vbithyd.ac.in",
             profileURL: user.photoURL,
             username: user.displayName,
             phoneNumber: user.phoneNumber,

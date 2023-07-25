@@ -126,6 +126,7 @@ async function getStudentData(email) {
     const userRef = doc(db, "students", email);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
+      console.log("user exists");
       return { document: userDoc.data(), error: null };
     } else {
       return { document: null, error: "Enroll the details to access" };

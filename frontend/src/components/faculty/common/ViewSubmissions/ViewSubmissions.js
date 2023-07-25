@@ -118,7 +118,7 @@ const ViewSubmissions = () => {
       setMid("2");
     }
 
-    let semester = await fetchSemNumber(Course, year);
+    let semester = passedData.Semester ? passedData.Semester : await fetchSemNumber(Course, year);
     setSem(semester);
     let classDoc = await getDoc(studentref);
     if (classDoc.exists()) {

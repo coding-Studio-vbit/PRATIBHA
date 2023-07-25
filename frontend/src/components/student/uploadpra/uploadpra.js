@@ -75,7 +75,6 @@ const Upload = () => {
               setFileError("File size limit exceeded");
             } 
             else{
-
               setFileError("");
               setFileName(files.name);
               setUrl(e.target.files[0]);

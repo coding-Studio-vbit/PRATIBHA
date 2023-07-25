@@ -144,7 +144,7 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
             localsubs.push({ subject: e });
         })
     }
-    if (docSnap.exists()) {
+    if (docSnap.exists()){
         if (semester == 1) {
             map["year"] = year;
             map["" + range] = {
@@ -193,7 +193,6 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
         alert(err);
     }
     return 2;
-
 }
 
 const BulkEnrolls = () => {
