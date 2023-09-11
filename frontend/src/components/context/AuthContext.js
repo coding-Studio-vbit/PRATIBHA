@@ -48,6 +48,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
+      console.log(user);
       let userType = "";
       let isFirstTime = true;
       let isHOD = false;
@@ -85,7 +86,7 @@ export function AuthProvider({ children }) {
             }
           } else {
             userType = "FACULTY";
-            const docRef = doc(db, "faculty", "bhukya.venkanna@vbithyd.ac.in");
+            const docRef = doc(db, "faculty", user.email);
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
@@ -115,7 +116,7 @@ export function AuthProvider({ children }) {
           }
           setCurrentUser({
             uid: user.uid,
-            email: "bhukya.venkanna@vbithyd.ac.in",
+            email: user.email,
             profileURL: user.photoURL,
             username: user.displayName,
             phoneNumber: user.phoneNumber,
