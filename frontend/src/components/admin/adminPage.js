@@ -63,19 +63,18 @@ const AdminPage = () => {
     const navigate = useNavigate();
     const addSubjectToDept = async () => {
         // manually add the subject to curriculum collection first. then run this function
-        const documents = query(collection(db, "students"), where("year", "==", "1"));
+        const documents = query(collection(db, "students"), where("year", "==", "2"));
         const dox = await getDocs(documents);
         console.log(dox.docs.length);
         dox.docs.forEach(async (doc, index) => {
             // console.log(doc.id);
             const dept = doc.data()["department"];
-            if (dept === "ME" || dept === "CE") {
+            if (dept === "ECE") {
                 console.log(index, doc.id)
-                let map = doc.data()["2022-23"];
-                map.sem1.push({ "subject": "English" });
+                let map = doc.data()["2023-24"];
 
                 await updateDoc(doc.ref, {
-                    "2022-23": map
+                    "2023-24": map
                 })
             }
         })
@@ -96,21 +95,31 @@ const AdminPage = () => {
         })
     }
 
-    const makeDocNamesLowerCase = async () => {
+    const checkCurrentSubs = async () => {
+        let subs = await getDeptCurriculumSubsOnly("IT", "BTech", "1");
 
-        const students = query(collection(db, "students"), where("year", "==", "2"), where("department", "==", "ME"));
+        console.log(subs)
+    }
+
+    const updateSemSubsinStudents = async (year) => {
+
+        const students = query(collection(db, "students"), where("year", "==", year));
         const dox = await getDocs(students);
         console.log(dox.docs)
         dox.docs.forEach(async (doc, index) => {
             // if (doc.data()["year"] === "2" && doc.data()["department"] === "CSC") {
+            if(doc.data()["course"] !== "MBA"){
+                return;
+            }
             let data = doc.data();
-            let subs = await getDeptCurriculumSubsOnly(data["department"], "BTech", "3");
+            let subs = await getDeptCurriculumSubsOnly(data["department"], "MBA", year);
             let subjects = subs.map((e) => {
                 let sub = e.split("_");
                 return { subject: sub[sub.length - 1]}
             })
+            console.log(subjects)
              console.log(doc.data());
-            await newEnroll(data["name"], data["email"], "3", "BTech", data["department"], data["section"], "2023-24",subjects)
+            await newEnroll(data["name"], data["email"], year, "MBA", data["department"], data["section"], "2023-24",subjects)
         })
         // await addToClassesInfoByDept(dox,"CSC", "3", "2023-24");
     }
@@ -162,6 +171,44 @@ const AdminPage = () => {
     }
 
 
+    const createNewSubject = async () => {
+        const subs = [
+            "Strategic Management",
+            "Strategic Management Assignment",
+            "International Marketing",
+            "International Marketing Assignment",
+            "International Human Resource Management",
+            "International Human Resource Management Assignment",
+            "International Financial Management",
+            "International Financial Management Assignment",
+            "Service Marketing",
+            "Service Marketing Assignment",
+            "Leadership and Change Management",
+            "Leadership and Change Management Assignment",
+            "Strategic Financial Management",
+            "Strategic Financial Management Assignment",
+            "Marketing Analytics",
+            "Marketing Analytics Assignment",
+            "HR Analytics",
+            "HR Analytics Assignment",
+            "Financial Analytics",
+            "Financial Analytics Assignment",
+        ]
+
+        const structured_subs = subs.map((sub) => {
+            return {
+                subject: sub
+            }
+        })
+
+        const ref = doc(db, "curriculum/MBA/2", "default");
+
+        await updateDoc(ref, {
+            subjects2: structured_subs
+        })
+    }
+
+
     return (
         <div>
             <Navbar back={false} title={"Admin Page"} logout={true} />
@@ -169,7 +216,7 @@ const AdminPage = () => {
                 <Card text={"Bulk Enrolls"} onclick={() => { navigate("/faculty/admin/bulkenrolls") }} />
                 <Card text={"Manual Enroll"} onclick={() => { navigate("/faculty/admin/ManualEnroll") }} />
             </div>
-            {/* <button onClick={() => addToClassesInfoByDept()}>YO king</button> */}
+            <button onClick={() => updateSemSubsinStudents("2")}>YO king</button>
         </div>
     );
 }

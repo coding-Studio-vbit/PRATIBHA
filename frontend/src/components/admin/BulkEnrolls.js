@@ -178,6 +178,13 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
                 ],
                 year: year,
             };
+        } else{
+            map["" + range] = {
+                sem2: [
+                    ...localsubs,
+                ],
+                year: year,
+            };
         }
         await setDoc(docRef, {
             name: name,

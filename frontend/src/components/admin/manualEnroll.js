@@ -83,12 +83,12 @@ const ManualEnroll = () => {
         console.log(course.value, year.value,dept)
         const map = await getElectives(course.value, year.value, dept.value)
         let array = []
-        map?.OEs.forEach((e) => {
+        map?.OEs?.forEach((e) => {
             array.push({ value: e.subject, label: e.subject })
         })
         setOEs(array)
         array = []
-        map?.PEs.forEach((e) => {
+        map?.PEs?.forEach((e) => {
             array.push({ value: e.subject, label: e.subject })
         })
         setPEs(array)
