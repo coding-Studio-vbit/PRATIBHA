@@ -75,7 +75,6 @@ const Upload = () => {
               setFileError("File size limit exceeded");
             } 
             else{
-
               setFileError("");
               setFileName(files.name);
               setUrl(e.target.files[0]);
@@ -87,6 +86,7 @@ const Upload = () => {
         } else if (mid == 2) {
         
             //DONT CHANGE == to === plis
+          ext = ext.toLowerCase();
          if (ext == "pptx") {
             setUrl(null);
             setFileError("Convert PPT to PDF format for submission");
@@ -248,16 +248,13 @@ const Upload = () => {
     axios.get(`https://worldtimeapi.org/api/timezone/Asia/Kolkata`).then(
       (res) => {
         if (res)
-          console.log(res.data.datetime);
-        setInternetTime(new Date(res.data.datetime));
-        console.log(new Date())
-
+        setInternetTime(new Date(res.data.split(" ")[13].split('\n')[0]));
+        
       }
-    ).catch(err => { console.log(err) })
-
-    
-    // console.log(InternetTime);
-  }, []);
+      ).catch(err => { console.log(err) })
+      
+      
+    }, []);
   
   async function handleSelect(value) {
     setPraTitle("");

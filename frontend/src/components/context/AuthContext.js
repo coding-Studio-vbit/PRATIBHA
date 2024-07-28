@@ -48,6 +48,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user) => {
+      console.log(user);
       let userType = "";
       let isFirstTime = true;
       let isHOD = false;

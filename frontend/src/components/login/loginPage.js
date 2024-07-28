@@ -25,9 +25,8 @@ export default function LoginPage() {
     setTimeout(() => {
       setdisplayText(text.slice(0,i));  
       i+=1;
-      animate()    
+      animate() 
     }, 75); 
-
   }
   
   useEffect(() => {

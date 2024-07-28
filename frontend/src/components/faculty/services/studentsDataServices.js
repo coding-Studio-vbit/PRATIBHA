@@ -69,6 +69,7 @@ export const Fetchlink = async (email, mid, fullcourse) => {
             Presentation2 = "";
   
           if (error == null) {
+            console.log(returndata, acadYear, semester);
             let obj = returndata[acadYear][semester].find((o) => o.subject === subject);
             if (obj) {
               topic = obj.topic;

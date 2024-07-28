@@ -43,25 +43,25 @@ const SubjectsList = () => {
       setyear(document.year);
       let academic_year = '';
       await getAcademicYear(document.course, document.year)
-      .then((res)=> {
-        academic_year = res.data;
-        setAcadYear(res.data);
-      });
-      let semester = await fetchSemNumber(document.course,document.year);
+        .then((res) => {
+          academic_year = res.data;
+          setAcadYear(res.data);
+        });
+      let semester = await fetchSemNumber(document.course, document.year);
       let course =
         document.course +
         "_" +
-        academic_year+
-        "_"+
+        academic_year +
+        "_" +
         document.year +
         "_" +
         document.department +
         "_" +
         document.section;
-      setCourseTitle(document.course + "_"+ document.year +"_"+document.department+  "_" + document.section);
+      setCourseTitle(document.course + "_" + document.year + "_" + document.department + "_" + document.section);
 
       //should check with mba
-      if (document.course === "MBA" && document.year==='1') {
+      if (document.course === "MBA" && document.year === '1') {
         setCourseTitle(
           document.course + "_" + document.year + "_" + document.section
         );
@@ -78,15 +78,14 @@ const SubjectsList = () => {
         dlDate = await getCoeDeadline("2", document.course, document.year);
         mid = 2;
       }
-      if(dlDate!=null){
+      if (dlDate != null) {
         coeDeadLine = new Timestamp(
           dlDate.data["seconds"],
           dlDate.data["nanoseconds"]
         ).toDate();
-  
         await fetchsubject(document, coeDeadLine, course, mid, semester);
       }
-      else{
+      else {
         setError("Cannot Enroll");
       }
     } else {
@@ -102,8 +101,8 @@ const SubjectsList = () => {
     //console.log(document,course,midvalue);
     let Course = course.split("_")[0];
     let acadYear = course.split("_")[1];
-   // acadYear = "2021-22"
-    let classroom = course.split("_")[2]+"_"+course.split("_")[3]+"_"+course.split("_")[4]
+    // acadYear = "2021-22"
+    let classroom = course.split("_")[2] + "_" + course.split("_")[3] + "_" + course.split("_")[4]
     let mid;
     let date, dateConv;
     //console.log(Course,acadYear,classroom)
@@ -111,70 +110,78 @@ const SubjectsList = () => {
     await getDoc(subjectRef).then(async (subjectDoc) => {
       let count = 0;
       if (subjectDoc.exists()) {
-       // console.log(subjectDoc.data());
+        // console.log(subjectDoc.data());
         const res = subjectDoc.data()["subjects"];
-       // console.log(res)    
+        // console.log(res)    
         await res.map(async (item, index) => {
-         // console.log(item);
-          if(item["deadline1"]){
-          count +=1;
-          let date1 = new Timestamp(
-            item["deadline1"].seconds,
-            item["deadline1"].nanoseconds
-          ).toDate();
-          let newDate = new Date();
-          let currentDateConv = newDate.toLocaleDateString("en-US");
+          // console.log(item);
+          if (item["deadline1"]) {
+            count += 1;
+            let date1 = new Timestamp(
+              item["deadline1"].seconds,
+              item["deadline1"].nanoseconds
+            ).toDate();
+            let newDate = new Date();
+            let currentDateConv = newDate.toLocaleDateString("en-US");
 
-          if (midvalue === 1) {
-            mid = 1;
+            if (midvalue === 1) {
+              mid = 1;
 
-            date = date1.toLocaleDateString("en-GB")+" "+date1.toLocaleTimeString("en-IN",{ hour: '2-digit', minute: '2-digit' });
-            dateConv = date1.toLocaleDateString("en-US");
-          } else {
-        
-            mid = 2;
-            if (item["deadline2"]) {
-              let date2 = new Timestamp(
-                item["deadline2"].seconds,
-                item["deadline2"].nanoseconds
-              ).toDate();
-              date = date2.toLocaleDateString("en-GB")+" "+date2.toLocaleTimeString("en-IN",{ hour: '2-digit', minute: '2-digit' });
-              dateConv = date2.toLocaleDateString("en-US");
+              date = date1.toLocaleDateString("en-GB") + " " + date1.toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' });
+              dateConv = date1.toLocaleDateString("en-GB");
+            } else {
+
+              mid = 2;
+              if (item["deadline2"]) {
+                let date2 = new Timestamp(
+                  item["deadline2"].seconds,
+                  item["deadline2"].nanoseconds
+                ).toDate();
+                date = date2.toLocaleDateString("en-GB") + " " + date2.toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' });
+                dateConv = date2.toLocaleDateString("en-US");
+              }
+              else {
+                date = date1.toLocaleDateString("en-GB") + " " + date1.toLocaleTimeString("en-IN", { hour: '2-digit', minute: '2-digit' });
+                dateConv = date1.toLocaleDateString("en-GB");
+              }
             }
-          }
 
-          var dateint = new Date(dateConv).getTime();
-          var currdate = new Date(currentDateConv).getTime();
-      
-          var Difference_In_Time = dateint - currdate;
-          var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-          
-          var isWeek = false;
-          if (Difference_In_Days <= 7) {
-            isWeek = true;
+
+            var dateint = new Date(dateConv).getTime();
+            var currdate = new Date(currentDateConv).getTime();
+
+            var Difference_In_Time = dateint - currdate;
+            var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+            var isWeek = false;
+            if (Difference_In_Days <= 7) {
+              isWeek = true;
+            }
+            let gracePeriod = false;
+            if (mid === 2 && !item["deadline2"]) {
+              gracePeriod = true
+            }
+            await fetchusersubject(document, date, mid, item.subject, isWeek, acadYear, semester, gracePeriod);
           }
-          await fetchusersubject(document, date, mid, item.subject, isWeek, acadYear, semester);
-        }
         });
-      } 
-      if(count === 0) {
+      }
+      if (count === 0) {
         setError("Submissions are not open for any subject.");
       }
     });
   };
 
-  const fetchusersubject = async (document, date, mid, subject, isWeek, acadYear, semester) => {
+  const fetchusersubject = async (document, date, mid, subject, isWeek, acadYear, semester, gracePeriod) => {
     try {
       let sem;
-      if(semester === 1){
+      if (semester === 1) {
         sem = "sem1";
       }
-      if(semester === 2){
+      if (semester === 2) {
         sem = "sem2";
       }
       const subjectsdata = document[acadYear][sem];
       await subjectsdata.map(async (item, index) => {
-        console.log(item.subject, subject);
         if (item.subject === subject) {
           let gradetype,
             isSubmitted = false;
@@ -190,7 +197,11 @@ const SubjectsList = () => {
                 gradetype = "Not Submitted";
               }
             } else {
-              if (item.gradeStatus2 && item.mid_2) {
+              if (!item.mid_2 && gracePeriod) {
+                gradetype = item.gradeStatus1 ? "Graded" : "Submitted for Grading";
+                isSubmitted = true;
+              }
+              else if (item.gradeStatus2 && item.mid_2) {
                 gradetype = "Graded";
                 isSubmitted = true;
               } else if (!item.gradeStatus2 && item.mid_2) {
@@ -212,6 +223,7 @@ const SubjectsList = () => {
             IS_WEEK: isWeek,
             IS_SUBMITTED: isSubmitted,
           };
+          // console.log(resdata)
           setData((data) => [...data, resdata]);
         }
       });
@@ -225,6 +237,8 @@ const SubjectsList = () => {
     fetchdata();
   }, []);
 
+  console.log(data)
+
   return (
     <div className="main-body-subjects">
       <Navbar
@@ -232,7 +246,7 @@ const SubjectsList = () => {
         logout={true}
         back={false}
       />
-      <p className="userDetails">Roll Number : {currentUser.email.slice(0,10).toUpperCase()}</p>
+      <p className="userDetails">Roll Number : {currentUser.email.slice(0, 10).toUpperCase()}</p>
       <p className="userDetails">Name : {currentUser.username}</p>
       {!loading ? (
         error == null ? (
@@ -257,7 +271,7 @@ const SubjectsList = () => {
                             rollno: `${currentUser.email}`,
                             subject: dataitem.SUBJECT,
                             course: course,
-                            acadYear:acadYear,
+                            acadYear: acadYear,
                             year: year,
                           },
                         });

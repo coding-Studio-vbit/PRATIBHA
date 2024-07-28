@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { LoadingScreen, } from "../../global_ui/spinner/spinner";
 import { getUploadedFileByPath } from "../../student/services/storageServices";
 import { getCoeDeadline, getBeforeSemEnd} from "../services/adminDeadlinesServices";
-import {  getMarks,postMarks } from "../services/gradingServices";
+import {  getMarks,postMarks,fetchRegulationsArray,fetchRegulation} from "../services/gradingServices";
 import { getAllStudentsData } from "../services/studentsDataServices";
 import { fetchisMid1,fetchisMid2 } from "../../student/services/studentServices";
 
@@ -34,7 +34,7 @@ const Grading = () => {
   const [url, setUrl] = React.useState(null);   
   const [remarks1, setRemarks1] = useState("");
   const [remarks2, setRemarks2] = useState('');
-
+  const [RegTotal, setRegTotal] = useState("");
   const [isMarksPosted, setisMarksPosted] = useState(false);
 
   const [isMarksChanged, setIsMarksChanged] = useState(false);
@@ -90,8 +90,19 @@ const Grading = () => {
     setisMid2(checkMid2);
   }
 
-
+  // function fetches all available regulations.
+  // then filters the current regulation and sets the total marks for that regulation.
+  // created New fields in regulation document of adminData collection to store the required data
+  // the regulation options can be changed from the admin module in future sometime, not implemented yet.
+  async function setTotalMarks () {
+  const year = location.state.path.split("/")[2]
+    const currentRegulation = await fetchRegulation(year);
+    const regs = await fetchRegulationsArray();
+    const hit = regs.filter((element) => element.regulation === currentRegulation);
+    setRegTotal(hit[0].totalmarks);
+}
   function validateMarks(x) {
+
     if(parseInt(x)===1 || parseInt(x)===2 || parseInt(x)===0){
       return true;
     }
@@ -326,8 +337,8 @@ const Grading = () => {
     midboolean();
     getUserData();
     isBeforeSemEnd();
+    setTotalMarks();
   }, []);
-
   return !pageLoading ? (
     pageLoadError == null ? (
       <div className="grading">
@@ -387,7 +398,7 @@ const Grading = () => {
             <div className="mid1">
                 <span className="mid1title" style={{marginTop:"10px"}}>MID-I</span>
                 <div>
-                  <span className="marksType">Innovation (2M)</span>
+              <span className="marksType">Innovation ({parseInt(RegTotal) / 5 }M)</span>
                   <input
                     className="inputStyle"
                     type="number"
@@ -398,7 +409,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setInnovation1(e.target.value);
                       } else {
                         setInnovation1(2);
@@ -407,7 +418,7 @@ const Grading = () => {
                   />
                 </div>
                 <div>
-                  <span className="marksType">Subject Relevance (2M)</span>
+              <span className="marksType">Subject Relevance ({parseInt(RegTotal) / 5}M)</span>
                   <input
                     className="inputStyle"
                     type="number"
@@ -418,7 +429,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setSubRel1(e.target.value);
                       } else {
                         setSubRel1(2);
@@ -427,7 +438,7 @@ const Grading = () => {
                   />
                 </div>
                 <div>
-                  <span className="marksType">Individuality (2M)</span>
+              <span className="marksType">Individuality ({parseInt(RegTotal) / 5}M)</span>
                   <input
                     className="inputStyle"
                     type="number"
@@ -438,7 +449,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setIndividuality1(e.target.value);
                       } else {
                         setIndividuality1(2);
@@ -447,7 +458,7 @@ const Grading = () => {
                   />
                 </div>
                 <div>
-                  <span className="marksType">Preparation (2M)</span>
+              <span className="marksType">Preparation ({parseInt(RegTotal) / 5}M)</span>
                   <input
                     className="inputStyle"
                     type="number"
@@ -458,7 +469,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setPreparation1(e.target.value);
                       } else {
                         setPreparation1(2);
@@ -467,7 +478,7 @@ const Grading = () => {
                   />
                 </div>
                 <div>
-                  <span className="marksType">Presentation (2M)</span>
+                  <span className="marksType">Presentation ({parseInt(RegTotal) / 5 }M)</span>
                   <input
                     className="inputStyle"
                     type="number"
@@ -478,7 +489,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setPresentation1(e.target.value);
                       } else {
                         setPresentation1(2);
@@ -492,7 +503,7 @@ const Grading = () => {
                     marginRight: "3px",
                     fontWeight: "bolder",
                   }}>
-                    <span className="mid1title">TOTAL (10M)</span>
+              <span className="mid1title">TOTAL ({parseInt(RegTotal)}M)</span>
                     <span
                       style={{
                         backgroundColor: "#E5E4E2",
@@ -523,7 +534,7 @@ const Grading = () => {
               <div className="mid2">
                 <span className="mid1title" style={{marginTop:"10px"}}>MID-II</span>
                 <div>
-                  <span className="marksType">Innovation (2M)</span>
+                  <span className="marksType">Innovation ({parseInt(RegTotal) / 5 }M)</span>
                   <input
                     className="inputStyle"
                     type="number"
@@ -534,7 +545,8 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <=
+                       parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setInnovation2(e.target.value);
                       } else {
                         setInnovation2(2);
@@ -544,7 +556,7 @@ const Grading = () => {
                 </div>
 
                 <div>
-                  <span className="marksType">Subject Relevance (2M)</span>
+                  <span className="marksType">Subject Relevance ({parseInt(RegTotal) / 5 }M)</span>
                   <input
                     className="inputStyle"
                     disabled={!isMid2 && !isbeforesemend}
@@ -555,7 +567,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setSubRel2(e.target.value);
                       } else {
                         setSubRel2(2);
@@ -565,7 +577,7 @@ const Grading = () => {
                 </div>
 
                 <div>
-                  <span className="marksType">Individuality (2M)</span>
+                  <span className="marksType">Individuality ({parseInt(RegTotal) / 5 }M)</span>
                   <input
                     className="inputStyle"
                     disabled={!isMid2 && !isbeforesemend}
@@ -576,7 +588,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setIndividuality2(e.target.value);
                       } else {
                         setIndividuality2(2);
@@ -586,7 +598,7 @@ const Grading = () => {
                 </div>
 
                 <div>
-                  <span className="marksType">Preparation (2M)</span>
+                  <span className="marksType">Preparation ({parseInt(RegTotal) / 5 }M)</span>
                   <input
                     className="inputStyle"
                     disabled={!isMid2 && !isbeforesemend}  
@@ -597,7 +609,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setPreparation2(e.target.value);
                       } else {
                         setPreparation2(2);
@@ -607,7 +619,7 @@ const Grading = () => {
                 </div>
 
                 <div>
-                  <span className="marksType">Presentation (2M)</span>
+                  <span className="marksType">Presentation ({parseInt(RegTotal) / 5 }M)</span>
                   <input
                     className="inputStyle"
                     disabled={!isMid2 && !isbeforesemend}
@@ -618,7 +630,7 @@ const Grading = () => {
                       if(!isMarksChanged){
                         setIsMarksChanged(true);
                       }
-                      if (e.target.value < 3 && e.target.value > -1) {
+                      if (e.target.value <= parseInt(RegTotal) / 5  && e.target.value > -1) {
                         setPresentation2(e.target.value);
                       } else {
                         setPresentation2(2);

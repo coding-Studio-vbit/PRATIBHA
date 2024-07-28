@@ -117,7 +117,26 @@ const ListofStudents = () => {
       setMid(2);
     }
 
-    let semester = await fetchSemNumber(Course,year);
+    let semester = (await fetchSemNumber(Course,year));
+    if(semester === -1){
+      const curriculumRef = doc(db, `curriculum/${Course}/${year}`, branch);
+      const curriculumDoc = await getDoc(curriculumRef);
+
+      if (curriculumDoc.exists()) {
+        const sem1Subjects = curriculumDoc.data()["subjects"];
+        const sem2Subjects = curriculumDoc.data()["subjects2"];
+
+        let exists = []
+
+        exists = sem1Subjects.filter((sub) => sub.subject === subject);
+
+        exists.length > 0 && (semester = 1)
+
+        exists = sem2Subjects.filter((sub) => sub.subject === subject);
+
+        exists.length > 0 && (semester = 2)
+      }
+    }
     setSem(semester);
 
 
@@ -187,6 +206,7 @@ const ListofStudents = () => {
   useEffect(() => {
     Fetchdata(Course, acadYear, year, branch, section, subject, val);
     Fetchsubject();
+    console.log(student)
   }, []);
   if (mid==''){
     setMid(2)
@@ -243,7 +263,7 @@ const ListofStudents = () => {
                       <tr
                         key={dataitem.ROLL_NO}
                         onClick={() => {
-                          if(dataitem.MID_1 !== "Not Submitted")
+                          // if(dataitem.MID_1 !== "Not Submitted")
                           navigate("/faculty/grading", {
                             state: {
                               studentmail: dataitem.ROLL_NO + "@vbithyd.ac.in",

@@ -12,6 +12,7 @@ export default function CoeSearch() {
   const [Course, setCourse] = useState({value:'none'});
   const [Year, setYear] = useState({value:0});
   const [Department, setDepartment] = useState("");
+  const [semester, setSemester] = useState("");
   const [Section, setSection] = useState("");
   const [Subject, setSubject] = useState("");
   const [subjects,setSubjects] = useState([
@@ -47,15 +48,16 @@ export default function CoeSearch() {
   const nav = useNavigate();
   useEffect(()=>{
     const getLables = async ()=>{
-      const sem = await fetchSemNumber(Course.value,Year.value);
-      const res = await getCurriculumData(Course.value,Year.value,sem);
+      // const sem = await fetchSemNumber(Course.value,Year.value);
+
+      const res = await getCurriculumData(Course.value,Year.value,semester.value);
       if(!res) return
        setSubjects(res.subjects)
        setDepartments(res.departments)
        setSections(res.sections)
     }
     getLables()
-  },[Course,Year])
+  },[Course,Year, semester])
 
 
   function handleView() {
@@ -76,6 +78,7 @@ export default function CoeSearch() {
         Dept: Department.value,
         Section: Section.value,
         Subject: Subject.value,
+        Semester:semester.value
       };
       nav("/faculty/viewsubmissions", { state: passing });
     } else {
@@ -94,6 +97,11 @@ export default function CoeSearch() {
     { value: "3", label: "3" },
     { value: "4", label: "4" },
   ];
+
+  const Semesters = [
+    { value: 1, label: "1" },
+    { value: 2, label: "2" },
+  ]
   const MYears = [
     //fetch from db for the selected course
     { value: "1", label: "1" },
@@ -174,6 +182,16 @@ export default function CoeSearch() {
               isDisabled={!Department}
               onChange={(selectedSection) => {
                 setSection(selectedSection);
+              }}
+            />
+            <p className="dropdown-title">Semester</p>
+        <Select
+              placeholder=""
+              options={Semesters}
+              className="selectCOE"
+              isDisabled={!Section}
+              onChange={(selectedSemester) => {
+                setSemester(selectedSemester);
               }}
             />
         <p className="dropdown-title">Subject</p>

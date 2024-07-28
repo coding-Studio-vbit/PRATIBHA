@@ -126,6 +126,7 @@ async function getStudentData(email) {
     const userRef = doc(db, "students", email);
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
+      console.log("user exists");
       return { document: userDoc.data(), error: null };
     } else {
       return { document: null, error: "Enroll the details to access" };
@@ -415,18 +416,18 @@ async function fetchRegulationOptions() {
 }
 
 // no need, remove later
-export async function fetchRegulationsArray() {
-  try {
-    const adminRef = doc(db, `adminData/regulations`);
-    const adminDoc = await getDoc(adminRef);
-    if (adminDoc.exists()) {
-      let regarray = adminDoc.data()["regarray"];
-      return regarray;
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
+// export async function fetchRegulationsArray() {
+//   try {
+//     const adminRef = doc(db, `adminData/regulations`);
+//     const adminDoc = await getDoc(adminRef);
+//     if (adminDoc.exists()) {
+//       let regarray = adminDoc.data()["regarray"];
+//       return regarray;
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
 
 async function fetchAcademicYearOptions() {
   try {

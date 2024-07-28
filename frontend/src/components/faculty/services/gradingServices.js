@@ -105,4 +105,33 @@ export async function postMarks(
     return error;
   }
 
+export async function fetchRegulationsArray() {
+  try {
+    const adminRef = doc(db, `adminData/regulations`);
+    const adminDoc = await getDoc(adminRef);
+    if (adminDoc.exists()) {
+      let regarray = adminDoc.data()["regarray"];
+      return regarray;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
+export async function fetchRegulation(year) {
+  
+  try {
+    const docref = doc(db, "adminData/regulations");
+    const document = await getDoc(docref);
+
+    if (document.exists()) {
+      return document.data().mapping[year];
+    }
+    return {
+      status: "error",
+      message: "Please check whether regulations are properly set"
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
