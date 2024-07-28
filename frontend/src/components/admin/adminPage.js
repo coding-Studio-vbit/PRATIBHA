@@ -23,6 +23,7 @@ import {
     arrayUnion,
     where
 } from "firebase/firestore";
+import { postMarks } from '../faculty/services/gradingServices';
 
 
 const AdminPage = () => {
@@ -208,6 +209,24 @@ const AdminPage = () => {
         })
     }
 
+    const gradeSectionStudents = async () => {
+        let marks = {}
+        marks.Individuality1=parseInt(2);
+        marks.Innovation1=parseInt(2);
+        marks.Preparation1=parseInt(2);
+        marks.Presentation1=parseInt(2);
+        marks.Subject_Relevance1=parseInt(2);
+
+        const query = doc(db, "classesinfo/BTech/2023-24", "2_CSB_A")
+        const data = await getDoc(query);
+        const students = data.data()["students"];
+        console.log(students)
+        students.forEach(async(student)=>{
+            const sub  = "Discrete Mathematics"
+            await postMarks("", sub, student.split("@")[0], "1", marks, "")
+        })
+    }
+
 
     return (
         <div>
@@ -216,7 +235,7 @@ const AdminPage = () => {
                 <Card text={"Bulk Enrolls"} onclick={() => { navigate("/faculty/admin/bulkenrolls") }} />
                 <Card text={"Manual Enroll"} onclick={() => { navigate("/faculty/admin/ManualEnroll") }} />
             </div>
-            <button onClick={() => updateSemSubsinStudents("2")}>YO king</button>
+            {/* <button onClick={() => gradeSectionStudents()}>test</button> */}
         </div>
     );
 }
