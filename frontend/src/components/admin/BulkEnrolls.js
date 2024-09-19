@@ -1,8 +1,8 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import * as XLSX from "xlsx";
 import rip from './bulkenrolls.module.css';
 import Navbar from '../global_ui/navbar/navbar';
-import { Spinner , LoadingScreen} from '../global_ui/spinner/spinner';
+import { Spinner, LoadingScreen } from '../global_ui/spinner/spinner';
 import Select from "react-select";
 import { fetchDepartments, fetchSemNumber } from "../student/services/studentServices.js";
 import Dialog from '../global_ui/dialog/dialog';
@@ -38,7 +38,7 @@ export async function getRanges() {
             };
         }
     }
-    catch{
+    catch {
         console.log("ranges not set");
     }
 }
@@ -84,7 +84,7 @@ export async function getDeptCurriculumSubsOnly(dept, course, year) {
                 } else if (semester == 2) {
                     subjects = e.data()["subjects2"];
                 }
-                for (let j = 0; j < subjects.length; j++){
+                for (let j = 0; j < subjects.length; j++) {
                     let str = course + "_" + year + "_" + e.id;
                     str = str + "_" + subjects[j].subject;
                     curriculumArray.push(str);
@@ -106,14 +106,14 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
         const sem = await fetchSemNumber(course, year);
         const docRef = doc(db, `classesinfo/${course}/${range}/`, `${year}_${department}_${section}`);
         const docData = await getDoc(docRef);
-       
+
         if (!docData.exists()) {
             await setDoc(docRef, {
                 students: studentID
             })
         }
         else {
-            await updateDoc(docRef, { students: (studentID) });
+            await updateDoc(docRef, { students: arrayUnion(studentID) });
         }
 
     } catch (error) {
@@ -121,8 +121,8 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
     }
 };
 
-export const newEnroll = async (name, mail, year, course, department, section,range, subjects,OE=[],PE=[]) => {
-     // query call to add student to classes info
+export const newEnroll = async (name, mail, year, course, department, section, range, subjects, OE = [], PE = []) => {
+    // query call to add student to classes info
     const docRef = doc(db, "students", `${mail}`);
     const docSnap = await getDoc(docRef);
     let semester = await fetchSemNumber(course, year);
@@ -133,7 +133,6 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
         OE.forEach((e) => {
             console.log(e);
             if (e !== undefined && e !== "") {
-                console.log("lmaooo")
                 localsubs.push({ subject: e });
             }
         })
@@ -141,10 +140,10 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
     if (PE.length > 0) {
         PE.forEach((e) => {
             if (e !== undefined && e !== "")
-            localsubs.push({ subject: e });
+                localsubs.push({ subject: e });
         })
     }
-    if (docSnap.exists()){
+    if (docSnap.exists()) {
         if (semester == 1) {
             map["year"] = year;
             map["" + range] = {
@@ -178,7 +177,7 @@ export const newEnroll = async (name, mail, year, course, department, section,ra
                 ],
                 year: year,
             };
-        } else{
+        } else {
             map["" + range] = {
                 sem2: [
                     ...localsubs,
@@ -218,8 +217,8 @@ const BulkEnrolls = () => {
 
     const courses = [{ value: "BTech", label: "BTech" },
     { value: "MTech", label: "MTech" },
-        { value: "MBA", label: "MBA" }]
-    
+    { value: "MBA", label: "MBA" }]
+
     let ranges = []
 
     const navigate = useNavigate();
@@ -227,7 +226,7 @@ const BulkEnrolls = () => {
     async function getDepartments(course, year) {
         let deptlist;
         const departments = await fetchDepartments(course.value, year.value);
-        
+
         deptlist = departments.data.map(element => {
             return { value: element.id, label: element.id }
         });
@@ -276,7 +275,7 @@ const BulkEnrolls = () => {
 
 
     const intervals = async (data) => {
-        let enrollArray = [],classArray=[],classInfo=[], subjects = [];
+        let enrollArray = [], classArray = [], classInfo = [], subjects = [];
         let subs = await getDeptCurriculumSubsOnly(dept.value, course.value, year.value);
         subjects = subs.map((e) => {
             let sub = e.split("_");
@@ -289,13 +288,13 @@ const BulkEnrolls = () => {
                 let student = e.split(",")
                 console.log(student)
                 if (student[0]) {
-                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase().trim(), year.value, course.value, dept.value, student[3].toUpperCase().trim(),range.value, subjects,[student[4],student[5]],[student[6],student[7]]));
-                    
+                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase().trim(), year.value, course.value, dept.value, student[3].toUpperCase().trim(), range.value, subjects, [student[4], student[5]], [student[6], student[7]]));
+
                     classInfo.push([student[2].toLowerCase().trim(), student[3].toUpperCase().trim()])
                 }
             }
         })
-        
+
         let sections = [[]];
         classInfo.forEach((e) => {
             if (!sections[e[1].charCodeAt(0) % 65]) {
@@ -305,21 +304,21 @@ const BulkEnrolls = () => {
         })
         sections.forEach((e, index) => {
             if (e.length > 0) {
-                classArray.push(addStudentstoClassesInfo(e, String.fromCharCode(65+index), dept.value, course.value, year.value, range.value));
+                classArray.push(addStudentstoClassesInfo(e, String.fromCharCode(65 + index), dept.value, course.value, year.value, range.value));
             }
         })
-        Promise.all(enrollArray, classArray).then((values) => { 
+        Promise.all(enrollArray, classArray).then((values) => {
             setLoad(false)
             setSignal(true);
         });
     }
 
 
-    return ( 
+    return (
         <>
             <Navbar backURL={"/faculty/admin/"} className={rip.nav} back={true} title={"Bulk Enrolls"} logout={true} />
             <div className={rip.bodyContainer}>
-                {load ? <LoadingScreen isTransparent={true} height={"90vh"}  /> : 
+                {load ? <LoadingScreen isTransparent={true} height={"90vh"} /> :
                     <div className={rip.enrollcontainer}>
                         <h2>Please input Excel file in following format:</h2>
                         <h3>S.no,Name,Mail,Section, Open Electives, Professional Electives</h3>

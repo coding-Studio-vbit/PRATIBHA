@@ -4,7 +4,7 @@ import Navbar from '../global_ui/navbar/navbar';
 import Card from '../global_ui/card/card';
 import { Spinner } from '../global_ui/spinner/spinner';
 import { useNavigate } from 'react-router-dom';
-import JSZip from 'jszip';
+import JSZip, { remove } from 'jszip';
 import { saveAs } from 'file-saver';
 import { app, storage } from "../../firebase";
 import { listAll, ref, getDownloadURL } from "firebase/storage";
@@ -89,7 +89,7 @@ const AdminPage = () => {
 
         dox.docs.forEach(async (doc, index) => {
 
-            if (doc.id.length > 7){
+            if (doc.id.length > 7) {
                 console.log(doc.id)
                 deleteDoc(doc.ref)
             }
@@ -108,19 +108,20 @@ const AdminPage = () => {
         const dox = await getDocs(students);
         console.log(dox.docs)
         dox.docs.forEach(async (doc, index) => {
-            // if (doc.data()["year"] === "2" && doc.data()["department"] === "CSC") {
-            if(doc.data()["course"] !== "MBA"){
-                return;
+            if (doc.data()["year"] === "1") {
+                if (doc.data()["course"] !== "BTech") {
+                    return;
+                }
+                let data = doc.data();
+                let subs = await getDeptCurriculumSubsOnly(data["department"], "BTech", "2");
+                let subjects = subs.map((e) => {
+                    let sub = e.split("_");
+                    return { subject: sub[sub.length - 1] }
+                })
+                console.log(subjects)
+                console.log(doc.data());
+                await newEnroll(data["name"], data["email"], "2", "BTech", data["department"], data["section"], "2024-25", subjects)
             }
-            let data = doc.data();
-            let subs = await getDeptCurriculumSubsOnly(data["department"], "MBA", year);
-            let subjects = subs.map((e) => {
-                let sub = e.split("_");
-                return { subject: sub[sub.length - 1]}
-            })
-            console.log(subjects)
-             console.log(doc.data());
-            await newEnroll(data["name"], data["email"], year, "MBA", data["department"], data["section"], "2023-24",subjects)
         })
         // await addToClassesInfoByDept(dox,"CSC", "3", "2023-24");
     }
@@ -140,7 +141,7 @@ const AdminPage = () => {
 
     const addToClassesInfoByDept = async () => {
 
-        const students = query(collection(db, "students"),where("year", "==", "3"), where("department", "==", "ME"));
+        const students = query(collection(db, "students"), where("year", "==", "2"), where("department", "==", "ECE"));
 
         const dox = await getDocs(students);
         let info = {
@@ -152,7 +153,7 @@ const AdminPage = () => {
             !info["" + data["section"]] && (info["" + data["section"]] = [])
             info["" + data["section"]] = [...(info["" + data["section"]]), data["email"]]
         })
-        Promise.all(info.sections.map((section) => addStudentstoClassesInfo(info[section], section, "ME", "BTech", "3", "2023-24")))
+        Promise.all(info.sections.map((section) => addStudentstoClassesInfo(info[section], section, "ECE", "BTech", "2", "2024-25")))
     }
 
     const checkEnroll = async () => {
@@ -174,26 +175,27 @@ const AdminPage = () => {
 
     const createNewSubject = async () => {
         const subs = [
-            "Strategic Management",
-            "Strategic Management Assignment",
-            "International Marketing",
-            "International Marketing Assignment",
-            "International Human Resource Management",
-            "International Human Resource Management Assignment",
-            "International Financial Management",
-            "International Financial Management Assignment",
-            "Service Marketing",
-            "Service Marketing Assignment",
-            "Leadership and Change Management",
-            "Leadership and Change Management Assignment",
-            "Strategic Financial Management",
-            "Strategic Financial Management Assignment",
-            "Marketing Analytics",
-            "Marketing Analytics Assignment",
-            "HR Analytics",
-            "HR Analytics Assignment",
-            "Financial Analytics",
-            "Financial Analytics Assignment",
+            "Business economics and Financial analysis",
+            "Dynamics of Machinery",
+            "Design of Machine Elements",
+            "Metrology & Machine Tools",
+            "Steam Power & Jet Propulsion",
+            "CAD/CAM",
+            "Intellectual Property Rights",
+        ]
+
+        const subs2 = [
+            "Machine Design",
+            "Heat Transfer",
+            "Industrial Management",
+            "Unconventional Machining Processes",
+            "Power Plant Engineering",
+            "Lean Manufacturing",
+            "Microprocessors in Automation",
+            "Artificial Intelligence in Mechanical Engineering",
+            "Automobile Engineering",
+            "Industrial Robotics",
+            "Mechatronics",
         ]
 
         const structured_subs = subs.map((sub) => {
@@ -202,27 +204,35 @@ const AdminPage = () => {
             }
         })
 
-        const ref = doc(db, "curriculum/MBA/2", "default");
+        const structured_subs2 = subs2.map((sub) => {
+            return {
+                subject: sub
+            }
+        })
 
-        await updateDoc(ref, {
-            subjects2: structured_subs
+        const ref = doc(db, "curriculum/BTech/3", "ME");
+
+        await setDoc(ref, {
+            sections: ["A"],
+            subjects: structured_subs,
+            subjects2: structured_subs2
         })
     }
 
     const gradeSectionStudents = async () => {
         let marks = {}
-        marks.Individuality1=parseInt(2);
-        marks.Innovation1=parseInt(2);
-        marks.Preparation1=parseInt(2);
-        marks.Presentation1=parseInt(2);
-        marks.Subject_Relevance1=parseInt(2);
+        marks.Individuality1 = parseInt(2);
+        marks.Innovation1 = parseInt(2);
+        marks.Preparation1 = parseInt(2);
+        marks.Presentation1 = parseInt(2);
+        marks.Subject_Relevance1 = parseInt(2);
 
         const query = doc(db, "classesinfo/BTech/2023-24", "2_CSB_A")
         const data = await getDoc(query);
         const students = data.data()["students"];
         console.log(students)
-        students.forEach(async(student)=>{
-            const sub  = "Discrete Mathematics"
+        students.forEach(async (student) => {
+            const sub = "Discrete Mathematics"
             await postMarks("", sub, student.split("@")[0], "1", marks, "")
         })
     }
@@ -235,10 +245,9 @@ const AdminPage = () => {
                 <Card text={"Bulk Enrolls"} onclick={() => { navigate("/faculty/admin/bulkenrolls") }} />
                 <Card text={"Manual Enroll"} onclick={() => { navigate("/faculty/admin/ManualEnroll") }} />
             </div>
-            {/* <button onClick={() => gradeSectionStudents()}>test</button> */}
+            {/* <button onClick={() => addToClassesInfoByDept()}>test</button> */}
         </div>
     );
 }
 
 export default AdminPage;
-
