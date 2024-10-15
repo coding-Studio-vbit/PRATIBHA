@@ -113,7 +113,7 @@ export const addStudentstoClassesInfo = async (studentID, section, department, c
             })
         }
         else {
-            await updateDoc(docRef, { students: arrayUnion(studentID) });
+            await updateDoc(docRef, { students: arrayUnion(...studentID) });
         }
 
     } catch (error) {
@@ -263,6 +263,7 @@ const BulkEnrolls = () => {
             tempdata = tempdata.split("\n");
             // setData([...tempdata]);
 
+            console.log(tempdata);
             intervals(tempdata);
             setLoad(true)
             reader.abort();
@@ -282,18 +283,17 @@ const BulkEnrolls = () => {
             return { subject: sub[sub.length - 1] }
         })
 
-        data.forEach((e, index) => {
-            if (index > 0) {
-                console.log(e)
-                let student = e.split(",")
-                console.log(student)
-                if (student[0]) {
-                    enrollArray.push(newEnroll(student[1], student[2].toLowerCase().trim(), year.value, course.value, dept.value, student[3].toUpperCase().trim(), range.value, subjects, [student[4], student[5]], [student[6], student[7]]));
 
-                    classInfo.push([student[2].toLowerCase().trim(), student[3].toUpperCase().trim()])
-                }
+        for(let i=1;i<data.length;i++){
+            let student = data[i].split(",")
+            console.log(student)
+            if (student[0] && student[0] !== "") {
+                enrollArray.push(newEnroll(student[1], student[2].toLowerCase().trim(), year.value, course.value, dept.value, student[3].toUpperCase().trim(), range.value, subjects, [student[4], student[5]], [student[6], student[7]]));
+                classInfo.push([student[2].toLowerCase().trim(), student[3].toUpperCase().trim()])
+            } else {
+                break
             }
-        })
+        }
 
         let sections = [[]];
         classInfo.forEach((e) => {

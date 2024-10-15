@@ -64,18 +64,19 @@ const AdminPage = () => {
     const navigate = useNavigate();
     const addSubjectToDept = async () => {
         // manually add the subject to curriculum collection first. then run this function
-        const documents = query(collection(db, "students"), where("year", "==", "2"));
+        const documents = query(collection(db, "students"), where("year", "==", "4"));
         const dox = await getDocs(documents);
         console.log(dox.docs.length);
         dox.docs.forEach(async (doc, index) => {
             // console.log(doc.id);
             const dept = doc.data()["department"];
-            if (dept === "ECE") {
+            if (dept === "EEE") {
                 console.log(index, doc.id)
-                let map = doc.data()["2023-24"];
+                let map = doc.data()["2024-25"];
+                map.sem1.push({ subject: "Electrical Measurements and Instrumentation" });
 
                 await updateDoc(doc.ref, {
-                    "2023-24": map
+                    "2024-25": map
                 })
             }
         })
@@ -245,7 +246,7 @@ const AdminPage = () => {
                 <Card text={"Bulk Enrolls"} onclick={() => { navigate("/faculty/admin/bulkenrolls") }} />
                 <Card text={"Manual Enroll"} onclick={() => { navigate("/faculty/admin/ManualEnroll") }} />
             </div>
-            {/* <button onClick={() => addToClassesInfoByDept()}>test</button> */}
+            {/* <button onClick={() => addSubjectToDept()}>test</button> */}
         </div>
     );
 }
