@@ -136,8 +136,9 @@ const ClassList = () => {
         onCancel={()=>setShowDialog(false)}/>
       }
 
-      <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i class="fas fa-plus"></i>Add Classes</Button>
-      {currentUser.isHOD?<Button className="viewdept-button normal" onClick={()=>{navigate("/faculty/HODSearch")}}>View Department Grades</Button>:<p></p>}
+      <Button className="addclass-button normal" onClick={()=>{navigate("/faculty/addclasses")}}><i className="fas fa-plus"></i>Add Classes</Button>
+      {currentUser.isHOD ? <Button className="viewdept-button normal" onClick={()=>{navigate("/faculty/HODSearch")}}>View Department Grades</Button> : null}
+      {(currentUser.isHOD || currentUser.isAdmin) ? <Button className="viewdept-button normal" style={{ marginLeft: "10px" }} onClick={()=>{navigate("/faculty/admin")}}>Admin & Curriculum</Button> : null}
       </div>
         {subs.btechSubs.length !== 0 && (
           <div className="subjectsDivision">
