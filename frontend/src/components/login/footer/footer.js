@@ -8,7 +8,7 @@ function Footer() {
 
             <div className="content1">
                 <div className='footerLogo'>
-                    <img src="/VBIT_LOGO_WHITE.png" height={60} width={300} />
+                    <img src="/VBIT_LOGO_WHITE.png" height={60} width={300} alt="VBIT Logo" />
                     <span style={{fontSize:'18px',color:"white",marginTop:'20px'}}>Vignana Bharathi Institute of Technology emerged as a hub for engineering excellence. At VBIT, students will discover engineering in a different light. Students will experience an engineering education that is on par with the industry requirement.</span>
                 </div>
                 <ContactPage/>                
@@ -22,13 +22,13 @@ function Footer() {
                     <span>Follow us on</span>
                     <i className="fab fa-instagram"></i>
                     <i className="fab fa-facebook-f"></i>
-                    <i class="fas fa-link"></i>
+                    <i className="fas fa-link"></i>
                 </div>
             </div>
 
             <div className='dev'>
-                <img src='/cs_logo.png' height={30}></img>                
-                <a className='devInfo' href='https://codingstudio.club' target="_blank" >coding.Studio();
+                <img src='/cs_logo.png' height={30} alt="Coding Studio Logo" />                
+                <a className='devInfo' href='https://codingstudio.club' target="_blank" rel="noopener noreferrer">coding.Studio();
                 </a>
             </div>
             

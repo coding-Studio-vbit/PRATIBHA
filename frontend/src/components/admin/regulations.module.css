@@ -1,0 +1,187 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f7f9fc;
+    padding-bottom: 3rem;
+}
+
+.content {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e3e8ee;
+}
+
+.cardTitle {
+    margin: 0 0 0.5rem 0;
+    color: #14325a;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.cardSubtitle {
+    margin: 0 0 1.5rem 0;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Regulations Table */
+.tableContainer {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+.regTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.regTable th {
+    background: #f1f5f9;
+    color: #334155;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.regTable td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.95rem;
+    color: #1e293b;
+}
+
+.regTable tr:hover {
+    background: #f8fafc;
+}
+
+.badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.actionBtn {
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 0.5rem;
+}
+
+.actionBtn:hover {
+    background: #f1f5f9;
+}
+
+.deleteBtn {
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.deleteBtn:hover {
+    background: #fecaca;
+}
+
+/* Add Form */
+.addForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.formGroup label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.formInput {
+    padding: 0.65rem 0.9rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.formInput:focus {
+    border-color: #0e72ab;
+    box-shadow: 0 0 0 3px rgba(14, 114, 171, 0.15);
+}
+
+.primaryBtn {
+    background: #0e72ab;
+    color: white;
+    border: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.primaryBtn:hover {
+    background: #0b5c8a;
+    box-shadow: 0 4px 10px rgba(14, 114, 171, 0.25);
+}
+
+/* Mapping Grid */
+.mappingGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.mapCard {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mapTitle {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 1.05rem;
+}

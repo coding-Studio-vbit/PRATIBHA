@@ -24,6 +24,9 @@ import DeptReport from "./components/faculty/hod/deptReport";
 import AdminPage from "./components/admin/adminPage.js";
 import BulkEnrolls from "./components/admin/BulkEnrolls.js";
 import ManualEnroll from "./components/admin/manualEnroll.js";
+import AcademicYears from "./components/admin/academicYears.js";
+import Regulations from "./components/admin/regulations.js";
+import Curriculum from "./components/admin/curriculum.js";
 
 const App = () => {
   
@@ -63,11 +66,18 @@ const AllRoutes = () => {
           path="/faculty/*"
           element={
             <Routes>
-              {currentUser.isAdmin && (
+              {(currentUser.isAdmin || currentUser.isHOD) && (
                 <>
                 <Route exact path="/admin" element={<AdminPage />} />
                 <Route exact path="/admin/BulkEnrolls" element={<BulkEnrolls />} />
                 <Route exact path="/admin/ManualEnroll" element={<ManualEnroll />} />
+                <Route exact path="/admin/curriculum" element={<Curriculum />} />
+                </>
+              )}
+              {(currentUser.isCOE || (currentUser.isAdmin && !currentUser.department)) && (
+                <>
+                <Route exact path="/admin/academic-years" element={<AcademicYears />} />
+                <Route exact path="/admin/regulations" element={<Regulations />} />
                 </>
               )}
                 {currentUser.isCOE && (

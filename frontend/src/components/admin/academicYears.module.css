@@ -1,0 +1,183 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f7f9fc;
+    padding-bottom: 3rem;
+}
+
+.content {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e3e8ee;
+}
+
+.cardTitle {
+    margin: 0 0 0.5rem 0;
+    color: #14325a;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.cardSubtitle {
+    margin: 0 0 1.5rem 0;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Tag pool styles */
+.tagPool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    background: #eef4f9;
+    color: #0e72ab;
+    padding: 0.45rem 0.85rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #c9dfec;
+    transition: all 0.2s ease;
+}
+
+.tag:hover {
+    background: #e2eef7;
+}
+
+.tagDeleteBtn {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    transition: background 0.2s;
+}
+
+.tagDeleteBtn:hover {
+    background: #fee2e2;
+}
+
+.addRow {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    max-width: 450px;
+}
+
+.textInput {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.textInput:focus {
+    border-color: #0e72ab;
+    box-shadow: 0 0 0 3px rgba(14, 114, 171, 0.15);
+}
+
+.primaryBtn {
+    background: #0e72ab;
+    color: white;
+    border: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.primaryBtn:hover {
+    background: #0b5c8a;
+    box-shadow: 0 4px 10px rgba(14, 114, 171, 0.25);
+}
+
+.primaryBtn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Course Cohort Grid */
+.courseSelectRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    max-width: 320px;
+}
+
+.cohortGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.yearCard {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.yearHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.yearTitle {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 1.05rem;
+}
+
+.currentBadge {
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.emptyState {
+    color: #94a3b8;
+    font-style: italic;
+    margin-bottom: 1rem;
+}

@@ -59,6 +59,7 @@ export function AuthProvider({ children }) {
       let isCOE = false
       let academicYear = null
       let currentSem = null
+      let userDepartment = null;
       if (user != null) {
         if (user.email.split("@")[1] === "vbithyd.ac.in") {
           if (checkStudent(user.email.split("@")[0])) {
@@ -71,9 +72,9 @@ export function AuthProvider({ children }) {
               academicYear = (await getAcademicYear(data.course, data.year)).data
               const semester = data.semester;
               currentSem = await fetchSemNumber(data.course,data.year);
-              if(semester==currentSem){
-                isFirstTime=false;
-              }else{
+              if (semester === currentSem) {
+                isFirstTime = false;
+              } else {
                 isFirstTime = true;
               }
               }
@@ -90,23 +91,56 @@ export function AuthProvider({ children }) {
             try {
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-                roles = docSnap.data().role?docSnap.data().role:[];
-                if(docSnap.data().isFirstYearHOD){
-                  isFirstYearHOD = true               
+                const fData = docSnap.data();
+                roles = fData.role ? fData.role : [];
+                if (fData.isFirstYearHOD) {
+                  isFirstYearHOD = true;
                 }
-                if(docSnap.data().isHOD){
+                if (fData.isHOD) {
                   isHOD = true;
                 }
-                if(docSnap.data().isCOE){
-                  isCOE = true
-                  isFirstTime= false
-                }
-                if (docSnap.data().isAdmin) {
-                  isAdmin = true
-                  isFirstTime=false
-                }
-                if (docSnap.data().isEnrolled) {
+                if (fData.isCOE) {
+                  isCOE = true;
                   isFirstTime = false;
+                }
+                if (fData.isAdmin) {
+                  isAdmin = true;
+                  isFirstTime = false;
+                }
+                if (fData.isEnrolled) {
+                  isFirstTime = false;
+                }
+
+                // Department identification
+                if (fData.adminDept) {
+                  userDepartment = fData.adminDept.toUpperCase();
+                } else if (fData.department) {
+                  userDepartment = fData.department.toUpperCase();
+                }
+
+                if (!userDepartment && user.email) {
+                  const localPart = user.email.split("@")[0].toLowerCase();
+                  if (localPart.startsWith("adminpra.")) {
+                    const deptPart = localPart.split(".")[1];
+                    if (deptPart) userDepartment = deptPart.toUpperCase();
+                  }
+                }
+
+                if (!userDepartment && roles.length > 0) {
+                  for (let r = 0; r < roles.length; r++) {
+                    const parts = roles[r].split("_");
+                    if (parts.length >= 2 && parts[1]) {
+                      userDepartment = parts[1].toUpperCase();
+                      break;
+                    }
+                  }
+                }
+
+                if (!userDepartment && isHOD && user.email) {
+                  const prefix = user.email.split("@")[0].toLowerCase();
+                  if (prefix.length <= 4) {
+                    userDepartment = prefix.toUpperCase();
+                  }
                 }
               } 
             } catch (e) {
@@ -125,11 +159,11 @@ export function AuthProvider({ children }) {
             isHOD: isHOD,
             isCOE: isCOE,
             isAdmin: isAdmin,
-            isFirstYearHOD:isFirstYearHOD,
+            isFirstYearHOD: isFirstYearHOD,
             roles: roles,
+            department: userDepartment,
             academicYear,
             currentSem,
-      
           });
           setLoading(false);
         } else {

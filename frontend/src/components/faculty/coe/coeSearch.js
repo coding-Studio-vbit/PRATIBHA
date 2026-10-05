@@ -122,8 +122,9 @@ export default function CoeSearch() {
         />
       )}
       <div className="btnflexcoe">
-
-      <Button className="normal deadlinesbtn" onClick={()=>{nav("/faculty/coedeadlines")}}>Deadlines</Button>
+        <Button className="normal deadlinesbtn" onClick={()=>{nav("/faculty/admin/academic-years")}}>Academic Years</Button>
+        <Button className="normal deadlinesbtn" onClick={()=>{nav("/faculty/admin/regulations")}}>Regulations</Button>
+        <Button className="normal deadlinesbtn" onClick={()=>{nav("/faculty/coedeadlines")}}>Deadlines</Button>
       </div>
  
       <p className="coe-instruction">Select the class to view grades.</p>
